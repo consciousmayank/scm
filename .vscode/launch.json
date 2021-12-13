@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        // {
+        //     "name": "Flutter-port_8080_chrome",
+        //     "request": "launch",
+        //     "type": "dart",
+        //     "args": [
+        //         "-d",
+        //         "chrome",
+        //         "--web-port",
+        //         "8080"
+        //     ],
+        // },
+        {
+            "name": "scms_loc",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "BASE_URL=http://192.168.0.151:8080/scm",
+            ]
+        },
+
+        {
+            "name": "scms_118",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "BASE_URL=http://192.168.0.118:8080/scm",
+            ]
+        },{
+            "name": "scms_live",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define",
+                "BASE_URL=http://http://geekscms.com/api",
+            ]
+        },
+        {
+            "name": "scm (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        }
+    ]
+}

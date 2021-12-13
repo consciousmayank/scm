@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/enums/snackbar_types.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:get/get.dart';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+void setupSnackbarUi() {
+  final service = di<SnackbarService>();
+
+  SnackbarConfig config = SnackbarConfig(
+    messageTextAlign: TextAlign.center,
+    titleTextAlign: TextAlign.center,
+    snackPosition: SnackPosition.TOP,
+    isDismissible: true,
+    padding: const EdgeInsets.symmetric(
+      vertical: 20,
+      horizontal: 10,
+    ),
+    snackStyle: SnackStyle.GROUNDED,
+    borderRadius: 0,
+    animationDuration: const Duration(milliseconds: 200),
+    // dismissDirection: SnackDismissDirection.VERTICAL,
+  );
+
+  SnackbarConfig errorConfig = SnackbarConfig(
+    messageTextAlign: TextAlign.center,
+    titleTextAlign: TextAlign.center,
+    snackPosition: SnackPosition.TOP,
+    isDismissible: false,
+    titleColor: Colors.white,
+    messageColor: Colors.white,
+    padding: const EdgeInsets.symmetric(
+      vertical: 20,
+      horizontal: 10,
+    ),
+    snackStyle: SnackStyle.GROUNDED,
+    animationDuration: const Duration(milliseconds: 200),
+  );
+
+  service.registerCustomSnackbarConfig(
+    variant: SnackbarType.ERROR,
+    config: errorConfig
+      ..backgroundColor = AppColors().primaryColor.shade200
+      ..borderColor = Colors.red
+      ..borderWidth = 2,
+  );
+
+  service.registerCustomSnackbarConfig(
+    variant: SnackbarType.NORMAL,
+    config: config
+      ..backgroundColor = AppColors().primaryColor.shade900
+      ..textColor = Colors.white,
+  );
+}
