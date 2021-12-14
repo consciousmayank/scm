@@ -5,6 +5,7 @@ import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 
 class BrandsDialogBoxViewModel extends GeneralisedBaseViewModel {
   AllBrandsResponse allBrandsResponse = AllBrandsResponse().empty();
+  String brandToSearch = '';
   int pageNumber = 0, pageSize = 20;
 
   final BrandsApi _brandsApi = di<BrandsApi>();
@@ -20,6 +21,7 @@ class BrandsDialogBoxViewModel extends GeneralisedBaseViewModel {
       AllBrandsResponse tempResponse = await _brandsApi.getAllBrands(
         pageNumber: pageNumber,
         pageSize: pageSize,
+        brandToSearch: brandToSearch,
       );
 
       if (pageNumber == 0) {
@@ -37,5 +39,11 @@ class BrandsDialogBoxViewModel extends GeneralisedBaseViewModel {
     }
 
     setBusy(false);
+  }
+
+  void searchBrands(String value) {
+    brandToSearch = value;
+    pageNumber = 0;
+    getAllBrands();
   }
 }

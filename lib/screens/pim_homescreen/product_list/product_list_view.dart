@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -21,25 +25,32 @@ class ProductsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProductsListViewModel>.reactive(
-      onModelReady: (model) => model.getProductList(),
+      onModelReady: (model) => model.getProductList(showLoader: true),
       builder: (context, model, child) => Scaffold(
         body: model.isBusy
             ? const LoadingWidget()
             : Column(
                 children: [
-                  const PageBarWidget(
+                  PageBarWidget(
                     title: productsListPageTitle,
+                    subTitle: '#${model.productListResponse.totalItems}',
                   ),
                   const ProductListHeader(),
                   Flexible(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) => ProductListItem(
-                        product: model.productListResponse.products!
-                            .elementAt(index),
+                    child: LazyLoadScrollView(
+                      scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                      onEndOfPage: () =>
+                          model.getProductList(showLoader: false),
+                      child: ListView.separated(
+                        itemBuilder: (context, index) => ProductListItem(
+                          index: index,
+                          product: model.productListResponse.products!
+                              .elementAt(index),
+                        ),
+                        separatorBuilder: (context, index) =>
+                            const DottedDivider(),
+                        itemCount: model.productListResponse.products!.length,
                       ),
-                      separatorBuilder: (context, index) =>
-                          const DottedDivider(),
-                      itemCount: model.productListResponse.products!.length,
                     ),
                     flex: 1,
                   )
@@ -67,24 +78,17 @@ class ProductListHeader extends StatelessWidget {
     return DecorativeContainer(
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              'Title',
-              style: textStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+          if (di<AppPreferences>().getSelectedUserRole() ==
+              AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
+            Expanded(
+              flex: 1,
+              child: Text(
+                'Id',
+                style: textStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              'Tags',
-              style: textStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
           Expanded(
             flex: 1,
             child: Text(
@@ -113,27 +117,9 @@ class ProductListHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Text(
-              'Price',
-              style: textStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              'Measurement',
-              style: textStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              'Measurement Unit',
+              'Title',
               style: textStyle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -149,8 +135,10 @@ class ProductListItem extends StatelessWidget {
   const ProductListItem({
     Key? key,
     required this.product,
+    required this.index,
   }) : super(key: key);
 
+  final int index;
   final Product product;
 
   @override
@@ -158,18 +146,17 @@ class ProductListItem extends StatelessWidget {
     return DecorativeContainer.transparent(
       child: Row(
         children: [
-          Expanded(
-            flex: 1,
-            child: NullableTextWidget(
-              text: product.title,
+          // Text(
+          //   index.toString(),
+          // ),
+          if (di<AppPreferences>().getSelectedUserRole() ==
+              AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
+            Expanded(
+              flex: 1,
+              child: NullableTextWidget(
+                text: product.id != null ? product.id.toString() : '0',
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: NullableTextWidget(
-              text: product.tags,
-            ),
-          ),
           Expanded(
             flex: 1,
             child: NullableTextWidget(
@@ -189,23 +176,9 @@ class ProductListItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: NullableTextWidget(
-              text: product.price != null ? product.price.toString() : '0',
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: NullableTextWidget(
-              text: product.measurement != null
-                  ? product.measurement.toString()
-                  : '0',
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: NullableTextWidget(
-              text: product.measurementUnit,
+              text: product.title,
             ),
           ),
         ],

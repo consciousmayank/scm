@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_viewmodel.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 
@@ -40,7 +44,7 @@ class PimHomeScreenView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text('User Name'),
+                        Text('Hi, ${model.authenticatedUserName}'),
                         wSizedBox(
                           width: 20,
                         ),
@@ -117,10 +121,12 @@ class PimHomeScreenView extends StatelessWidget {
                     text: 'View Products',
                     isTurned: model.navRailIsExtended,
                   ),
-                  buildRotatedTextRailDestination(
-                    text: 'Upload Images',
-                    isTurned: model.navRailIsExtended,
-                  ),
+                  if (di<AppPreferences>().getSelectedUserRole() ==
+                      AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
+                    buildRotatedTextRailDestination(
+                      text: labelAddBrand,
+                      isTurned: model.navRailIsExtended,
+                    )
                 ],
               ),
               const VerticalDivider(thickness: 1, width: 1),

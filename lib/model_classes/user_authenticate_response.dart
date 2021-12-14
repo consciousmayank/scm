@@ -11,6 +11,7 @@ class UserAuthenticateResponse {
     this.type,
     this.authorities,
     this.token,
+    this.username,
   });
 
   factory UserAuthenticateResponse.fromJson(String str) =>
@@ -22,12 +23,14 @@ class UserAuthenticateResponse {
         type: json["type"],
         authorities: List<String>.from(json["authorities"].map((x) => x)),
         token: json["token"],
+        username: json["username"],
       );
 
   final List<String>? authorities;
   final String? expireOn;
   final String? token;
   final String? type;
+  final String? username;
 
   UserAuthenticateResponse copyWith({
     String? expireOn,
@@ -51,6 +54,7 @@ class UserAuthenticateResponse {
             ? List<dynamic>.from(authorities!.map((x) => x))
             : null,
         "token": token,
+        "username": username,
       };
 
   UserAuthenticateResponse empty() {

@@ -53,7 +53,7 @@ class LoginView extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            labelLogin,
+                            model.getLoginLabel(),
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           hSizedBox(
@@ -98,16 +98,6 @@ class LoginView extends StatelessWidget {
                             child: const Text(
                               labelLoginButton,
                             ),
-                          ),
-                          hSizedBox(
-                            height: 16,
-                          ),
-                          Text(
-                            labelApiUrl(apiUrl: EnvironmentConfig.BASE_URL),
-                            style: Theme.of(context).textTheme.overline,
-                          ),
-                          hSizedBox(
-                            height: 16,
                           ),
                         ],
                       ),

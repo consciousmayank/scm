@@ -3,6 +3,7 @@ import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/pim_homescreen/add_brand/add_brand_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_view.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
@@ -10,6 +11,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class PimHomeScreenViewModel extends IndexTrackingViewModel {
+  String authenticatedUserName = '';
   bool navRailIsExtended = false;
 
   final AppPreferences _appPreferences = di<AppPreferences>();
@@ -30,6 +32,10 @@ class PimHomeScreenViewModel extends IndexTrackingViewModel {
         return ProductsListView(
           arguments: ProductsListViewArguments(),
         );
+      case 2:
+        return AddBrandView(
+          arguments: AddBrandViewArguments(),
+        );
 
       default:
         return AddProductView(
@@ -39,8 +45,7 @@ class PimHomeScreenViewModel extends IndexTrackingViewModel {
   }
 
   initScreen() {
-    _appPreferences.setSelectedUserRole(
-        userRole: AuthenticatedUserRoles.ROLE_DEO.getStatusString);
+    authenticatedUserName = _appPreferences.getAuthenticatedUserName();
 
     if (_appPreferences.getSelectedUserRole() ==
         AuthenticatedUserRoles.ROLE_DEO.getStatusString) {

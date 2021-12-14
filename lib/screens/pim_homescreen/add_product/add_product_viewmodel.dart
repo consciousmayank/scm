@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/api_response.dart';
-import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/model_classes/product_list_response.dart' as productImage;
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
@@ -20,6 +25,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   TextEditingController priceController = TextEditingController();
   FocusNode priceFocusNode = FocusNode();
   Product productToAdd = Product().empty();
+  List<Uint8List> selectedFiles = [];
   TextEditingController subTypeController = TextEditingController();
   FocusNode subTypeFocusNode = FocusNode();
   TextEditingController summaryController = TextEditingController();
@@ -37,14 +43,36 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
     typeFocusNode.addListener(() {});
   }
 
-  void appendInTitle(String value) {
-    value = value.toUpperCase();
-    titleController.text = titleController.text.trim() + " " + value;
-    productToAdd = productToAdd.copyWith(title: titleController.text.trim());
+  void appendInTitle() {
+    String brand = productToAdd.brand ?? '';
+    String subType = productToAdd.subType ?? '';
+    double measureMent = productToAdd.measurement ?? 0;
+    String measurementUnit = productToAdd.measurementUnit ?? '';
+
+    String title =
+        '$brand $subType ${measureMent > 0 ? measureMent : ''} $measurementUnit';
+
+    titleController.text = title.toUpperCase();
+    productToAdd = productToAdd.copyWith(title: title.toUpperCase());
   }
 
   addProduct() async {
     setBusy(true);
+    if (selectedFiles.isNotEmpty) {
+      List<productImage.Image> images = [];
+      for (var element in selectedFiles) {
+        images.add(
+          productImage.Image(
+            id: null,
+            image: 'data:image/jpeg;base64, ' +
+                base64Encode(element).replaceAll("\n", "").trim(),
+            productId: null,
+          ),
+        );
+      }
+
+      productToAdd = productToAdd.copyWith(images: images);
+    }
     ApiResponse apiResponse = await _productApis.addProduct(
       product: productToAdd,
     );
@@ -57,7 +85,15 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
       titleController.clear();
       tagsController.clear();
       summaryController.clear();
-      productToAdd = Product().empty();
+      selectedFiles.clear();
+      productToAdd = productToAdd.copyWith(
+        measurement: 0,
+        price: 0,
+        measurementUnit: '',
+        title: '',
+        tags: '',
+        summary: '',
+      );
     } else {
       showInfoSnackBar(message: apiResponse.message);
     }
@@ -77,11 +113,31 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
     if (response != null && response.confirmed) {
       BrandsDialogBoxViewOutArguments returnedArgs = response.data;
       brandsController.text = returnedArgs.selectedBrand.title!;
-      appendInTitle(returnedArgs.selectedBrand.title!);
       typeFocusNode.requestFocus();
       productToAdd = productToAdd.copyWith(
         brand: returnedArgs.selectedBrand.title,
       );
+      appendInTitle();
     }
+  }
+
+  void pickImages() async {
+    if (kIsWeb) {
+      Uint8List selectedFile =
+          await ImagePickerWeb.getImage(outputType: ImageType.bytes)
+              as Uint8List;
+
+      if ((selectedFile.lengthInBytes / 1024) > 50) {
+        showErrorSnackBar(message: errorUploadedImageSize);
+        return;
+      }
+
+      selectedFiles.add(selectedFile);
+    } else {
+      snackBarService.showSnackbar(
+          message: 'Please add image Picker functionality for mobiles also.');
+    }
+
+    notifyListeners();
   }
 }

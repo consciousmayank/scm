@@ -18,10 +18,15 @@ abstract class InterFaceAppPreferences {
   String getSelectedUserRole();
 
   String? getApiToken();
+
+  String getAuthenticatedUserName();
+
+  void setAuthenticatedUserName({required String user});
 }
 
 class AppPreferences implements InterFaceAppPreferences {
   final String apiToken = "api_token";
+  final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
   final String loggedInUserCredentials = "logged_in_user_credentials";
   final String selectedUserRole = "selected_user_role";
@@ -37,6 +42,14 @@ class AppPreferences implements InterFaceAppPreferences {
     } else {
       return null;
     }
+  }
+
+  @override
+  String getAuthenticatedUserName() {
+    return _sharedPrefs.getString(
+          authenticatedUserName,
+        ) ??
+        '';
   }
 
   @override
@@ -81,6 +94,18 @@ class AppPreferences implements InterFaceAppPreferences {
       _sharedPrefs.remove(supplierBusinessName);
     } else {
       _sharedPrefs.setString(supplierBusinessName, name);
+    }
+  }
+
+  @override
+  void setAuthenticatedUserName({String? user}) {
+    if (user == null) {
+      _sharedPrefs.remove(authenticatedUserName);
+    } else {
+      _sharedPrefs.setString(
+        authenticatedUserName,
+        user,
+      );
     }
   }
 

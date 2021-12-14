@@ -1,15 +1,12 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked_services/stacked_services.dart' as stackedService;
+import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
 class DioConfig {
   DioConfig({
@@ -44,16 +41,18 @@ class DioConfig {
         "X-Requested-With": "XmlHttpRequest",
         "content-type": "application/json"
       };
-    _dio.interceptors.add(
-      PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseBody: true,
-          responseHeader: false,
-          error: true,
-          compact: true,
-          maxWidth: 90),
-    );
+    if (EnvironmentConfig.SHOW_LOGS) {
+      _dio.interceptors.add(
+        PrettyDioLogger(
+            requestHeader: true,
+            requestBody: true,
+            responseBody: true,
+            responseHeader: false,
+            error: true,
+            compact: true,
+            maxWidth: 90),
+      );
+    }
     _dio.interceptors.add(
       InterceptorsWrapper(onRequest: (options, handler) async {
         if (options.path != USER_AUTH) {
@@ -84,9 +83,9 @@ class DioConfig {
               List? tokenStatusList = headersMap['tokenstatus'];
               if (tokenStatusList?.first == 'EXPIRED') {
                 appPreferences.clearPreferences();
-                di<stackedService.NavigationService>()
+                di<stacked_service.NavigationService>()
                     .clearStackAndShow(logInPageRoute);
-                di<stackedService.SnackbarService>()
+                di<stacked_service.SnackbarService>()
                     .showSnackbar(message: 'Login again as token expired');
 
                 // log('path lock');

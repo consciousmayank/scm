@@ -42,7 +42,9 @@ class _SplashScreenState extends State<SplashScreen>
   loadNextPage() {
     String userSelectedRole = preferences.getSelectedUserRole();
     if (userSelectedRole.isNotEmpty &&
-        userSelectedRole == AuthenticatedUserRoles.ROLE_DEO.getStatusString) {
+            userSelectedRole ==
+                AuthenticatedUserRoles.ROLE_DEO.getStatusString ||
+        userSelectedRole == AuthenticatedUserRoles.ROLE_SUPVR.getStatusString) {
       di<NavigationService>().replaceWith(pimHomeScreenRoute);
     } else {
       di<NavigationService>().replaceWith(logInPageRoute);

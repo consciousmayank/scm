@@ -4,34 +4,27 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        // {
-        //     "name": "Flutter-port_8080_chrome",
-        //     "request": "launch",
-        //     "type": "dart",
-        //     "args": [
-        //         "-d",
-        //         "chrome",
-        //         "--web-port",
-        //         "8080"
-        //     ],
-        // },
         {
-            "name": "scms_loc",
+            "name": "scms_loc_laptop",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL=http://192.168.0.151:8080/scm",
+                "--dart-define",
+                "SHOW_LOGS=true"
             ]
         },
 
         {
-            "name": "scms_118",
+            "name": "scms_118_loc_server",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL=http://192.168.0.118:8080/scm",
+                "--dart-define",
+                "SHOW_LOGS=true"
             ]
         },{
             "name": "scms_live",
@@ -39,14 +32,11 @@
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
-                "BASE_URL=http://http://geekscms.com/api",
+                "BASE_URL=http://geekscms.com",
+                "--dart-define",
+                "SHOW_LOGS=true"
             ]
         },
-        {
-            "name": "scm (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile"
-        }
+        
     ]
 }

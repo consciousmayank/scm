@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scm/app/appcolors.dart';
 
 class Dimens {
@@ -20,7 +21,7 @@ class Dimens {
         color: AppColors().black,
       );
 
-  get pageSubTitleHeadingStyle => TextStyle(
+  TextStyle get pageSubTitleHeadingStyle => TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: AppColors().black,
@@ -31,6 +32,8 @@ class Dimens {
   get getDecoratedContainerDefaultColor => AppColors().primaryColor.shade200;
 
   double get getDecoratedContainerDefaultPadding => 8;
+
+  double get defaultBorder => 32;
 
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(
@@ -45,4 +48,24 @@ class Dimens {
       ),
     );
   }
+
+  TextInputFormatter get getNumericTextInputFormatter =>
+      FilteringTextInputFormatter.allow(
+        RegExp(r'[0-9]'),
+      );
+
+  TextInputFormatter get numericWithDecimalFormatter =>
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,2}'),
+      );
+
+  TextInputFormatter get alphaNumericWithSpaceSlashHyphenUnderScoreFormatter =>
+      FilteringTextInputFormatter.allow(
+        RegExp(r'[a-zA-Z0-9 -/_]'),
+      );
+
+  TextInputFormatter get alphabeticFormatter =>
+      FilteringTextInputFormatter.allow(
+        RegExp(r'[a-zA-Z ]'),
+      );
 }

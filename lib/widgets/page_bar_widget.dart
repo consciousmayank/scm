@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/utils/utils.dart';
 
 class PageBarWidget extends StatefulWidget {
   const PageBarWidget({
@@ -69,11 +70,17 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                         widget.title!,
                         style: Dimens().pageTitleHeadingStyle,
                       ),
+                if (widget.subTitle != null) wSizedBox(width: 20),
                 widget.subTitle == null
                     ? Container()
-                    : Text(
-                        " - ${widget.subTitle!}",
-                        style: Dimens().pageSubTitleHeadingStyle,
+                    : Chip(
+                        backgroundColor: AppColors().primaryColor.shade100,
+                        label: Text(
+                          widget.subTitle!,
+                          style: Dimens().pageSubTitleHeadingStyle.copyWith(
+                                color: Colors.white,
+                              ),
+                        ),
                       ),
               ],
             ),

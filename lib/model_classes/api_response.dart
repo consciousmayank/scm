@@ -46,4 +46,12 @@ class ApiResponse {
         "statusCode": statusCode,
         "message": message,
       };
+
+  ApiResponse empty() {
+    return ApiResponse(
+      status: '',
+      message: '',
+      statusCode: 400,
+    );
+  }
 }

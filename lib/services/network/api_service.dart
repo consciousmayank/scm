@@ -5,6 +5,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
+import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
@@ -485,20 +486,20 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future<ParentApiResponse> getAllBrands({
-    required int pageNumber,
-    required int pageSize,
-  }) async {
+  Future<ParentApiResponse> getAllBrands(
+      {required int pageNumber,
+      required int pageSize,
+      required String brandToSearch}) async {
     Response? response;
     DioError? error;
 
     try {
-      response = await dioClient
-          .getDio()
-          .get(GET_BRANDS_FOR_DASHBOARD, queryParameters: {
-        'page': pageNumber,
-        'size': pageSize,
-      });
+      response = await dioClient.getDio().get(GET_BRANDS_FOR_DASHBOARD,
+          queryParameters: {
+            'page': pageNumber,
+            'size': pageSize,
+            'title': brandToSearch
+          });
     } on DioError catch (e) {
       error = e;
     }
@@ -742,18 +743,9 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().post(ADD_PRODUCT, data: {
-        "hsn": productToBeAdded.hsn,
-        "brand": productToBeAdded.brand,
-        "type": productToBeAdded.type,
-        "subType": productToBeAdded.subType,
-        "title": productToBeAdded.title,
-        "price": productToBeAdded.price,
-        "summary": productToBeAdded.summary,
-        "measurement": productToBeAdded.measurement,
-        "measurementUnit": productToBeAdded.measurementUnit,
-        "tags": productToBeAdded.tags,
-      });
+      response = await dioClient
+          .getDio()
+          .post(ADD_PRODUCT, data: productToBeAdded.toMap());
     } on DioError catch (e) {
       error = e;
     }
@@ -802,6 +794,29 @@ class ApiService {
         'page': pageNumber,
         'size': pageSize,
       });
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> addBrand({
+    required Brand brand,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().post(GET_BRANDS_FOR_DASHBOARD,
+          data: brand.image == null
+              ? {
+                  'title': brand.title,
+                }
+              : {
+                  'title': brand.title,
+                  'image': brand.image,
+                });
     } on DioError catch (e) {
       error = e;
     }

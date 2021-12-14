@@ -97,4 +97,12 @@ class Brand {
         "title": title,
         "image": image,
       };
+
+  static Brand empty() {
+    return Brand(
+      id: null,
+      title: "",
+      image: "",
+    );
+  }
 }

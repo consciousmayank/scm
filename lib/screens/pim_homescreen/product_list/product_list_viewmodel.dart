@@ -4,14 +4,19 @@ import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 
 class ProductsListViewModel extends GeneralisedBaseViewModel {
-  int pageNumber = 0, pageSize = 20;
+  int pageNumber = 0, pageSize = 30;
   ProductListResponse productListResponse = ProductListResponse().empty();
+  bool shouldCallGetProductsApi = true;
 
   final ProductApis _productApis = di<ProductApis>();
 
-  getProductList() async {
-    if (pageNumber <= productListResponse.totalPages!) {
-      setBusy(true);
+  getProductList({
+    bool showLoader = false,
+  }) async {
+    if (shouldCallGetProductsApi) {
+      if (showLoader) {
+        setBusy(true);
+      }
       ProductListResponse tempResponse =
           await _productApis.getAllAddedProductsList(
         pageNumber: pageNumber,
@@ -30,6 +35,10 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
         );
       }
       pageNumber++;
+      if (productListResponse.totalItems! ==
+          productListResponse.products!.length) {
+        shouldCallGetProductsApi = false;
+      }
     }
     setBusy(false);
     notifyListeners();

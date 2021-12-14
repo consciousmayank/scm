@@ -1,7 +1,7 @@
 enum AuthenticatedUserRoles {
   ROLE_SUPPLY,
   ROLE_DEO,
-  ROLE_DEO_MANAGER,
+  ROLE_SUPVR,
 }
 
 extension AuthenticatedUserRolesValues on AuthenticatedUserRoles {
@@ -13,8 +13,8 @@ extension AuthenticatedUserRolesValues on AuthenticatedUserRoles {
       case AuthenticatedUserRoles.ROLE_SUPPLY:
         return AuthenticatedUserRoles.ROLE_SUPPLY.index + 1;
 
-      case AuthenticatedUserRoles.ROLE_DEO_MANAGER:
-        return AuthenticatedUserRoles.ROLE_DEO_MANAGER.index + 1;
+      case AuthenticatedUserRoles.ROLE_SUPVR:
+        return AuthenticatedUserRoles.ROLE_SUPVR.index + 1;
 
       default:
         return -1;
@@ -31,8 +31,8 @@ extension AuthenticatedUserRolesValue on AuthenticatedUserRoles {
       case AuthenticatedUserRoles.ROLE_SUPPLY:
         return 'ROLE_SUPPLY';
 
-      case AuthenticatedUserRoles.ROLE_DEO_MANAGER:
-        return 'ROLE_DEO_MANAGER';
+      case AuthenticatedUserRoles.ROLE_SUPVR:
+        return 'ROLE_SUPVR';
 
       default:
         return 'UNKNOWN';

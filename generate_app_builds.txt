@@ -1,7 +1,8 @@
 ./flutter-stylizer-for-mac -w ./...
 flutter clean
 flutter pub get
-flutter build web --release --dart-define BASE_URL=http://192.168.0.118:8080/scm
+flutter build web --release --dart-define BASE_URL=http://geekscms.com --dart-define SHOW_LOGS=false
+#flutter build web --release --dart-define BASE_URL=http://192.168.0.118:8080/scm --dart-define SHOW_LOGS=false
 firebase deploy
 #cd /Volumes/Public/Bhupendra/BML-ADMIN/Web\ App/
 #rm -rf * 

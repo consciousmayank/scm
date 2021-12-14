@@ -1,6 +1,13 @@
 In this build following was done.
 
+Tuesday 14th December 2021
+    -Now data entry operators can 
+        1. add product
+        2. See how many records they worked on till now. 
 
+    -Data entry operator supervisor can 
+        1. add product and images
+        2. Add brand with or without images
 
 Monday 13th December
     - Added Add product and list product on DEO level
