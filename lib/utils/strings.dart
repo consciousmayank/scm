@@ -65,6 +65,9 @@ const String errorNotAuthorisedToEditProducts =
 const String brandDialogTitle = 'Choose a Brand';
 const String brandDialogSearchTitle = 'Search for a Brand';
 const String labelAddImage = 'Add Image';
+const String labelEnterProductId = 'Enter Product Id';
+const String labelEnterValidProductId =
+    'Please enter a valid product id in the search box';
 const String buttonLabelAddProduct = 'Add Product';
 const String buttonLabelUpdateProduct = 'Update Product';
 const String base64ImagePrefix = 'data:image/jpeg;base64,';
