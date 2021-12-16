@@ -30,6 +30,8 @@ const String labelTitle = 'Title';
 const String labelTags = 'Tags';
 const String labelDataUrl = 'Data URL';
 const String labelSummary = 'Summary';
+const String labelGetProductById = 'Get Product by Id';
+const String labelLogout = 'Logout';
 const String labelSummaryHelperText =
     'Please add the Data Url at the end of the summary';
 const String productBrandRequiredErrorMessage = 'Product brand is required';
@@ -57,10 +59,12 @@ const String errorPasswordRequired = "Password is required";
 const String errorUserNameLength = "Username must be at least 6 characters";
 const String errorPasswordLength = "password must be at least 4 characters";
 const String errorUploadedImageSize = 'Image size should be less than 50kb';
+const String errorNotAuthorisedToEditProducts =
+    'You are not authorized to edit products';
 
 const String brandDialogTitle = 'Choose a Brand';
 const String brandDialogSearchTitle = 'Search for a Brand';
 const String labelAddImage = 'Add Image';
 const String buttonLabelAddProduct = 'Add Product';
 const String buttonLabelUpdateProduct = 'Update Product';
-const String base64ImagePrefix = 'data:image/jpeg;base64, ';
+const String base64ImagePrefix = 'data:image/jpeg;base64,';

@@ -144,6 +144,7 @@ class Product {
     this.measurementUnit,
     this.images,
     this.tags,
+    this.creationdate,
   });
 
   factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
@@ -159,6 +160,7 @@ class Product {
         summary: json["summary"],
         measurement: json["measurement"]?.toDouble(),
         measurementUnit: json["measurementUnit"],
+        creationdate: json["creationdate"],
         images: json["images"] != null
             ? List<Image>.from(json["images"].map((x) => Image.fromMap(x)))
             : [],
@@ -177,6 +179,7 @@ class Product {
   String? tags;
   String? title;
   String? type;
+  String? creationdate;
 
   Product copyWith({
     int? id,

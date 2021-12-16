@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
-import 'package:scm/app/di.dart';
-import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/decorative_container.dart';
 import 'package:scm/widgets/dotted_divider.dart';
@@ -33,24 +32,86 @@ class ProductsListView extends StatelessWidget {
             : Column(
                 children: [
                   PageBarWidget(
-                    title: productsListPageTitle,
+                    title: arguments.productListType == ProductListType.TODO
+                        ? todoProductsListPageTitle
+                        : publishedProductsListPageTitle,
                     subTitle: '#${model.productListResponse.totalItems}',
+                    options: [
+                      if (model.isDeoSuperVisor())
+                        InputChip(
+                          label: Text(
+                            labelGetProductById,
+                            style: Theme.of(context).textTheme.button!.copyWith(
+                                  color: AppColors().white,
+                                ),
+                          ),
+                          onPressed: () {
+                            model.getProductById();
+                          },
+                        )
+                    ],
                   ),
                   const ProductListHeader(),
+
+                  // Flexible(
+                  //   child: SizedBox.expand(
+                  //     child: SingleChildScrollView(
+                  //       child: PaginatedDataTable(
+                  //         source: model.productListDataSource,
+                  //         // header: PageBarWidget(
+                  //         //   title: productsListPageTitle,
+                  //         //   subTitle: '#${model.productListResponse.totalItems}',
+                  //         // ),
+                  //         // header: const ProductListHeader(),
+                  //         // headingRowHeight: 200,
+                  //         columnSpacing: 20,
+                  //         columns: const [
+                  //           DataColumn(
+                  //             label: Text('ID'),
+                  //             // onSort: (columnIndex, ascending) {
+                  //             //   model.sort<num>(
+                  //             //     (user) => user.id!,
+                  //             //     columnIndex,
+                  //             //     ascending,
+                  //             //   );
+                  //             // },
+                  //           ),
+                  //           DataColumn(label: Text('Brand')),
+                  //           DataColumn(label: Text('Type')),
+                  //           DataColumn(label: Text('SubType')),
+                  //           DataColumn(label: Text('Title')),
+                  //         ],
+                  //         // columnSpacing: 100,
+                  //         horizontalMargin: 10,
+                  //         rowsPerPage: 20,
+                  //         showCheckboxColumn: false,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+
                   Flexible(
                     child: LazyLoadScrollView(
                       scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
-                      onEndOfPage: () =>
-                          model.getProductList(showLoader: false),
+                      onEndOfPage: () {
+                        // model.getProductList(showLoader: false);
+                      },
                       child: ListView.separated(
                         itemBuilder: (context, index) => AppInkwell(
                           onTap: model.productListResponse.products == null
                               ? null
                               : () {
-                                  model.openProductDetailsDialog(
-                                    product: model.productListResponse.products!
-                                        .elementAt(index),
-                                  );
+                                  if (model.isDeo()) {
+                                    model.showErrorSnackBar(
+                                      message: errorNotAuthorisedToEditProducts,
+                                    );
+                                  } else {
+                                    model.openProductDetailsDialog(
+                                      product: model
+                                          .productListResponse.products!
+                                          .elementAt(index),
+                                    );
+                                  }
                                 },
                           child: ProductListItem(
                             index: index,
@@ -64,7 +125,90 @@ class ProductsListView extends StatelessWidget {
                       ),
                     ),
                     flex: 1,
-                  )
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      bottom: 10,
+                      top: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors().primaryColor.shade50,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextButton.icon(
+                          style: AppTextButtonsStyles().textButtonStyle,
+                          onPressed: model.pageNumber == 0
+                              ? null
+                              : () {
+                                  model.pageNumber--;
+                                  model.getProductList(showLoader: true);
+                                },
+                          icon: const Icon(
+                            Icons.arrow_left,
+                          ),
+                          label: const Text('First Page'),
+                        ),
+                        TextButton.icon(
+                          style: AppTextButtonsStyles().textButtonStyle,
+                          onPressed: model.pageNumber == 0
+                              ? null
+                              : () {
+                                  model.pageNumber--;
+                                  model.getProductList(showLoader: true);
+                                },
+                          icon: const Icon(
+                            Icons.arrow_left,
+                          ),
+                          label: const Text('Previous Page'),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            'Page ${model.pageNumber + 1} of ${model.productListResponse.totalPages}',
+                          ),
+                        ),
+                        TextButton.icon(
+                          style: AppTextButtonsStyles().textButtonStyle,
+                          onPressed: model.pageNumber ==
+                                  (model.productListResponse.totalPages! - 1)
+                              ? null
+                              : () {
+                                  model.pageNumber++;
+                                  model.getProductList(showLoader: true);
+                                },
+                          icon: const Text('Next Page'),
+                          label: const Icon(
+                            Icons.arrow_right,
+                          ),
+                        ),
+                        TextButton.icon(
+                          style: AppTextButtonsStyles().textButtonStyle,
+                          onPressed: model.pageNumber ==
+                                  (model.productListResponse.totalPages! - 1)
+                              ? null
+                              : () {
+                                  model.pageNumber =
+                                      model.productListResponse.totalPages! - 1;
+                                  model.getProductList(showLoader: true);
+                                },
+                          icon: const Text('Last Page'),
+                          label: const Icon(
+                            Icons.arrow_right,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
       ),
@@ -140,6 +284,15 @@ class ProductListHeader extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Created On',
+              style: textStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
         ],
       ),
     );
@@ -189,6 +342,12 @@ class ProductListItem extends StatelessWidget {
             flex: 6,
             child: NullableTextWidget(
               text: product.title,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: NullableTextWidget(
+              text: product.creationdate,
             ),
           ),
         ],

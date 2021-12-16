@@ -76,14 +76,18 @@ Widget buildRotatedText({
   );
 }
 
-NavigationRailDestination buildRotatedTextRailDestination(
-    {required String text, double padding = 8, required bool isTurned}) {
+NavigationRailDestination buildRotatedTextRailDestination({
+  required String text,
+  double padding = 8,
+  required bool isTurned,
+  int turn = -1,
+}) {
   return NavigationRailDestination(
     icon: const SizedBox.shrink(),
     label: Padding(
       padding: EdgeInsets.symmetric(vertical: padding),
       child: RotatedBox(
-        quarterTurns: isTurned ? 0 : -1,
+        quarterTurns: isTurned ? 0 : turn,
         child: Text(text),
       ),
     ),

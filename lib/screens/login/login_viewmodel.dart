@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
@@ -9,25 +10,30 @@ import 'package:scm/utils/strings.dart';
 
 class LoginViewModel extends GeneralisedBaseViewModel {
   bool isPasswordVisible = false;
-  String? password;
-  String? username;
+  TextEditingController userNameController = TextEditingController();
+  FocusNode userNameFocusNode = FocusNode();
+
+  TextEditingController passwordController = TextEditingController();
+  FocusNode passwordFocusNode = FocusNode();
 
   final LoginApi _loginApi = di<LoginApi>();
 
   void login() async {
-    if (username == null || username?.isEmpty == true) {
+    if (userNameController.text.trim().isEmpty) {
       showErrorSnackBar(message: errorUserNameRequired);
       return;
-    } else if (password == null || password?.isEmpty == true) {
+    } else if (passwordController.text.trim().isEmpty) {
       showErrorSnackBar(message: errorPasswordRequired);
     } else {
       setBusy(true);
       UserAuthenticateResponse authenticateResponse = await _loginApi.login(
-        userName: username!,
-        password: password!,
+        userName: userNameController.text.trim(),
+        password: passwordController.text.trim(),
       );
 
       if (authenticateResponse.token != null) {
+        userNameController.clear();
+        passwordController.clear();
         //save token
         preferences.saveApiToken(tokenString: authenticateResponse.token);
         //save username

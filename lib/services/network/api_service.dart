@@ -810,7 +810,6 @@ class ApiService {
       response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
         'page': pageNumber,
         'size': pageSize,
-        'sort': 'DESC'
       });
     } on DioError catch (e) {
       error = e;

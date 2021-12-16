@@ -179,7 +179,8 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
         selectedFiles.add(
           base64Decode(
             arguments.productToEdit!.images!.first.image!
-                .replaceAll(base64ImagePrefix, ''),
+                .replaceAll(base64ImagePrefix, '')
+                .replaceAll(' ', ''),
           ),
         );
         notifyListeners();

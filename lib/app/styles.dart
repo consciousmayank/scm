@@ -96,7 +96,7 @@ class AppTextButtonsStyles {
             (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return foregroundColor == null
-                ? AppColors().appTextButtonForegroundColor
+                ? Colors.grey
                 : foregroundColor!.withAlpha(100);
           }
           return foregroundColor ??

@@ -68,8 +68,13 @@ class LoginView extends StatelessWidget {
                           ),
                           AppTextField(
                             keyboardType: TextInputType.number,
+                            controller: model.userNameController,
+                            focusNode: model.userNameFocusNode,
                             hintText: labelUserName,
-                            onTextChange: (value) => model.username = value,
+                            onFieldSubmitted: (value) {
+                              model.userNameFocusNode.unfocus();
+                              model.passwordFocusNode.requestFocus();
+                            },
                           ),
                           hSizedBox(
                             height: 16,
@@ -86,7 +91,8 @@ class LoginView extends StatelessWidget {
                               model.notifyListeners();
                             },
                             hintText: labelPassword,
-                            onTextChange: (value) => model.password = value,
+                            controller: model.passwordController,
+                            focusNode: model.passwordFocusNode,
                             onFieldSubmitted: (value) => model.login(),
                           ),
                           hSizedBox(

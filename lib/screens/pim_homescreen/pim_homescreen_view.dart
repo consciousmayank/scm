@@ -26,32 +26,26 @@ class PimHomeScreenView extends StatelessWidget {
         child: Scaffold(
           appBar: appbarWidget(context: context, options: [
             wSizedBox(width: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AppInkwell.withBorder(
-                onTap: () => model.logout(),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(
-                      color: AppColors().black,
-                      width: 1,
+            Center(child: Text('Hi, ${model.authenticatedUserName}')),
+            wSizedBox(width: 30),
+            InputChip(
+              onPressed: () {
+                model.logout();
+              },
+              // avatar: CircleAvatar(
+              //   backgroundColor: AppColors().primaryColor.shade200,
+              //   child: Text(
+              //     model.authenticatedUserName.substring(0, 1),
+              //     style: const TextStyle(
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
+              label: Text(
+                labelLogout,
+                style: Theme.of(context).textTheme.button!.copyWith(
+                      color: AppColors().white,
                     ),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text('Hi, ${model.authenticatedUserName}'),
-                        wSizedBox(
-                          width: 20,
-                        ),
-                        const Icon(Icons.logout, color: Colors.white)
-                      ],
-                    ),
-                  ),
-                ),
               ),
             ),
             wSizedBox(width: 10),
@@ -60,33 +54,33 @@ class PimHomeScreenView extends StatelessWidget {
             children: [
               NavigationRail(
                   extended: model.navRailIsExtended,
-                  trailing: Column(
-                    children: [
-                      hSizedBox(
-                        height: 20,
-                      ),
-                      IconButton(
-                        icon: model.navRailIsExtended
-                            ? Icon(
-                                Icons.keyboard_arrow_left_sharp,
-                                color: AppColors().white,
-                                size: 30,
-                              )
-                            : Icon(
-                                Icons.keyboard_arrow_right_sharp,
-                                color: AppColors().white,
-                                size: 30,
-                              ),
-                        onPressed: () {
-                          model.navRailIsExtended = !model.navRailIsExtended;
-                          model.notifyListeners();
-                        },
-                      ),
-                      hSizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
+                  // trailing: Column(
+                  //   children: [
+                  //     hSizedBox(
+                  //       height: 20,
+                  //     ),
+                  //     IconButton(
+                  //       icon: model.navRailIsExtended
+                  //           ? Icon(
+                  //               Icons.keyboard_arrow_left_sharp,
+                  //               color: AppColors().white,
+                  //               size: 30,
+                  //             )
+                  //           : Icon(
+                  //               Icons.keyboard_arrow_right_sharp,
+                  //               color: AppColors().white,
+                  //               size: 30,
+                  //             ),
+                  //       onPressed: () {
+                  //         model.navRailIsExtended = !model.navRailIsExtended;
+                  //         model.notifyListeners();
+                  //       },
+                  //     ),
+                  //     hSizedBox(
+                  //       height: 20,
+                  //     ),
+                  //   ],
+                  // ),
                   groupAlignment: model.navRailIsExtended ? -1.0 : 1.0,
                   backgroundColor:
                       Theme.of(context).appBarTheme.backgroundColor,

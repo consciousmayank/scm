@@ -71,8 +71,8 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
       //if authenticated user is a SUPERVISOR then show add product view, add brand view, product list view
       switch (currentIndex) {
         case 0:
-          return ProductListSuervisorView(
-            arguments: ProductListSuervisorViewArguments(),
+          return ProductListSupervisorView(
+            arguments: ProductListSupervisorViewArguments(),
           );
 
         case 1:
@@ -85,8 +85,8 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
           );
 
         default:
-          return ProductListSuervisorView(
-            arguments: ProductListSuervisorViewArguments(),
+          return ProductListSupervisorView(
+            arguments: ProductListSupervisorViewArguments(),
           );
       }
     }

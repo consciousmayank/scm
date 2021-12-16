@@ -4,6 +4,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
@@ -28,6 +29,11 @@ void setupDialogUi() {
         ),
     DialogType.UPDATE_PRODUCT: (context, sheetRequest, completer) =>
         UpdateProductDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.GET_PRODUCT_BY_ID: (context, sheetRequest, completer) =>
+        GetProductByIdDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
