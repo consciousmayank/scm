@@ -4,6 +4,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
@@ -22,6 +23,11 @@ void setupDialogUi() {
         ),
     DialogType.BRANDS_LIST_DIALOGBOX: (context, sheetRequest, completer) =>
         BrandsDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.UPDATE_PRODUCT: (context, sheetRequest, completer) =>
+        UpdateProductDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
@@ -237,6 +243,9 @@ class CenteredBaseDialog extends StatelessWidget {
       child: ColumnWithTitle(
         title: arguments.title,
         child: arguments.child,
+        dialogClose: () => arguments.completer(DialogResponse(
+          confirmed: false,
+        )),
       ),
     );
   }

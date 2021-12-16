@@ -7,6 +7,7 @@ import 'package:scm/enums/user_roles.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PimHomeScreenView extends StatelessWidget {
@@ -27,9 +28,7 @@ class PimHomeScreenView extends StatelessWidget {
             wSizedBox(width: 10),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                customBorder: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50)),
+              child: AppInkwell.withBorder(
                 onTap: () => model.logout(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),

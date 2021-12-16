@@ -10,6 +10,7 @@ import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart' as productImage;
+import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
@@ -64,7 +65,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
         images.add(
           productImage.Image(
             id: null,
-            image: 'data:image/jpeg;base64, ' +
+            image: base64ImagePrefix +
                 base64Encode(element).replaceAll("\n", "").trim(),
             productId: null,
           ),
@@ -73,12 +74,26 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
 
       productToAdd = productToAdd.copyWith(images: images);
     }
-    ApiResponse apiResponse = await _productApis.addProduct(
-      product: productToAdd,
-    );
+    ApiResponse apiResponse;
+
+    if (arguments.productToEdit == null) {
+      apiResponse = await _productApis.addProduct(
+        product: productToAdd,
+      );
+    } else {
+      apiResponse = await _productApis.updateProduct(
+        product: productToAdd,
+      );
+    }
 
     if (apiResponse.isSuccessful()) {
       showInfoSnackBar(message: apiResponse.message);
+
+      if (arguments.productToEdit != null &&
+          arguments.onProductUpdated != null) {
+        arguments.onProductUpdated!.call();
+      }
+
       priceController.clear();
       measurementController.clear();
       measurementUnitController.clear();
@@ -139,5 +154,36 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
     }
 
     notifyListeners();
+  }
+
+  late final AddProductViewArguments arguments;
+  init({required AddProductViewArguments arguments}) {
+    this.arguments = arguments;
+    if (arguments.productToEdit != null) {
+      productToAdd = arguments.productToEdit!;
+      brandsController.text = productToAdd.brand ?? '';
+      measurementController.text = productToAdd.measurement != null
+          ? productToAdd.measurement.toString()
+          : '';
+      priceController.text =
+          productToAdd.price != null ? productToAdd.price.toString() : '';
+      measurementUnitController.text = productToAdd.measurementUnit ?? '';
+      subTypeController.text = productToAdd.subType ?? '';
+      summaryController.text = productToAdd.summary ?? '';
+      tagsController.text = productToAdd.tags ?? '';
+      titleController.text = productToAdd.title ?? '';
+      typeController.text = productToAdd.type ?? '';
+
+      if (arguments.productToEdit!.images != null &&
+          arguments.productToEdit!.images!.isNotEmpty) {
+        selectedFiles.add(
+          base64Decode(
+            arguments.productToEdit!.images!.first.image!
+                .replaceAll(base64ImagePrefix, ''),
+          ),
+        );
+        notifyListeners();
+      }
+    }
   }
 }

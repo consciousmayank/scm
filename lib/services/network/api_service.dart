@@ -753,6 +753,23 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
+  Future<ParentApiResponse> updateProduct({
+    required Product productToBeAdded,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient
+          .getDio()
+          .put(ADD_PRODUCT, data: productToBeAdded.toMap());
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
   Future<ParentApiResponse> updateProductById({
     required int? productId,
     // required int? supplierId,
@@ -793,6 +810,7 @@ class ApiService {
       response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
         'page': pageNumber,
         'size': pageSize,
+        'sort': 'DESC'
       });
     } on DioError catch (e) {
       error = e;

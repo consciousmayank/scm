@@ -23,7 +23,7 @@ class AppTextStyles {
 
   TextStyle get getColumnWithTitleTextStyle =>
       Theme.of(context).textTheme.headline6!.copyWith(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.normal,
           );
 

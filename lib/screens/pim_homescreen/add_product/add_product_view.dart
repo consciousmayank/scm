@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/add_images_widget/add_images_view.dart';
+import 'package:flutter/src/widgets/image.dart' as image_widget;
+import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
@@ -23,6 +26,7 @@ class AddProductView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddProductViewModel>.reactive(
+      onModelReady: (model) => model.init(arguments: arguments),
       builder: (context, model, child) => Scaffold(
         body: model.isBusy
             ? const LoadingWidget()
@@ -193,7 +197,9 @@ class AddProductView extends StatelessWidget {
                         Expanded(
                           child: AppTextField.withCounter(
                             maxCounterValue: 15,
-                            enteredCount: model.productToAdd.tags!.length,
+                            enteredCount: model.productToAdd.tags == null
+                                ? 0
+                                : model.productToAdd.tags!.length,
                             hintText: labelTags,
                             controller: model.tagsController,
                             focusNode: model.tagsFocusNode,
@@ -211,8 +217,7 @@ class AddProductView extends StatelessWidget {
                         wSizedBox(width: 10),
                       ],
                     ),
-                    model.preferences.getSelectedUserRole() ==
-                            AuthenticatedUserRoles.ROLE_SUPVR.getStatusString
+                    model.isDeoSuperVisor() || model.isDeoGd()
                         ? SizedBox(
                             height: 420,
                             child: Row(
@@ -221,16 +226,13 @@ class AddProductView extends StatelessWidget {
                               children: [
                                 wSizedBox(width: 10),
                                 Expanded(
-                                  flex:
-                                      model.preferences.getSelectedUserRole() ==
-                                              AuthenticatedUserRoles
-                                                  .ROLE_SUPVR.getStatusString
-                                          ? 3
-                                          : 1,
+                                  flex: 3,
                                   child: AppTextField.withCounter(
                                     maxCounterValue: 120,
-                                    enteredCount:
-                                        model.productToAdd.summary!.length,
+                                    enteredCount: model.productToAdd.summary ==
+                                            null
+                                        ? 0
+                                        : model.productToAdd.summary!.length,
                                     helperText: labelSummaryHelperText,
                                     hintText: labelSummary,
                                     controller: model.summaryController,
@@ -255,11 +257,11 @@ class AddProductView extends StatelessWidget {
                                             Stack(
                                               alignment: Alignment.topRight,
                                               children: [
-                                                Image.memory(
+                                                image_widget.Image.memory(
                                                   model.selectedFiles
                                                       .elementAt(0),
                                                 ),
-                                                InkWell(
+                                                AppInkwell(
                                                   onTap: () {
                                                     model.selectedFiles
                                                         .removeAt(0);
@@ -304,12 +306,7 @@ class AddProductView extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                  flex:
-                                      model.preferences.getSelectedUserRole() ==
-                                              AuthenticatedUserRoles
-                                                  .ROLE_SUPVR.getStatusString
-                                          ? 1
-                                          : 0,
+                                  flex: 1,
                                 ),
                                 wSizedBox(width: 10),
                               ],
@@ -323,7 +320,9 @@ class AddProductView extends StatelessWidget {
                                 child: AppTextField.withCounter(
                                   maxCounterValue: 120,
                                   enteredCount:
-                                      model.productToAdd.summary!.length,
+                                      model.productToAdd.summary == null
+                                          ? 0
+                                          : model.productToAdd.summary!.length,
                                   helperText: labelSummaryHelperText,
                                   hintText: labelSummary,
                                   controller: model.summaryController,
@@ -349,69 +348,88 @@ class AddProductView extends StatelessWidget {
                         child: TextButton(
                           clipBehavior: Clip.antiAlias,
                           onPressed: () {
-                            if (model.productToAdd.brand!.isEmpty) {
+                            if (model.productToAdd.brand == null ||
+                                model.productToAdd.brand!.isEmpty) {
                               //check if brand is empty
                               model.showErrorSnackBar(
                                   message: productBrandRequiredErrorMessage,
                                   onSnackBarOkButton: () {
                                     model.showBrandsListDialogBox();
                                   });
-                            } else if (model.productToAdd.type!.isEmpty) {
+                            } else if (model.productToAdd.type == null ||
+                                model.productToAdd.type!.isEmpty) {
                               //check if type is empty
                               model.showErrorSnackBar(
                                   message: productTypeRequiredErrorMessage,
                                   onSnackBarOkButton:
                                       model.typeFocusNode.requestFocus);
-                            } else if (model.productToAdd.subType!.isEmpty) {
+                            } else if (model.productToAdd.subType == null ||
+                                model.productToAdd.subType!.isEmpty) {
                               //check if sub-type is empty
                               model.showErrorSnackBar(
                                   message: productSubTypeRequiredErrorMessage,
                                   onSnackBarOkButton:
                                       model.subTypeFocusNode.requestFocus);
-                            } else if (model
-                                .productToAdd.measurementUnit!.isEmpty) {
+                            } else if (model.productToAdd.measurementUnit ==
+                                    null ||
+                                model.productToAdd.measurementUnit!.isEmpty) {
                               //check if measurementUnit is empty
                               model.showErrorSnackBar(
                                   message:
                                       productMeasurementUnitRequiredErrorMessage,
                                   onSnackBarOkButton:
                                       model.measurementFocusNode.requestFocus);
-                            } else if (model.productToAdd.title!.isEmpty) {
+                            } else if (model.productToAdd.title == null ||
+                                model.productToAdd.title!.isEmpty) {
                               //check if title is empty
                               model.showErrorSnackBar(
                                   message: productTitleRequiredErrorMessage,
                                   onSnackBarOkButton: model
                                       .measurementUnitFocusNode.requestFocus);
-                            } else if (model.productToAdd.tags!.isEmpty) {
+                            } else if (model.productToAdd.tags == null ||
+                                model.productToAdd.tags!.isEmpty) {
                               //check if tags is empty
                               model.showErrorSnackBar(
                                   message: productTagsRequiredErrorMessage,
                                   onSnackBarOkButton:
                                       model.tagsFocusNode.requestFocus);
-                            } else if (model.productToAdd.summary!.isEmpty) {
+                            } else if (model.productToAdd.summary == null ||
+                                model.productToAdd.summary!.isEmpty) {
                               //check if summary is empty
                               model.showErrorSnackBar(
                                   message: productSummaryRequiredErrorMessage,
                                   onSnackBarOkButton:
                                       model.summaryFocusNode.requestFocus);
-                            } else if (model.productToAdd.tags!.length < 15) {
+                            } else if (model.productToAdd.tags == null ||
+                                model.productToAdd.tags!.length < 15) {
                               //check if tag length is less then 15 is empty
                               model.showErrorSnackBar(
                                   message: productTagsLengthErrorMessage,
                                   onSnackBarOkButton:
                                       model.tagsFocusNode.requestFocus);
-                            } else if (model.productToAdd.measurement! == 0) {
+                            } else if (model.productToAdd.measurement == null ||
+                                model.productToAdd.measurement! == 0) {
                               //check if measurement value is 0
                               model.showErrorSnackBar(
                                 message: productMeasurementRequiredErrorMessage,
                                 onSnackBarOkButton:
                                     model.brandFocusNode.requestFocus,
                               );
+                            } else if (model.isDeoGd() &&
+                                model.selectedFiles.isEmpty) {
+                              model.showErrorSnackBar(
+                                message: productImageRequiredErrorMessage,
+                                onSnackBarOkButton: () {
+                                  model.pickImages();
+                                },
+                              );
                             } else {
                               model.addProduct();
                             }
                           },
-                          child: const Text('Add Product'),
+                          child: Text(arguments.productToEdit == null
+                              ? buttonLabelAddProduct
+                              : buttonLabelUpdateProduct),
                           style: AppTextButtonsStyles().textButtonStyle,
                         ),
                       ),
@@ -425,4 +443,12 @@ class AddProductView extends StatelessWidget {
   }
 }
 
-class AddProductViewArguments {}
+class AddProductViewArguments {
+  final Product? productToEdit;
+  final Function()? onProductUpdated;
+
+  AddProductViewArguments({
+    this.productToEdit,
+    this.onProductUpdated,
+  });
+}

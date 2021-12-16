@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class ColumnWithTitle extends StatelessWidget {
   const ColumnWithTitle({
@@ -9,11 +10,13 @@ class ColumnWithTitle extends StatelessWidget {
     required this.title,
     required this.child,
     this.titleWidthFull = true,
+    this.dialogClose,
   }) : super(key: key);
 
   final Widget child;
   final String title;
   final bool titleWidthFull;
+  final Function()? dialogClose;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +40,24 @@ class ColumnWithTitle extends StatelessWidget {
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,
             ),
-            child: Text(
-              title,
-              style: AppTextStyles(
-                context: context,
-              ).getColumnWithTitleTextStyle,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SelectableText(
+                  title,
+                  style: AppTextStyles(
+                    context: context,
+                  ).getColumnWithTitleTextStyle,
+                ),
+                if (dialogClose != null)
+                  AppInkwell(
+                    child: Icon(
+                      Icons.close,
+                      color: AppColors().white,
+                    ),
+                    onTap: dialogClose,
+                  )
+              ],
             ),
           ),
           Flexible(

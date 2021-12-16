@@ -38,6 +38,7 @@ const String brandTitleRequiredErrorMessage = 'Brand title is required';
 const String productSubTypeRequiredErrorMessage =
     'Product sub-type is required';
 const String productPriceRequiredErrorMessage = 'Product price is required';
+const String productImageRequiredErrorMessage = 'Product image is required';
 const String productMeasurementRequiredErrorMessage =
     'Product measurement is required';
 const String productMeasurementUnitRequiredErrorMessage =
@@ -60,3 +61,6 @@ const String errorUploadedImageSize = 'Image size should be less than 50kb';
 const String brandDialogTitle = 'Choose a Brand';
 const String brandDialogSearchTitle = 'Search for a Brand';
 const String labelAddImage = 'Add Image';
+const String buttonLabelAddProduct = 'Add Product';
+const String buttonLabelUpdateProduct = 'Update Product';
+const String base64ImagePrefix = 'data:image/jpeg;base64, ';
