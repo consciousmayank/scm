@@ -6,7 +6,7 @@ import 'package:scm/enums/user_roles.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class GeneralisedBaseViewModel extends BaseViewModel {
+class GeneralisedIndexTrackingViewModel extends IndexTrackingViewModel {
   // ApiService apiService = locator<ApiService>();
   DialogService dialogService = di<DialogService>();
 

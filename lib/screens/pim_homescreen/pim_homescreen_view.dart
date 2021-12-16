@@ -60,75 +60,66 @@ class PimHomeScreenView extends StatelessWidget {
           body: Row(
             children: [
               NavigationRail(
-                extended: model.navRailIsExtended,
-                trailing: Column(
-                  children: [
-                    hSizedBox(
-                      height: 20,
-                    ),
-                    IconButton(
-                      icon: model.navRailIsExtended
-                          ? Icon(
-                              Icons.keyboard_arrow_left_sharp,
-                              color: AppColors().white,
-                              size: 30,
-                            )
-                          : Icon(
-                              Icons.keyboard_arrow_right_sharp,
-                              color: AppColors().white,
-                              size: 30,
-                            ),
-                      onPressed: () {
-                        model.navRailIsExtended = !model.navRailIsExtended;
-                        model.notifyListeners();
-                      },
-                    ),
-                    hSizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
-                groupAlignment: model.navRailIsExtended ? -1.0 : 1.0,
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                selectedLabelTextStyle:
-                    Theme.of(context).textTheme.button!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          color: Colors.yellow,
-                          decorationColor: Colors.yellow,
-                          decoration: TextDecoration.overline,
-                          decorationStyle: TextDecorationStyle.wavy,
-                        ),
-                unselectedLabelTextStyle:
-                    Theme.of(context).textTheme.overline!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: AppColors().primaryColor.shade50,
-                        ),
-                selectedIndex: model.currentIndex,
-                onDestinationSelected: (int index) {
-                  model.setIndex(index);
-                },
-                labelType: model.navRailIsExtended
-                    ? NavigationRailLabelType.none
-                    : NavigationRailLabelType.all,
-                destinations: [
-                  buildRotatedTextRailDestination(
-                    text: 'Add Products',
-                    isTurned: model.navRailIsExtended,
+                  extended: model.navRailIsExtended,
+                  trailing: Column(
+                    children: [
+                      hSizedBox(
+                        height: 20,
+                      ),
+                      IconButton(
+                        icon: model.navRailIsExtended
+                            ? Icon(
+                                Icons.keyboard_arrow_left_sharp,
+                                color: AppColors().white,
+                                size: 30,
+                              )
+                            : Icon(
+                                Icons.keyboard_arrow_right_sharp,
+                                color: AppColors().white,
+                                size: 30,
+                              ),
+                        onPressed: () {
+                          model.navRailIsExtended = !model.navRailIsExtended;
+                          model.notifyListeners();
+                        },
+                      ),
+                      hSizedBox(
+                        height: 20,
+                      ),
+                    ],
                   ),
-                  buildRotatedTextRailDestination(
-                    text: 'View Products',
-                    isTurned: model.navRailIsExtended,
-                  ),
-                  if (di<AppPreferences>().getSelectedUserRole() ==
-                      AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
-                    buildRotatedTextRailDestination(
-                      text: labelAddBrand,
-                      isTurned: model.navRailIsExtended,
-                    )
-                ],
-              ),
+                  groupAlignment: model.navRailIsExtended ? -1.0 : 1.0,
+                  backgroundColor:
+                      Theme.of(context).appBarTheme.backgroundColor,
+                  selectedLabelTextStyle:
+                      Theme.of(context).textTheme.button!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Colors.yellow,
+                            decorationColor: Colors.yellow,
+                            decoration: TextDecoration.overline,
+                            decorationStyle: TextDecorationStyle.wavy,
+                          ),
+                  unselectedLabelTextStyle:
+                      Theme.of(context).textTheme.overline!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: AppColors().primaryColor.shade50,
+                          ),
+                  selectedIndex: model.currentIndex,
+                  onDestinationSelected: (int index) {
+                    model.setIndex(index);
+                  },
+                  labelType: model.navRailIsExtended
+                      ? NavigationRailLabelType.none
+                      : NavigationRailLabelType.all,
+                  destinations: model.isDeo()
+                      ? getDeoDestinations(isRotated: model.navRailIsExtended)
+                      : model.isDeoGd()
+                          ? getGdDestinations(
+                              isRotated: model.navRailIsExtended)
+                          : getSuperVisorDestinations(
+                              isRotated: model.navRailIsExtended)),
               const VerticalDivider(thickness: 1, width: 1),
               Expanded(
                 child: Center(
@@ -144,6 +135,49 @@ class PimHomeScreenView extends StatelessWidget {
       ),
       viewModelBuilder: () => PimHomeScreenViewModel(),
     );
+  }
+
+  getDeoDestinations({required bool isRotated}) {
+    return [
+      buildRotatedTextRailDestination(
+        text: labelAddProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+    ];
+  }
+
+  getGdDestinations({required bool isRotated}) {
+    return [
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddBrandImages,
+        isTurned: isRotated,
+      ),
+    ];
+  }
+
+  getSuperVisorDestinations({required bool isRotated}) {
+    return [
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddBrand,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddProducts,
+        isTurned: isRotated,
+      ),
+    ];
   }
 }
 

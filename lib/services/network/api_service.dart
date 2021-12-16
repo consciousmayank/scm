@@ -801,6 +801,27 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
+  Future<ParentApiResponse> getAllPublishedProductsList({
+    required int pageNumber,
+    required int pageSize,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
+        'page': pageNumber,
+        'size': pageSize,
+        'status': true,
+        'sort': 'DESC'
+      });
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
   Future<ParentApiResponse> addBrand({
     required Brand brand,
   }) async {

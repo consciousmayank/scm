@@ -1,9 +1,11 @@
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/screens/pim_homescreen/product_list/product_list_view.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 
 class ProductsListViewModel extends GeneralisedBaseViewModel {
+  late final ProductsListViewArguments arguments;
   int pageNumber = 0, pageSize = 30;
   ProductListResponse productListResponse = ProductListResponse().empty();
   bool shouldCallGetProductsApi = true;
@@ -17,11 +19,19 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
       if (showLoader) {
         setBusy(true);
       }
-      ProductListResponse tempResponse =
-          await _productApis.getAllAddedProductsList(
-        pageNumber: pageNumber,
-        pageSize: pageSize,
-      );
+      ProductListResponse tempResponse;
+
+      if (arguments.productListType == ProductListType.TODO) {
+        tempResponse = await _productApis.getAllAddedProductsList(
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+        );
+      } else {
+        tempResponse = await _productApis.getAllPublishedProductsList(
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+        );
+      }
 
       if (pageNumber == 0) {
         productListResponse = tempResponse;
@@ -43,4 +53,11 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
     setBusy(false);
     notifyListeners();
   }
+
+  init({required ProductsListViewArguments arguments}) {
+    this.arguments = arguments;
+    getProductList(showLoader: true);
+  }
+
+  void openProductDetailsDialog({required Product product}) {}
 }

@@ -26,4 +26,12 @@ class AppColors {
   get appTextButtonForegroundColor => primaryColor.shade50;
 
   get appTextButtonBackgroundColor => primaryColor.shade200;
+
+  get tabIndicatorColor => primaryColor.shade900;
+
+  get tabDividerColor => primaryColor.shade900;
+
+  get tabSelectedLabelColor => Colors.white;
+
+  get tabUnSelectedLabelColor => Colors.white60;
 }

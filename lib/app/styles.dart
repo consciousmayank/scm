@@ -56,6 +56,14 @@ class AppTextStyles {
           );
 
   TextStyle get getCounterTextStyle => Theme.of(context).textTheme.button!;
+
+  TextStyle get tabSelectedLabelStyle =>
+      Theme.of(context).textTheme.bodyText1!.copyWith(
+            color: Colors.black,
+          );
+
+  TextStyle get tabUnselectedLabelStyle =>
+      Theme.of(context).textTheme.bodyText2!;
 }
 
 class AppTextButtonsStyles {

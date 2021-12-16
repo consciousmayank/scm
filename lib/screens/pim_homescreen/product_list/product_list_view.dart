@@ -7,6 +7,7 @@ import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/decorative_container.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -25,7 +26,7 @@ class ProductsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProductsListViewModel>.reactive(
-      onModelReady: (model) => model.getProductList(showLoader: true),
+      onModelReady: (model) => model.init(arguments: arguments),
       builder: (context, model, child) => Scaffold(
         body: model.isBusy
             ? const LoadingWidget()
@@ -42,10 +43,20 @@ class ProductsListView extends StatelessWidget {
                       onEndOfPage: () =>
                           model.getProductList(showLoader: false),
                       child: ListView.separated(
-                        itemBuilder: (context, index) => ProductListItem(
-                          index: index,
-                          product: model.productListResponse.products!
-                              .elementAt(index),
+                        itemBuilder: (context, index) => AppInkwell(
+                          onTap: model.productListResponse.products == null
+                              ? null
+                              : () {
+                                  model.openProductDetailsDialog(
+                                    product: model.productListResponse.products!
+                                        .elementAt(index),
+                                  );
+                                },
+                          child: ProductListItem(
+                            index: index,
+                            product: model.productListResponse.products!
+                                .elementAt(index),
+                          ),
                         ),
                         separatorBuilder: (context, index) =>
                             const DottedDivider(),
@@ -62,7 +73,13 @@ class ProductsListView extends StatelessWidget {
   }
 }
 
-class ProductsListViewArguments {}
+class ProductsListViewArguments {
+  final ProductListType productListType;
+
+  ProductsListViewArguments({required this.productListType});
+}
+
+enum ProductListType { TODO, PUBLISHED }
 
 class ProductListHeader extends StatelessWidget {
   const ProductListHeader({Key? key}) : super(key: key);
@@ -78,19 +95,17 @@ class ProductListHeader extends StatelessWidget {
     return DecorativeContainer(
       child: Row(
         children: [
-          if (di<AppPreferences>().getSelectedUserRole() ==
-              AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
-            Expanded(
-              flex: 1,
-              child: Text(
-                'Id',
-                style: textStyle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
           Expanded(
             flex: 1,
+            child: Text(
+              'Id',
+              style: textStyle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Expanded(
+            flex: 3,
             child: Text(
               'Brand',
               style: textStyle,
@@ -99,7 +114,7 @@ class ProductListHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Text(
               'Type',
               style: textStyle,
@@ -108,7 +123,7 @@ class ProductListHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Text(
               'Subtype',
               style: textStyle,
@@ -117,7 +132,7 @@ class ProductListHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 6,
             child: Text(
               'Title',
               style: textStyle,
@@ -146,37 +161,32 @@ class ProductListItem extends StatelessWidget {
     return DecorativeContainer.transparent(
       child: Row(
         children: [
-          // Text(
-          //   index.toString(),
-          // ),
-          if (di<AppPreferences>().getSelectedUserRole() ==
-              AuthenticatedUserRoles.ROLE_SUPVR.getStatusString)
-            Expanded(
-              flex: 1,
-              child: NullableTextWidget(
-                text: product.id != null ? product.id.toString() : '0',
-              ),
-            ),
           Expanded(
             flex: 1,
+            child: NullableTextWidget(
+              text: product.id != null ? product.id.toString() : '0',
+            ),
+          ),
+          Expanded(
+            flex: 3,
             child: NullableTextWidget(
               text: product.brand,
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: NullableTextWidget(
               text: product.type,
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: NullableTextWidget(
               text: product.subType,
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 6,
             child: NullableTextWidget(
               text: product.title,
             ),

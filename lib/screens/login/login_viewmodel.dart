@@ -18,14 +18,8 @@ class LoginViewModel extends GeneralisedBaseViewModel {
     if (username == null || username?.isEmpty == true) {
       showErrorSnackBar(message: errorUserNameRequired);
       return;
-    } else if (username!.length < 4) {
-      showErrorSnackBar(message: errorUserNameLength);
-      return;
     } else if (password == null || password?.isEmpty == true) {
       showErrorSnackBar(message: errorPasswordRequired);
-    } else if (password!.length < 4) {
-      showErrorSnackBar(message: errorPasswordLength);
-      return;
     } else {
       setBusy(true);
       UserAuthenticateResponse authenticateResponse = await _loginApi.login(

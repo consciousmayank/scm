@@ -12,6 +12,11 @@ abstract class ProductApisAbstractClass {
     required int pageNumber,
     required int pageSize,
   });
+
+  Future<ProductListResponse> getAllPublishedProductsList({
+    required int pageNumber,
+    required int pageSize,
+  });
 }
 
 class ProductApis extends BaseApi implements ProductApisAbstractClass {
@@ -39,6 +44,24 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
 
     ParentApiResponse apiResponse = await apiService.getAllAddedProductsList(
         pageNumber: pageNumber, pageSize: pageSize);
+
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      response = ProductListResponse.fromMap(apiResponse.response!.data);
+    }
+
+    return response;
+  }
+
+  @override
+  Future<ProductListResponse> getAllPublishedProductsList({
+    required int pageNumber,
+    required int pageSize,
+  }) async {
+    ProductListResponse response = ProductListResponse().empty();
+
+    ParentApiResponse apiResponse =
+        await apiService.getAllPublishedProductsList(
+            pageNumber: pageNumber, pageSize: pageSize);
 
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
       response = ProductListResponse.fromMap(apiResponse.response!.data);

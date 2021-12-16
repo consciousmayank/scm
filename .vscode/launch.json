@@ -17,12 +17,12 @@
         },
 
         {
-            "name": "scms_118_loc_server",
+            "name": "scms_193_loc_server",
             "request": "launch",
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
-                "BASE_URL=http://192.168.0.118:8080/scm",
+                "BASE_URL=http://192.168.0.193:8080/scm",
                 "--dart-define",
                 "SHOW_LOGS=true"
             ]
