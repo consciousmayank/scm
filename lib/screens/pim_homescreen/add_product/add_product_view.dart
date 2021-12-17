@@ -33,8 +33,10 @@ class AddProductView extends StatelessWidget {
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    const PageBarWidget(
-                      title: addProductPageTitle,
+                    PageBarWidget(
+                      title: arguments.productToEdit == null
+                          ? addProductPageTitle
+                          : updateProductPageTitle,
                       subTitle: addProductPageSubTitle,
                     ),
                     Row(

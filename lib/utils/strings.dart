@@ -10,6 +10,7 @@ final labelApiUrl = ({required String apiUrl}) => 'Targetting :: $apiUrl';
 const String labelUserName = 'Username';
 const String labelPassword = 'Password';
 const String addProductPageTitle = 'Add Product';
+const String updateProductPageTitle = 'Update Product';
 const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
 const String todoProductsListPageTitle = 'Todo Product List';

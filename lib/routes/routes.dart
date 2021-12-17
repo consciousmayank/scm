@@ -60,8 +60,8 @@ class BaseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
-      mobile: (BuildContext context) => const NotSupportedFormFactorWidget(),
-      tablet: (BuildContext context) => const NotSupportedFormFactorWidget(),
+      mobile: (BuildContext context) => child,
+      tablet: (BuildContext context) => child,
       desktop: (BuildContext context) => child,
     );
   }
