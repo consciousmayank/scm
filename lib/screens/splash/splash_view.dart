@@ -45,7 +45,9 @@ class _SplashScreenState extends State<SplashScreen>
             userSelectedRole ==
                 AuthenticatedUserRoles.ROLE_DEO.getStatusString ||
         userSelectedRole == AuthenticatedUserRoles.ROLE_SUPVR.getStatusString ||
-        userSelectedRole == AuthenticatedUserRoles.ROLE_GD.getStatusString) {
+        userSelectedRole == AuthenticatedUserRoles.ROLE_GD.getStatusString ||
+        userSelectedRole ==
+            AuthenticatedUserRoles.ROLE_MANAGER.getStatusString) {
       di<NavigationService>().replaceWith(pimHomeScreenRoute);
     } else {
       di<NavigationService>().replaceWith(logInPageRoute);
@@ -90,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
               ),
               DefaultTextStyle(
-                style: GoogleFonts.arimaMadurai(
+                style: GoogleFonts.openSans(
                   fontSize: getValueForScreenType(
                     context: context,
                     mobile: 20,

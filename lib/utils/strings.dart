@@ -4,6 +4,8 @@ const String appName = 'Supply Chain Management';
 //UI Labels
 const String labelLogin = 'Login';
 final labelLogin2 = ({required String url}) => 'Login : $url';
+final labelBarchart =
+    ({required String productStatus}) => '$productStatus Products';
 const String labelLoginButton = 'Login';
 const String labelCredentials = 'Please enter your credentials';
 final labelApiUrl = ({required String apiUrl}) => 'Targetting :: $apiUrl';
@@ -11,6 +13,8 @@ const String labelUserName = 'Username';
 const String labelPassword = 'Password';
 const String addProductPageTitle = 'Add Product';
 const String updateProductPageTitle = 'Update Product';
+const String supervisorHomePageTitle = 'Dashboard';
+const String dailyEntriesTitle = 'Daily Work Summary';
 const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
 const String todoProductsListPageTitle = 'Todo Product List';
@@ -20,6 +24,7 @@ const String brandTitleHintText = 'Add Brand Title';
 const String labelBrands = 'Brand';
 const String labelAddBrand = 'Add Brand';
 const String labelViewProducts = 'View Products';
+const String labelDashboard = 'Home';
 const String labelAddProducts = 'Add Products';
 const String labelAddBrandImages = 'Add Brand Images';
 const String labelType = 'Type';
@@ -28,9 +33,9 @@ const String labelPrice = 'Price';
 const String labelMeasurement = 'Measurement';
 const String labelMeasurementUnit = 'Measurement Unit';
 const String labelTitle = 'Title';
-const String labelTags = 'Tags';
+const String labelTags = 'Tags (Max length 120)';
 const String labelDataUrl = 'Data URL';
-const String labelSummary = 'Summary';
+const String labelSummary = 'Summary (Max length 400, including Link)';
 const String labelGetProductById = 'Get Product by Id';
 const String labelLogout = 'Logout';
 const String labelSummaryHelperText =
@@ -62,6 +67,11 @@ const String errorPasswordLength = "password must be at least 4 characters";
 const String errorUploadedImageSize = 'Image size should be less than 50kb';
 const String errorNotAuthorisedToEditProducts =
     'You are not authorized to edit products';
+const String errorCurrentPasswordRequired = "Current Password is required";
+const String errorNewPasswordRequired = "New Password is required";
+const String errorPasswordsDontMatch = "Passwords don't match";
+const String errorConfirmPasswordRequired =
+    "You have to confirm the new password";
 
 const String brandDialogTitle = 'Choose a Brand';
 const String brandDialogSearchTitle = 'Search for a Brand';
@@ -72,3 +82,14 @@ const String labelEnterValidProductId =
 const String buttonLabelAddProduct = 'Add Product';
 const String buttonLabelUpdateProduct = 'Update Product';
 const String base64ImagePrefix = 'data:image/jpeg;base64,';
+const String popUpMenuLabelLogout = 'Logout';
+const String popUpMenuLabelChangePassword = 'Change Password';
+const String popUpMenuLabelToolTip = 'Show Profile Options';
+const String labelChangePassword = 'Change Password';
+const String labelChangePasswordOldPassword = 'Current Password';
+const String labelChangePasswordNewPassword = 'New Password';
+const String labelChangePasswordConfirmPassword = 'Confirm Password';
+const List<String> profileOptions = [
+  'Change Password',
+  'Logout',
+];

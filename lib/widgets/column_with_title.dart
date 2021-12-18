@@ -13,10 +13,10 @@ class ColumnWithTitle extends StatelessWidget {
     this.dialogClose,
   }) : super(key: key);
 
+  final Function()? dialogClose;
   final Widget child;
   final String title;
   final bool titleWidthFull;
-  final Function()? dialogClose;
 
   @override
   Widget build(BuildContext context) {

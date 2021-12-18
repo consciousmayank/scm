@@ -28,7 +28,7 @@ class LoginView extends StatelessWidget {
         child: Scaffold(
             body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: getValueForScreenType(
+            horizontal: getValueForScreenType<double>(
               context: context,
               mobile: MediaQuery.of(context).size.width * 0.15,
               tablet: MediaQuery.of(context).size.width * 0.25,

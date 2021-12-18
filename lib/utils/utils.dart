@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
@@ -92,4 +95,36 @@ NavigationRailDestination buildRotatedTextRailDestination({
       ),
     ),
   );
+}
+
+void pickImagesMethod({
+  required Function onImageUploadError,
+  required Function({required List<Uint8List> imageList}) onImageUploadSuccess,
+}) async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: [
+      'jpg',
+      'png',
+    ],
+  );
+
+  if (result != null) {
+    if (kIsWeb) {
+      Uint8List fileBytes = result.files.first.bytes!;
+      if ((fileBytes.lengthInBytes / 1024) > 50) {
+        onImageUploadError.call();
+      } else {
+        onImageUploadSuccess(imageList: [fileBytes]).call();
+      }
+    } else {
+      File file = File(result.files.single.path!);
+      Uint8List bytes = await file.readAsBytes();
+      if ((bytes.lengthInBytes / 1024) > 50) {
+        onImageUploadError.call();
+      } else {
+        onImageUploadSuccess(imageList: [bytes]).call();
+      }
+    }
+  }
 }

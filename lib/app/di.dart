@@ -3,6 +3,7 @@ import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 import 'package:scm/services/app_api_service_classes/login_apis.dart';
+import 'package:scm/services/app_api_service_classes/pim_supervisor_dashboard_statistics_api.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
@@ -28,6 +29,7 @@ void declareDependencies() {
   di.registerLazySingleton(() => LoginApi());
   di.registerLazySingleton(() => ProductApis());
   di.registerLazySingleton(() => BrandsApi());
+  di.registerLazySingleton(() => PimSupervisorDashboardStatisticsApi());
   // locator.registerLazySingleton(() => DioConfig(baseUrl: config.baseUrl));
   // locator.registerLazySingleton(() => NotificationsConfig());
 }

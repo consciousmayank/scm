@@ -7,6 +7,7 @@ abstract class ProductApisAbstractClass {
   Future<ApiResponse> addProduct({
     required Product product,
   });
+
   Future<ApiResponse> updateProduct({
     required Product product,
   });
@@ -35,21 +36,6 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
 
     ParentApiResponse apiResponse =
         await apiService.addProduct(productToBeAdded: product);
-
-    if (filterResponse(apiResponse) != null) {
-      response = ApiResponse.fromMap(apiResponse.response!.data);
-    }
-    return response;
-  }
-
-  @override
-  Future<ApiResponse> updateProduct({
-    required Product product,
-  }) async {
-    ApiResponse response = ApiResponse();
-
-    ParentApiResponse apiResponse =
-        await apiService.updateProduct(productToBeAdded: product);
 
     if (filterResponse(apiResponse) != null) {
       response = ApiResponse.fromMap(apiResponse.response!.data);
@@ -105,5 +91,20 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
     }
 
     return product;
+  }
+
+  @override
+  Future<ApiResponse> updateProduct({
+    required Product product,
+  }) async {
+    ApiResponse response = ApiResponse();
+
+    ParentApiResponse apiResponse =
+        await apiService.updateProduct(productToBeAdded: product);
+
+    if (filterResponse(apiResponse) != null) {
+      response = ApiResponse.fromMap(apiResponse.response!.data);
+    }
+    return response;
   }
 }

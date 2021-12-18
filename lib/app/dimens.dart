@@ -5,17 +5,23 @@ import 'package:scm/app/appcolors.dart';
 class Dimens {
   double get buttonHeight => 50;
 
-  double get getDefaultRadius => 5;
+  double get getDefaultRadius => 8;
+
+  int get maxSummaryLength => 400;
+
+  int get minSummaryLength => 120;
+
+  int get maxTagsLength => 120;
 
   double get getColumnWithTitleHeaderPadding => 16;
 
-  get appTextButtonDefaultFontSize => 18.00;
+  double get appTextButtonDefaultFontSize => 18.00;
 
-  get appTextButtonPadding => const EdgeInsets.all(16.00);
+  EdgeInsets get appTextButtonPadding => const EdgeInsets.all(16.00);
 
-  get getDefaultElevation => 8;
+  double get getDefaultElevation => 8;
 
-  get pageTitleHeadingStyle => TextStyle(
+  TextStyle get pageTitleHeadingStyle => TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,
         color: AppColors().black,
@@ -29,7 +35,8 @@ class Dimens {
 
   double get appTextButtonBorderRadius => getDefaultRadius * 2;
 
-  get getDecoratedContainerDefaultColor => AppColors().primaryColor.shade200;
+  Color get getDecoratedContainerDefaultColor =>
+      AppColors().primaryColor.shade200;
 
   double get getDecoratedContainerDefaultPadding => 8;
 

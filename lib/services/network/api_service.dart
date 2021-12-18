@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -605,6 +606,30 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
+  Future<ParentApiResponse> updatePassword({
+    required String userName,
+    required String password,
+    required String newPassword,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().post(
+        UPDATE_PASSWORD,
+        data: {
+          "username": userName,
+          "password": password,
+          "newPassword": newPassword
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
   Future<ParentApiResponse> checkIfUserExists({
     required UserAuthenticateRequest authenticatUserRequest,
   }) async {
@@ -855,6 +880,60 @@ class ApiService {
                   'title': brand.title,
                   'image': brand.image,
                 });
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getPimSupervisorDashboardStatistics() async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response =
+          await dioClient.getDio().get(GET_DASHBOARD_FOR_SUPERVISOR_DASHBOARD);
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getProductsCreatedStatistics(
+      {String? selectedDate}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            GET_CREATED_PRODUCTS_BY_USER_TYPE,
+            queryParameters: selectedDate == null
+                ? null
+                : {
+                    'date': selectedDate,
+                  },
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getBarChartBasedOnProductStatuses(
+      {required ProductStatuses productStatuses}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        GET_BAR_CHART_BASED_ON_PRODUCT_STATUSES,
+        queryParameters: {
+          'status': productStatuses.getStatusString,
+        },
+      );
     } on DioError catch (e) {
       error = e;
     }

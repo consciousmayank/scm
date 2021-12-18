@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -13,6 +14,7 @@ import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'firebase_options.dart';
 
 import 'services/notification/local_notification_service.dart';
 
@@ -21,7 +23,9 @@ Future<void> backgroundHandler(RemoteMessage message) async {}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   declareDependencies();
   setupDialogUi();
   setupSnackbarUi();
@@ -110,10 +114,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-    ]);
-
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);

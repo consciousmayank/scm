@@ -38,6 +38,7 @@ class AppTextField extends StatelessWidget {
       this.errorText = '',
       this.showCounter = false,
       this.maxCounterValue = 0,
+      this.maxCharacters,
       this.enteredCount = 0});
 
   const AppTextField.withCounter(
@@ -70,6 +71,7 @@ class AppTextField extends StatelessWidget {
       this.onButtonPressed,
       this.errorText = '',
       this.showCounter = true,
+      required this.maxCharacters,
       required this.maxCounterValue,
       required this.enteredCount});
 
@@ -90,6 +92,7 @@ class AppTextField extends StatelessWidget {
   final InputDecoration? inputDecoration;
   final TextInputType keyboardType;
   final String? labelText;
+  final int? maxCharacters;
   final int maxCounterValue;
   final int maxLines;
   final bool? obscureText;
@@ -150,6 +153,7 @@ class AppTextField extends StatelessWidget {
             child: Stack(
               children: [
                 TextFormField(
+                  maxLength: maxCharacters,
                   obscureText: obscureText ?? false,
                   style: textStyle ??
                       AppTextStyles(context: context).appTextFieldTextStyle,
@@ -171,9 +175,12 @@ class AppTextField extends StatelessWidget {
                       .copyWith(
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         counterText: showCounter
-                            ? '$enteredCount/$maxCounterValue'
+                            ? enteredCount == maxCharacters
+                                ? 'Max Characters Limit Reached'
+                                : '$enteredCount/$maxCharacters'
                             : null,
-                        counterStyle: enteredCount < maxCounterValue
+                        counterStyle: enteredCount < maxCounterValue ||
+                                enteredCount == maxCharacters
                             ? AppTextStyles(context: context)
                                 .getCounterTextStyle
                                 .copyWith(color: Colors.red)

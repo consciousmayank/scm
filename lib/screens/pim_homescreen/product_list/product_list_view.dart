@@ -218,9 +218,9 @@ class ProductsListView extends StatelessWidget {
 }
 
 class ProductsListViewArguments {
-  final ProductListType productListType;
-
   ProductsListViewArguments({required this.productListType});
+
+  final ProductListType productListType;
 }
 
 enum ProductListType { TODO, PUBLISHED }

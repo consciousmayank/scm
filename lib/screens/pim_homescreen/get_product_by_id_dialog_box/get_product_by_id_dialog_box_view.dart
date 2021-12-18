@@ -11,14 +11,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class GetProductByIdDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const GetProductByIdDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _GetProductByIdDialogBoxViewState createState() =>
@@ -114,9 +114,9 @@ class _GetProductByIdDialogBoxViewState
 }
 
 class GetProductByIdDialogBoxViewArguments {
-  final String title;
-
   GetProductByIdDialogBoxViewArguments({
     required this.title,
   });
+
+  final String title;
 }

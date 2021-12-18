@@ -10,28 +10,24 @@ abstract class BrandsApiAbstractClass {
     required String brandToSearch,
   });
 
-  Future<ApiResponse> addBrand({
+  Future<Brand> addBrand({
     required Brand brand,
   });
 }
 
 class BrandsApi extends BaseApi implements BrandsApiAbstractClass {
   @override
-  Future<ApiResponse> addBrand({
+  Future<Brand> addBrand({
     required Brand brand,
   }) async {
-    ApiResponse returningResponse = ApiResponse().empty();
+    Brand returningResponse = Brand.empty();
 
     ParentApiResponse parentApiResponse = await apiService.addBrand(
       brand: brand,
     );
 
     if (filterResponse(parentApiResponse) != null) {
-      returningResponse = ApiResponse(
-        statusCode: parentApiResponse.response!.statusCode ?? 400,
-        message: '',
-        status: '',
-      );
+      returningResponse = Brand.fromMap(parentApiResponse.response!.data);
     }
 
     return returningResponse;

@@ -8,14 +8,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class UpdateProductDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const UpdateProductDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _UpdateProductDialogBoxViewState createState() =>
@@ -58,11 +58,11 @@ class _UpdateProductDialogBoxViewState
 }
 
 class UpdateProductDialogBoxViewArguments {
-  final String title;
-  final Product product;
-
   UpdateProductDialogBoxViewArguments({
     required this.title,
     required this.product,
   });
+
+  final Product product;
+  final String title;
 }

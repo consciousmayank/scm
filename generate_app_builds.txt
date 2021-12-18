@@ -14,3 +14,9 @@ firebase deploy
 #cd /Volumes/Public/Bhupendra/BML-ADMIN/Web\ App/
 #rm -rf * 
 #cp -r ~/projects/git/bookMyLoading/bml_admin/build/web /Volumes/Public/Bhupendra/BML-ADMIN/Web\ App/
+
+
+#web       1:6210683209:web:e0001a88eadb1320389a98
+#android   1:6210683209:android:d4f0627511f33c5d389a98
+#ios       1:6210683209:ios:f321ee214c6a8cdd389a98
+#macos     1:6210683209:ios:f321ee214c6a8cdd389a98

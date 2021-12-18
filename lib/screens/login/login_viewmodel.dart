@@ -10,11 +10,10 @@ import 'package:scm/utils/strings.dart';
 
 class LoginViewModel extends GeneralisedBaseViewModel {
   bool isPasswordVisible = false;
-  TextEditingController userNameController = TextEditingController();
-  FocusNode userNameFocusNode = FocusNode();
-
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
+  TextEditingController userNameController = TextEditingController();
+  FocusNode userNameFocusNode = FocusNode();
 
   final LoginApi _loginApi = di<LoginApi>();
 
