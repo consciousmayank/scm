@@ -30,9 +30,10 @@ final String signUpImage = _imagePath + 'sign_up_image.png';
 final String otpScreenImage = _imagePath + 'otp_screen_image.png';
 final String orderStatsIcon = _imagePath + 'order_stats_icon.png';
 final String successAnimation = _animationPath + 'success.json';
+final String splashAnimation = _animationPath + 'splash_animation.json';
 final String profileIconBlue = _imagePath + 'profile_icon_blue.png';
 
-final String testLogo = _imagePath + 'test_logo.png';
+final String testLogo = _imagePath + 'scm_logo.png';
 
 final String groceryImage = _imagePath + 'grocery.jpg';
 

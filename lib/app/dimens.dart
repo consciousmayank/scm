@@ -40,7 +40,21 @@ class Dimens {
 
   double get getDecoratedContainerDefaultPadding => 8;
 
-  double get defaultBorder => 32;
+  double get defaultBorder => 16;
+
+  static const int defaultProductListPageSize = 25;
+  static const int defaultProductListPageSizeWhenInHome = 14;
+
+  double get popularBrandsHeight => 350;
+  double get popularCategoryHeight => 150;
+  double get popularProductsHeight => 800;
+
+  double get popularBrandsToppadding => 10;
+  double get popularBrandsLeftpadding => 10;
+  double get popularBrandsRightpadding => 10;
+
+  get productListItemWebHeight => 230;
+  get productListItemWebWidth => 319;
 
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(

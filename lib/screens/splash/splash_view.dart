@@ -11,6 +11,7 @@ import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -41,14 +42,12 @@ class _SplashScreenState extends State<SplashScreen>
 
   loadNextPage() {
     String userSelectedRole = preferences.getSelectedUserRole();
-    if (userSelectedRole.isNotEmpty &&
-            userSelectedRole ==
-                AuthenticatedUserRoles.ROLE_DEO.getStatusString ||
-        userSelectedRole == AuthenticatedUserRoles.ROLE_SUPVR.getStatusString ||
-        userSelectedRole == AuthenticatedUserRoles.ROLE_GD.getStatusString ||
-        userSelectedRole ==
-            AuthenticatedUserRoles.ROLE_MANAGER.getStatusString) {
+    if (loadProductEntryModule(userSelectedRole)) {
       di<NavigationService>().replaceWith(pimHomeScreenRoute);
+    } else if (loadSupplyModule(userSelectedRole)) {
+      di<NavigationService>().replaceWith(supplyLandingScreenRoute);
+    } else if (loadDemandModule(userSelectedRole)) {
+      di<NavigationService>().replaceWith(demandLandingScreenRoute);
     } else {
       di<NavigationService>().replaceWith(logInPageRoute);
     }
@@ -75,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ? MediaQuery.of(context).size.height / 2
                     : MediaQuery.of(context).size.width / 2,
                 child: Lottie.asset(
-                  successAnimation,
+                  splashAnimation,
                   controller: _controller,
                   onLoaded: (composition) {
                     _controller

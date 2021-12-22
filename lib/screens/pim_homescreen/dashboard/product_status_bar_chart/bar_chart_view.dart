@@ -96,36 +96,36 @@ class _BarChartBasedOnProductStatusesViewState
                                                 checkmarkColor: Colors.black,
                                               ),
                                               wSizedBox(width: 4),
-                                              //Processed
-                                              FilterChip(
-                                                label: Text(ProductStatuses
-                                                    .PROCESSED.getStatusString),
-                                                labelStyle:
-                                                    text_style.TextStyle(
-                                                  color:
-                                                      model.selectedProductStatus ==
-                                                              ProductStatuses
-                                                                  .PROCESSED
-                                                          ? Colors.black
-                                                          : Colors.white,
-                                                ),
-                                                selected: model
-                                                        .selectedProductStatus ==
-                                                    ProductStatuses.PROCESSED,
-                                                onSelected: (bool selected) {
-                                                  if (selected) {
-                                                    model.selectedProductStatus =
-                                                        ProductStatuses
-                                                            .PROCESSED;
-                                                    model.notifyListeners();
-                                                    model.getBarChartData();
-                                                  }
-                                                },
-                                                selectedColor: Theme.of(context)
-                                                    .primaryColorLight,
-                                                checkmarkColor: Colors.black,
-                                              ),
-                                              wSizedBox(width: 4),
+                                              // //Processed
+                                              // FilterChip(
+                                              //   label: Text(ProductStatuses
+                                              //       .PROCESSED.getStatusString),
+                                              //   labelStyle:
+                                              //       text_style.TextStyle(
+                                              //     color:
+                                              //         model.selectedProductStatus ==
+                                              //                 ProductStatuses
+                                              //                     .PROCESSED
+                                              //             ? Colors.black
+                                              //             : Colors.white,
+                                              //   ),
+                                              //   selected: model
+                                              //           .selectedProductStatus ==
+                                              //       ProductStatuses.PROCESSED,
+                                              //   onSelected: (bool selected) {
+                                              //     if (selected) {
+                                              //       model.selectedProductStatus =
+                                              //           ProductStatuses
+                                              //               .PROCESSED;
+                                              //       model.notifyListeners();
+                                              //       model.getBarChartData();
+                                              //     }
+                                              //   },
+                                              //   selectedColor: Theme.of(context)
+                                              //       .primaryColorLight,
+                                              //   checkmarkColor: Colors.black,
+                                              // ),
+                                              // wSizedBox(width: 4),
                                               //Published
                                               FilterChip(
                                                 label: Text(ProductStatuses

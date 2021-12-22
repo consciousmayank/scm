@@ -237,7 +237,7 @@ AppBarTheme getAppBarTheme() {
     backgroundColor: AppColors().primaryColor[800],
     titleTextStyle: getAppTextTheme().headline1,
     iconTheme: const IconThemeData(
-      color: Colors.black,
+      color: Colors.white,
       opacity: 1,
       size: 24,
     ),

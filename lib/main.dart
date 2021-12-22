@@ -13,6 +13,7 @@ import 'package:scm/routes/routes.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'firebase_options.dart';
 
@@ -127,6 +128,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return MaterialApp(
+                title: appName,
                 theme: ThemeConfiguration().myTheme,
                 debugShowCheckedModeBanner: false,
                 navigatorKey: StackedService.navigatorKey,

@@ -40,10 +40,6 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        labelChangePassword,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
                       hSizedBox(
                         height: 16,
                       ),

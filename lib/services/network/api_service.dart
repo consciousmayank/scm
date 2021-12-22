@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
@@ -284,6 +285,7 @@ class ApiService {
     String? productTitle,
     int? pageIndex,
     int? supplierId,
+    int size = Dimens.defaultProductListPageSize,
   }) async {
     Map<String, dynamic> params = Map<String, dynamic>();
 
@@ -295,6 +297,7 @@ class ApiService {
       params = <String, dynamic>{
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -306,6 +309,7 @@ class ApiService {
       params = <String, dynamic>{
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -318,6 +322,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -329,6 +334,7 @@ class ApiService {
       params = <String, dynamic>{
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -341,6 +347,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -353,6 +360,7 @@ class ApiService {
         'type': categoryFilterList,
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -366,6 +374,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -377,6 +386,7 @@ class ApiService {
       params = <String, dynamic>{
         'brand': brandsFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -389,6 +399,7 @@ class ApiService {
         'brand': brandsFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -401,6 +412,7 @@ class ApiService {
         'brand': brandsFilterList,
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -414,6 +426,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -426,6 +439,7 @@ class ApiService {
         'brand': brandsFilterList,
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -439,6 +453,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -452,6 +467,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -466,6 +482,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -487,20 +504,28 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future<ParentApiResponse> getAllBrands(
-      {required int pageNumber,
-      required int pageSize,
-      required String brandToSearch}) async {
+  Future<ParentApiResponse> getAllBrands({
+    required int pageNumber,
+    required int pageSize,
+    String? brandToSearch,
+  }) async {
     Response? response;
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(GET_BRANDS_FOR_DASHBOARD,
-          queryParameters: {
-            'page': pageNumber,
-            'size': pageSize,
-            'title': brandToSearch
-          });
+      response = await dioClient.getDio().get(
+            GET_BRANDS_FOR_DASHBOARD,
+            queryParameters: brandToSearch == null
+                ? {
+                    'page': pageNumber,
+                    'size': pageSize,
+                  }
+                : {
+                    'page': pageNumber,
+                    'size': pageSize,
+                    'title': brandToSearch
+                  },
+          );
     } on DioError catch (e) {
       error = e;
     }

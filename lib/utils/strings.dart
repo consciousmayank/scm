@@ -93,3 +93,17 @@ const List<String> profileOptions = [
   'Change Password',
   'Logout',
 ];
+
+const String labelSupplyLandingPageCatalog = 'Catalog';
+const String labelSupplyLandingPageProduct = 'Products';
+const String labelSupplyLandingPageCategories = 'Categories';
+const String labelSupplyLandingPageOrder = 'Order';
+const String labelSupplyLandingPageMore = 'More';
+
+const String labelPopularBrands = 'Popular Brands';
+const String lableproductdetails = 'Product Details';
+const String labelSearchBrands = 'Search Brands';
+const String labelSearchCategory = 'Search Categories';
+const String labelSearchSubCategory = 'Search Sub-Categories';
+const String labelSearchProducts = 'Search Products';
+const String labelSearchAllProducts = 'Search All Products';

@@ -1,11 +1,11 @@
 {
-    "name": "scm",
-    "short_name": "scm",
+    "name": "Supply Chain Management",
+    "short_name": "Supply Chain Management",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Supply Chain Management System.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

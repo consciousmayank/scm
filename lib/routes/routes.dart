@@ -6,6 +6,9 @@ import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
 import 'package:scm/screens/splash/splash_view.dart';
+import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
+import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
+import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 import '../routes/routes_constants.dart';
 import 'routes_constants.dart';
@@ -36,6 +39,31 @@ class AppRouter {
             child: PimHomeScreenView(
               arguments: PimHomeScreenViewArguments(),
             ),
+          ),
+        );
+
+      case supplyLandingScreenRoute:
+        return FadeRoute(
+          page: SupplyModuleLandingPageView(
+            arguments: SupplyModuleLandingPageViewArguments(),
+          ),
+        );
+
+      case productListViewPageRoute:
+        ProductListViewArguments arguments =
+            settings.arguments as ProductListViewArguments;
+        return FadeRoute(
+          page: ProductListView(
+            arguments: arguments,
+          ),
+        );
+
+      case brandsListViewPageRoute:
+        PopularBrandsViewArguments arguments =
+            settings.arguments as PopularBrandsViewArguments;
+        return FadeRoute(
+          page: PopularBrandsView(
+            arguments: arguments,
           ),
         );
 

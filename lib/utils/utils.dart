@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/product_list_response.dart' as product_image;
 
 Uint8List? getImageFromBase64String({required String? base64String}) {
   return base64String == null || base64String.length == 0
@@ -45,21 +47,37 @@ PreferredSizeWidget appbarWidget({
 }) {
   return AppBar(
     automaticallyImplyLeading: automaticallyImplyLeading,
-    leading: Padding(
-      padding: const EdgeInsets.only(left: 10.0),
-      child: Image.asset(
-        testLogo,
-        height: 40,
-        width: 40,
-        color: AppColors().white,
-      ),
-    ),
+    leading: !automaticallyImplyLeading
+        ? Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Image.asset(
+              testLogo,
+              height: 40,
+              width: 40,
+            ),
+          )
+        : null,
     centerTitle: false,
     title: title == null
         ? Container()
-        : Text(
-            title,
-            style: AppTextStyles(context: context).appbarTitle,
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              if (automaticallyImplyLeading)
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Image.asset(
+                    testLogo,
+                    height: 40,
+                    width: 40,
+                  ),
+                ),
+              if (automaticallyImplyLeading) wSizedBox(width: 8),
+              Text(
+                title,
+                style: AppTextStyles(context: context).appbarTitle,
+              ),
+            ],
           ),
     actions: options,
   );
@@ -87,6 +105,25 @@ NavigationRailDestination buildRotatedTextRailDestination({
 }) {
   return NavigationRailDestination(
     icon: const SizedBox.shrink(),
+    label: Padding(
+      padding: EdgeInsets.symmetric(vertical: padding),
+      child: RotatedBox(
+        quarterTurns: isTurned ? 0 : turn,
+        child: Text(text),
+      ),
+    ),
+  );
+}
+
+NavigationRailDestination buildRotatedTextRailDestinationWithIcon({
+  required String text,
+  double padding = 8,
+  required bool isTurned,
+  required Widget icon,
+  int turn = -1,
+}) {
+  return NavigationRailDestination(
+    icon: icon,
     label: Padding(
       padding: EdgeInsets.symmetric(vertical: padding),
       child: RotatedBox(
@@ -127,4 +164,49 @@ void pickImagesMethod({
       }
     }
   }
+}
+
+bool loadProductEntryModule(String userSelectedRole) {
+  return userSelectedRole.isNotEmpty &&
+          userSelectedRole == AuthenticatedUserRoles.ROLE_DEO.getStatusString ||
+      userSelectedRole == AuthenticatedUserRoles.ROLE_SUPVR.getStatusString ||
+      userSelectedRole == AuthenticatedUserRoles.ROLE_GD.getStatusString ||
+      userSelectedRole == AuthenticatedUserRoles.ROLE_MANAGER.getStatusString;
+}
+
+bool loadSupplyModule(String userSelectedRole) {
+  return userSelectedRole.isNotEmpty &&
+      userSelectedRole == AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;
+}
+
+bool loadDemandModule(String userSelectedRole) {
+  return userSelectedRole.isNotEmpty &&
+      userSelectedRole == AuthenticatedUserRoles.ROLE_DEMAND.getStatusString;
+}
+
+List<T> copyList<T>(List<T>? items) {
+  var newItems = <T>[];
+  if (items != null) {
+    newItems.addAll(items);
+  }
+  return newItems;
+}
+
+Uint8List? getProductImage({List<product_image.Image>? productImage}) {
+  return productImage == null ||
+          productImage.isEmpty ||
+          productImage.first.image == null
+      ? null
+      : const Base64Codec().decode(
+          (productImage.first.image!.split(',')[1])
+              .replaceAll("\\n", "")
+              .trim(),
+        );
+}
+
+String getProductMeasurement({double? measurement, String? measurementUnit}) {
+  double measureMent = measurement ?? 0;
+  String unit = measurementUnit ?? '';
+
+  return '${measureMent.toStringAsFixed(2)} $unit';
 }

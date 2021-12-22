@@ -64,6 +64,30 @@ class AppTextStyles {
 
   TextStyle get tabUnselectedLabelStyle =>
       Theme.of(context).textTheme.bodyText2!;
+
+  TextStyle get mobileBottomNavigationSelectedLAbelStyle => TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppColors().primaryColor,
+      );
+
+  TextStyle get mobileBottomNavigationUnSelectedLAbelStyle => TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppColors().primaryColor,
+      );
+
+  TextStyle get popularBrandsTitleStyle => const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      );
+
+  get productListItemWebCategoryTextStyle => const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+        color: Colors.black,
+      );
 }
 
 class AppTextButtonsStyles {
@@ -77,6 +101,58 @@ class AppTextButtonsStyles {
   final Color? foregroundColor, backgroundColor;
   final double? fontSize;
   final EdgeInsets? padding;
+
+  ButtonStyle get textButtonStyleForProductListItem =>
+      textButtonStyle.copyWith(shape: MaterialStateProperty.resolveWith(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                bottomRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          } else {
+            return RoundedRectangleBorder(
+              side: BorderSide(
+                color: AppColors().primaryColor,
+                width: Dimens().defaultBorder / 2,
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                bottomRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          }
+        },
+      ), side: MaterialStateProperty.resolveWith<BorderSide>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return BorderSide(
+            width: 0.0,
+            color: AppColors().primaryColor.shade100,
+          );
+        }
+        return BorderSide(
+          width: 0,
+          color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
+        ); // Defer to the widget's default.
+      }), textStyle: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const TextStyle(
+            fontSize: 24,
+          );
+        }
+        return const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+      }));
 
   ButtonStyle get textButtonStyle => ButtonStyle(
         side: MaterialStateProperty.resolveWith<BorderSide>(

@@ -67,7 +67,6 @@ class LoginView extends StatelessWidget {
                             height: 16,
                           ),
                           AppTextField(
-                            keyboardType: TextInputType.number,
                             controller: model.userNameController,
                             focusNode: model.userNameFocusNode,
                             hintText: labelUserName,
