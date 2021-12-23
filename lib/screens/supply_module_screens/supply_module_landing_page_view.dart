@@ -200,6 +200,7 @@ class SupplyModuleLandingPageWebView
             ),
             selectedIndex: model.currentIndex,
             onDestinationSelected: (int index) {
+              model.showProductList = false;
               model.setIndex(index);
             },
             labelType: NavigationRailLabelType.all,

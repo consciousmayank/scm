@@ -3,18 +3,17 @@ import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
-import 'package:scm/screens/supply_module_screens/homepage/home_page_view.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class SupplyModuleLandingPageViewModel
+class DemandModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   bool showProductList = false;
   String authenticatedUserName = '';
 
   String searchTerm = '';
   initScreen() {
-    setIndex(1);
     authenticatedUserName = preferences.getAuthenticatedUserName();
   }
 
@@ -50,25 +49,22 @@ class SupplyModuleLandingPageViewModel
   getSelectedView() {
     switch (currentIndex) {
       case 0:
-        return const Center(
-          child: Text(
-            'Supplier\'s Catalog Page',
-          ),
-        );
+        return CommonDashboardView(arguments: CommonDashboardViewArguments());
+        ;
 
       case 1:
-        return const HomePageView();
-      // return const Center(
-      //   child: Text(
-      //     'Supplier\'s Home Page',
-      //   ),
-      // );
+        // return const HomePageView();
+        return const Center(
+          child: Text(
+            'Demander\'s Home Page',
+          ),
+        );
 
       case 2:
         // return ProductCategoriesListView();
         return const Center(
           child: Text(
-            'Supplier\'s Product Category list view Page',
+            'Demander\'s Product Category list view Page',
           ),
         );
 
@@ -76,14 +72,14 @@ class SupplyModuleLandingPageViewModel
         // return OrderListView();
         return const Center(
           child: Text(
-            'Supplier\'s Order List Page',
+            'Demander\'s Order List Page',
           ),
         );
       case 4:
         // return MenuItemsView();
         return const Center(
           child: Text(
-            'Supplier\'s More options Page',
+            'Demander\'s More options Page',
           ),
         );
     }

@@ -6,6 +6,7 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
@@ -964,6 +965,98 @@ class ApiService {
     }
 
     return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderInfo() async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            ORDER_INFO(
+              role: getLoggedInRole(),
+            ),
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderedBrands({required int pageSize}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDERED_BRANDS(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderedTypes({required int pageSize}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDERED_TYPES(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrdersList({
+    required int pageSize,
+    required int pageNumber,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDER(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+          'page': pageNumber,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  String getLoggedInRole() {
+    String userSelectedRole = preferences.getSelectedUserRole();
+
+    if (userSelectedRole ==
+        AuthenticatedUserRoles.ROLE_DEMAND.getStatusString) {
+      return 'demand';
+    } else {
+      return 'supply';
+    }
   }
 }
 

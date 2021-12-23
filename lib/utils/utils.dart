@@ -51,7 +51,7 @@ PreferredSizeWidget appbarWidget({
         ? Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Image.asset(
-              testLogo,
+              scmLogo,
               height: 40,
               width: 40,
             ),
@@ -67,7 +67,7 @@ PreferredSizeWidget appbarWidget({
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Image.asset(
-                    testLogo,
+                    scmLogo,
                     height: 40,
                     width: 40,
                   ),

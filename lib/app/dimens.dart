@@ -56,6 +56,10 @@ class Dimens {
   get productListItemWebHeight => 230;
   get productListItemWebWidth => 319;
 
+  get dashboardOrderedBrandsInfoCardHeight => 400;
+  get dashboardOrderedTypeInfoCardHeight => 400;
+  get dashboardOrderListCardHeight => 500;
+
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(
       radius ?? getDefaultRadius,

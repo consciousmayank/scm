@@ -89,7 +89,9 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
         await dialogService.showCustomDialog(
       variant: DialogType.PRODUCTS_FILTER,
       data: ProductFilterDialogBoxViewArguments(
-        title: 'Filters',
+        title: productTitle == null || productTitle!.isEmpty
+            ? 'Filters'
+            : 'Filters for "$productTitle\"',
         selectedBrand: brandsFilterList,
         selectedCategory: categoryFilterList,
         selectedSuCategory: subCategoryFilterList,
@@ -144,11 +146,15 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   bool isFilterApplied() {
     return brandsFilterList.isNotEmpty ||
         categoryFilterList.isNotEmpty ||
-        subCategoryFilterList.isNotEmpty;
+        subCategoryFilterList.isNotEmpty ||
+        (productTitle != null && productTitle!.isNotEmpty);
   }
 
   int getAppliedFiltersCount() {
     int count = 0;
+    if (productTitle != null && productTitle!.isNotEmpty) {
+      count = count + 1;
+    }
     if (brandsFilterList.isNotEmpty) {
       count = count + brandsFilterList.length;
     }

@@ -35,11 +35,11 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
           isSearchIconVisible = true;
         });
       } else {
-        if (searchController.text.trim().isEmpty) {
-          setState(() {
-            isSearchIconVisible = false;
-          });
-        }
+        // if (searchController.text.trim().isEmpty) {
+        setState(() {
+          isSearchIconVisible = false;
+        });
+        // }
       }
     });
 

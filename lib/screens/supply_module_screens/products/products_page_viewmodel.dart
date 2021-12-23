@@ -13,7 +13,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class HomePageViewModel extends GeneralisedBaseViewModel {
+class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
   final HomePageApis _homePageApis = di<HomePageApisImpl>();
   AllBrandsResponse? _allBrandsResponse;
 

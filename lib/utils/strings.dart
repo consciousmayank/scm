@@ -94,11 +94,17 @@ const List<String> profileOptions = [
   'Logout',
 ];
 
-const String labelSupplyLandingPageCatalog = 'Catalog';
+const String labelSupplyLandingPageCatalog = 'Home';
 const String labelSupplyLandingPageProduct = 'Products';
 const String labelSupplyLandingPageCategories = 'Categories';
 const String labelSupplyLandingPageOrder = 'Order';
 const String labelSupplyLandingPageMore = 'More';
+
+const String labelDemandLandingPageCatalog = 'Home';
+const String labelDemandLandingPageCategories = 'Categories';
+const String labelDemandLandingPageSuppliers = 'Suppliers';
+const String labelDemandLandingPageOrder = 'Order';
+const String labelDemandLandingPageMore = 'More';
 
 const String labelPopularBrands = 'Popular Brands';
 const String lableproductdetails = 'Product Details';
@@ -107,3 +113,8 @@ const String labelSearchCategory = 'Search Categories';
 const String labelSearchSubCategory = 'Search Sub-Categories';
 const String labelSearchProducts = 'Search Products';
 const String labelSearchAllProducts = 'Search All Products';
+const String labelRecentOrders = 'RECENT ORDERS';
+const String labelAppFooterTitle = 'Product Of Geek Technotonic @2021';
+const String labelAppFooterSubTitle1 = 'Terms and Conditions';
+const String labelAppFooterSubTitle2 = 'Privacy Policy';
+const String labelAppFooterSubTitle3 = 'Cookies Policy';

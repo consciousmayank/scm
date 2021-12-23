@@ -1,0 +1,4 @@
+enum ApiStatus {
+  LOADING,
+  FETCHED,
+}

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
@@ -46,6 +47,13 @@ class AppRouter {
         return FadeRoute(
           page: SupplyModuleLandingPageView(
             arguments: SupplyModuleLandingPageViewArguments(),
+          ),
+        );
+
+      case demandLandingScreenRoute:
+        return FadeRoute(
+          page: DemandModuleLandingPageView(
+            arguments: DemandModuleLandingPageViewArguments(),
           ),
         );
 

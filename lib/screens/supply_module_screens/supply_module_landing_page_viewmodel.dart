@@ -3,8 +3,10 @@ import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
-import 'package:scm/screens/supply_module_screens/homepage/home_page_view.dart';
+import 'package:scm/screens/supply_module_screens/products/products_page_view.dart';
+import 'package:scm/screens/supply_module_screens/products/products_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SupplyModuleLandingPageViewModel
@@ -14,7 +16,6 @@ class SupplyModuleLandingPageViewModel
 
   String searchTerm = '';
   initScreen() {
-    setIndex(1);
     authenticatedUserName = preferences.getAuthenticatedUserName();
   }
 
@@ -50,19 +51,10 @@ class SupplyModuleLandingPageViewModel
   getSelectedView() {
     switch (currentIndex) {
       case 0:
-        return const Center(
-          child: Text(
-            'Supplier\'s Catalog Page',
-          ),
-        );
+        return CommonDashboardView(arguments: CommonDashboardViewArguments());
 
       case 1:
-        return const HomePageView();
-      // return const Center(
-      //   child: Text(
-      //     'Supplier\'s Home Page',
-      //   ),
-      // );
+        return const SupplyProductsOptionsPageView();
 
       case 2:
         // return ProductCategoriesListView();

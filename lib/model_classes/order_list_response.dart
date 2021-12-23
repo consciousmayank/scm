@@ -12,25 +12,27 @@ class OrderListResponse {
     this.currentPage,
   });
 
-  factory OrderListResponse.fromJson(String str) => OrderListResponse.fromMap(json.decode(str));
+  factory OrderListResponse.fromJson(String str) =>
+      OrderListResponse.fromMap(json.decode(str));
 
-  factory OrderListResponse.fromMap(Map<String, dynamic> json) => OrderListResponse(
-    totalItems: json["totalItems"],
-    totalPages: json["totalPages"],
-    orders: List<Order>.from(json["orders"].map((x) => Order.fromMap(x))),
-    currentPage: json["currentPage"],
-  );
+  factory OrderListResponse.fromMap(Map<String, dynamic> json) =>
+      OrderListResponse(
+        totalItems: json["totalItems"],
+        totalPages: json["totalPages"],
+        orders: List<Order>.from(json["orders"].map((x) => Order.fromMap(x))),
+        currentPage: json["currentPage"],
+      );
 
-  int ?currentPage;
-  List<Order> ?orders;
-  int ?totalItems;
-  int ?totalPages;
+  int? currentPage;
+  List<Order>? orders;
+  int? totalItems;
+  int? totalPages;
 
   OrderListResponse copyWith({
-    int ?totalItems,
-    int ?totalPages,
+    int? totalItems,
+    int? totalPages,
     List<Order>? orders,
-    int ?currentPage,
+    int? currentPage,
   }) =>
       OrderListResponse(
         totalItems: totalItems ?? this.totalItems,
@@ -42,11 +44,20 @@ class OrderListResponse {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => {
-    "totalItems": totalItems,
-    "totalPages": totalPages,
-    "orders": List<dynamic>.from(orders!.map((x) => x.toMap())),
-    "currentPage": currentPage,
-  };
+        "totalItems": totalItems,
+        "totalPages": totalPages,
+        "orders": List<dynamic>.from(orders!.map((x) => x.toMap())),
+        "currentPage": currentPage,
+      };
+
+  OrderListResponse empty() {
+    return OrderListResponse(
+      totalItems: 0,
+      totalPages: 0,
+      orders: [],
+      currentPage: 0,
+    );
+  }
 }
 
 class Order {
@@ -59,36 +70,43 @@ class Order {
     this.createDateTime,
     this.status,
     this.id,
+    this.supplyBusinessName,
+    this.supplyId,
   });
 
   factory Order.fromJson(String str) => Order.fromMap(json.decode(str));
 
   factory Order.fromMap(Map<String, dynamic> json) => Order(
-    totalItems: json["totalItems"],
-    orderItems: List<OrderItem>.from(json["orderItems"].map((x) => OrderItem.fromMap(x))),
-    totalAmount: json["totalAmount"].toDouble(),
-    demandId: json["demandId"],
-    demandBusinessName: json["demandBusinessName"],
-    createDateTime: json["createDateTime"],
-    status: json["status"],
-    id: json["id"],
-  );
+        totalItems: json["totalItems"],
+        supplyId: json["supplyId"],
+        supplyBusinessName: json["supplyBusinessName"],
+        orderItems: List<OrderItem>.from(
+            json["orderItems"].map((x) => OrderItem.fromMap(x))),
+        totalAmount: json["totalAmount"].toDouble(),
+        demandId: json["demandId"],
+        demandBusinessName: json["demandBusinessName"],
+        createDateTime: json["createDateTime"],
+        status: json["status"],
+        id: json["id"],
+      );
 
-  String ?createDateTime;
-  int ?demandId;
-  int ?id;
-  List<OrderItem> ?orderItems;
-  double ?totalAmount;
-  String? demandBusinessName;
+  String? createDateTime;
+  int? demandId, supplyId;
+  int? id;
+  List<OrderItem>? orderItems;
+  double? totalAmount;
+  String? demandBusinessName, supplyBusinessName;
   String? status;
   int? totalItems;
 
   Order copyWith({
     int? totalItems,
     List<OrderItem>? orderItems,
-    double ?totalAmount,
-    int ?demandId,
+    double? totalAmount,
+    int? demandId,
+    int? supplyId,
     String? demandBusinessName,
+    String? supplyBusinessName,
     String? createDateTime,
     String? status,
     int? id,
@@ -98,7 +116,9 @@ class Order {
         orderItems: orderItems ?? this.orderItems,
         totalAmount: totalAmount ?? this.totalAmount,
         demandId: demandId ?? this.demandId,
+        supplyId: supplyId ?? this.supplyId,
         demandBusinessName: demandBusinessName ?? this.demandBusinessName,
+        supplyBusinessName: supplyBusinessName ?? this.supplyBusinessName,
         createDateTime: createDateTime ?? this.createDateTime,
         status: status ?? this.status,
         id: id ?? this.id,
@@ -107,17 +127,16 @@ class Order {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => {
-    "totalItems": totalItems,
-    "orderItems": List<dynamic>.from(orderItems!.map((x) => x.toMap())),
-    "totalAmount": totalAmount,
-    "demandId": demandId,
-    "demandBusinessName": demandBusinessName,
-    "createDateTime": createDateTime,
-    "status": status,
-    "id": id,
-  };
+        "totalItems": totalItems,
+        "orderItems": List<dynamic>.from(orderItems!.map((x) => x.toMap())),
+        "totalAmount": totalAmount,
+        "demandId": demandId,
+        "demandBusinessName": demandBusinessName,
+        "createDateTime": createDateTime,
+        "status": status,
+        "id": id,
+      };
 }
-
 
 class OrderItem {
   OrderItem({
@@ -132,15 +151,15 @@ class OrderItem {
   factory OrderItem.fromJson(String str) => OrderItem.fromMap(json.decode(str));
 
   factory OrderItem.fromMap(Map<String, dynamic> json) => OrderItem(
-    itemTotalPrice: json["itemTotalPrice"].toDouble(),
-    itemTitle: json["itemTitle"],
-    itemId: json["itemId"],
-    itemPrice: json["itemPrice"].toDouble(),
-    itemQuantity: json["itemQuantity"],
-  );
+        itemTotalPrice: json["itemTotalPrice"].toDouble(),
+        itemTitle: json["itemTitle"],
+        itemId: json["itemId"],
+        itemPrice: json["itemPrice"].toDouble(),
+        itemQuantity: json["itemQuantity"],
+      );
 
-  int ?itemId;
-  double ?itemTotalPrice;
+  int? itemId;
+  double? itemTotalPrice;
   bool? edit;
   double? itemPrice;
   int? itemQuantity;
@@ -148,8 +167,8 @@ class OrderItem {
 
   OrderItem copyWith({
     double? itemTotalPrice,
-    String ?itemTitle,
-    int ?itemId,
+    String? itemTitle,
+    int? itemId,
     double? itemPrice,
     int? itemQuantity,
     bool? edit,
@@ -160,16 +179,16 @@ class OrderItem {
         itemId: itemId ?? this.itemId,
         itemPrice: itemPrice ?? this.itemPrice,
         itemQuantity: itemQuantity ?? this.itemQuantity,
-        edit: edit?? this.edit,
+        edit: edit ?? this.edit,
       );
 
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => {
-    "itemTotalPrice": itemTotalPrice,
-    "itemTitle": itemTitle,
-    "itemId": itemId,
-    "itemPrice": itemPrice,
-    "itemQuantity": itemQuantity,
-  };
+        "itemTotalPrice": itemTotalPrice,
+        "itemTitle": itemTitle,
+        "itemId": itemId,
+        "itemPrice": itemPrice,
+        "itemQuantity": itemQuantity,
+      };
 }

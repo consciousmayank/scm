@@ -83,6 +83,25 @@ class ProductListView extends StatelessWidget {
                         flex: 3,
                         child: Column(
                           children: [
+                            if (!arguments.showAppbar &&
+                                arguments.isScrollVertical)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton.icon(
+                                    style: AppTextButtonsStyles()
+                                        .textButtonStyleForProductListItem,
+                                    onPressed: () =>
+                                        model.openFiltersDialogBox(),
+                                    icon: const Icon(Icons.filter),
+                                    label: Text(
+                                      model.getAppliedFiltersCount() == 0
+                                          ? 'Filter'
+                                          : 'Filter (${model.getAppliedFiltersCount()})',
+                                    ),
+                                  ),
+                                ],
+                              ),
                             if (arguments.showSeeAll)
                               Row(
                                 mainAxisAlignment:

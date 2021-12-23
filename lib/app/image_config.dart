@@ -33,7 +33,7 @@ final String successAnimation = _animationPath + 'success.json';
 final String splashAnimation = _animationPath + 'splash_animation.json';
 final String profileIconBlue = _imagePath + 'profile_icon_blue.png';
 
-final String testLogo = _imagePath + 'scm_logo.png';
+final String scmLogo = _imagePath + 'scm_logo.png';
 
 final String groceryImage = _imagePath + 'grocery.jpg';
 
