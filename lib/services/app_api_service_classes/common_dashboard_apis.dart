@@ -2,23 +2,51 @@ import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/base_api.dart';
 
 abstract class CommonDashBoardApisAbstractClass {
   Future<CommonDashboardOrderInfo> getOrderInfo();
+
   Future<List<CommonDashboardOrderedBrands>> getOrderedBrands(
       {required int pageSize});
+
   Future<List<CommonDashboardOrderedTypes>> getOrderedTypes(
       {required int pageSize});
+
   Future<OrderListResponse> getOrdersList({
     required int pageSize,
     required int pageNumber,
+    String? orderId,
+  });
+
+  Future<OrderSummaryResponse> getOrderDetails({
+    String? orderId,
   });
 }
 
 class CommonDashBoardApis extends BaseApi
     implements CommonDashBoardApisAbstractClass {
+  @override
+  Future<OrderSummaryResponse> getOrderDetails({String? orderId}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.getOrdersList(
+      orderId: orderId,
+      pageNumber: 0,
+      pageSize: 0,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
   @override
   Future<CommonDashboardOrderInfo> getOrderInfo() async {
     CommonDashboardOrderInfo returingResponse =
@@ -79,10 +107,12 @@ class CommonDashBoardApis extends BaseApi
   Future<OrderListResponse> getOrdersList({
     required int pageSize,
     required int pageNumber,
+    String? orderId,
   }) async {
     OrderListResponse returingResponse = OrderListResponse().empty();
 
     ParentApiResponse apiResponse = await apiService.getOrdersList(
+      orderId: orderId,
       pageNumber: pageNumber,
       pageSize: pageSize,
     );

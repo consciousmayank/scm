@@ -106,6 +106,22 @@ class OrderSummaryResponse {
         // "createDateTime": createDateTime,
         // "orderTracking": List<dynamic>.from(orderTracking.map((x) => x.toMap())),
       };
+
+  OrderSummaryResponse empty() {
+    return OrderSummaryResponse(
+      id: -1,
+      status: '',
+      totalItems: 0,
+      billingAddress: Address().empty(),
+      shippingAddress: Address().empty(),
+      totalAmount: 0,
+      orderItems: [],
+      demandId: -1,
+      demandBusinessName: '',
+      createDateTime: '',
+      orderTracking: [],
+    );
+  }
 }
 
 //

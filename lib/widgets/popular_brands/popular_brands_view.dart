@@ -16,11 +16,12 @@ import 'package:scm/widgets/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PopularBrandsView extends StatelessWidget {
-  final PopularBrandsViewArguments arguments;
   const PopularBrandsView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final PopularBrandsViewArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -223,26 +224,29 @@ class PopularBrandsView extends StatelessWidget {
 }
 
 class PopularBrandsViewArguments {
-  final bool isFullScreen;
-  final Function? onSeeAllBrandsClicked;
   PopularBrandsViewArguments({
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
   });
+
   PopularBrandsViewArguments.fullScreen({
     this.isFullScreen = true,
     this.onSeeAllBrandsClicked,
   });
+
+  final bool isFullScreen;
+  final Function? onSeeAllBrandsClicked;
 }
 
 class SinglePopularBrandItem extends StatelessWidget {
-  final Function({required Brand selectedItem}) onItemClicked;
-  final Brand item;
   const SinglePopularBrandItem({
     Key? key,
     required this.onItemClicked,
     required this.item,
   }) : super(key: key);
+
+  final Function({required Brand selectedItem}) onItemClicked;
+  final Brand item;
 
   @override
   Widget build(BuildContext context) {

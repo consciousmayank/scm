@@ -3,24 +3,6 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/styles.dart';
 
 class ListFooter extends StatelessWidget {
-  final int pageNumber;
-  final int totalPages;
-
-  final Function? onFirstPageClick;
-  final Function? onLastPageClick;
-  final Function? onNextPageClick;
-  final Function? onPreviousPageClick;
-
-  const ListFooter.previousNext({
-    Key? key,
-    required this.pageNumber,
-    required this.totalPages,
-    required this.onPreviousPageClick,
-    required this.onNextPageClick,
-    this.onFirstPageClick,
-    this.onLastPageClick,
-  }) : super(key: key);
-
   const ListFooter.firstLast(
       {Key? key,
       required this.pageNumber,
@@ -40,6 +22,23 @@ class ListFooter extends StatelessWidget {
     required this.onPreviousPageClick,
     required this.onNextPageClick,
   }) : super(key: key);
+
+  const ListFooter.previousNext({
+    Key? key,
+    required this.pageNumber,
+    required this.totalPages,
+    required this.onPreviousPageClick,
+    required this.onNextPageClick,
+    this.onFirstPageClick,
+    this.onLastPageClick,
+  }) : super(key: key);
+
+  final Function? onFirstPageClick;
+  final Function? onLastPageClick;
+  final Function? onNextPageClick;
+  final Function? onPreviousPageClick;
+  final int pageNumber;
+  final int totalPages;
 
   @override
   Widget build(BuildContext context) {

@@ -11,8 +11,17 @@ class CommonDashboardOrderedBrands {
     this.brand,
   });
 
-  final int? count;
+  factory CommonDashboardOrderedBrands.fromJson(String str) =>
+      CommonDashboardOrderedBrands.fromMap(json.decode(str));
+
+  factory CommonDashboardOrderedBrands.fromMap(Map<String, dynamic> json) =>
+      CommonDashboardOrderedBrands(
+        count: json["count"],
+        brand: json["brand"],
+      );
+
   final String? brand;
+  final int? count;
 
   CommonDashboardOrderedBrands copyWith({
     int? count,
@@ -23,16 +32,7 @@ class CommonDashboardOrderedBrands {
         brand: brand ?? this.brand,
       );
 
-  factory CommonDashboardOrderedBrands.fromJson(String str) =>
-      CommonDashboardOrderedBrands.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory CommonDashboardOrderedBrands.fromMap(Map<String, dynamic> json) =>
-      CommonDashboardOrderedBrands(
-        count: json["count"],
-        brand: json["brand"],
-      );
 
   Map<String, dynamic> toMap() => {
         "count": count,

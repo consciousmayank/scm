@@ -9,11 +9,13 @@ import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class CommonDashboardView extends StatefulWidget {
-  final CommonDashboardViewArguments arguments;
   const CommonDashboardView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final CommonDashboardViewArguments arguments;
+
   @override
   _CommonDashboardViewState createState() => _CommonDashboardViewState();
 }

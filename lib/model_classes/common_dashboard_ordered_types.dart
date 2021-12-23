@@ -11,6 +11,15 @@ class CommonDashboardOrderedTypes {
     this.type,
   });
 
+  factory CommonDashboardOrderedTypes.fromJson(String str) =>
+      CommonDashboardOrderedTypes.fromMap(json.decode(str));
+
+  factory CommonDashboardOrderedTypes.fromMap(Map<String, dynamic> json) =>
+      CommonDashboardOrderedTypes(
+        count: json["count"],
+        type: json["type"],
+      );
+
   final int? count;
   final String? type;
 
@@ -23,16 +32,7 @@ class CommonDashboardOrderedTypes {
         type: type ?? this.type,
       );
 
-  factory CommonDashboardOrderedTypes.fromJson(String str) =>
-      CommonDashboardOrderedTypes.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory CommonDashboardOrderedTypes.fromMap(Map<String, dynamic> json) =>
-      CommonDashboardOrderedTypes(
-        count: json["count"],
-        type: json["type"],
-      );
 
   Map<String, dynamic> toMap() => {
         "count": count,

@@ -14,43 +14,7 @@ import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
-  final HomePageApis _homePageApis = di<HomePageApisImpl>();
   AllBrandsResponse? _allBrandsResponse;
-
-  List<Brand>? _listOfBrands;
-
-  List<Brand>? get listOfBrands => _listOfBrands;
-
-  set listOfBrands(List<Brand>? value) {
-    _listOfBrands = value;
-    notifyListeners();
-  }
-
-  AllBrandsResponse? get allBrandsResponse => _allBrandsResponse;
-
-  set allBrandsResponse(AllBrandsResponse? value) {
-    _allBrandsResponse = value;
-    notifyListeners();
-  }
-
-  int? _lengthOfListView;
-
-  int? get lengthOfListView => _lengthOfListView;
-
-  set lengthOfListView(int? value) {
-    _lengthOfListView = value;
-    notifyListeners();
-  }
-
-  int? _lengthOfCategoriesListView;
-
-  int? get lengthOfCategoriesListView => _lengthOfCategoriesListView;
-
-  set lengthOfCategoriesListView(int? value) {
-    _lengthOfCategoriesListView = value;
-    notifyListeners();
-  }
-
   // void takeToSecondLevelCategoriesView({
   //   required TopLevelProductCategoriesTypes categoriesTypes,
   // }) {
@@ -90,17 +54,52 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
 
   ProductCategoriesResponse? _categoriesResponse;
 
+  final HomePageApis _homePageApis = di<HomePageApisImpl>();
+  int? _lengthOfCategoriesListView;
+  int? _lengthOfListView;
+  List<Brand>? _listOfBrands;
+  final ProductCategoriesApis _productCategoriesApis =
+      di<ProductCategoriesApiImpl>();
+
+  List<String>? _productCategoriesList;
+  List<Product>? _productList;
+  final ProductListApis _productListApis = di<ProductListApiImpl>();
+  ProductListResponse? _productsResponse;
+
+  List<Brand>? get listOfBrands => _listOfBrands;
+
+  set listOfBrands(List<Brand>? value) {
+    _listOfBrands = value;
+    notifyListeners();
+  }
+
+  AllBrandsResponse? get allBrandsResponse => _allBrandsResponse;
+
+  set allBrandsResponse(AllBrandsResponse? value) {
+    _allBrandsResponse = value;
+    notifyListeners();
+  }
+
+  int? get lengthOfListView => _lengthOfListView;
+
+  set lengthOfListView(int? value) {
+    _lengthOfListView = value;
+    notifyListeners();
+  }
+
+  int? get lengthOfCategoriesListView => _lengthOfCategoriesListView;
+
+  set lengthOfCategoriesListView(int? value) {
+    _lengthOfCategoriesListView = value;
+    notifyListeners();
+  }
+
   ProductCategoriesResponse? get categoriesResponse => _categoriesResponse;
 
   set categoriesResponse(ProductCategoriesResponse? value) {
     _categoriesResponse = value;
     notifyListeners();
   }
-
-  final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
-
-  List<String>? _productCategoriesList;
 
   List<String>? get productCategoriesList => _productCategoriesList;
 
@@ -109,8 +108,6 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  ProductListResponse? _productsResponse;
-
   ProductListResponse? get productsResponse => _productsResponse;
 
   set productsResponse(ProductListResponse? value) {
@@ -118,16 +115,12 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<Product>? _productList;
-
   List<Product>? get productList => _productList;
 
   set productList(List<Product>? value) {
     _productList = value;
     notifyListeners();
   }
-
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
 
   getAllProducts() async {
     setBusy(true);

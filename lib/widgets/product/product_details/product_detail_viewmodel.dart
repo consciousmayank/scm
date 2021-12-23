@@ -5,10 +5,11 @@ import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/widgets/product/product_details/product_detail_view.dart';
 
 class ProductDetailViewModel extends GeneralisedBaseViewModel {
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
+  late final ProductDetailViewArguments arguments;
   Product? product;
 
-  late final ProductDetailViewArguments arguments;
+  final ProductListApis _productListApis = di<ProductListApiImpl>();
+
   init({required ProductDetailViewArguments arguments}) {
     if (arguments.product == null) {
       this.arguments = arguments;

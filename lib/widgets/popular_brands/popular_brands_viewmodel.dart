@@ -9,15 +9,16 @@ import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class PopularBrandsViewModel extends GeneralisedBaseViewModel {
-  int pageIndex = 0;
-  late final PopularBrandsViewArguments arguments;
-  final HomePageApis _homePageApis = di<HomePageApisImpl>();
   AllBrandsResponse? allBrandsResponse;
-
+  late final PopularBrandsViewArguments arguments;
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocusNode = FocusNode();
 
   String brandTitle = '';
+
+  int pageIndex = 0;
+
+  final HomePageApis _homePageApis = di<HomePageApisImpl>();
 
   getAllBrands() async {
     setBusy(true);
