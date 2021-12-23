@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 
 class DottedDivider extends StatelessWidget {
-  const DottedDivider({
+  const DottedDivider({Key? key, this.padding}) : super(key: key);
+
+  const DottedDivider.noPadding({
+    this.padding = EdgeInsets.zero,
     Key? key,
   }) : super(key: key);
+
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16),
+      padding: padding ?? const EdgeInsets.only(left: 16.0, right: 16),
       child: DottedLine(
         direction: Axis.horizontal,
         lineLength: double.infinity,

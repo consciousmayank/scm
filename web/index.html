@@ -2,10 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Supply Chain System</title>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -28,8 +25,11 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="scm">
+  <meta name="apple-mobile-web-app-title" content="Supply Chain Management System">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 
   <title>Supply Chain Management System</title>
   <link rel="manifest" href="manifest.json">
@@ -60,7 +60,7 @@
 <body style="overflow: hidden">
 <div id="loading_indicator" class="container">
   <img class="indicator" src="./assets/loading.gif" />
-  <script>
+  <!-- <script>
     const firebaseConfig = {
         apiKey: "AIzaSyBSzUdobLGj_-bOF1BQ9xcxB4Re6DHxrE0",
         authDomain: "geekscmsystem.firebaseapp.com",
@@ -71,13 +71,13 @@
         measurementId: "${config.measurementId}"
       };
     firebase.initializeApp(firebaseConfig);
-  </script>
+  </script> -->
   <script src="main.dart.js" type="application/javascript"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("../firebase-messaging-sw.js");
-      });
+      // window.addEventListener("load", function () {
+      //   navigator.serviceWorker.register("../firebase-messaging-sw.js");
+      // });
     }
   </script>
   <!-- This script installs service_worker.js to provide PWA functionality to

@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const AppTextField(
       {this.obscureText,
+      this.innerHintText,
       this.textInputAction = TextInputAction.next,
       this.helperText = '',
       this.showRupeesSymbol = false,
@@ -38,10 +39,12 @@ class AppTextField extends StatelessWidget {
       this.errorText = '',
       this.showCounter = false,
       this.maxCounterValue = 0,
+      this.maxCharacters,
       this.enteredCount = 0});
 
   const AppTextField.withCounter(
       {this.obscureText,
+      this.innerHintText,
       this.textInputAction = TextInputAction.next,
       this.helperText = '',
       this.showRupeesSymbol = false,
@@ -70,6 +73,7 @@ class AppTextField extends StatelessWidget {
       this.onButtonPressed,
       this.errorText = '',
       this.showCounter = true,
+      required this.maxCharacters,
       required this.maxCounterValue,
       required this.enteredCount});
 
@@ -86,10 +90,12 @@ class AppTextField extends StatelessWidget {
   final List<TextInputFormatter>? formatter;
   final String? helperText; //required only in create consignment
   final String? hintText;
+  final String? innerHintText;
   final String? initialValue;
   final InputDecoration? inputDecoration;
   final TextInputType keyboardType;
   final String? labelText;
+  final int? maxCharacters;
   final int maxCounterValue;
   final int maxLines;
   final bool? obscureText;
@@ -114,42 +120,44 @@ class AppTextField extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              hintText != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Text(
-                        hintText ?? '',
-                        style: AppTextStyles(context: context)
-                            .appTextFieldHintStyle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  : Container(),
-              helperText != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Text(
-                        helperText ?? '',
-                        style: AppTextStyles(context: context)
-                            .appTextFieldHelperStyle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  : Container(),
-            ],
-          ),
+          if (hintText != null && helperText != null)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                hintText != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          hintText ?? '',
+                          style: AppTextStyles(context: context)
+                              .appTextFieldHintStyle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : Container(),
+                helperText != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          helperText ?? '',
+                          style: AppTextStyles(context: context)
+                              .appTextFieldHelperStyle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
           Padding(
             padding: const EdgeInsets.only(top: 2, bottom: 2),
             child: Stack(
               children: [
                 TextFormField(
+                  maxLength: maxCharacters,
                   obscureText: obscureText ?? false,
                   style: textStyle ??
                       AppTextStyles(context: context).appTextFieldTextStyle,
@@ -169,11 +177,15 @@ class AppTextField extends StatelessWidget {
                   decoration: const InputDecoration()
                       .applyDefaults(Theme.of(context).inputDecorationTheme)
                       .copyWith(
+                        hintText: innerHintText,
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         counterText: showCounter
-                            ? '$enteredCount/$maxCounterValue'
+                            ? enteredCount == maxCharacters
+                                ? 'Max Characters Limit Reached'
+                                : '$enteredCount/$maxCharacters'
                             : null,
-                        counterStyle: enteredCount < maxCounterValue
+                        counterStyle: enteredCount < maxCounterValue ||
+                                enteredCount == maxCharacters
                             ? AppTextStyles(context: context)
                                 .getCounterTextStyle
                                 .copyWith(color: Colors.red)

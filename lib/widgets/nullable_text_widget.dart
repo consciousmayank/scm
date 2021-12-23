@@ -8,6 +8,8 @@ class NullableTextWidget extends StatelessWidget {
     this.selectable = false,
     this.textColorWhilePressing = Colors.black,
     this.textStyle,
+    this.decoration,
+    this.maxLines = 4,
   }) : super(key: key);
 
   const NullableTextWidget.selectable({
@@ -15,21 +17,27 @@ class NullableTextWidget extends StatelessWidget {
     Key? key,
     this.text,
     this.textStyle,
+    this.decoration,
     this.textColorWhilePressing = Colors.black,
+    this.maxLines = 4,
   }) : super(key: key);
 
-  const NullableTextWidget.withColor({
+  const NullableTextWidget.withDecoration({
     Key? key,
+    required this.decoration,
     this.text,
     this.selectable = false,
     this.textStyle,
     required this.textColorWhilePressing,
+    this.maxLines = 4,
   }) : super(key: key);
 
   final bool selectable;
   final String? text;
   final Color textColorWhilePressing;
   final TextStyle? textStyle;
+  final int maxLines;
+  final BoxDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +51,23 @@ class NullableTextWidget extends StatelessWidget {
                 )
         : AppTextStyles(context: context).getNormalTableNoValueTextStyle;
 
-    return selectable
-        ? SelectableText(
-            text ?? '--',
-            style: textStyle,
-            maxLines: 4,
-          )
-        : Text(
-            text ?? '--',
-            style: textStyle,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 4,
-          );
+    return Container(
+      decoration: decoration,
+      padding: const EdgeInsets.all(
+        4,
+      ),
+      child: selectable
+          ? SelectableText(
+              text ?? '--',
+              style: textStyle,
+              maxLines: 4,
+            )
+          : Text(
+              text ?? '--',
+              style: textStyle,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 4,
+            ),
+    );
   }
 }

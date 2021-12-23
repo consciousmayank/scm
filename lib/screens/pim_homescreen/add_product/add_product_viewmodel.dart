@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+// import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -13,10 +15,12 @@ import 'package:scm/model_classes/product_list_response.dart' as productImage;
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class AddProductViewModel extends GeneralisedBaseViewModel {
+  late final AddProductViewArguments arguments;
   FocusNode brandFocusNode = FocusNode();
   TextEditingController brandsController = TextEditingController();
   TextEditingController measurementController = TextEditingController();
@@ -66,6 +70,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
           productImage.Image(
             id: null,
             image: base64ImagePrefix +
+                " " +
                 base64Encode(element).replaceAll("\n", "").trim(),
             productId: null,
           ),
@@ -137,26 +142,17 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   }
 
   void pickImages() async {
-    if (kIsWeb) {
-      Uint8List selectedFile =
-          await ImagePickerWeb.getImage(outputType: ImageType.bytes)
-              as Uint8List;
-
-      if ((selectedFile.lengthInBytes / 1024) > 50) {
+    pickImagesMethod(
+      onImageUploadError: () {
         showErrorSnackBar(message: errorUploadedImageSize);
-        return;
-      }
-
-      selectedFiles.add(selectedFile);
-    } else {
-      snackBarService.showSnackbar(
-          message: 'Please add image Picker functionality for mobiles also.');
-    }
-
-    notifyListeners();
+      },
+      onImageUploadSuccess: ({required List<Uint8List> imageList}) {
+        selectedFiles = imageList;
+        notifyListeners();
+      },
+    );
   }
 
-  late final AddProductViewArguments arguments;
   init({required AddProductViewArguments arguments}) {
     this.arguments = arguments;
     if (arguments.productToEdit != null) {

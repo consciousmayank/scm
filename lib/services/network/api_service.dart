@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
@@ -283,6 +286,7 @@ class ApiService {
     String? productTitle,
     int? pageIndex,
     int? supplierId,
+    int size = Dimens.defaultProductListPageSize,
   }) async {
     Map<String, dynamic> params = Map<String, dynamic>();
 
@@ -294,6 +298,7 @@ class ApiService {
       params = <String, dynamic>{
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -305,6 +310,7 @@ class ApiService {
       params = <String, dynamic>{
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -317,6 +323,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -328,6 +335,7 @@ class ApiService {
       params = <String, dynamic>{
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -340,6 +348,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -352,6 +361,7 @@ class ApiService {
         'type': categoryFilterList,
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -365,6 +375,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -376,6 +387,7 @@ class ApiService {
       params = <String, dynamic>{
         'brand': brandsFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -388,6 +400,7 @@ class ApiService {
         'brand': brandsFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -400,6 +413,7 @@ class ApiService {
         'brand': brandsFilterList,
         'subType': subCategoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -413,6 +427,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -425,6 +440,7 @@ class ApiService {
         'brand': brandsFilterList,
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -438,6 +454,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -451,6 +468,7 @@ class ApiService {
         'subType': subCategoryFilterList,
         'type': categoryFilterList,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -465,6 +483,7 @@ class ApiService {
         'type': categoryFilterList,
         'title': productTitle,
         'page': pageIndex,
+        'size': size,
       };
     }
 
@@ -486,20 +505,28 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future<ParentApiResponse> getAllBrands(
-      {required int pageNumber,
-      required int pageSize,
-      required String brandToSearch}) async {
+  Future<ParentApiResponse> getAllBrands({
+    required int pageNumber,
+    required int pageSize,
+    String? brandToSearch,
+  }) async {
     Response? response;
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(GET_BRANDS_FOR_DASHBOARD,
-          queryParameters: {
-            'page': pageNumber,
-            'size': pageSize,
-            'title': brandToSearch
-          });
+      response = await dioClient.getDio().get(
+            GET_BRANDS_FOR_DASHBOARD,
+            queryParameters: brandToSearch == null
+                ? {
+                    'page': pageNumber,
+                    'size': pageSize,
+                  }
+                : {
+                    'page': pageNumber,
+                    'size': pageSize,
+                    'title': brandToSearch
+                  },
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -598,6 +625,30 @@ class ApiService {
       response = await dioClient
           .getDio()
           .post(USER_AUTH, data: authenticatUserRequest.toJson());
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updatePassword({
+    required String userName,
+    required String password,
+    required String newPassword,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().post(
+        UPDATE_PASSWORD,
+        data: {
+          "username": userName,
+          "password": password,
+          "newPassword": newPassword
+        },
+      );
     } on DioError catch (e) {
       error = e;
     }
@@ -860,6 +911,152 @@ class ApiService {
     }
 
     return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getPimSupervisorDashboardStatistics() async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response =
+          await dioClient.getDio().get(GET_DASHBOARD_FOR_SUPERVISOR_DASHBOARD);
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getProductsCreatedStatistics(
+      {String? selectedDate}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            GET_CREATED_PRODUCTS_BY_USER_TYPE,
+            queryParameters: selectedDate == null
+                ? null
+                : {
+                    'date': selectedDate,
+                  },
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getBarChartBasedOnProductStatuses(
+      {required ProductStatuses productStatuses}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        GET_BAR_CHART_BASED_ON_PRODUCT_STATUSES,
+        queryParameters: {
+          'status': productStatuses.getStatusString,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderInfo() async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            ORDER_INFO(
+              role: getLoggedInRole(),
+            ),
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderedBrands({required int pageSize}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDERED_BRANDS(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrderedTypes({required int pageSize}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDERED_TYPES(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getOrdersList({
+    required int pageSize,
+    required int pageNumber,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+        ORDER(
+          role: getLoggedInRole(),
+        ),
+        queryParameters: {
+          'size': pageSize,
+          'page': pageNumber,
+        },
+      );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  String getLoggedInRole() {
+    String userSelectedRole = preferences.getSelectedUserRole();
+
+    if (userSelectedRole ==
+        AuthenticatedUserRoles.ROLE_DEMAND.getStatusString) {
+      return 'demand';
+    } else {
+      return 'supply';
+    }
   }
 }
 

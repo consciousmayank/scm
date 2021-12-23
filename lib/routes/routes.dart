@@ -2,10 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
 import 'package:scm/screens/splash/splash_view.dart';
+import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
+import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
+import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 import '../routes/routes_constants.dart';
 import 'routes_constants.dart';
@@ -39,6 +43,38 @@ class AppRouter {
           ),
         );
 
+      case supplyLandingScreenRoute:
+        return FadeRoute(
+          page: SupplyModuleLandingPageView(
+            arguments: SupplyModuleLandingPageViewArguments(),
+          ),
+        );
+
+      case demandLandingScreenRoute:
+        return FadeRoute(
+          page: DemandModuleLandingPageView(
+            arguments: DemandModuleLandingPageViewArguments(),
+          ),
+        );
+
+      case productListViewPageRoute:
+        ProductListViewArguments arguments =
+            settings.arguments as ProductListViewArguments;
+        return FadeRoute(
+          page: ProductListView(
+            arguments: arguments,
+          ),
+        );
+
+      case brandsListViewPageRoute:
+        PopularBrandsViewArguments arguments =
+            settings.arguments as PopularBrandsViewArguments;
+        return FadeRoute(
+          page: PopularBrandsView(
+            arguments: arguments,
+          ),
+        );
+
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -60,8 +96,8 @@ class BaseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
-      mobile: (BuildContext context) => const NotSupportedFormFactorWidget(),
-      tablet: (BuildContext context) => const NotSupportedFormFactorWidget(),
+      mobile: (BuildContext context) => child,
+      tablet: (BuildContext context) => child,
       desktop: (BuildContext context) => child,
     );
   }

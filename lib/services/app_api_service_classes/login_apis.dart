@@ -10,10 +10,38 @@ abstract class LoginApiAbstractClass {
     required String userName,
     required String password,
   });
+
+  Future<UserAuthenticateResponse> changePassword({
+    required String userName,
+    required String password,
+    required String newPassword,
+  });
 }
 
 class LoginApi extends BaseApi implements LoginApiAbstractClass {
   final ApiService _apiService = di<ApiService>();
+
+  @override
+  Future<UserAuthenticateResponse> changePassword({
+    required String userName,
+    required String password,
+    required String newPassword,
+  }) async {
+    UserAuthenticateResponse authResponse = UserAuthenticateResponse().empty();
+
+    ParentApiResponse? apiResponse = await _apiService.updatePassword(
+      userName: userName,
+      password: password,
+      newPassword: newPassword,
+    );
+
+    if (filterResponse(apiResponse, showSnackBar: false) != null) {
+      authResponse =
+          UserAuthenticateResponse.fromMap(apiResponse.response?.data);
+    }
+
+    return authResponse;
+  }
 
   @override
   Future<UserAuthenticateResponse> login({

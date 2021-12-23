@@ -23,6 +23,81 @@ class AddProductView extends StatelessWidget {
 
   final AddProductViewArguments arguments;
 
+  void performChecksOnData({required AddProductViewModel model}) {
+    if (model.productToAdd.brand == null || model.productToAdd.brand!.isEmpty) {
+      //check if brand is empty
+      model.showErrorSnackBar(
+          message: productBrandRequiredErrorMessage,
+          onSnackBarOkButton: () {
+            model.showBrandsListDialogBox();
+          });
+    } else if (model.productToAdd.type == null ||
+        model.productToAdd.type!.isEmpty) {
+      //check if type is empty
+      model.showErrorSnackBar(
+          message: productTypeRequiredErrorMessage,
+          onSnackBarOkButton: model.typeFocusNode.requestFocus);
+    } else if (model.productToAdd.subType == null ||
+        model.productToAdd.subType!.isEmpty) {
+      //check if sub-type is empty
+      model.showErrorSnackBar(
+          message: productSubTypeRequiredErrorMessage,
+          onSnackBarOkButton: model.subTypeFocusNode.requestFocus);
+    } else if (model.productToAdd.measurementUnit == null ||
+        model.productToAdd.measurementUnit!.isEmpty) {
+      //check if measurementUnit is empty
+      model.showErrorSnackBar(
+          message: productMeasurementUnitRequiredErrorMessage,
+          onSnackBarOkButton: model.measurementFocusNode.requestFocus);
+    } else if (model.productToAdd.title == null ||
+        model.productToAdd.title!.isEmpty) {
+      //check if title is empty
+      model.showErrorSnackBar(
+          message: productTitleRequiredErrorMessage,
+          onSnackBarOkButton: model.measurementUnitFocusNode.requestFocus);
+    } else if (model.productToAdd.tags == null ||
+        model.productToAdd.tags!.isEmpty) {
+      //check if tags is empty
+      model.showErrorSnackBar(
+          message: productTagsRequiredErrorMessage,
+          onSnackBarOkButton: model.tagsFocusNode.requestFocus);
+    } else if (model.productToAdd.summary == null ||
+        model.productToAdd.summary!.isEmpty) {
+      //check if summary is empty
+      model.showErrorSnackBar(
+          message: productSummaryRequiredErrorMessage,
+          onSnackBarOkButton: model.summaryFocusNode.requestFocus);
+    } else if (model.productToAdd.tags == null ||
+        model.productToAdd.tags!.length < 15) {
+      //check if tag length is less then 15 is empty
+      model.showErrorSnackBar(
+          message: productTagsLengthErrorMessage,
+          onSnackBarOkButton: model.tagsFocusNode.requestFocus);
+    } else if (model.productToAdd.measurement == null ||
+        model.productToAdd.measurement! == 0) {
+      //check if measurement value is 0
+      model.showErrorSnackBar(
+        message: productMeasurementRequiredErrorMessage,
+        onSnackBarOkButton: model.brandFocusNode.requestFocus,
+      );
+    } else {
+      model.addProduct();
+    }
+  }
+
+  void performCheckOnImage({required AddProductViewModel model}) {
+    if (model.selectedFiles.isEmpty) {
+      model.showErrorSnackBar(
+        message: productImageRequiredErrorMessage,
+        onSnackBarOkButton: () {
+          model.pickImages();
+        },
+      );
+    } else {
+      model.addProduct();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddProductViewModel>.reactive(
@@ -33,8 +108,10 @@ class AddProductView extends StatelessWidget {
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    const PageBarWidget(
-                      title: addProductPageTitle,
+                    PageBarWidget(
+                      title: arguments.productToEdit == null
+                          ? addProductPageTitle
+                          : updateProductPageTitle,
                       subTitle: addProductPageSubTitle,
                     ),
                     Row(
@@ -196,6 +273,7 @@ class AddProductView extends StatelessWidget {
                         wSizedBox(width: 10),
                         Expanded(
                           child: AppTextField.withCounter(
+                            maxCharacters: Dimens().maxTagsLength,
                             maxCounterValue: 15,
                             enteredCount: model.productToAdd.tags == null
                                 ? 0
@@ -228,13 +306,15 @@ class AddProductView extends StatelessWidget {
                                 Expanded(
                                   flex: 3,
                                   child: AppTextField.withCounter(
-                                    maxCounterValue: 120,
+                                    maxCharacters: Dimens().maxSummaryLength,
+                                    maxCounterValue: Dimens().maxTagsLength,
                                     enteredCount: model.productToAdd.summary ==
                                             null
                                         ? 0
                                         : model.productToAdd.summary!.length,
                                     helperText: labelSummaryHelperText,
                                     hintText: labelSummary,
+                                    keyboardType: TextInputType.multiline,
                                     controller: model.summaryController,
                                     focusNode: model.summaryFocusNode,
                                     maxLines: 11,
@@ -318,13 +398,15 @@ class AddProductView extends StatelessWidget {
                               Expanded(
                                 flex: 1,
                                 child: AppTextField.withCounter(
-                                  maxCounterValue: 120,
+                                  maxCharacters: Dimens().maxSummaryLength,
+                                  maxCounterValue: Dimens().minSummaryLength,
                                   enteredCount:
                                       model.productToAdd.summary == null
                                           ? 0
                                           : model.productToAdd.summary!.length,
                                   helperText: labelSummaryHelperText,
                                   hintText: labelSummary,
+                                  keyboardType: TextInputType.multiline,
                                   controller: model.summaryController,
                                   focusNode: model.summaryFocusNode,
                                   maxLines: 11,
@@ -348,83 +430,10 @@ class AddProductView extends StatelessWidget {
                         child: TextButton(
                           clipBehavior: Clip.antiAlias,
                           onPressed: () {
-                            if (model.productToAdd.brand == null ||
-                                model.productToAdd.brand!.isEmpty) {
-                              //check if brand is empty
-                              model.showErrorSnackBar(
-                                  message: productBrandRequiredErrorMessage,
-                                  onSnackBarOkButton: () {
-                                    model.showBrandsListDialogBox();
-                                  });
-                            } else if (model.productToAdd.type == null ||
-                                model.productToAdd.type!.isEmpty) {
-                              //check if type is empty
-                              model.showErrorSnackBar(
-                                  message: productTypeRequiredErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.typeFocusNode.requestFocus);
-                            } else if (model.productToAdd.subType == null ||
-                                model.productToAdd.subType!.isEmpty) {
-                              //check if sub-type is empty
-                              model.showErrorSnackBar(
-                                  message: productSubTypeRequiredErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.subTypeFocusNode.requestFocus);
-                            } else if (model.productToAdd.measurementUnit ==
-                                    null ||
-                                model.productToAdd.measurementUnit!.isEmpty) {
-                              //check if measurementUnit is empty
-                              model.showErrorSnackBar(
-                                  message:
-                                      productMeasurementUnitRequiredErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.measurementFocusNode.requestFocus);
-                            } else if (model.productToAdd.title == null ||
-                                model.productToAdd.title!.isEmpty) {
-                              //check if title is empty
-                              model.showErrorSnackBar(
-                                  message: productTitleRequiredErrorMessage,
-                                  onSnackBarOkButton: model
-                                      .measurementUnitFocusNode.requestFocus);
-                            } else if (model.productToAdd.tags == null ||
-                                model.productToAdd.tags!.isEmpty) {
-                              //check if tags is empty
-                              model.showErrorSnackBar(
-                                  message: productTagsRequiredErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.tagsFocusNode.requestFocus);
-                            } else if (model.productToAdd.summary == null ||
-                                model.productToAdd.summary!.isEmpty) {
-                              //check if summary is empty
-                              model.showErrorSnackBar(
-                                  message: productSummaryRequiredErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.summaryFocusNode.requestFocus);
-                            } else if (model.productToAdd.tags == null ||
-                                model.productToAdd.tags!.length < 15) {
-                              //check if tag length is less then 15 is empty
-                              model.showErrorSnackBar(
-                                  message: productTagsLengthErrorMessage,
-                                  onSnackBarOkButton:
-                                      model.tagsFocusNode.requestFocus);
-                            } else if (model.productToAdd.measurement == null ||
-                                model.productToAdd.measurement! == 0) {
-                              //check if measurement value is 0
-                              model.showErrorSnackBar(
-                                message: productMeasurementRequiredErrorMessage,
-                                onSnackBarOkButton:
-                                    model.brandFocusNode.requestFocus,
-                              );
-                            } else if (model.isDeoGd() &&
-                                model.selectedFiles.isEmpty) {
-                              model.showErrorSnackBar(
-                                message: productImageRequiredErrorMessage,
-                                onSnackBarOkButton: () {
-                                  model.pickImages();
-                                },
-                              );
+                            if (model.isDeoGd()) {
+                              performCheckOnImage(model: model);
                             } else {
-                              model.addProduct();
+                              performChecksOnData(model: model);
                             }
                           },
                           child: Text(arguments.productToEdit == null
@@ -444,11 +453,11 @@ class AddProductView extends StatelessWidget {
 }
 
 class AddProductViewArguments {
-  final Product? productToEdit;
-  final Function()? onProductUpdated;
-
   AddProductViewArguments({
     this.productToEdit,
     this.onProductUpdated,
   });
+
+  final Function()? onProductUpdated;
+  final Product? productToEdit;
 }

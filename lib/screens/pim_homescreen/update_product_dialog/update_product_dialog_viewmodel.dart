@@ -3,6 +3,7 @@ import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_
 
 class UpdateProductDialogBoxViewModel extends GeneralisedBaseViewModel {
   late final UpdateProductDialogBoxViewArguments arguments;
+
   init({required UpdateProductDialogBoxViewArguments arguments}) {
     this.arguments = arguments;
   }

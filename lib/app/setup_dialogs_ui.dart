@@ -4,12 +4,15 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
+import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
+import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void setupDialogUi() {
@@ -34,6 +37,21 @@ void setupDialogUi() {
         ),
     DialogType.GET_PRODUCT_BY_ID: (context, sheetRequest, completer) =>
         GetProductByIdDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ChANGE_PASSWORD: (context, sheetRequest, completer) =>
+        ChangePasswordViewDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.PRODUCT_DETAILS: (context, sheetRequest, completer) =>
+        ProductDetailDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.PRODUCTS_FILTER: (context, sheetRequest, completer) =>
+        ProductFilterDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

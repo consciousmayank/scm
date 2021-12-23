@@ -11,11 +11,12 @@ import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductListSupervisorView extends StatelessWidget {
-  final ProductListSupervisorViewArguments arguments;
   const ProductListSupervisorView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListSupervisorViewArguments arguments;
 
   @override
   Widget build(BuildContext context) {

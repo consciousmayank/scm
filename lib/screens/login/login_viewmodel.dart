@@ -7,14 +7,14 @@ import 'package:scm/model_classes/user_authenticate_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/app_api_service_classes/login_apis.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 
 class LoginViewModel extends GeneralisedBaseViewModel {
   bool isPasswordVisible = false;
-  TextEditingController userNameController = TextEditingController();
-  FocusNode userNameFocusNode = FocusNode();
-
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocusNode = FocusNode();
+  TextEditingController userNameController = TextEditingController();
+  FocusNode userNameFocusNode = FocusNode();
 
   final LoginApi _loginApi = di<LoginApi>();
 
@@ -43,10 +43,18 @@ class LoginViewModel extends GeneralisedBaseViewModel {
         if (authenticateResponse.authorities != null) {
           //authenticated user has roles.
           if (authenticateResponse.authorities!.length == 1) {
-            //this is a data entry user
             preferences.setSelectedUserRole(
-                userRole: authenticateResponse.authorities!.first);
-            navigationService.replaceWith(pimHomeScreenRoute);
+              userRole: authenticateResponse.authorities!.first,
+            );
+            if (loadProductEntryModule(
+                authenticateResponse.authorities!.first)) {
+              navigationService.replaceWith(pimHomeScreenRoute);
+            } else if (loadSupplyModule(
+                authenticateResponse.authorities!.first)) {
+              navigationService.replaceWith(supplyLandingScreenRoute);
+            } else {
+              navigationService.replaceWith(demandLandingScreenRoute);
+            }
           } else {
             //this is a demand or supply user
             preferences.setAuthenticatedUserRoles(

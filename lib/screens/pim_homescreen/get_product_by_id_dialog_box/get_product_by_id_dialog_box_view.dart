@@ -4,20 +4,21 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_viewmodel.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class GetProductByIdDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const GetProductByIdDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _GetProductByIdDialogBoxViewState createState() =>
@@ -51,7 +52,7 @@ class _GetProductByIdDialogBoxViewState
                 ],
                 controller: model.productIdController,
                 autoFocus: true,
-                hintText: 'Enter Product Id',
+                hintText: labelEnterProductId,
                 buttonIcon: Icon(model.productIdController.text.isEmpty
                     ? Icons.search
                     : Icons.close),
@@ -88,8 +89,7 @@ class _GetProductByIdDialogBoxViewState
               Flexible(
                 child: model.product == null
                     ? const Center(
-                        child: Text(
-                            'Please enter a valid product id in the search box'),
+                        child: Text(labelEnterValidProductId),
                       )
                     : AddProductView(
                         key: UniqueKey(),
@@ -114,9 +114,9 @@ class _GetProductByIdDialogBoxViewState
 }
 
 class GetProductByIdDialogBoxViewArguments {
-  final String title;
-
   GetProductByIdDialogBoxViewArguments({
     required this.title,
   });
+
+  final String title;
 }

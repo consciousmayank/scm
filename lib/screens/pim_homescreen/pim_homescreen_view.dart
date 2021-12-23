@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
+import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PimHomeScreenView extends StatelessWidget {
@@ -17,6 +19,59 @@ class PimHomeScreenView extends StatelessWidget {
   }) : super(key: key);
 
   final PimHomeScreenViewArguments arguments;
+
+  getDeoDestinations({required bool isRotated}) {
+    return [
+      buildRotatedTextRailDestination(
+        text: labelAddProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+    ];
+  }
+
+  getGdDestinations({required bool isRotated}) {
+    return [
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddBrandImages,
+        isTurned: isRotated,
+      ),
+    ];
+  }
+
+  getSuperVisorDestinations({required bool isRotated}) {
+    return [
+      const NavigationRailDestination(
+        selectedIcon: Icon(
+          Icons.home,
+        ),
+        icon: Icon(
+          Icons.home,
+        ),
+        label: SizedBox.shrink(),
+        // label: Text("Home"),
+      ),
+      buildRotatedTextRailDestination(
+        text: labelViewProducts,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddBrand,
+        isTurned: isRotated,
+      ),
+      buildRotatedTextRailDestination(
+        text: labelAddProducts,
+        isTurned: isRotated,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +83,11 @@ class PimHomeScreenView extends StatelessWidget {
             wSizedBox(width: 10),
             Center(child: Text('Hi, ${model.authenticatedUserName}')),
             wSizedBox(width: 30),
-            InputChip(
-              onPressed: () {
-                model.logout();
-              },
-              // avatar: CircleAvatar(
-              //   backgroundColor: AppColors().primaryColor.shade200,
-              //   child: Text(
-              //     model.authenticatedUserName.substring(0, 1),
-              //     style: const TextStyle(
-              //       color: Colors.white,
-              //     ),
-              //   ),
-              // ),
-              label: Text(
-                labelLogout,
-                style: Theme.of(context).textTheme.button!.copyWith(
-                      color: AppColors().white,
-                    ),
-              ),
+            AppPopUpMenuWidget(
+              onOptionsSelected: ({value}) =>
+                  model.actionPopUpItemSelected(selectedValue: value),
+              options: profileOptions,
+              toolTipLabel: popUpMenuLabelToolTip,
             ),
             wSizedBox(width: 10),
           ]),
@@ -99,6 +140,14 @@ class PimHomeScreenView extends StatelessWidget {
                             fontSize: 16,
                             color: AppColors().primaryColor.shade50,
                           ),
+                  selectedIconTheme: const IconThemeData(
+                    color: Colors.yellow,
+                    size: 25,
+                  ),
+                  unselectedIconTheme: IconThemeData(
+                    color: AppColors().primaryColor.shade50,
+                    size: 20,
+                  ),
                   selectedIndex: model.currentIndex,
                   onDestinationSelected: (int index) {
                     model.setIndex(index);
@@ -128,49 +177,6 @@ class PimHomeScreenView extends StatelessWidget {
       ),
       viewModelBuilder: () => PimHomeScreenViewModel(),
     );
-  }
-
-  getDeoDestinations({required bool isRotated}) {
-    return [
-      buildRotatedTextRailDestination(
-        text: labelAddProducts,
-        isTurned: isRotated,
-      ),
-      buildRotatedTextRailDestination(
-        text: labelViewProducts,
-        isTurned: isRotated,
-      ),
-    ];
-  }
-
-  getGdDestinations({required bool isRotated}) {
-    return [
-      buildRotatedTextRailDestination(
-        text: labelViewProducts,
-        isTurned: isRotated,
-      ),
-      buildRotatedTextRailDestination(
-        text: labelAddBrandImages,
-        isTurned: isRotated,
-      ),
-    ];
-  }
-
-  getSuperVisorDestinations({required bool isRotated}) {
-    return [
-      buildRotatedTextRailDestination(
-        text: labelViewProducts,
-        isTurned: isRotated,
-      ),
-      buildRotatedTextRailDestination(
-        text: labelAddBrand,
-        isTurned: isRotated,
-      ),
-      buildRotatedTextRailDestination(
-        text: labelAddProducts,
-        isTurned: isRotated,
-      ),
-    ];
   }
 }
 

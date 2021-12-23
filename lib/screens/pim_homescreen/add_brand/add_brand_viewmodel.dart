@@ -1,17 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+// import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 
 class AddBrandViewModel extends GeneralisedBaseViewModel {
+  List<Brand> addedProductList = [];
   TextEditingController brandTitleController = TextEditingController();
   FocusNode brandTitleFocusNode = FocusNode();
   Brand brandToAdd = Brand.empty();
@@ -20,23 +24,15 @@ class AddBrandViewModel extends GeneralisedBaseViewModel {
   final BrandsApi _brandsApi = di<BrandsApi>();
 
   void pickImages() async {
-    if (kIsWeb) {
-      Uint8List selectedFile =
-          await ImagePickerWeb.getImage(outputType: ImageType.bytes)
-              as Uint8List;
-
-      if ((selectedFile.lengthInBytes / 1024) > 50) {
+    pickImagesMethod(
+      onImageUploadError: () {
         showErrorSnackBar(message: errorUploadedImageSize);
-        return;
-      }
-
-      selectedFiles.add(selectedFile);
-    } else {
-      snackBarService.showSnackbar(
-          message: 'Please add image Picker functionality for mobiles also.');
-    }
-
-    notifyListeners();
+      },
+      onImageUploadSuccess: ({required List<Uint8List> imageList}) {
+        selectedFiles = imageList;
+        notifyListeners();
+      },
+    );
   }
 
   void addBrand() async {
@@ -44,7 +40,8 @@ class AddBrandViewModel extends GeneralisedBaseViewModel {
       List<String> images = [];
       for (var element in selectedFiles) {
         images.add(
-          'data:image/jpeg;base64, ' +
+          base64ImagePrefix +
+              ' ' +
               base64Encode(element).replaceAll("\n", "").trim(),
         );
       }
@@ -52,15 +49,34 @@ class AddBrandViewModel extends GeneralisedBaseViewModel {
       brandToAdd = brandToAdd.copyWith(image: images.first);
     }
 
-    ApiResponse response = await _brandsApi.addBrand(brand: brandToAdd);
+    Brand response = await _brandsApi.addBrand(brand: brandToAdd);
 
-    if (response.statusCode == 201) {
+    if (response.id != null && response.id! > 0) {
+      addedProductList.add(response);
       showInfoSnackBar(message: 'Brand added successfully');
       brandTitleController.clear();
       selectedFiles.clear();
       brandToAdd = Brand.empty();
     } else {
       showErrorSnackBar(message: 'Brand not added. please try again');
+    }
+    notifyListeners();
+  }
+
+  void updateBrand({required Brand selectedBrand}) {
+    brandToAdd = selectedBrand;
+    brandTitleController.text = selectedBrand.title ?? '';
+    if (selectedBrand.image != null && selectedBrand.image!.isNotEmpty) {
+      selectedFiles.clear();
+      selectedFiles.add(
+        base64Decode(
+          selectedBrand.image!
+              .replaceAll(base64ImagePrefix, '')
+              .replaceAll(' ', ''),
+        ),
+      );
+    } else {
+      selectedFiles.clear();
     }
     notifyListeners();
   }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 
 class ProductListDataSource extends DataTableSource {
-  List<Product> productList = [];
   late Function(Product product) onTap;
+  List<Product> productList = [];
 
   void setProductList(List<Product> productList) {
     if (productList.isEmpty) {
@@ -18,8 +18,11 @@ class ProductListDataSource extends DataTableSource {
   }
 
   bool get isRowCountApproximate => false;
+
   int get rowCount => productList.length;
+
   int get selectedRowCount => 0;
+
   DataRow getRow(int index) {
     return DataRow(
       cells: [

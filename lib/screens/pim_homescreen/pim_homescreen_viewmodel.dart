@@ -3,12 +3,16 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/pim_homescreen/add_brand/add_brand_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
+import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
+import 'package:scm/screens/pim_homescreen/dashboard/pim_dashboard_view.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_view.dart';
 import 'package:scm/screens/pim_homescreen/product_list_supervisor/product_list_supervisor_view.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -70,16 +74,26 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
     } else {
       //if authenticated user is a SUPERVISOR then show add product view, add brand view, product list view
       switch (currentIndex) {
+        // case 0:
+        // return const Center(
+        //   child:
+        //       Text('Coming Soon. Here all the stats will be shown to you.'),
+        // );
+
         case 0:
+          return PimDashboardView(
+            arguments: PimDashboardViewArguments(),
+          );
+        case 1:
           return ProductListSupervisorView(
             arguments: ProductListSupervisorViewArguments(),
           );
 
-        case 1:
+        case 2:
           return AddBrandView(
             arguments: AddBrandViewArguments(),
           );
-        case 2:
+        case 3:
           return AddProductView(
             arguments: AddProductViewArguments(),
           );
@@ -94,5 +108,29 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
 
   initScreen() {
     authenticatedUserName = preferences.getAuthenticatedUserName();
+  }
+
+  actionPopUpItemSelected({String? selectedValue}) {
+    if (selectedValue == null) return;
+    switch (selectedValue) {
+      case popUpMenuLabelLogout:
+        logout();
+        break;
+
+      case popUpMenuLabelChangePassword:
+        changePassword();
+        break;
+    }
+  }
+
+  void changePassword() async {
+    DialogResponse? changePasswordDialogResponse =
+        await dialogService.showCustomDialog(
+      variant: DialogType.ChANGE_PASSWORD,
+      data: ChangePasswordViewDialogBoxViewArguments(
+        title: popUpMenuLabelChangePassword,
+      ),
+      barrierDismissible: true,
+    );
   }
 }

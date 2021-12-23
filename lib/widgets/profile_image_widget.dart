@@ -8,15 +8,23 @@ class ProfileImageWidget extends StatelessWidget {
     Key? key,
     this.imageUrlString,
     this.profileImageSize,
+    this.elevation = 10,
   }) : super(key: key);
 
+  const ProfileImageWidget.withNoElevation({
+    Key? key,
+    this.imageUrlString,
+    this.profileImageSize,
+    this.elevation,
+  }) : super(key: key);
   final String? imageUrlString;
   final double? profileImageSize;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 10,
+      elevation: elevation,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(

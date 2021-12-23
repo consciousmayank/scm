@@ -9,6 +9,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/decorative_container.dart';
 import 'package:scm/widgets/dotted_divider.dart';
+import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
@@ -127,88 +128,29 @@ class ProductsListView extends StatelessWidget {
                     flex: 1,
                   ),
 
-                  Container(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 10,
-                      top: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors().primaryColor.shade50,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        TextButton.icon(
-                          style: AppTextButtonsStyles().textButtonStyle,
-                          onPressed: model.pageNumber == 0
-                              ? null
-                              : () {
-                                  model.pageNumber--;
-                                  model.getProductList(showLoader: true);
-                                },
-                          icon: const Icon(
-                            Icons.arrow_left,
-                          ),
-                          label: const Text('First Page'),
-                        ),
-                        TextButton.icon(
-                          style: AppTextButtonsStyles().textButtonStyle,
-                          onPressed: model.pageNumber == 0
-                              ? null
-                              : () {
-                                  model.pageNumber--;
-                                  model.getProductList(showLoader: true);
-                                },
-                          icon: const Icon(
-                            Icons.arrow_left,
-                          ),
-                          label: const Text('Previous Page'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            'Page ${model.pageNumber + 1} of ${model.productListResponse.totalPages}',
-                          ),
-                        ),
-                        TextButton.icon(
-                          style: AppTextButtonsStyles().textButtonStyle,
-                          onPressed: model.pageNumber ==
-                                  (model.productListResponse.totalPages! - 1)
-                              ? null
-                              : () {
-                                  model.pageNumber++;
-                                  model.getProductList(showLoader: true);
-                                },
-                          icon: const Text('Next Page'),
-                          label: const Icon(
-                            Icons.arrow_right,
-                          ),
-                        ),
-                        TextButton.icon(
-                          style: AppTextButtonsStyles().textButtonStyle,
-                          onPressed: model.pageNumber ==
-                                  (model.productListResponse.totalPages! - 1)
-                              ? null
-                              : () {
-                                  model.pageNumber =
-                                      model.productListResponse.totalPages! - 1;
-                                  model.getProductList(showLoader: true);
-                                },
-                          icon: const Text('Last Page'),
-                          label: const Icon(
-                            Icons.arrow_right,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  ListFooter.firstPreviousNextLast(
+                    pageNumber: model.pageNumber,
+                    totalPages: model.productListResponse.totalPages == null
+                        ? 0
+                        : model.productListResponse.totalPages! - 1,
+                    onFirstPageClick: () {
+                      model.pageNumber = 0;
+                      model.getProductList(showLoader: true);
+                    },
+                    onLastPageClick: () {
+                      model.pageNumber =
+                          model.productListResponse.totalPages! - 1;
+                      model.getProductList(showLoader: true);
+                    },
+                    onPreviousPageClick: () {
+                      model.pageNumber--;
+                      model.getProductList(showLoader: true);
+                    },
+                    onNextPageClick: () {
+                      model.pageNumber++;
+                      model.getProductList(showLoader: true);
+                    },
+                  )
                 ],
               ),
       ),
@@ -218,9 +160,9 @@ class ProductsListView extends StatelessWidget {
 }
 
 class ProductsListViewArguments {
-  final ProductListType productListType;
-
   ProductsListViewArguments({required this.productListType});
+
+  final ProductListType productListType;
 }
 
 enum ProductListType { TODO, PUBLISHED }

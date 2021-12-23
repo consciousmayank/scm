@@ -237,7 +237,7 @@ AppBarTheme getAppBarTheme() {
     backgroundColor: AppColors().primaryColor[800],
     titleTextStyle: getAppTextTheme().headline1,
     iconTheme: const IconThemeData(
-      color: Colors.black,
+      color: Colors.white,
       opacity: 1,
       size: 24,
     ),
@@ -296,77 +296,77 @@ getTextButtonStyle() {
 
 TextTheme getAppTextTheme() {
   return TextTheme(
-    headline1: GoogleFonts.arimaMadurai(
+    headline1: GoogleFonts.openSans(
       fontSize: 100,
       fontWeight: FontWeight.w300,
       color: Colors.black,
       // letterSpacing: -1.5,
     ),
-    headline2: GoogleFonts.arimaMadurai(
+    headline2: GoogleFonts.openSans(
       fontSize: 62,
       fontWeight: FontWeight.w300,
       color: Colors.black,
       // letterSpacing: -0.5,
     ),
-    headline3: GoogleFonts.arimaMadurai(
+    headline3: GoogleFonts.openSans(
       fontSize: 50,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
-    headline4: GoogleFonts.arimaMadurai(
+    headline4: GoogleFonts.openSans(
       fontSize: 35,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       color: Colors.black,
     ),
-    headline5: GoogleFonts.arimaMadurai(
+    headline5: GoogleFonts.openSans(
       fontSize: 25,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
-    headline6: GoogleFonts.arimaMadurai(
+    headline6: GoogleFonts.openSans(
       fontSize: 21,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.15,
       color: Colors.black,
     ),
-    subtitle1: GoogleFonts.arimaMadurai(
+    subtitle1: GoogleFonts.openSans(
       fontSize: 17,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
       color: Colors.black,
     ),
-    subtitle2: GoogleFonts.arimaMadurai(
+    subtitle2: GoogleFonts.openSans(
       fontSize: 15,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.1,
       color: Colors.black,
     ),
-    bodyText1: GoogleFonts.arimaMadurai(
+    bodyText1: GoogleFonts.openSans(
       fontSize: 17,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.5,
       color: Colors.black,
     ),
-    bodyText2: GoogleFonts.arimaMadurai(
+    bodyText2: GoogleFonts.openSans(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       color: Colors.black,
     ),
-    button: GoogleFonts.arimaMadurai(
+    button: GoogleFonts.openSans(
       fontSize: 15,
       fontWeight: FontWeight.w500,
       letterSpacing: 1.25,
       color: Colors.black,
     ),
-    caption: GoogleFonts.arimaMadurai(
+    caption: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.4,
       color: Colors.black,
     ),
-    overline: GoogleFonts.arimaMadurai(
+    overline: GoogleFonts.openSans(
       fontSize: 10,
       fontWeight: FontWeight.w400,
       letterSpacing: 1.5,

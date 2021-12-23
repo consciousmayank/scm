@@ -26,6 +26,12 @@ const String GET_BRAND_LIST = "/api/product/brands";
 const String GET_CATEGORIES_LIST = "/api/product/types";
 
 const String GET_BRANDS_FOR_DASHBOARD = "/api/brands";
+const String GET_DASHBOARD_FOR_SUPERVISOR_DASHBOARD = "/api/admin/statistics";
+
+const String GET_BAR_CHART_BASED_ON_PRODUCT_STATUSES =
+    "/api/admin/statistics/product/chart/bar";
+const String GET_CREATED_PRODUCTS_BY_USER_TYPE =
+    "/api/admin/statistics/product/created";
 
 /// Supplier's API
 final GET_SUPPLIER_PRODUCTS = (supplierId) => '/api/supply/product/list';
@@ -37,10 +43,15 @@ final GET_PRODUCT_BY_ID = (productId) => "/api/product/$productId";
 
 final GET_PRODUCT_IMAGE = (imageName) => "/api/admin/image/get/$imageName.jpg";
 final GET_ORDER_SUMMARY = (orderId) => "/api/supply/order/$orderId";
+final ORDER_INFO = ({required String role}) => "/api/$role/order/info";
+final ORDERED_BRANDS = ({required String role}) => "/api/$role/order/brand";
+final ORDERED_TYPES = ({required String role}) => "/api/$role/order/type";
+final ORDER = ({required String role}) => "/api/$role/order";
 
 const String ORDERS = "/api/supply/order";
 
 const String USER_AUTH = "/api/user/authenticate";
+const String UPDATE_PASSWORD = "/api/user/update/password";
 
 const String USER_REGISTER = '/api/user/register';
 

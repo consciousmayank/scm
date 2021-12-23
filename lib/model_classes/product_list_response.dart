@@ -168,6 +168,7 @@ class Product {
       );
 
   String? brand;
+  String? creationdate;
   int? hsn;
   int? id;
   List<Image>? images;
@@ -179,7 +180,6 @@ class Product {
   String? tags;
   String? title;
   String? type;
-  String? creationdate;
 
   Product copyWith({
     int? id,
