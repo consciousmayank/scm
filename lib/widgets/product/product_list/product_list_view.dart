@@ -19,11 +19,85 @@ import 'package:scm/widgets/product/product_list/product_list_item/product_list_
 import 'package:stacked/stacked.dart';
 
 class ProductListView extends StatelessWidget {
-  final ProductListViewArguments arguments;
   const ProductListView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListViewArguments arguments;
+
+  String getTitle({required ProductListViewModel model}) {
+    return model.brandsFilterList.isNotEmpty ||
+            model.categoryFilterList.isNotEmpty ||
+            model.subCategoryFilterList.isNotEmpty
+        ? 'Product List'
+        : 'Popular Products';
+  }
+
+  List<Widget> getOptionsList({
+    required ProductListViewModel model,
+    required BuildContext context,
+  }) {
+    return [
+      wSizedBox(width: 10),
+      if (arguments.showSeeAll)
+        AppInkwell(
+          onTap: () => model.takeToProductListFullScreen(),
+          child: Text(
+            'See All',
+            style: AppTextStyles(context: context)
+                .popularBrandsTitleStyle
+                .copyWith(
+                    color: AppColors().popularBrandsSeeAllBg,
+                    decoration: TextDecoration.underline),
+          ),
+        ),
+      if (arguments.showFilterAndSortOption)
+        Row(
+          children: [
+            wSizedBox(
+              width: 8,
+            ),
+            AnimatedSearchWidget(
+              hintText: labelSearchProducts,
+              onSearch: ({required String searchTerm}) {
+                model.productTitle = searchTerm;
+                model.getProductList();
+              },
+              onCrossButtonClicked: () {
+                model.productTitle = '';
+                model.getProductList();
+              },
+              // searchController: model.searchController,
+              // searchFocusNode: model.searchFocusNode,
+            ),
+            wSizedBox(
+              width: 8,
+            ),
+            TextButton.icon(
+              style: AppTextButtonsStyles().textButtonStyleForProductListItem,
+              onPressed: () => model.openFiltersDialogBox(),
+              icon: const Icon(Icons.filter),
+              label: Text(
+                model.getAppliedFiltersCount() == 0
+                    ? 'Filter'
+                    : 'Filter (${model.getAppliedFiltersCount()})',
+              ),
+            ),
+            wSizedBox(width: 8),
+            // TextButton.icon(
+            //   style: AppTextButtonsStyles().textButtonStyleForProductListItem,
+            //   onPressed: () => model.openSortDialogBox(),
+            //   icon: const Icon(Icons.sort),
+            //   label: const Text(
+            //     'Sort',
+            //   ),
+            // ),
+          ],
+        ),
+      wSizedBox(width: 10),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,92 +292,21 @@ class ProductListView extends StatelessWidget {
       viewModelBuilder: () => ProductListViewModel(),
     );
   }
-
-  String getTitle({required ProductListViewModel model}) {
-    return model.brandsFilterList.isNotEmpty ||
-            model.categoryFilterList.isNotEmpty ||
-            model.subCategoryFilterList.isNotEmpty
-        ? 'Product List'
-        : 'Popular Products';
-  }
-
-  List<Widget> getOptionsList({
-    required ProductListViewModel model,
-    required BuildContext context,
-  }) {
-    return [
-      wSizedBox(width: 10),
-      if (arguments.showSeeAll)
-        AppInkwell(
-          onTap: () => model.takeToProductListFullScreen(),
-          child: Text(
-            'See All',
-            style: AppTextStyles(context: context)
-                .popularBrandsTitleStyle
-                .copyWith(
-                    color: AppColors().popularBrandsSeeAllBg,
-                    decoration: TextDecoration.underline),
-          ),
-        ),
-      if (arguments.showFilterAndSortOption)
-        Row(
-          children: [
-            wSizedBox(
-              width: 8,
-            ),
-            AnimatedSearchWidget(
-              hintText: labelSearchProducts,
-              onSearch: ({required String searchTerm}) {
-                model.productTitle = searchTerm;
-                model.getProductList();
-              },
-              onCrossButtonClicked: () {
-                model.productTitle = '';
-                model.getProductList();
-              },
-              // searchController: model.searchController,
-              // searchFocusNode: model.searchFocusNode,
-            ),
-            wSizedBox(
-              width: 8,
-            ),
-            TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyleForProductListItem,
-              onPressed: () => model.openFiltersDialogBox(),
-              icon: const Icon(Icons.filter),
-              label: Text(
-                model.getAppliedFiltersCount() == 0
-                    ? 'Filter'
-                    : 'Filter (${model.getAppliedFiltersCount()})',
-              ),
-            ),
-            wSizedBox(width: 8),
-            // TextButton.icon(
-            //   style: AppTextButtonsStyles().textButtonStyleForProductListItem,
-            //   onPressed: () => model.openSortDialogBox(),
-            //   icon: const Icon(Icons.sort),
-            //   label: const Text(
-            //     'Sort',
-            //   ),
-            // ),
-          ],
-        ),
-      wSizedBox(width: 10),
-    ];
-  }
 }
 
 class ProductListViewArguments {
-  final List<String?>? brandsFilterList;
-  final List<String?>? categoryFilterList;
-  final List<String?>? subCategoryFilterList;
-  final String? productTitle;
-  final int? supplierId;
-  final bool isScrollVertical,
-      showSeeAll,
-      showBottomPageChanger,
-      showFilterAndSortOption,
-      showAppbar;
+  ProductListViewArguments.appbar({
+    this.showAppbar = false,
+    this.isScrollVertical = true,
+    this.showBottomPageChanger = true,
+    this.showFilterAndSortOption = false,
+    this.showSeeAll = false,
+    required this.brandsFilterList,
+    required this.categoryFilterList,
+    required this.subCategoryFilterList,
+    required this.productTitle,
+    required this.supplierId,
+  });
 
   ProductListViewArguments.asWidget({
     this.isScrollVertical = false,
@@ -331,18 +334,17 @@ class ProductListViewArguments {
     required this.supplierId,
   });
 
-  ProductListViewArguments.appbar({
-    this.showAppbar = false,
-    this.isScrollVertical = true,
-    this.showBottomPageChanger = true,
-    this.showFilterAndSortOption = false,
-    this.showSeeAll = false,
-    required this.brandsFilterList,
-    required this.categoryFilterList,
-    required this.subCategoryFilterList,
-    required this.productTitle,
-    required this.supplierId,
-  });
+  final List<String?>? brandsFilterList;
+  final List<String?>? categoryFilterList;
+  final String? productTitle;
+  final bool isScrollVertical,
+      showSeeAll,
+      showBottomPageChanger,
+      showFilterAndSortOption,
+      showAppbar;
+
+  final List<String?>? subCategoryFilterList;
+  final int? supplierId;
 }
 
 class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {

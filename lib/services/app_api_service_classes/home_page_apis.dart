@@ -9,25 +9,11 @@ abstract class HomePageApis {
     required int pageIndex,
     String searchTerm,
   });
+
   Future<ImageResponse?> getProductImage({required imageName});
 }
 
 class HomePageApisImpl extends BaseApi implements HomePageApis {
-  @override
-  Future<ImageResponse?> getProductImage({required imageName}) async {
-    ImageResponse? imageResponse;
-    ParentApiResponse apiResponse =
-        await apiService.getProductImage(imageName: imageName);
-    if (filterResponse(apiResponse, showSnackBar: false) != null) {
-      //
-      // if(!apiResponse.isNoDataFound())
-
-      imageResponse = ImageResponse.fromMap(apiResponse.response?.data);
-    }
-
-    return imageResponse;
-  }
-
   @override
   Future<AllBrandsResponse?> getAllBrands({
     required int size,
@@ -50,5 +36,20 @@ class HomePageApisImpl extends BaseApi implements HomePageApis {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<ImageResponse?> getProductImage({required imageName}) async {
+    ImageResponse? imageResponse;
+    ParentApiResponse apiResponse =
+        await apiService.getProductImage(imageName: imageName);
+    if (filterResponse(apiResponse, showSnackBar: false) != null) {
+      //
+      // if(!apiResponse.isNoDataFound())
+
+      imageResponse = ImageResponse.fromMap(apiResponse.response?.data);
+    }
+
+    return imageResponse;
   }
 }

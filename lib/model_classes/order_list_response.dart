@@ -91,12 +91,12 @@ class Order {
       );
 
   String? createDateTime;
-  int? demandId, supplyId;
   int? id;
   List<OrderItem>? orderItems;
-  double? totalAmount;
-  String? demandBusinessName, supplyBusinessName;
   String? status;
+  String? demandBusinessName, supplyBusinessName;
+  int? demandId, supplyId;
+  double? totalAmount;
   int? totalItems;
 
   Order copyWith({
@@ -136,6 +136,21 @@ class Order {
         "status": status,
         "id": id,
       };
+
+  empty() {
+    return Order(
+      totalItems: 0,
+      orderItems: [],
+      totalAmount: 0,
+      demandId: -1,
+      supplyId: -1,
+      demandBusinessName: '',
+      supplyBusinessName: '',
+      createDateTime: '',
+      status: '',
+      id: -1,
+    );
+  }
 }
 
 class OrderItem {
@@ -158,12 +173,12 @@ class OrderItem {
         itemQuantity: json["itemQuantity"],
       );
 
-  int? itemId;
-  double? itemTotalPrice;
   bool? edit;
+  int? itemId;
   double? itemPrice;
   int? itemQuantity;
   String? itemTitle;
+  double? itemTotalPrice;
 
   OrderItem copyWith({
     double? itemTotalPrice,

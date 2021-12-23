@@ -15,12 +15,25 @@ class CommonDashboardOrderInfo {
     this.intransit,
   });
 
-  final int? cancelled;
+  factory CommonDashboardOrderInfo.fromJson(String str) =>
+      CommonDashboardOrderInfo.fromMap(json.decode(str));
+
+  factory CommonDashboardOrderInfo.fromMap(Map<String, dynamic> json) =>
+      CommonDashboardOrderInfo(
+        cancelled: json["CANCELLED"],
+        all: json["ALL"],
+        created: json["CREATED"],
+        delivered: json["DELIVERED"],
+        processing: json["PROCESSING"],
+        intransit: json["INTRANSIT"],
+      );
+
   final int? all;
+  final int? cancelled;
   final int? created;
   final int? delivered;
-  final int? processing;
   final int? intransit;
+  final int? processing;
 
   CommonDashboardOrderInfo copyWith({
     int? cancelled,
@@ -39,20 +52,7 @@ class CommonDashboardOrderInfo {
         intransit: intransit ?? this.intransit,
       );
 
-  factory CommonDashboardOrderInfo.fromJson(String str) =>
-      CommonDashboardOrderInfo.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory CommonDashboardOrderInfo.fromMap(Map<String, dynamic> json) =>
-      CommonDashboardOrderInfo(
-        cancelled: json["CANCELLED"],
-        all: json["ALL"],
-        created: json["CREATED"],
-        delivered: json["DELIVERED"],
-        processing: json["PROCESSING"],
-        intransit: json["INTRANSIT"],
-      );
 
   Map<String, dynamic> toMap() => {
         "CANCELLED": cancelled,

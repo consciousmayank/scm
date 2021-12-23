@@ -32,12 +32,12 @@ class NullableTextWidget extends StatelessWidget {
     this.maxLines = 4,
   }) : super(key: key);
 
+  final BoxDecoration? decoration;
+  final int maxLines;
   final bool selectable;
   final String? text;
   final Color textColorWhilePressing;
   final TextStyle? textStyle;
-  final int maxLines;
-  final BoxDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {

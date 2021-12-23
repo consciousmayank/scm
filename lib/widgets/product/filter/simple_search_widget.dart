@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scm/widgets/app_textfield.dart';
 
 class SimpleSearchWidget extends StatelessWidget {
-  final Function onSearchTermCleared;
-  final Function({
-    required String searchTerm,
-  }) onSearchTermEntered;
-  final String? hintText, innerHintText, searchTerm;
-
   const SimpleSearchWidget({
     Key? key,
     required this.onSearchTermCleared,
@@ -25,6 +19,13 @@ class SimpleSearchWidget extends StatelessWidget {
     this.hintText,
     required this.innerHintText,
   }) : super(key: key);
+
+  final Function({
+    required String searchTerm,
+  }) onSearchTermEntered;
+
+  final Function onSearchTermCleared;
+  final String? hintText, innerHintText, searchTerm;
 
   @override
   Widget build(BuildContext context) {

@@ -14,38 +14,18 @@ import 'package:scm/widgets/product/filter/simple_search_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductsFilterView extends StatefulWidget {
-  final ProductsFilterViewArguments arguments;
   const ProductsFilterView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductsFilterViewArguments arguments;
+
   @override
   _ProductsFilterViewState createState() => _ProductsFilterViewState();
 }
 
 class _ProductsFilterViewState extends State<ProductsFilterView> {
-  @override
-  Widget build(BuildContext context) {
-    return ViewModelBuilder<ProductsFilterViewModel>.reactive(
-      onModelReady: (model) => model.init(args: widget.arguments),
-      builder: (context, model, child) => Scaffold(
-        body: Column(
-          children: [
-            // buildBottomSheetHeader(),
-            buildFilterTypesAndValues(
-              viewModel: model,
-              context: context,
-            ),
-            buildClearAndApplyButtons(
-              viewModel: model,
-            ),
-          ],
-        ),
-      ),
-      viewModelBuilder: () => ProductsFilterViewModel(),
-    );
-  }
-
   Widget buildFilterTypesAndValues({
     required ProductsFilterViewModel viewModel,
     required BuildContext context,
@@ -603,18 +583,31 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       ],
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<ProductsFilterViewModel>.reactive(
+      onModelReady: (model) => model.init(args: widget.arguments),
+      builder: (context, model, child) => Scaffold(
+        body: Column(
+          children: [
+            // buildBottomSheetHeader(),
+            buildFilterTypesAndValues(
+              viewModel: model,
+              context: context,
+            ),
+            buildClearAndApplyButtons(
+              viewModel: model,
+            ),
+          ],
+        ),
+      ),
+      viewModelBuilder: () => ProductsFilterViewModel(),
+    );
+  }
 }
 
 class ProductsFilterViewArguments {
-  final List<String?>? selectedBrand;
-  final List<String?>? selectedCategory;
-  final List<String?>? selectedSuCategory;
-  final String? searchProductTitle;
-  final Function({
-    required ProductsFilterViewOutputArguments outArgs,
-  }) onApplyFilterButtonClicked;
-  final Function onCancelButtonClicked;
-
   ProductsFilterViewArguments({
     required this.selectedBrand,
     required this.selectedCategory,
@@ -623,16 +616,26 @@ class ProductsFilterViewArguments {
     required this.onApplyFilterButtonClicked,
     required this.onCancelButtonClicked,
   });
+
+  final Function({
+    required ProductsFilterViewOutputArguments outArgs,
+  }) onApplyFilterButtonClicked;
+
+  final Function onCancelButtonClicked;
+  final String? searchProductTitle;
+  final List<String?>? selectedBrand;
+  final List<String?>? selectedCategory;
+  final List<String?>? selectedSuCategory;
 }
 
 class ProductsFilterViewOutputArguments {
-  final List<String?>? checkedBrands;
-  final List<String?>? checkedCategories;
-  final List<String?>? checkedSubCategories;
-
   ProductsFilterViewOutputArguments({
     this.checkedBrands,
     this.checkedCategories,
     this.checkedSubCategories,
   });
+
+  final List<String?>? checkedBrands;
+  final List<String?>? checkedCategories;
+  final List<String?>? checkedSubCategories;
 }

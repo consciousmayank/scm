@@ -3,10 +3,6 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 
 class AddProductButton extends StatelessWidget {
-  final GestureTapCallback? onTap;
-  final String buttonText;
-  final AppButtonTypes appButtonTypes;
-
   AddProductButton({
     Key? key,
     required this.onTap,
@@ -21,48 +17,9 @@ class AddProductButton extends StatelessWidget {
     this.appButtonTypes = AppButtonTypes.SMALL,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
-        ),
-      ),
-      onPressed: onTap != null
-          ? () {
-              onTap?.call();
-            }
-          : null,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            buttonText,
-            style: getButtonTextStyle(
-              context: context,
-            ).copyWith(
-                // fontSize: 18,
-                color: AppColors().white,
-                fontWeight: FontWeight.bold),
-            // maxLines: 2,
-            // textAlign: TextAlign.center,
-          ),
-          // wSizedBox(10),
-          // Image.asset(
-          //   addProductButtonIcon,
-          //   color: AppColors.white,
-          //   width: 15,
-          //   height: 15,
-          // ),
-          // Icon(
-          //   Icons.add,
-          //   color: Colors.black,
-          // ),
-        ],
-      ),
-    );
-  }
+  final AppButtonTypes appButtonTypes;
+  final String buttonText;
+  final GestureTapCallback? onTap;
 
   double getButtonWidth() {
     switch (appButtonTypes) {
@@ -112,6 +69,49 @@ class AddProductButton extends StatelessWidget {
       default:
         return Theme.of(context).textTheme.caption!;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+      ),
+      onPressed: onTap != null
+          ? () {
+              onTap?.call();
+            }
+          : null,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            buttonText,
+            style: getButtonTextStyle(
+              context: context,
+            ).copyWith(
+                // fontSize: 18,
+                color: AppColors().white,
+                fontWeight: FontWeight.bold),
+            // maxLines: 2,
+            // textAlign: TextAlign.center,
+          ),
+          // wSizedBox(10),
+          // Image.asset(
+          //   addProductButtonIcon,
+          //   color: AppColors.white,
+          //   width: 15,
+          //   height: 15,
+          // ),
+          // Icon(
+          //   Icons.add,
+          //   color: Colors.black,
+          // ),
+        ],
+      ),
+    );
   }
 }
 

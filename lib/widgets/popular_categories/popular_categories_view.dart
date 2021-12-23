@@ -10,11 +10,12 @@ import 'package:scm/widgets/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PopularCategoriesView extends StatelessWidget {
-  final PopularCategoriesViewArguments arguments;
   const PopularCategoriesView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final PopularCategoriesViewArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -118,13 +119,14 @@ class PopularCategoriesView extends StatelessWidget {
 class PopularCategoriesViewArguments {}
 
 class SinglePopularBrandItem extends StatelessWidget {
-  final Function({required String selectedItem}) onItemClicked;
-  final String item;
   const SinglePopularBrandItem({
     Key? key,
     required this.onItemClicked,
     required this.item,
   }) : super(key: key);
+
+  final Function({required String selectedItem}) onItemClicked;
+  final String item;
 
   @override
   Widget build(BuildContext context) {

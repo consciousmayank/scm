@@ -14,25 +14,27 @@ import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
-  List<charts.Series<CommonDashboardOrderedBrands, String>>
-      orderedBrandsBarData = [];
-  List<charts.Series<CommonDashboardOrderedTypes, String>> orderedTypesBarData =
-      [];
-  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
-  int pageSize = 5;
-  int pageNumber = 0;
-
+  late final CommonDashboardViewArguments arguments;
+  CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
   ApiStatus orderInfoApi = ApiStatus.LOADING,
       orderedBrandsApi = ApiStatus.LOADING,
       orderedTypesApi = ApiStatus.LOADING,
       orderListApi = ApiStatus.LOADING;
 
-  CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
-  List<CommonDashboardOrderedBrands> orderedBrands = [];
-  List<CommonDashboardOrderedTypes> orderedTypes = [];
   OrderListResponse orderList = OrderListResponse().empty();
+  List<CommonDashboardOrderedBrands> orderedBrands = [];
+  List<charts.Series<CommonDashboardOrderedBrands, String>>
+      orderedBrandsBarData = [];
 
-  late final CommonDashboardViewArguments arguments;
+  List<CommonDashboardOrderedTypes> orderedTypes = [];
+  List<charts.Series<CommonDashboardOrderedTypes, String>> orderedTypesBarData =
+      [];
+
+  int pageNumber = 0;
+  int pageSize = 5;
+
+  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
+
   init({required CommonDashboardViewArguments args}) {
     arguments = args;
 
@@ -40,10 +42,6 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
     getOrderedBrands();
     getOrderedTypes();
     getOrdereList();
-
-    log('Selected Role 1 :: ${preferences.getSelectedUserRole()}');
-    log('Selected Role 2 :: ${AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString}');
-    log('Selected Role 3 :: ${preferences.getSelectedUserRole() == AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString}');
   }
 
   getOrderInfo() async {

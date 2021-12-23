@@ -1027,20 +1027,24 @@ class ApiService {
   getOrdersList({
     required int pageSize,
     required int pageNumber,
+    String? orderId,
   }) async {
     Response? response;
     DioError? error;
 
     try {
       response = await dioClient.getDio().get(
-        ORDER(
-          role: getLoggedInRole(),
-        ),
-        queryParameters: {
-          'size': pageSize,
-          'page': pageNumber,
-        },
-      );
+            ORDER(
+              role: getLoggedInRole(),
+              urlParamOrderId: orderId,
+            ),
+            queryParameters: orderId == null
+                ? {
+                    'size': pageSize,
+                    'page': pageNumber,
+                  }
+                : null,
+          );
     } on DioError catch (e) {
       error = e;
     }

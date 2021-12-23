@@ -27,6 +27,17 @@ abstract class ProductListApis {
 
 class ProductListApiImpl extends BaseApi implements ProductListApis {
   @override
+  Future<Product> getProductById({int? productId}) async {
+    Product? product;
+    ParentApiResponse apiResponse =
+        await apiService.getProductById(productId: productId);
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      product = Product.fromMap(apiResponse.response?.data);
+    }
+    return product!;
+  }
+
+  @override
   Future<ProductListResponse?> getProductList({
     List<String?>? brandsFilterList,
     List<String?>? categoryFilterList,
@@ -56,17 +67,6 @@ class ProductListApiImpl extends BaseApi implements ProductListApis {
     } else {
       return null;
     }
-  }
-
-  @override
-  Future<Product> getProductById({int? productId}) async {
-    Product? product;
-    ParentApiResponse apiResponse =
-        await apiService.getProductById(productId: productId);
-    if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      product = Product.fromMap(apiResponse.response?.data);
-    }
-    return product!;
   }
 
   @override

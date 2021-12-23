@@ -30,7 +30,7 @@ class DashboardOrderListWidget
         : SliverToBoxAdapter(
             child: SizedBox(
               height: Dimens().dashboardOrderListCardHeight,
-              child: OrderListWidget(
+              child: OrderListWidget.dashboard(
                 label: labelRecentOrders,
                 isScrollable: false,
                 isSupplyRole: viewModel.preferences.getSelectedUserRole() ==

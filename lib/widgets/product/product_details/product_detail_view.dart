@@ -12,11 +12,12 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 
 class ProductDetailView extends StatelessWidget {
-  final ProductDetailViewArguments arguments;
   const ProductDetailView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductDetailViewArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -97,28 +98,29 @@ class ProductDetailView extends StatelessWidget {
 }
 
 class ProductDetailViewArguments {
-  final int? productId;
-  final Product? product;
+  ProductDetailViewArguments({
+    this.productId,
+    required this.product,
+  });
 
   ProductDetailViewArguments.fetchProduct({
     required this.productId,
     this.product,
   });
 
-  ProductDetailViewArguments({
-    this.productId,
-    required this.product,
-  });
+  final Product? product;
+  final int? productId;
 }
 
 class ProductDetialItem extends StatelessWidget {
-  final String label;
-  final String? value;
   const ProductDetialItem({
     Key? key,
     required this.label,
     this.value,
   }) : super(key: key);
+
+  final String label;
+  final String? value;
 
   @override
   Widget build(BuildContext context) {

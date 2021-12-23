@@ -90,8 +90,8 @@ class AppTextField extends StatelessWidget {
   final List<TextInputFormatter>? formatter;
   final String? helperText; //required only in create consignment
   final String? hintText;
-  final String? innerHintText;
   final String? initialValue;
+  final String? innerHintText;
   final InputDecoration? inputDecoration;
   final TextInputType keyboardType;
   final String? labelText;

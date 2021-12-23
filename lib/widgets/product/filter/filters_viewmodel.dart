@@ -13,25 +13,56 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
+  late final ProductsFilterViewArguments args;
+  /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
+  /// in the left pane of the filter bottom sheet
+  String? clickedFilter = 'Brand';
+
+  int? pageIndexForBrandsApi = 0;
+  int? pageIndexForCategoriesApi = 0;
+  int? pageIndexForSubCategoriesApi = 0;
   TextEditingController searchBrandsTextController = TextEditingController();
   TextEditingController searchCategoriesTextController =
       TextEditingController();
+
   TextEditingController searchSubCategoriesTextController =
       TextEditingController();
 
-  late final ProductsFilterViewArguments args;
+  int? totalItemsForBrandsApi = 0;
+  int? totalItemsForCategoriesApi = 0;
+  int? totalItemsForSubCategoriesApi = 0;
+
+  String? _brandTitle;
+  final ProductBrandsApis _brandsApis = di<ProductBrandsApiImpl>();
+  List<BrandsForFilter>? _brandsForFilterList = [];
+  List<String>? _brandsList;
+  ProductBrandsResponse? _brandsResponse;
+  List<CategoriesForFilter>? _categoriesForFilterList = [];
+  ProductCategoriesResponse? _categoriesResponse;
+  String? _categoryTitle;
+  List<String?>? _checkedBrandsList = [];
+  List<String?>? _checkedCategoriesList = [];
+  List<String?>? _checkedSubCategoriesList = [];
+  final ProductCategoriesApis _productCategoriesApis =
+      di<ProductCategoriesApiImpl>();
+
+  List<String>? _productCategoriesList;
+  final ProductSubCategoriesApis _subCategoriesApis =
+      di<ProductSubCategoriesApisImpl>();
+
+  List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
+  List<String>? _subCategoriesList;
+  ProductSubCategoriesResponse? _subCategoriesResponse;
+  String? _subCategoryTitle;
+  List<String?>? _tempCheckedBrandsList = [];
+  List<String?>? _tempCheckedCategoriesList = [];
+  List<String?>? _tempCheckedSubCategoriesList = [];
 
   init({required ProductsFilterViewArguments args}) {
     this.args = args;
     populatingCheckedList();
     getBrandsList(showLoader: true);
   }
-
-  List<String?>? _checkedBrandsList = [];
-  List<String?>? _tempCheckedBrandsList = [];
-
-  List<String?>? _checkedSubCategoriesList = [];
-  List<String?>? _tempCheckedSubCategoriesList = [];
 
   List<String?> get checkedSubCategoriesList => _checkedSubCategoriesList!;
 
@@ -62,9 +93,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<String?>? _checkedCategoriesList = [];
-  List<String?>? _tempCheckedCategoriesList = [];
-
   List<String?> get checkedCategoriesList => _checkedCategoriesList!;
 
   List<String?> get tempCheckedCategoriesList => _tempCheckedCategoriesList!;
@@ -79,8 +107,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
-
   List<SubCategoriesForFilter> get subCategoriesForFilterList =>
       _subCategoriesForFilterList!;
 
@@ -89,16 +115,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<BrandsForFilter>? _brandsForFilterList = [];
-
   List<BrandsForFilter> get brandsForFilterList => _brandsForFilterList!;
 
   set brandsForFilterList(List<BrandsForFilter>? value) {
     _brandsForFilterList = value;
     notifyListeners();
   }
-
-  List<CategoriesForFilter>? _categoriesForFilterList = [];
 
   List<CategoriesForFilter> get categoriesForFilterList =>
       _categoriesForFilterList!;
@@ -122,14 +144,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
-  /// in the left pane of the filter bottom sheet
-  String? clickedFilter = 'Brand';
-
-  final ProductBrandsApis _brandsApis = di<ProductBrandsApiImpl>();
-  final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
-
   ProductBrandsResponse? get brandsResponse => _brandsResponse;
 
   set brandsResponse(ProductBrandsResponse? value) {
@@ -137,20 +151,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  ProductBrandsResponse? _brandsResponse;
-  List<String>? _brandsList;
-
   List<String> get brandsList => _brandsList!;
 
   set brandsList(List<String>? value) {
     _brandsList = value;
     notifyListeners();
   }
-
-  int? pageIndexForBrandsApi = 0;
-  int? totalItemsForBrandsApi = 0;
-
-  String? _brandTitle;
 
   String? get brandTitle => _brandTitle;
 
@@ -344,8 +350,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     return filterList.toSet().toList();
   }
 
-  List<String>? _productCategoriesList;
-
   List<String> get productCategoriesList => _productCategoriesList!;
 
   set productCategoriesList(List<String> value) {
@@ -353,17 +357,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  ProductCategoriesResponse? _categoriesResponse;
-
   ProductCategoriesResponse? get categoriesResponse => _categoriesResponse;
 
   set categoriesResponse(ProductCategoriesResponse? value) {
     _categoriesResponse = value;
     notifyListeners();
   }
-
-  int? pageIndexForCategoriesApi = 0;
-  int? totalItemsForCategoriesApi = 0;
 
   /// populating the checkedFilterList
   populatingCheckedList() {
@@ -386,8 +385,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       });
     }
   }
-
-  String? _categoryTitle;
 
   String? get categoryTitle => _categoryTitle;
 
@@ -506,11 +503,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         filterList: categoriesForFilterList);
   }
 
-  int? pageIndexForSubCategoriesApi = 0;
-  int? totalItemsForSubCategoriesApi = 0;
-
-  List<String>? _subCategoriesList;
-
   List<String> get subCategoriesList => _subCategoriesList!;
 
   set subCategoriesList(List<String> value) {
@@ -518,19 +510,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  ProductSubCategoriesResponse? _subCategoriesResponse;
-
   ProductSubCategoriesResponse get subCategoriesResponse =>
       _subCategoriesResponse!;
 
   set subCategoriesResponse(ProductSubCategoriesResponse value) {
     _subCategoriesResponse = value;
   }
-
-  final ProductSubCategoriesApis _subCategoriesApis =
-      di<ProductSubCategoriesApisImpl>();
-
-  String? _subCategoryTitle;
 
   String? get subCategoryTitle => _subCategoryTitle;
 
@@ -672,11 +657,11 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
 /// it is created to make the sub category list checkable in filter bottom sheet
 class SubCategoriesForFilter {
-  final String? subCategoryName;
-  bool? isSelected;
-
   SubCategoriesForFilter({
     required this.subCategoryName,
     required this.isSelected,
   });
+
+  bool? isSelected;
+  final String? subCategoryName;
 }

@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class AppBarChartWidget extends StatelessWidget {
-  final String title, yAxisTitle, xAxisTitle;
-  final List<charts.Series<Object, String>> seriesBarData;
-
   const AppBarChartWidget({
     Key? key,
     required this.title,
@@ -13,6 +10,9 @@ class AppBarChartWidget extends StatelessWidget {
     required this.yAxisTitle,
     required this.seriesBarData,
   }) : super(key: key);
+
+  final List<charts.Series<Object, String>> seriesBarData;
+  final String title, yAxisTitle, xAxisTitle;
 
   @override
   Widget build(BuildContext context) {

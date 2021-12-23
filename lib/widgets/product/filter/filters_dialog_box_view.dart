@@ -4,14 +4,14 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductFilterDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const ProductFilterDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _ProductFilterDialogBoxState createState() => _ProductFilterDialogBoxState();
@@ -61,12 +61,6 @@ class _ProductFilterDialogBoxState extends State<ProductFilterDialogBoxView> {
 }
 
 class ProductFilterDialogBoxViewArguments {
-  final String title;
-  final List<String?>? selectedBrand;
-  final List<String?>? selectedCategory;
-  final List<String?>? selectedSuCategory;
-  final String? searchProductTitle;
-
   ProductFilterDialogBoxViewArguments({
     required this.title,
     required this.selectedBrand,
@@ -74,17 +68,24 @@ class ProductFilterDialogBoxViewArguments {
     required this.selectedSuCategory,
     required this.searchProductTitle,
   });
+
+  final String? searchProductTitle;
+  final List<String?>? selectedBrand;
+  final List<String?>? selectedCategory;
+  final List<String?>? selectedSuCategory;
+  final String title;
 }
 
 class ProductFilterDialogBoxViewOutputArgs {
-  // todo: later change String to String array
-  final List<String?>? checkedBrands;
-  final List<String?>? checkedCategories;
-  final List<String?>? checkedSubCategories;
-
   ProductFilterDialogBoxViewOutputArgs({
     this.checkedBrands,
     this.checkedCategories,
     this.checkedSubCategories,
   });
+
+  // todo: later change String to String array
+  final List<String?>? checkedBrands;
+
+  final List<String?>? checkedCategories;
+  final List<String?>? checkedSubCategories;
 }

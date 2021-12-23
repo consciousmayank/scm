@@ -7,12 +7,12 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/add_product_button.dart' as add;
 
 class ProductListItemMobile extends StatelessWidget {
-  final ProductListItemMobileArguments arguments;
-
   const ProductListItemMobile({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListItemMobileArguments arguments;
 
   Widget buildProductPriceAndButton({
     required bool? hideProductAddButton,
@@ -180,19 +180,6 @@ class ProductListItemMobile extends StatelessWidget {
 }
 
 class ProductListItemMobileArguments {
-  final String? productTitle;
-  final String? productCategory;
-  final double? productPrice;
-  final GestureTapCallback? onAddButtonClick;
-  final GestureTapCallback? onDeleteButtonClick;
-  final void Function() onProductClick;
-  final Uint8List? image;
-  final bool? hideAddProductButton;
-  final bool? hideDeleteProductButton;
-  final double? measurement;
-  final String? measurementUnit;
-  final int? productId;
-
   ProductListItemMobileArguments({
     required this.productTitle,
     required this.productCategory,
@@ -207,4 +194,17 @@ class ProductListItemMobileArguments {
     required this.measurementUnit,
     required this.measurement,
   });
+
+  final void Function() onProductClick;
+  final bool? hideAddProductButton;
+  final bool? hideDeleteProductButton;
+  final Uint8List? image;
+  final double? measurement;
+  final String? measurementUnit;
+  final GestureTapCallback? onAddButtonClick;
+  final GestureTapCallback? onDeleteButtonClick;
+  final String? productCategory;
+  final int? productId;
+  final double? productPrice;
+  final String? productTitle;
 }

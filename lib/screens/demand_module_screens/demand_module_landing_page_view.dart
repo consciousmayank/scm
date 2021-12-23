@@ -12,11 +12,13 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked/stacked.dart';
 
 class DemandModuleLandingPageView extends StatefulWidget {
-  final DemandModuleLandingPageViewArguments arguments;
   const DemandModuleLandingPageView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final DemandModuleLandingPageViewArguments arguments;
+
   @override
   _DemandModuleLandingPageViewState createState() =>
       _DemandModuleLandingPageViewState();

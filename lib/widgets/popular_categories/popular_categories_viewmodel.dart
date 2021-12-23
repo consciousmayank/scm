@@ -6,10 +6,10 @@ import 'package:scm/services/app_api_service_classes/product_categories_apis.dar
 import 'package:scm/utils/utils.dart';
 
 class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
+  ProductCategoriesResponse? categoriesResponse;
+
   final ProductCategoriesApis _productCategoriesApis =
       di<ProductCategoriesApiImpl>();
-
-  ProductCategoriesResponse? categoriesResponse;
 
   getAllCategories() async {
     setBusy(true);

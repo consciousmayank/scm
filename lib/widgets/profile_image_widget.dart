@@ -17,9 +17,10 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageSize,
     this.elevation,
   }) : super(key: key);
+
+  final double? elevation;
   final String? imageUrlString;
   final double? profileImageSize;
-  final double? elevation;
 
   @override
   Widget build(BuildContext context) {

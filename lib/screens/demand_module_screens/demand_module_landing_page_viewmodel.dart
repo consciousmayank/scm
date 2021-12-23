@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
@@ -9,10 +10,10 @@ import 'package:stacked_services/stacked_services.dart';
 
 class DemandModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
-  bool showProductList = false;
   String authenticatedUserName = '';
-
   String searchTerm = '';
+  bool showProductList = false;
+
   initScreen() {
     authenticatedUserName = preferences.getAuthenticatedUserName();
   }
@@ -70,10 +71,8 @@ class DemandModuleLandingPageViewModel
 
       case 3:
         // return OrderListView();
-        return const Center(
-          child: Text(
-            'Demander\'s Order List Page',
-          ),
+        return OrderListPageView(
+          arguments: OrderListPageViewArguments(),
         );
       case 4:
         // return MenuItemsView();

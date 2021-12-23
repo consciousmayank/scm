@@ -7,11 +7,12 @@ import 'package:scm/widgets/product/product_list/product_list_item/product_list_
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item_web.dart';
 
 class ProductListItem extends StatefulWidget {
-  final ProductListItemArguments arguments;
   const ProductListItem({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListItemArguments arguments;
 
   @override
   _ProductListItemState createState() => _ProductListItemState();
@@ -35,19 +36,6 @@ class _ProductListItemState extends State<ProductListItem> {
 }
 
 class ProductListItemArguments {
-  final String? productTitle;
-  final String? productCategory;
-  final double? productPrice;
-  final GestureTapCallback? onAddButtonClick;
-  final GestureTapCallback? onDeleteButtonClick;
-  final void Function() onProductClick;
-  final Uint8List? image;
-  final bool? hideAddProductButton;
-  final bool? hideDeleteProductButton;
-  final double? measurement;
-  final String? measurementUnit;
-  final int? productId;
-
   ProductListItemArguments({
     required this.productTitle,
     required this.productCategory,
@@ -62,6 +50,19 @@ class ProductListItemArguments {
     required this.measurementUnit,
     required this.measurement,
   });
+
+  final void Function() onProductClick;
+  final bool? hideAddProductButton;
+  final bool? hideDeleteProductButton;
+  final Uint8List? image;
+  final double? measurement;
+  final String? measurementUnit;
+  final GestureTapCallback? onAddButtonClick;
+  final GestureTapCallback? onDeleteButtonClick;
+  final String? productCategory;
+  final int? productId;
+  final double? productPrice;
+  final String? productTitle;
 
   getproductListItemMobileArguments() => ProductListItemMobileArguments(
         productTitle: productTitle,

@@ -46,7 +46,10 @@ final GET_ORDER_SUMMARY = (orderId) => "/api/supply/order/$orderId";
 final ORDER_INFO = ({required String role}) => "/api/$role/order/info";
 final ORDERED_BRANDS = ({required String role}) => "/api/$role/order/brand";
 final ORDERED_TYPES = ({required String role}) => "/api/$role/order/type";
-final ORDER = ({required String role}) => "/api/$role/order";
+final ORDER = ({required String role, String? urlParamOrderId}) =>
+    urlParamOrderId == null
+        ? "/api/$role/order"
+        : "/api/$role/order/$urlParamOrderId";
 
 const String ORDERS = "/api/supply/order";
 

@@ -11,11 +11,12 @@ import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 
 class ProductListItemWeb extends StatelessWidget {
-  final ProductListItemWebArguments arguments;
   const ProductListItemWeb({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListItemWebArguments arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +116,6 @@ class ProductListItemWeb extends StatelessWidget {
 }
 
 class ProductListItemWebArguments {
-  final String? productTitle;
-  final String? productCategory;
-  final double? productPrice;
-  final GestureTapCallback? onAddButtonClick;
-  final GestureTapCallback? onDeleteButtonClick;
-  final void Function() onProductClick;
-  final Uint8List? image;
-  final bool? hideAddProductButton;
-  final bool? hideDeleteProductButton;
-  final double? measurement;
-  final String? measurementUnit;
-  final int? productId;
-
   ProductListItemWebArguments({
     required this.productTitle,
     required this.productCategory,
@@ -142,4 +130,17 @@ class ProductListItemWebArguments {
     required this.measurementUnit,
     required this.measurement,
   });
+
+  final void Function() onProductClick;
+  final bool? hideAddProductButton;
+  final bool? hideDeleteProductButton;
+  final Uint8List? image;
+  final double? measurement;
+  final String? measurementUnit;
+  final GestureTapCallback? onAddButtonClick;
+  final GestureTapCallback? onDeleteButtonClick;
+  final String? productCategory;
+  final int? productId;
+  final double? productPrice;
+  final String? productTitle;
 }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 
 class TopOrderedBrandsCategoryTable extends StatelessWidget {
-  final bool isHeader;
-  final List<String> values;
+  const TopOrderedBrandsCategoryTable.header({
+    Key? key,
+    this.values = const ['#', 'NAME', 'COUNT'],
+    this.isHeader = true,
+  }) : super(key: key);
 
   const TopOrderedBrandsCategoryTable.values({
     Key? key,
@@ -11,11 +14,8 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
     this.isHeader = false,
   }) : super(key: key);
 
-  const TopOrderedBrandsCategoryTable.header({
-    Key? key,
-    this.values = const ['#', 'NAME', 'COUNT'],
-    this.isHeader = true,
-  }) : super(key: key);
+  final bool isHeader;
+  final List<String> values;
 
   @override
   Widget build(BuildContext context) {

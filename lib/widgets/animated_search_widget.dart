@@ -3,13 +3,6 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/app_textfield.dart';
 
 class AnimatedSearchWidget extends StatefulWidget {
-  final Function({
-    required String searchTerm,
-  }) onSearch;
-
-  final String hintText;
-  final Function onCrossButtonClicked;
-
   const AnimatedSearchWidget({
     Key? key,
     required this.hintText,
@@ -18,15 +11,22 @@ class AnimatedSearchWidget extends StatefulWidget {
     required this.onCrossButtonClicked,
   }) : super(key: key);
 
+  final Function({
+    required String searchTerm,
+  }) onSearch;
+
+  final String hintText;
+  final Function onCrossButtonClicked;
+
   @override
   _AnimatedSearchWidgetState createState() => _AnimatedSearchWidgetState();
 }
 
 class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
+  bool isSearchIconVisible = false;
   TextEditingController searchController = TextEditingController();
   FocusNode searchFocusNode = FocusNode();
 
-  bool isSearchIconVisible = false;
   @override
   Widget build(BuildContext context) {
     searchFocusNode.addListener(() {
@@ -35,11 +35,11 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
           isSearchIconVisible = true;
         });
       } else {
-        // if (searchController.text.trim().isEmpty) {
-        setState(() {
-          isSearchIconVisible = false;
-        });
-        // }
+        if (searchController.text.trim().isEmpty) {
+          setState(() {
+            isSearchIconVisible = false;
+          });
+        }
       }
     });
 

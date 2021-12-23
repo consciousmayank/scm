@@ -14,17 +14,17 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductListViewModel extends GeneralisedBaseViewModel {
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
-
+  late final ProductListViewArguments arguments;
   List<String?> brandsFilterList = [];
   List<String?> categoryFilterList = [];
-  List<String?> subCategoryFilterList = [];
-  String? productTitle;
-  late final int? supplierId;
   int pageIndex = 0;
-  late final ProductListViewArguments arguments;
-
   ProductListResponse? productListResponse;
+  String? productTitle;
+  List<String?> subCategoryFilterList = [];
+  late final int? supplierId;
+
+  final ProductListApis _productListApis = di<ProductListApiImpl>();
+
   getProductList() async {
     setBusy(true);
 

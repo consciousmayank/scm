@@ -17,21 +17,20 @@ class Address {
   factory Address.fromJson(String str) => Address.fromMap(json.decode(str));
 
   factory Address.fromMap(Map<String, dynamic> json) => Address(
-    id: json["id"],
-    type: json["type"],
-    addressLine1: json["addressLine1"],
-    addressLine2: json["addressLine2"],
-    locality: json["locality"],
-    nearby: json["nearby"],
-    city: json["city"],
-    state: json["state"],
-    country: json["country"],
-    pincode: json["pincode"],
-  );
+        id: json["id"],
+        type: json["type"],
+        addressLine1: json["addressLine1"],
+        addressLine2: json["addressLine2"],
+        locality: json["locality"],
+        nearby: json["nearby"],
+        city: json["city"],
+        state: json["state"],
+        country: json["country"],
+        pincode: json["pincode"],
+      );
 
-  String ?addressLine2;
-  String ?type;
   String? addressLine1;
+  String? addressLine2;
   String? city;
   String? country;
   int? id;
@@ -39,17 +38,18 @@ class Address {
   String? nearby;
   String? pincode;
   String? state;
+  String? type;
 
   Address copyWith({
     int? id,
-    String ?type,
+    String? type,
     String? addressLine1,
-    String ?addressLine2,
-    String ?locality,
+    String? addressLine2,
+    String? locality,
     String? nearby,
     String? city,
     String? state,
-    String ?country,
+    String? country,
     String? pincode,
   }) =>
       Address(
@@ -68,15 +68,30 @@ class Address {
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => {
-    "id": id,
-    "type": type,
-    "addressLine1": addressLine1,
-    "addressLine2": addressLine2,
-    "locality": locality,
-    "nearby": nearby,
-    "city": city,
-    "state": state,
-    "country": country,
-    "pincode": pincode,
-  };
+        "id": id,
+        "type": type,
+        "addressLine1": addressLine1,
+        "addressLine2": addressLine2,
+        "locality": locality,
+        "nearby": nearby,
+        "city": city,
+        "state": state,
+        "country": country,
+        "pincode": pincode,
+      };
+
+  empty() {
+    return Address(
+      id: -1,
+      type: '',
+      addressLine1: '',
+      addressLine2: '',
+      locality: '',
+      nearby: '',
+      city: '',
+      state: '',
+      country: '',
+      pincode: '',
+    );
+  }
 }

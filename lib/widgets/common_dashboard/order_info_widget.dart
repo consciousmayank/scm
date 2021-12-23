@@ -71,14 +71,14 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
 }
 
 class OrderInfoTile extends StatelessWidget {
-  final String title, value, icon;
-
   const OrderInfoTile({
     Key? key,
     required this.title,
     required this.value,
     required this.icon,
   }) : super(key: key);
+
+  final String title, value, icon;
 
   @override
   Widget build(BuildContext context) {
