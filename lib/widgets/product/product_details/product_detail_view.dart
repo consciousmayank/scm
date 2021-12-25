@@ -24,8 +24,6 @@ class ProductDetailView extends StatelessWidget {
     return ViewModelBuilder<ProductDetailViewModel>.reactive(
       onModelReady: (model) => model.init(arguments: arguments),
       builder: (context, model, child) {
-        Uint8List? productImage =
-            getProductImage(productImage: model.product!.images);
         return Scaffold(
           body: model.isBusy
               ? const LoadingWidgetWithText(text: 'Fetching Product Details')
@@ -39,10 +37,10 @@ class ProductDetailView extends StatelessWidget {
                             horizontal: 20,
                             vertical: 10,
                           ),
-                          child: (productImage == null)
+                          child: (model.productImage == null)
                               ? image_widget.Image.asset(productDefaultImage)
                               : image_widget.Image.memory(
-                                  productImage,
+                                  model.productImage!,
                                   fit: BoxFit.cover,
                                 ),
                         ),

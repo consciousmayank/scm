@@ -23,7 +23,9 @@ class OrderSummaryResponse {
     this.totalAmount,
     this.orderItems,
     this.demandId,
+    this.supplyId,
     this.demandBusinessName,
+    this.supplyBusinessName,
     this.createDateTime,
     this.orderTracking,
   });
@@ -46,7 +48,9 @@ class OrderSummaryResponse {
         orderItems: List<OrderItem>.from(
             json["orderItems"].map((x) => OrderItem.fromMap(x))),
         demandId: json["demandId"],
+        supplyId: json["supplyId"],
         demandBusinessName: json["demandBusinessName"],
+        supplyBusinessName: json["supplyBusinessName"],
         createDateTime: json["createDateTime"],
         orderTracking: List<OrderTracking>.from(
             json["orderTracking"].map((x) => OrderTracking.fromMap(x))),
@@ -55,7 +59,9 @@ class OrderSummaryResponse {
   Address? billingAddress;
   String? createDateTime;
   String? demandBusinessName;
+  String? supplyBusinessName;
   int? demandId;
+  int? supplyId;
   int? id;
   List<OrderItem>? orderItems;
   List<OrderTracking>? orderTracking;
@@ -73,7 +79,9 @@ class OrderSummaryResponse {
     double? totalAmount,
     List<OrderItem>? orderItems,
     int? demandId,
+    int? supplyId,
     String? demandBusinessName,
+    String? supplyBusinessName,
     String? createDateTime,
     List<OrderTracking>? orderTracking,
   }) =>
@@ -86,7 +94,9 @@ class OrderSummaryResponse {
         totalAmount: totalAmount ?? this.totalAmount,
         orderItems: orderItems ?? this.orderItems,
         demandId: demandId ?? this.demandId,
+        supplyId: supplyId ?? this.supplyId,
         demandBusinessName: demandBusinessName ?? this.demandBusinessName,
+        supplyBusinessName: supplyBusinessName ?? this.supplyBusinessName,
         createDateTime: createDateTime ?? this.createDateTime,
         orderTracking: orderTracking ?? this.orderTracking,
       );
@@ -117,7 +127,9 @@ class OrderSummaryResponse {
       totalAmount: 0,
       orderItems: [],
       demandId: -1,
+      supplyId: -1,
       demandBusinessName: '',
+      supplyBusinessName: '',
       createDateTime: '',
       orderTracking: [],
     );

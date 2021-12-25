@@ -95,7 +95,9 @@ class ListFooter extends StatelessWidget {
           if (onNextPageClick != null)
             TextButton.icon(
               style: AppTextButtonsStyles().textButtonStyle,
-              onPressed: pageNumber == (totalPages) || onNextPageClick == null
+              onPressed: pageNumber == (totalPages) ||
+                      onNextPageClick == null ||
+                      totalPages < 0
                   ? null
                   : () {
                       onNextPageClick?.call();

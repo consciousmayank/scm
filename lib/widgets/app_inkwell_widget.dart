@@ -2,19 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 
 class AppInkwell extends StatelessWidget {
-  const AppInkwell({
-    Key? key,
-    required this.child,
-    this.isCustomBorder = false,
-    this.onTap,
-  }) : super(key: key);
+  const AppInkwell({Key? key, required this.child, required this.onTap})
+      : isCustomBorder = false,
+        super(key: key);
 
-  const AppInkwell.withBorder({
-    Key? key,
-    required this.child,
-    this.isCustomBorder = true,
-    this.onTap,
-  }) : super(key: key);
+  const AppInkwell.withBorder(
+      {Key? key, required this.child, required this.onTap})
+      : isCustomBorder = true,
+        super(key: key);
 
   final Function()? onTap;
   final Widget child;

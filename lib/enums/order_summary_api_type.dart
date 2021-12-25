@@ -1,0 +1,7 @@
+enum OrderApiType {
+  ORDER_LIST,
+  ORDER_DETAILS,
+  ACCEPT_ORDER,
+  DELIVER_ORDER,
+  REJECT_ORDER,
+}

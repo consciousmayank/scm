@@ -103,6 +103,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
     orderList = await _commonDashBoardApis.getOrdersList(
       pageSize: pageSize + 5,
       pageNumber: 0,
+      status: '',
     );
     orderListApi = ApiStatus.FETCHED;
     notifyListeners();

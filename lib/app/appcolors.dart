@@ -57,6 +57,7 @@ class AppColors {
   get productListItemWebCategoryBg => const Color(0xffEEF2F7);
 
   get productListItemWebCategoryContainerBg => const Color(0xff979797);
+  get orderDetailsContainerBg => const Color(0xffC5C5C5);
 
   get productListItemWebCategoryTextColor => const Color(0xff6C757D);
 
