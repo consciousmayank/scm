@@ -91,6 +91,16 @@ class GeneralisedBaseViewModel extends BaseViewModel {
         AuthenticatedUserRoles.ROLE_SUPVR.getStatusString;
   }
 
+  bool isSupplier() {
+    return preferences.getSelectedUserRole() ==
+        AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;
+  }
+
+  bool isDemander() {
+    return preferences.getSelectedUserRole() ==
+        AuthenticatedUserRoles.ROLE_DEMAND.getStatusString;
+  }
+
   bool isDeoGd() {
     return preferences.getSelectedUserRole() ==
         AuthenticatedUserRoles.ROLE_GD.getStatusString;

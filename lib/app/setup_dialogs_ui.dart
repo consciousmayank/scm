@@ -11,6 +11,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
+import 'package:scm/widgets/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -52,6 +53,11 @@ void setupDialogUi() {
         ),
     DialogType.PRODUCTS_FILTER: (context, sheetRequest, completer) =>
         ProductFilterDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.DELIVERY_DETAILS: (context, sheetRequest, completer) =>
+        DeliveryDetilasDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

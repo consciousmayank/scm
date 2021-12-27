@@ -58,6 +58,8 @@ class AppColors {
 
   get productListItemWebCategoryContainerBg => const Color(0xff979797);
 
+  get orderDetailsContainerBg => const Color(0xffC5C5C5);
+
   get productListItemWebCategoryTextColor => const Color(0xff6C757D);
 
   Color get productFilterBg => primaryColor.shade500;
@@ -72,7 +74,8 @@ class AppColors {
 
   Color get shippedOrderBg => const Color(0xff4EB1D6);
 
-  Color get cancelledOrderBg => const Color(0xff646464);
+  // Color get cancelledOrderBg => const Color(0xff646464);
+  Color get cancelledOrderBg => Colors.red;
 
   Color get dashboardOrderInfoTileTitleBg => const Color(0xff979797);
 }

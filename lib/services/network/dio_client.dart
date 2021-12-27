@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:scm/app/appconfigs.dart';
@@ -58,6 +60,9 @@ class DioConfig {
         if (options.path != USER_AUTH) {
           if (options.path == REFRESH_TOKEN) {
             options.headers.addAll({"isRefreshToken": true});
+          }
+          if (EnvironmentConfig.SHOW_LOGS) {
+            log("Api Token :: ${appPreferences.getApiToken()}");
           }
           options.headers.addAll(
             getAuthHeader(

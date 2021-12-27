@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
@@ -547,73 +550,73 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
-  Future<ParentApiResponse> orderDetails(
-      {required int? orderId,
-      required OrderSummaryApiType? apiType,
-      String? deliveryJsonBody}) async {
-    Response? response;
-    DioError? error;
+  // Future<ParentApiResponse> orderDetails(
+  //     {required int? orderId,
+  //     required OrderSummaryApiType? apiType,
+  //     String? deliveryJsonBody}) async {
+  //   Response? response;
+  //   DioError? error;
 
-    try {
-      switch (apiType) {
-        case OrderSummaryApiType.ORDER_DETAILS:
-          response = await dioClient.getDio().get(GET_ORDER_SUMMARY(orderId));
-          break;
-        case OrderSummaryApiType.ACCEPT_ORDER:
-          response = await dioClient.getDio().post(GET_ORDER_SUMMARY(orderId));
-          break;
-        case OrderSummaryApiType.REJECT_ORDER:
-          response =
-              await dioClient.getDio().delete(GET_ORDER_SUMMARY(orderId));
-          break;
+  //   try {
+  //     switch (apiType) {
+  //       case OrderSummaryApiType.ORDER_DETAILS:
+  //         response = await dioClient.getDio().get(GET_ORDER_SUMMARY(orderId));
+  //         break;
+  //       case OrderSummaryApiType.ACCEPT_ORDER:
+  //         response = await dioClient.getDio().post(GET_ORDER_SUMMARY(orderId));
+  //         break;
+  //       case OrderSummaryApiType.REJECT_ORDER:
+  //         response =
+  //             await dioClient.getDio().delete(GET_ORDER_SUMMARY(orderId));
+  //         break;
 
-        case OrderSummaryApiType.DELIVER_ORDER:
-          response = await dioClient.getDio().patch(
-                GET_ORDER_SUMMARY(orderId),
-                data: deliveryJsonBody,
-              );
-          break;
-        default:
-      }
-    } on DioError catch (e) {
-      error = e;
-    }
+  //       case OrderSummaryApiType.DELIVER_ORDER:
+  //         response = await dioClient.getDio().patch(
+  //               GET_ORDER_SUMMARY(orderId),
+  //               data: deliveryJsonBody,
+  //             );
+  //         break;
+  //       default:
+  //     }
+  //   } on DioError catch (e) {
+  //     error = e;
+  //   }
 
-    return ParentApiResponse(error: error, response: response);
-  }
+  //   return ParentApiResponse(error: error, response: response);
+  // }
 
-  Future<ParentApiResponse> supplyOrders({
-    int? pageIndex,
-    required OrderApiType? apiType,
-    String? orderJsonBody,
-  }) async {
-    Response? response;
-    DioError? error;
-    Map<String, dynamic> params = Map<String, dynamic>();
-    params = <String, dynamic>{
-      'page': pageIndex,
-    };
+  // Future<ParentApiResponse> supplyOrders({
+  //   int? pageIndex,
+  //   required OrderApiType? apiType,
+  //   String? orderJsonBody,
+  // }) async {
+  //   Response? response;
+  //   DioError? error;
+  //   Map<String, dynamic> params = Map<String, dynamic>();
+  //   params = <String, dynamic>{
+  //     'page': pageIndex,
+  //   };
 
-    try {
-      switch (apiType) {
-        case OrderApiType.GET_ORDERS:
-          response =
-              await dioClient.getDio().get(ORDERS, queryParameters: params);
-          break;
-        case OrderApiType.UPDATE_ORDERS:
-          response = await dioClient.getDio().put(
-                ORDERS,
-                data: orderJsonBody,
-              );
-          break;
-        default:
-      }
-    } on DioError catch (e) {
-      error = e;
-    }
+  //   try {
+  //     switch (apiType) {
+  //       case OrderApiType.GET_ORDERS:
+  //         response =
+  //             await dioClient.getDio().get(ORDERS, queryParameters: params);
+  //         break;
+  //       case OrderApiType.UPDATE_ORDERS:
+  //         response = await dioClient.getDio().put(
+  //               ORDERS,
+  //               data: orderJsonBody,
+  //             );
+  //         break;
+  //       default:
+  //     }
+  //   } on DioError catch (e) {
+  //     error = e;
+  //   }
 
-    return ParentApiResponse(error: error, response: response);
-  }
+  //   return ParentApiResponse(error: error, response: response);
+  // }
 
   Future<ParentApiResponse> authenticateUser({
     required UserAuthenticateRequest authenticatUserRequest,
@@ -1024,27 +1027,101 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
-  getOrdersList({
-    required int pageSize,
-    required int pageNumber,
-    String? orderId,
-  }) async {
+  Future<ParentApiResponse> getOrderStatusList() async {
     Response? response;
     DioError? error;
 
     try {
       response = await dioClient.getDio().get(
+            GET_ORDER_STATUS_LIST(
+              role: getLoggedInRole(),
+            ),
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  performOrderApiOperation({
+    int? pageSize,
+    int? pageNumber,
+    String? orderId,
+    String? deliveredBy,
+    required OrderApiType orderApiType,
+    String? status,
+    OrderSummaryResponse? orderDetials,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      switch (orderApiType) {
+        case OrderApiType.ORDER_LIST:
+          response = await dioClient.getDio().get(
             ORDER(
               role: getLoggedInRole(),
               urlParamOrderId: orderId,
+              orderApiType: orderApiType,
             ),
-            queryParameters: orderId == null
-                ? {
-                    'size': pageSize,
-                    'page': pageNumber,
-                  }
-                : null,
+            queryParameters: {
+              'size': pageSize,
+              'page': pageNumber,
+              'orderStatus': status?.replaceAll('ALL', ''),
+            },
           );
+          break;
+        case OrderApiType.ORDER_DETAILS:
+          response = await dioClient.getDio().get(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+              );
+          break;
+        case OrderApiType.ACCEPT_ORDER:
+          response = await dioClient.getDio().post(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+              );
+          break;
+        case OrderApiType.DELIVER_ORDER:
+          response = await dioClient.getDio().patch(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+                data: json.encode({
+                  'deliverBy': deliveredBy,
+                }),
+              );
+          break;
+        case OrderApiType.REJECT_ORDER:
+          response = await dioClient.getDio().delete(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+              );
+          break;
+        case OrderApiType.UPDATE_ORDERS:
+          response = await dioClient.getDio().put(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+                data: orderDetials!.toJson(),
+              );
+          break;
+      }
     } on DioError catch (e) {
       error = e;
     }
@@ -1067,12 +1144,3 @@ class ApiService {
 enum AuthApiType { CHECK_USER_EXISTENCE, AUTHENTICATE_USER }
 
 enum ProfileApiType { GET_PROFILE, UPDATE_PROFILE }
-
-enum OrderApiType { GET_ORDERS, UPDATE_ORDERS }
-
-enum OrderSummaryApiType {
-  ORDER_DETAILS,
-  ACCEPT_ORDER,
-  DELIVER_ORDER,
-  REJECT_ORDER,
-}

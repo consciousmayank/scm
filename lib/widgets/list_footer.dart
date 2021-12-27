@@ -11,7 +11,8 @@ class ListFooter extends StatelessWidget {
       required this.onLastPageClick,
       this.onPreviousPageClick,
       this.onNextPageClick})
-      : super(key: key);
+      : allIcons = false,
+        super(key: key);
 
   const ListFooter.firstPreviousNextLast({
     Key? key,
@@ -21,7 +22,8 @@ class ListFooter extends StatelessWidget {
     required this.onLastPageClick,
     required this.onPreviousPageClick,
     required this.onNextPageClick,
-  }) : super(key: key);
+  })  : allIcons = false,
+        super(key: key);
 
   const ListFooter.previousNext({
     Key? key,
@@ -31,8 +33,21 @@ class ListFooter extends StatelessWidget {
     required this.onNextPageClick,
     this.onFirstPageClick,
     this.onLastPageClick,
-  }) : super(key: key);
+  })  : allIcons = false,
+        super(key: key);
 
+  const ListFooter.previousNextCompact({
+    Key? key,
+    required this.pageNumber,
+    required this.totalPages,
+    required this.onPreviousPageClick,
+    required this.onNextPageClick,
+    this.onFirstPageClick,
+    this.onLastPageClick,
+  })  : allIcons = true,
+        super(key: key);
+
+  final bool allIcons;
   final Function? onFirstPageClick;
   final Function? onLastPageClick;
   final Function? onNextPageClick;
@@ -84,7 +99,9 @@ class ListFooter extends StatelessWidget {
               icon: const Icon(
                 Icons.arrow_left,
               ),
-              label: const Text('Previous Page'),
+              label: allIcons
+                  ? const SizedBox.shrink()
+                  : const Text('Previous Page'),
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -95,12 +112,15 @@ class ListFooter extends StatelessWidget {
           if (onNextPageClick != null)
             TextButton.icon(
               style: AppTextButtonsStyles().textButtonStyle,
-              onPressed: pageNumber == (totalPages) || onNextPageClick == null
+              onPressed: pageNumber == (totalPages) ||
+                      onNextPageClick == null ||
+                      totalPages < 0
                   ? null
                   : () {
                       onNextPageClick?.call();
                     },
-              icon: const Text('Next Page'),
+              icon:
+                  allIcons ? const SizedBox.shrink() : const Text('Next Page'),
               label: const Icon(
                 Icons.arrow_right,
               ),

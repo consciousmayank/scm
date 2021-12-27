@@ -122,4 +122,13 @@ const String labelAppFooterSubTitle2 = 'Privacy Policy';
 const String labelAppFooterSubTitle3 = 'Cookies Policy';
 const String labelShippingAddress = 'Shipping Address';
 const String labelBillingAddress = 'Billing Address';
-const String labelProductItems = 'Items in Order';
+const String labelProductItems = 'Order Items';
+const String labelOrderSummary = 'Summary';
+const String errorQuantityRequired = 'Quantity is required. Cannot be left 0';
+const String errorPriceRequired = 'Price is required. Cannot be left 0';
+
+const String orderStatusProcessing = 'PROCESSING';
+const String orderStatusCreated = 'PROCESSING';
+const String orderStatusInTransit = 'INTRANSIT';
+const String orderStatusInDelivered = 'DELIVERED';
+const String orderStatusInCancelled = 'CANCELLED';

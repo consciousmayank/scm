@@ -49,7 +49,11 @@ class AddBrandViewModel extends GeneralisedBaseViewModel {
       brandToAdd = brandToAdd.copyWith(image: images.first);
     }
 
-    Brand response = await _brandsApi.addBrand(brand: brandToAdd);
+    Brand response = await _brandsApi.addBrand(
+      brand: brandToAdd.copyWith(
+        title: brandToAdd.title!.toUpperCase(),
+      ),
+    );
 
     if (response.id != null && response.id! > 0) {
       addedProductList.add(response);

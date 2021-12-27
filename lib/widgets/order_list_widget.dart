@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_status_widget.dart';
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_footer_widget.dart';
@@ -12,6 +16,7 @@ import 'package:scm/widgets/list_footer.dart';
 class OrderListWidget extends StatelessWidget {
   const OrderListWidget.dashboard({
     Key? key,
+    this.orderStatuses = const [],
     this.showCompactView = false,
     required this.orders,
     required this.isScrollable,
@@ -21,12 +26,16 @@ class OrderListWidget extends StatelessWidget {
     this.onNextPageClick,
     this.onPreviousPageClick,
     this.onOrderClick,
+    this.selectedOrderId = -1,
     required this.label,
+    this.onOrderStatusClick,
+    this.selectedOrderStatus = '',
   }) : super(key: key);
 
   const OrderListWidget.orderPage({
     Key? key,
     this.showCompactView = true,
+    required this.orderStatuses,
     required this.pageNumber,
     required this.totalPages,
     required this.orders,
@@ -36,70 +45,91 @@ class OrderListWidget extends StatelessWidget {
     required this.onPreviousPageClick,
     required this.onOrderClick,
     required this.label,
+    required this.selectedOrderId,
+    required this.onOrderStatusClick,
+    required this.selectedOrderStatus,
   }) : super(key: key);
 
   final Function({required Order selectedOrder})? onOrderClick;
+  final Function({required String selectedOrderStatus})? onOrderStatusClick;
   final bool isSupplyRole, isScrollable;
   final String label;
   final Function? onPreviousPageClick, onNextPageClick;
+  final List<String> orderStatuses;
   final List<Order> orders;
+  final int pageNumber, totalPages, selectedOrderId;
+  final String selectedOrderStatus;
   final bool showCompactView;
-  final int pageNumber, totalPages;
 
   _buildFullView(BuildContext context) {
     return [
       Flexible(
-        child: ListView.separated(
-          physics: isScrollable
-              ? const AlwaysScrollableScrollPhysics()
-              : const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return OrderListTableWidget.header(
-                titles: [
-                  Value.withText(value: 'ORDER ID'),
-                  Value.withText(value: 'ORDERED BY'),
-                  Value.withText(value: 'PLACED ON'),
-                  Value.withText(value: 'TOTAL ITEMS'),
-                  Value.withText(value: 'TOTAL AMOUNT'),
-                  Value.withText(value: 'STATUS'),
-                ],
-              );
-            }
+        child: orders.isNotEmpty
+            ? ListView.separated(
+                controller: ScrollController(
+                  keepScrollOffset: true,
+                ),
+                physics: isScrollable
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  if (index == 0) {
+                    return OrderListTableWidget.header(
+                      titles: [
+                        Value.withText(value: 'ORDER ID'),
+                        Value.withText(value: 'ORDERED BY'),
+                        Value.withText(value: 'PLACED ON'),
+                        Value.withText(value: 'TOTAL ITEMS'),
+                        Value.withText(value: 'TOTAL AMOUNT'),
+                        Value.withText(value: 'STATUS'),
+                      ],
+                    );
+                  }
 
-            index -= 1;
+                  index -= 1;
 
-            return OrderListTableWidget.values(titles: [
-              Value.withText(value: '${orders.elementAt(index).id}'),
-              !isSupplyRole
-                  ? Value.withText(
-                      value: '${orders.elementAt(index).supplyBusinessName}',
-                    )
-                  : Value.withText(
-                      value: '${orders.elementAt(index).demandBusinessName}',
-                    ),
-              Value.withText(
-                value: (DateTimeToStringConverter.ddMMMMyy(
-                        date: StringToDateTimeConverter.ddmmyy(
-                                date: orders.elementAt(index).createDateTime!)
-                            .convert())
-                    .convert()),
+                  return OrderListTableWidget.values(
+                    titles: [
+                      Value.withText(value: '${orders.elementAt(index).id}'),
+                      !isSupplyRole
+                          ? Value.withText(
+                              value:
+                                  '${orders.elementAt(index).supplyBusinessName}',
+                            )
+                          : Value.withText(
+                              value:
+                                  '${orders.elementAt(index).demandBusinessName}',
+                            ),
+                      Value.withText(
+                        value: (DateTimeToStringConverter.ddMMMMyy(
+                                date: StringToDateTimeConverter.ddmmyy(
+                                        date: orders
+                                            .elementAt(index)
+                                            .createDateTime!)
+                                    .convert())
+                            .convert()),
+                      ),
+                      Value.withText(
+                        value: '${orders.elementAt(index).totalItems}',
+                      ),
+                      Value.withText(
+                        value: '${orders.elementAt(index).totalAmount}',
+                      ),
+                      Value.withOutlinedContainer(
+                        value: '${orders.elementAt(index).status}',
+                      ),
+                    ],
+                    isSelected: selectedOrderId > 0 &&
+                        selectedOrderId == orders.elementAt(index).id,
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    index == 0 ? Container() : const DottedDivider(),
+                itemCount: orders.length,
+              )
+            : const Center(
+                child: Text('No orders found'),
               ),
-              Value.withText(
-                value: '${orders.elementAt(index).totalItems}',
-              ),
-              Value.withText(
-                value: '${orders.elementAt(index).totalAmount}',
-              ),
-              Value.withOutlinedContainer(
-                value: '${orders.elementAt(index).status}',
-              ),
-            ]);
-          },
-          separatorBuilder: (context, index) =>
-              index == 0 ? Container() : const DottedDivider(),
-          itemCount: orders.length,
-        ),
       )
     ];
   }
@@ -107,52 +137,89 @@ class OrderListWidget extends StatelessWidget {
   _buildCompactView(BuildContext context) {
     return [
       Flexible(
-        child: ListView.separated(
-          physics: isScrollable
-              ? const AlwaysScrollableScrollPhysics()
-              : const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return AppInkwell(
-              onTap: showCompactView
-                  ? () {
-                      onOrderClick!(
-                        selectedOrder: orders.elementAt(
-                          index,
+        child: orders.isNotEmpty
+            ? ListView.separated(
+                controller: ScrollController(
+                  keepScrollOffset: true,
+                ),
+                key: const PageStorageKey('Order_list'),
+                physics: isScrollable
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return AppInkwell(
+                    onTap: showCompactView
+                        ? () {
+                            onOrderClick!(
+                              selectedOrder: orders.elementAt(
+                                index,
+                              ),
+                            );
+                          }
+                        : null,
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        OrderListTableWidget.values(
+                          titles: [
+                            Value.withText(
+                                value: '${orders.elementAt(index).id}'),
+                            !isSupplyRole
+                                ? Value.withText(
+                                    value:
+                                        '${orders.elementAt(index).supplyBusinessName}',
+                                  )
+                                : Value.withText(
+                                    value:
+                                        '${orders.elementAt(index).demandBusinessName}',
+                                  ),
+                            // Value.withText(
+                            //   value: (DateTimeToStringConverter.ddMMMMyy(
+                            //           date: StringToDateTimeConverter.ddmmyy(
+                            //                   date: orders.elementAt(index).createDateTime!)
+                            //               .convert())
+                            //       .convert()),
+                            // ),
+                            Value.withText(
+                              value: '${orders.elementAt(index).totalItems}',
+                            ),
+                            // Value.withText(
+                            //   value: '${orders.elementAt(index).totalAmount}',
+                            // ),
+                            // Value.withOutlinedContainer(
+                            //   value: '${orders.elementAt(index).status}',
+                            // ),
+                          ],
+                          isSelected: selectedOrderId > 0 &&
+                              selectedOrderId == orders.elementAt(index).id,
                         ),
-                      );
-                    }
-                  : null,
-              child: OrderListTableWidget.values(titles: [
-                Value.withText(value: '${orders.elementAt(index).id}'),
-                // !isSupplyRole
-                //     ? Value.withText(
-                //         value: '${orders.elementAt(index).supplyBusinessName}',
-                //       )
-                //     : Value.withText(
-                //         value: '${orders.elementAt(index).demandBusinessName}',
-                //       ),
-                Value.withText(
-                  value: (DateTimeToStringConverter.ddMMMMyy(
-                          date: StringToDateTimeConverter.ddmmyy(
-                                  date: orders.elementAt(index).createDateTime!)
-                              .convert())
-                      .convert()),
-                ),
-                // Value.withText(
-                //   value: '${orders.elementAt(index).totalItems}',
-                // ),
-                Value.withText(
-                  value: '${orders.elementAt(index).totalAmount}',
-                ),
-                // Value.withOutlinedContainer(
-                //   value: '${orders.elementAt(index).status}',
-                // ),
-              ]),
-            );
-          },
-          separatorBuilder: (context, index) => const DottedDivider(),
-          itemCount: orders.length,
-        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 8.0,
+                          ),
+                          child: OrderStatusWidget.compact(
+                            status: getApiToAppOrderStatus(
+                              status: orders.elementAt(index).status,
+                            ),
+                            statusColor: getBorderColor(
+                              status: orders.elementAt(index).status,
+                            ),
+                            statusStyle:
+                                Theme.of(context).textTheme.overline!.copyWith(
+                                      color: AppColors().white,
+                                    ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const DottedDivider(),
+                itemCount: orders.length,
+              )
+            : const Center(
+                child: Text('No orders found'),
+              ),
       )
     ];
   }
@@ -180,9 +247,62 @@ class OrderListWidget extends StatelessWidget {
                   : const EdgeInsets.all(
                       8.0,
                     ),
-              child: Text(
-                label,
-                style: Theme.of(context).textTheme.headline6,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    label,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  selectedOrderStatus.isNotEmpty
+                      ? SizedBox(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            decoration: BoxDecoration(
+                                color: AppColors().white,
+                                borderRadius: BorderRadius.circular(6)),
+                            child: DropdownButton<String>(
+                              hint: const Text('Select'),
+                              value: selectedOrderStatus,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: AppColors().primaryColor.shade900,
+                              ),
+                              iconSize: 30,
+                              underline: Container(),
+                              onChanged: (String? value) {
+                                onOrderStatusClick!(
+                                        selectedOrderStatus: value ?? '')
+                                    .call();
+                              },
+                              items:
+                                  orderStatuses.map<DropdownMenuItem<String>>(
+                                (String location) {
+                                  return DropdownMenuItem<String>(
+                                    child: Text(
+                                      location,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            color: location == 'ALL'
+                                                ? AppColors().black
+                                                : getBorderColor(
+                                                    status: location,
+                                                  ),
+                                          ),
+                                    ),
+                                    value: location,
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
             ),
             hSizedBox(
@@ -192,10 +312,10 @@ class OrderListWidget extends StatelessWidget {
               OrderListTableWidget.header(
                 titles: [
                   Value.withText(value: 'ORDER ID'),
-                  // Value.withText(value: 'ORDERED BY'),
-                  Value.withText(value: 'PLACED ON'),
-                  // Value.withText(value: 'TOTAL ITEMS'),
-                  Value.withText(value: 'TOTAL AMOUNT'),
+                  Value.withText(value: 'ORDERED BY'),
+                  // Value.withText(value: 'PLACED ON'),
+                  Value.withText(value: 'TOTAL ITEMS'),
+                  // Value.withText(value: 'TOTAL AMOUNT'),
                   // Value.withText(value: 'STATUS'),
                 ],
               ),
@@ -203,7 +323,7 @@ class OrderListWidget extends StatelessWidget {
                 ? _buildCompactView(context)
                 : _buildFullView(context)),
             if (showCompactView)
-              ListFooter.previousNext(
+              ListFooter.previousNextCompact(
                 pageNumber: pageNumber,
                 totalPages: totalPages,
                 onPreviousPageClick: onPreviousPageClick,
@@ -221,32 +341,18 @@ class OrderListTableWidget extends StatelessWidget {
     Key? key,
     this.isHeader = true,
     required this.titles,
+    this.isSelected = false,
   }) : super(key: key);
 
   const OrderListTableWidget.values({
     Key? key,
     this.isHeader = false,
     required this.titles,
+    required this.isSelected,
   }) : super(key: key);
 
-  final bool isHeader;
+  final bool isHeader, isSelected;
   final List<Value> titles;
-
-  getBorderColor({required String? status}) {
-    if (status == null) {
-      return Colors.transparent;
-    } else if (status == "PROCESSING") {
-      return AppColors().processingOrderBg;
-    } else if (status == "CREATED") {
-      return AppColors().placedOrderBg;
-    } else if (status == "CANCELLED") {
-      return AppColors().cancelledOrderBg;
-    } else if (status == "DELIVERED") {
-      return AppColors().deliveredOrderBg;
-    } else if (status == "INTRANSIT") {
-      return AppColors().shippedOrderBg;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +360,11 @@ class OrderListTableWidget extends StatelessWidget {
       padding: const EdgeInsets.all(
         8,
       ),
-      color: isHeader ? AppColors().dashboardTableHeaderBg : Colors.white,
+      color: isHeader
+          ? AppColors().dashboardTableHeaderBg
+          : isSelected
+              ? AppColors().primaryColor.shade100
+              : Colors.white,
       child: Row(
         children: titles
             .map((title) => Expanded(

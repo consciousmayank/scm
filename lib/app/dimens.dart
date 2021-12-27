@@ -86,6 +86,11 @@ class Dimens {
         RegExp(r'[0-9]'),
       );
 
+  TextInputFormatter get getNumericWithDecimalsTextInputFormatter =>
+      FilteringTextInputFormatter.allow(
+        RegExp(r'^\d+\.?\d{0,2}'),
+      );
+
   TextInputFormatter get numericWithDecimalFormatter =>
       FilteringTextInputFormatter.allow(
         RegExp(r'^\d+\.?\d{0,2}'),

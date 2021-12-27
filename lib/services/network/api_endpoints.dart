@@ -1,3 +1,5 @@
+import 'package:scm/enums/order_summary_api_type.dart';
+
 const LOGIN = "/driver/auth";
 
 const String UPDATE_FCM_ID = '/driver/update/fcmid';
@@ -46,10 +48,24 @@ final GET_ORDER_SUMMARY = (orderId) => "/api/supply/order/$orderId";
 final ORDER_INFO = ({required String role}) => "/api/$role/order/info";
 final ORDERED_BRANDS = ({required String role}) => "/api/$role/order/brand";
 final ORDERED_TYPES = ({required String role}) => "/api/$role/order/type";
-final ORDER = ({required String role, String? urlParamOrderId}) =>
-    urlParamOrderId == null
-        ? "/api/$role/order"
-        : "/api/$role/order/$urlParamOrderId";
+final ORDER = (
+    {required String role,
+    String? urlParamOrderId,
+    required OrderApiType orderApiType}) {
+  switch (orderApiType) {
+    case OrderApiType.ORDER_LIST:
+    case OrderApiType.UPDATE_ORDERS:
+      return "/api/$role/order";
+    case OrderApiType.ORDER_DETAILS:
+    case OrderApiType.ACCEPT_ORDER:
+    case OrderApiType.REJECT_ORDER:
+    case OrderApiType.DELIVER_ORDER:
+      return "/api/$role/order/$urlParamOrderId";
+  }
+};
+
+final GET_ORDER_STATUS_LIST =
+    ({required String role}) => "/api/${role}/order/status";
 
 const String ORDERS = "/api/supply/order";
 

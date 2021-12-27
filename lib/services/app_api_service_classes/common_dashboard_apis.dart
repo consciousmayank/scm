@@ -1,3 +1,4 @@
+import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
@@ -5,6 +6,7 @@ import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/base_api.dart';
+import 'package:scm/utils/utils.dart';
 
 abstract class CommonDashBoardApisAbstractClass {
   Future<CommonDashboardOrderInfo> getOrderInfo();
@@ -18,21 +20,76 @@ abstract class CommonDashBoardApisAbstractClass {
   Future<OrderListResponse> getOrdersList({
     required int pageSize,
     required int pageNumber,
-    String? orderId,
+    required String status,
   });
 
   Future<OrderSummaryResponse> getOrderDetails({
     String? orderId,
+  });
+
+  Future<OrderSummaryResponse> acceptOrder({
+    required String? orderId,
+  });
+
+  Future<OrderSummaryResponse> rejectOrder({required int? orderId});
+
+  Future<OrderSummaryResponse> deliverOrder({
+    required int? orderId,
+    required String deliveryBy,
+  });
+
+  Future<List<String>> getOrderStatusList();
+
+  Future<OrderSummaryResponse> updateOrder({
+    required OrderSummaryResponse orderDetials,
   });
 }
 
 class CommonDashBoardApis extends BaseApi
     implements CommonDashBoardApisAbstractClass {
   @override
+  Future<OrderSummaryResponse> acceptOrder({required String? orderId}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.ACCEPT_ORDER,
+      orderId: orderId,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
+  @override
+  Future<OrderSummaryResponse> deliverOrder(
+      {required int? orderId, required String deliveryBy}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+        orderApiType: OrderApiType.DELIVER_ORDER,
+        orderId: orderId.toString(),
+        deliveredBy: deliveryBy);
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
+  @override
   Future<OrderSummaryResponse> getOrderDetails({String? orderId}) async {
     OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
 
-    ParentApiResponse apiResponse = await apiService.getOrdersList(
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.ORDER_DETAILS,
       orderId: orderId,
       pageNumber: 0,
       pageSize: 0,
@@ -61,6 +118,23 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returingResponse;
+  }
+
+  @override
+  Future<List<String>> getOrderStatusList() async {
+    ParentApiResponse apiResponse = await apiService.getOrderStatusList();
+    List<String> statusListResponse = [];
+
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      var list = apiResponse.response!.data as List;
+
+      list.forEach((element) {
+        String status = element as String;
+        statusListResponse.add(status);
+      });
+    }
+
+    return statusListResponse;
   }
 
   @override
@@ -107,14 +181,15 @@ class CommonDashBoardApis extends BaseApi
   Future<OrderListResponse> getOrdersList({
     required int pageSize,
     required int pageNumber,
-    String? orderId,
+    required String status,
   }) async {
     OrderListResponse returingResponse = OrderListResponse().empty();
 
-    ParentApiResponse apiResponse = await apiService.getOrdersList(
-      orderId: orderId,
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.ORDER_LIST,
       pageNumber: pageNumber,
       pageSize: pageSize,
+      status: getAppToApiOrderStatus(status: status),
     );
 
     if (filterResponse(apiResponse) != null) {
@@ -124,5 +199,39 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returingResponse;
+  }
+
+  @override
+  Future<OrderSummaryResponse> rejectOrder({required int? orderId}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.REJECT_ORDER,
+      orderId: orderId.toString(),
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
+  @override
+  Future<OrderSummaryResponse> updateOrder(
+      {required OrderSummaryResponse orderDetials}) async {
+    OrderSummaryResponse updateOrderResponse = OrderSummaryResponse().empty();
+    // return null;
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.UPDATE_ORDERS,
+      orderDetials: orderDetials,
+    );
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      updateOrderResponse =
+          OrderSummaryResponse.fromMap(apiResponse.response?.data);
+    }
+    return updateOrderResponse;
   }
 }
