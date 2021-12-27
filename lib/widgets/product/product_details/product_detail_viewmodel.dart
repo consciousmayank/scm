@@ -10,7 +10,6 @@ import 'package:scm/widgets/product/product_details/product_detail_view.dart';
 class ProductDetailViewModel extends GeneralisedBaseViewModel {
   late final ProductDetailViewArguments arguments;
   Product? product;
-
   late Uint8List? productImage;
 
   final ProductListApis _productListApis = di<ProductListApiImpl>();

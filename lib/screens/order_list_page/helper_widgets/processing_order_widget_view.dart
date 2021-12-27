@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/enums/order_status_types.dart';
+import 'package:scm/model_classes/address.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/order_process_buttons.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
@@ -11,11 +13,19 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
 class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
   const ProcessingOrderWidget({
     Key? key,
   }) : super(key: key);
+
+  String getAddressString({required Address? address}) {
+    if (address == null) {
+      return '';
+    }
+    return '${address.addressLine1}, ${address.addressLine2}, \n${address.locality} ${address.nearby}, \n${address.city}, ${address.state}, ${address.country}, ${address.pincode}';
+  }
 
   @override
   Widget build(BuildContext context, OrderListPageViewModel viewModel) {
@@ -47,11 +57,14 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                       Dimens().defaultBorder,
                     ),
                   ),
-                  color: Colors.grey,
+                  color: getBorderColor(
+                      status: viewModel.selectedOrder.status.toString()),
                 ),
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  viewModel.selectedOrder.status.toString(),
+                  getApiToAppOrderStatus(
+                    status: viewModel.selectedOrder.status.toString(),
+                  ),
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         color: AppColors().white,
                       ),
@@ -107,162 +120,266 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomScrollView(slivers: [
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      if (index == 0) {
-                        return ProcessingItemsListTable.header(
-                          values: const [
+              child: CustomScrollView(
+                slivers: [
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        if (index == 0) {
+                          return ProcessingItemsListTable.header(
+                            values: const [
+                              Text(
+                                '#',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Title',
+                                textAlign: TextAlign.left,
+                              ),
+                              Text(
+                                'Details',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Qty',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Price',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                '',
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                'Amount',
+                                textAlign: TextAlign.right,
+                              )
+                            ],
+                            flexValues: const [1, 5, 2, 3, 3, 1, 3],
+                          );
+                        }
+
+                        index -= 1;
+
+                        return ProcessingItemsListTable.normal(
+                          values: [
                             Text(
-                              '#',
+                              '$index',
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              'Title',
+                              '${viewModel.orderDetails.orderItems!.elementAt(index).itemTitle}',
                               textAlign: TextAlign.left,
                             ),
-                            Text(
-                              'Details',
-                              textAlign: TextAlign.center,
+                            AppInkwell(
+                              onTap: () {
+                                viewModel.openProductDetails(
+                                    productId: viewModel
+                                        .orderDetails.orderItems!
+                                        .elementAt(index)
+                                        .itemId!,
+                                    productTitle: viewModel
+                                            .orderDetails.orderItems!
+                                            .elementAt(index)
+                                            .itemTitle ??
+                                        'NA');
+                              },
+                              child: const Text(
+                                'View Product',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline),
+                              ),
                             ),
-                            Text(
-                              'Qty',
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: viewModel.orderDetails.status ==
+                                      OrderStatusTypes.PROCESSING.apiToAppTitles
+                                  ? QuantityWidget(
+                                      focusNode: viewModel
+                                          .quantityEditingFocusnodes
+                                          .elementAt(index),
+                                      controller: viewModel
+                                          .quantityEditingControllers
+                                          .elementAt(index),
+                                      index: index,
+                                      onChanged: ({required String value}) {
+                                        // viewModel.updateQuantity(
+                                        //     index: index, quantity: value);
+                                        // viewModel.quantityEditingFocusnodes
+                                        //     .elementAt(index)
+                                        //     .requestFocus();
+                                      },
+                                      quantity: viewModel
+                                              .orderDetails.orderItems!
+                                              .elementAt(index)
+                                              .itemQuantity ??
+                                          0,
+                                      hint: 'Item Quantity',
+                                    )
+                                  : Text(
+                                      '${viewModel.orderDetails.orderItems!.elementAt(index).itemQuantity}',
+                                      textAlign: TextAlign.center,
+                                    ),
                             ),
-                            Text(
-                              'Price',
-                              textAlign: TextAlign.center,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 4),
+                              child: viewModel.orderDetails.status ==
+                                      OrderStatusTypes.PROCESSING.apiToAppTitles
+                                  ? PriceWidget(
+                                      focusNode: viewModel
+                                          .priceEditingFocusnodes
+                                          .elementAt(index),
+                                      controller: viewModel
+                                          .priceEditingControllers
+                                          .elementAt(index),
+                                      index: index,
+                                      onChanged: ({required String value}) {
+                                        // viewModel.updatePrice(
+                                        //     index: index, price: value);
+                                        // viewModel.priceEditingFocusnodes
+                                        //     .elementAt(index)
+                                        //     .requestFocus();
+                                      },
+                                      hint: 'Item Price',
+                                      price: viewModel.orderDetails.orderItems!
+                                              .elementAt(index)
+                                              .itemPrice ??
+                                          0,
+                                    )
+                                  : Text(
+                                      '${viewModel.orderDetails.orderItems!.elementAt(index).itemPrice}',
+                                      textAlign: TextAlign.center,
+                                    ),
                             ),
+                            viewModel.orderDetails.status ==
+                                    OrderStatusTypes.PROCESSING.apiToAppTitles
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 4,
+                                      right: 4,
+                                    ),
+                                    child: AppInkwell(
+                                      onTap: () {
+                                        viewModel.updateTotal(
+                                          index: index,
+                                          price: double.parse(
+                                            viewModel.priceEditingControllers
+                                                .elementAt(index)
+                                                .text
+                                                .trim(),
+                                          ),
+                                          quantity: int.parse(
+                                            viewModel.quantityEditingControllers
+                                                .elementAt(index)
+                                                .text
+                                                .trim(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Icon(
+                                        Icons.done,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
                             Text(
-                              '',
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              'Amount',
+                              '${viewModel.orderDetails.orderItems!.elementAt(index).itemTotalPrice}',
                               textAlign: TextAlign.right,
                             )
                           ],
                           flexValues: const [1, 5, 2, 3, 3, 1, 3],
                         );
-                      }
-
-                      index -= 1;
-
-                      return ProcessingItemsListTable.normal(
-                        values: [
-                          Text(
-                            '$index',
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            '${viewModel.orderDetails.orderItems!.elementAt(index).itemTitle}',
-                            textAlign: TextAlign.left,
-                          ),
-                          AppInkwell(
-                            onTap: () {
-                              viewModel.openProductDetails(
-                                  productId: viewModel.orderDetails.orderItems!
-                                      .elementAt(index)
-                                      .itemId!,
-                                  productTitle: viewModel
-                                          .orderDetails.orderItems!
-                                          .elementAt(index)
-                                          .itemTitle ??
-                                      'NA');
-                            },
-                            child: const Text(
-                              'View Product',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: QuantityWidget(
-                              focusNode: viewModel.quantityEditingFocusnodes
-                                  .elementAt(index),
-                              controller: viewModel.quantityEditingControllers
-                                  .elementAt(index),
-                              index: index,
-                              onChanged: ({required String value}) {
-                                // viewModel.updateQuantity(
-                                //     index: index, quantity: value);
-                                // viewModel.quantityEditingFocusnodes
-                                //     .elementAt(index)
-                                //     .requestFocus();
-                              },
-                              quantity: viewModel.orderDetails.orderItems!
-                                      .elementAt(index)
-                                      .itemQuantity ??
-                                  0,
-                              hint: 'Item Quantity',
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: PriceWidget(
-                              focusNode: viewModel.priceEditingFocusnodes
-                                  .elementAt(index),
-                              controller: viewModel.priceEditingControllers
-                                  .elementAt(index),
-                              index: index,
-                              onChanged: ({required String value}) {
-                                // viewModel.updatePrice(
-                                //     index: index, price: value);
-                                // viewModel.priceEditingFocusnodes
-                                //     .elementAt(index)
-                                //     .requestFocus();
-                              },
-                              hint: 'Item Price',
-                              price: viewModel.orderDetails.orderItems!
-                                      .elementAt(index)
-                                      .itemPrice ??
-                                  0,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 4,
-                              right: 4,
-                            ),
-                            child: AppInkwell(
-                              onTap: () {
-                                viewModel.updateTotal(
-                                  index: index,
-                                  price: double.parse(
-                                    viewModel.priceEditingControllers
-                                        .elementAt(index)
-                                        .text
-                                        .trim(),
+                      },
+                      childCount: viewModel.orderDetails.orderItems!.length + 1,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: hSizedBox(
+                      height: 16,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: OrderItemContainerWidget(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  labelShippingAddress,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    getAddressString(
+                                      address: viewModel
+                                          .orderDetails.shippingAddress,
+                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 18,
+                                        ),
                                   ),
-                                  quantity: int.parse(
-                                    viewModel.quantityEditingControllers
-                                        .elementAt(index)
-                                        .text
-                                        .trim(),
-                                  ),
-                                );
-                              },
-                              child: const Icon(
-                                Icons.done,
-                                size: 20,
-                              ),
+                                ),
+                              ],
                             ),
+                            flex: 1,
                           ),
-                          Text(
-                            '${viewModel.orderDetails.orderItems!.elementAt(index).itemTotalPrice}',
-                            textAlign: TextAlign.right,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  labelBillingAddress,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    getAddressString(
+                                      address:
+                                          viewModel.orderDetails.billingAddress,
+                                    ),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            flex: 1,
                           )
                         ],
-                        flexValues: const [1, 5, 2, 3, 3, 1, 3],
-                      );
-                    },
-                    childCount: viewModel.orderDetails.orderItems!.length + 1,
+                      ),
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
           const OrderPorcessButtonsWidget()

@@ -47,13 +47,13 @@ class ListFooter extends StatelessWidget {
   })  : allIcons = true,
         super(key: key);
 
+  final bool allIcons;
   final Function? onFirstPageClick;
   final Function? onLastPageClick;
   final Function? onNextPageClick;
   final Function? onPreviousPageClick;
   final int pageNumber;
   final int totalPages;
-  final bool allIcons;
 
   @override
   Widget build(BuildContext context) {

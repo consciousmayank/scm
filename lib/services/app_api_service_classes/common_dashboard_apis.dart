@@ -6,6 +6,7 @@ import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/base_api.dart';
+import 'package:scm/utils/utils.dart';
 
 abstract class CommonDashBoardApisAbstractClass {
   Future<CommonDashboardOrderInfo> getOrderInfo();
@@ -47,6 +48,43 @@ abstract class CommonDashBoardApisAbstractClass {
 class CommonDashBoardApis extends BaseApi
     implements CommonDashBoardApisAbstractClass {
   @override
+  Future<OrderSummaryResponse> acceptOrder({required String? orderId}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.ACCEPT_ORDER,
+      orderId: orderId,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
+  @override
+  Future<OrderSummaryResponse> deliverOrder(
+      {required int? orderId, required String deliveryBy}) async {
+    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
+
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+        orderApiType: OrderApiType.DELIVER_ORDER,
+        orderId: orderId.toString(),
+        deliveredBy: deliveryBy);
+
+    if (filterResponse(apiResponse) != null) {
+      returningResponse = OrderSummaryResponse.fromMap(
+        apiResponse.response!.data,
+      );
+    }
+
+    return returningResponse;
+  }
+
+  @override
   Future<OrderSummaryResponse> getOrderDetails({String? orderId}) async {
     OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
 
@@ -80,6 +118,23 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returingResponse;
+  }
+
+  @override
+  Future<List<String>> getOrderStatusList() async {
+    ParentApiResponse apiResponse = await apiService.getOrderStatusList();
+    List<String> statusListResponse = [];
+
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      var list = apiResponse.response!.data as List;
+
+      list.forEach((element) {
+        String status = element as String;
+        statusListResponse.add(status);
+      });
+    }
+
+    return statusListResponse;
   }
 
   @override
@@ -134,7 +189,7 @@ class CommonDashBoardApis extends BaseApi
       orderApiType: OrderApiType.ORDER_LIST,
       pageNumber: pageNumber,
       pageSize: pageSize,
-      status: status,
+      status: getAppToApiOrderStatus(status: status),
     );
 
     if (filterResponse(apiResponse) != null) {
@@ -144,43 +199,6 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returingResponse;
-  }
-
-  @override
-  Future<OrderSummaryResponse> acceptOrder({required String? orderId}) async {
-    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
-
-    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
-      orderApiType: OrderApiType.ACCEPT_ORDER,
-      orderId: orderId,
-    );
-
-    if (filterResponse(apiResponse) != null) {
-      returningResponse = OrderSummaryResponse.fromMap(
-        apiResponse.response!.data,
-      );
-    }
-
-    return returningResponse;
-  }
-
-  @override
-  Future<OrderSummaryResponse> deliverOrder(
-      {required int? orderId, required String deliveryBy}) async {
-    OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
-
-    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
-        orderApiType: OrderApiType.DELIVER_ORDER,
-        orderId: orderId.toString(),
-        deliveredBy: deliveryBy);
-
-    if (filterResponse(apiResponse) != null) {
-      returningResponse = OrderSummaryResponse.fromMap(
-        apiResponse.response!.data,
-      );
-    }
-
-    return returningResponse;
   }
 
   @override
@@ -199,23 +217,6 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returningResponse;
-  }
-
-  @override
-  Future<List<String>> getOrderStatusList() async {
-    ParentApiResponse apiResponse = await apiService.getOrderStatusList();
-    List<String> statusListResponse = [];
-
-    if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      var list = apiResponse.response!.data as List;
-
-      list.forEach((element) {
-        String status = element as String;
-        statusListResponse.add(status);
-      });
-    }
-
-    return statusListResponse;
   }
 
   @override

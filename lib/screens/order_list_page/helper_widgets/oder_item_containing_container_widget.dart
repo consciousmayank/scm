@@ -9,14 +9,14 @@ class OrderItemContainerWidget extends StatelessWidget {
     required this.child,
   }) : super(key: key);
 
-  final Widget child;
-  final double? padding;
-
   const OrderItemContainerWidget.noPadding({
     Key? key,
     required this.child,
     this.padding,
   }) : super(key: key);
+
+  final Widget child;
+  final double? padding;
 
   @override
   Widget build(BuildContext context) {

@@ -2,17 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 
 class OrderItemRowWidget extends StatelessWidget {
-  static const TextStyle labelTextStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
-  );
-
-  static const TextStyle valueTextStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: Colors.black,
-  );
   const OrderItemRowWidget({
     Key? key,
     required this.label,
@@ -43,10 +32,22 @@ class OrderItemRowWidget extends StatelessWidget {
         valueStyle = valueTextStyle,
         super(key: key);
 
-  final String? label, value;
-  final TextStyle? labelStyle, valueStyle;
+  static const TextStyle labelTextStyle = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
+  static const TextStyle valueTextStyle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
   final bool noValue;
   final EdgeInsets padding;
+  final String? label, value;
+  final TextStyle? labelStyle, valueStyle;
 
   @override
   Widget build(BuildContext context) {

@@ -212,21 +212,76 @@ String getProductMeasurement({double? measurement, String? measurementUnit}) {
   return '${measureMent.toStringAsFixed(2)} $unit';
 }
 
-OrderStatusTypes getOrderStatus({String? status}) {
+String getApiToAppOrderStatus({
+  String? status,
+}) {
   if (status == null) {
-    return OrderStatusTypes.NONE;
-  } else if (status == OrderStatusTypes.CREATED.getStatusRealStringValues) {
-    return OrderStatusTypes.CREATED;
-  } else if (status == OrderStatusTypes.INTRANSIT.getStatusRealStringValues ||
-      status == OrderStatusTypes.SHIPPED.getStatusRealStringValues) {
-    return OrderStatusTypes.INTRANSIT;
-  } else if (status == OrderStatusTypes.PROCESSING.getStatusRealStringValues) {
-    return OrderStatusTypes.PROCESSING;
-  } else if (status == OrderStatusTypes.DELIVERED.getStatusRealStringValues) {
-    return OrderStatusTypes.DELIVERED;
-  } else if (status == OrderStatusTypes.CANCELLED.getStatusRealStringValues) {
-    return OrderStatusTypes.CANCELLED;
+    return OrderStatusTypes.NONE.apiToAppTitles;
+  } else if (status == OrderStatusTypes.CREATED.apiToAppTitles) {
+    return OrderStatusTypes.NEW_ORDER.apiToAppTitles;
+  } else if (status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
+    return OrderStatusTypes.UNDER_PROCESS.apiToAppTitles;
+  } else if (status == OrderStatusTypes.INTRANSIT.apiToAppTitles) {
+    return OrderStatusTypes.SHIPPED.apiToAppTitles;
   } else {
-    return OrderStatusTypes.NONE;
+    return status.toUpperCase();
   }
 }
+
+String getAppToApiOrderStatus({
+  String? status,
+}) {
+  if (status == null) {
+    return '';
+  } else if (status == OrderStatusTypes.NEW_ORDER.apiToAppTitles) {
+    return OrderStatusTypes.CREATED.apiToAppTitles;
+  } else if (status == OrderStatusTypes.UNDER_PROCESS.apiToAppTitles) {
+    return OrderStatusTypes.PROCESSING.apiToAppTitles;
+  } else if (status == OrderStatusTypes.SHIPPED.apiToAppTitles) {
+    return OrderStatusTypes.INTRANSIT.apiToAppTitles;
+  } else {
+    return status.toUpperCase();
+  }
+}
+
+Color getBorderColor({required String? status}) {
+  if (status == null) {
+    return Colors.transparent;
+  } else if (status == OrderStatusTypes.PROCESSING.apiToAppTitles ||
+      status == OrderStatusTypes.UNDER_PROCESS.apiToAppTitles) {
+    return OrderStatusTypes.PROCESSING.displayColor;
+  } else if (status == OrderStatusTypes.CREATED.apiToAppTitles ||
+      status == OrderStatusTypes.NEW_ORDER.apiToAppTitles) {
+    return OrderStatusTypes.CREATED.displayColor;
+  } else if (status == OrderStatusTypes.CANCELLED.apiToAppTitles) {
+    return OrderStatusTypes.CANCELLED.displayColor;
+  } else if (status == OrderStatusTypes.DELIVERED.apiToAppTitles) {
+    return OrderStatusTypes.DELIVERED.displayColor;
+  } else if (status == OrderStatusTypes.INTRANSIT.apiToAppTitles ||
+      status == OrderStatusTypes.SHIPPED.apiToAppTitles) {
+    return OrderStatusTypes.INTRANSIT.displayColor;
+  } else {
+    return Colors.transparent;
+  }
+}
+
+
+// OrderStatusTypes getOrderStatusBeforeOrderList({
+//   String? status,
+// }) {
+//   if (status == null) {
+//     return OrderStatusTypes.NONE;
+//   } else if (status == OrderStatusTypes.NEW_ORDER.title) {
+//     return OrderStatusTypes.CREATED;
+//   } else if (status == OrderStatusTypes.SHIPPED.title) {
+//     return OrderStatusTypes.INTRANSIT;
+//   } else if (status == OrderStatusTypes.UNDER_PROCESS.title) {
+//     return OrderStatusTypes.PROCESSING;
+//   } else if (status == OrderStatusTypes.DELIVERED.title) {
+//     return OrderStatusTypes.DELIVERED;
+//   } else if (status == OrderStatusTypes.CANCELLED.title) {
+//     return OrderStatusTypes.CANCELLED;
+//   } else {
+//     return OrderStatusTypes.NONE;
+//   }
+// }

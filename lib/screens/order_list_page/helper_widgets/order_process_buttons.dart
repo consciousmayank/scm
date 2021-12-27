@@ -12,6 +12,23 @@ class OrderPorcessButtonsWidget
     Key? key,
   }) : super(key: key);
 
+  Widget buildOrderButtons({
+    required Function() onTap,
+    required String buttonText,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(2),
+      // height: 50,
+      child: SizedBox(
+        height: AppBar().preferredSize.height,
+        child: AppButton(
+          onTap: onTap,
+          buttonText: buttonText,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, OrderListPageViewModel viewModel) {
     switch (viewModel.orderDetails.status) {
@@ -178,22 +195,5 @@ class OrderPorcessButtonsWidget
       default:
         return Container();
     }
-  }
-
-  Widget buildOrderButtons({
-    required Function() onTap,
-    required String buttonText,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      // height: 50,
-      child: SizedBox(
-        height: AppBar().preferredSize.height,
-        child: AppButton(
-          onTap: onTap,
-          buttonText: buttonText,
-        ),
-      ),
-    );
   }
 }

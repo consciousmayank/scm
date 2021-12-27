@@ -11,24 +11,28 @@ import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
+import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
-  List<TextEditingController> priceEditingControllers = [];
-  List<TextEditingController> quantityEditingControllers = [];
-  List<FocusNode> priceEditingFocusnodes = [];
-  List<FocusNode> quantityEditingFocusnodes = [];
-
   OrderSummaryResponse orderDetails = OrderSummaryResponse().empty();
   ApiStatus orderDetailsApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
   ApiStatus orderListApi = ApiStatus.LOADING;
+  List<String> orderStatusList = ['ALL'];
   ApiStatus ordersStatusListApi = ApiStatus.LOADING;
   int pageNumber = 0;
   int pageSize = 15;
+  List<TextEditingController> priceEditingControllers = [];
+  List<FocusNode> priceEditingFocusnodes = [];
+  List<TextEditingController> quantityEditingControllers = [];
+  List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
+
+  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
+  String selectedOrderStatus = 'ALL';
 
   void initializeEditexts() {
     orderDetails.orderItems?.forEach((element) {
@@ -49,8 +53,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
-
   init(OrderListPageViewArguments arguments) {
     selectedOrder = Order().empty();
     getOrderStatusList();
@@ -67,11 +69,14 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     if (selectedOrder.id == Order().empty().id) {
       selectedOrder = orderList.orders!.first;
-      getOrdersDetails();
     } else {
       selectedOrder = getSelectedOrder(ordersListResponse: orderList);
     }
-
+    if (orderList.orders!.isNotEmpty) {
+      getOrdersDetails();
+    } else {
+      orderDetails = OrderSummaryResponse().empty();
+    }
     orderListApi = ApiStatus.FETCHED;
 
     notifyListeners();
@@ -84,7 +89,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       orderId: selectedOrder.id.toString(),
     );
 
-    if (orderDetails.status == 'PROCESSING') {
+    if (orderDetails.status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
       turnSelectedOrderItemsEditable();
       initializeEditexts();
     }
@@ -194,17 +199,23 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<String> orderStatusList = ['ALL'];
-  String selectedOrderStatus = 'ALL';
+  // String get selectedOrderStatus => _selectedOrderStatus;
+
+  // set selectedOrderStatus(String selectedOrderStatus) {
+  //   _selectedOrderStatus =
+  //       getOrderStatus(status: selectedOrderStatus, getApiStatus: true)
+  //           .getInAppStatusStringValues;
+  // }
+
   void getOrderStatusList() async {
     setBusy(true);
     List<dynamic>? mapList = await _commonDashBoardApis.getOrderStatusList();
     mapList.forEach((element) {
-      if (element == 'INTRANSIT') {
-        orderStatusList.add('SHIPPED');
-      } else {
-        orderStatusList.add(element);
-      }
+      orderStatusList.add(
+        getApiToAppOrderStatus(
+          status: element,
+        ),
+      );
     });
 
     selectedOrderStatus = orderStatusList.first;

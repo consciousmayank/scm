@@ -6,14 +6,14 @@ import 'package:scm/widgets/app_textfield.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DeliveryDetilasDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const DeliveryDetilasDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _DeliveryDetilasDialogBoxViewState createState() =>
@@ -22,13 +22,33 @@ class DeliveryDetilasDialogBoxView extends StatefulWidget {
 
 class _DeliveryDetilasDialogBoxViewState
     extends State<DeliveryDetilasDialogBoxView> {
-  TextEditingController deliverByTextController = TextEditingController();
   FocusNode deliverByFocusNode = FocusNode();
+  TextEditingController deliverByTextController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  Widget buildQtyTextFormField() {
+    return AppTextField(
+      // maxLines: 2,
+      keyboardType: TextInputType.streetAddress,
+      hintText: 'e.g. VIKAS, UK07CA8178',
+      onFieldSubmitted: (_) {
+        // fieldFocusChange(context, firstNameFocusNode, lastNameFocusNode);
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter deliver by';
+        }
+        return null;
+      },
+      controller: deliverByTextController,
+      focusNode: deliverByFocusNode,
+    );
   }
 
   @override
@@ -89,37 +109,18 @@ class _DeliveryDetilasDialogBoxViewState
       ),
     );
   }
-
-  Widget buildQtyTextFormField() {
-    return AppTextField(
-      // maxLines: 2,
-      keyboardType: TextInputType.streetAddress,
-      hintText: 'e.g. VIKAS, UK07CA8178',
-      onFieldSubmitted: (_) {
-        // fieldFocusChange(context, firstNameFocusNode, lastNameFocusNode);
-      },
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter deliver by';
-        }
-        return null;
-      },
-      controller: deliverByTextController,
-      focusNode: deliverByFocusNode,
-    );
-  }
 }
 
 class DeliveryDetilasDialogBoxViewArguments {
-  final String title;
-
   DeliveryDetilasDialogBoxViewArguments({
     required this.title,
   });
+
+  final String title;
 }
 
 class DeliveryDetilasDialogBoxViewOutArguments {
-  final String deliveredBy;
-
   DeliveryDetilasDialogBoxViewOutArguments({required this.deliveredBy});
+
+  final String deliveredBy;
 }
