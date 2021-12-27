@@ -3,10 +3,16 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 
 class ProcessingItemsListTable extends StatelessWidget {
-  final List<Widget> values;
-  final List<int> flexValues;
-  // final List<TextAlign> textAlignValues;
-  final bool isHeader;
+  const ProcessingItemsListTable.header({
+    Key? key,
+    required this.values,
+    required this.flexValues,
+    // required this.textAlignValues,
+  })  : isHeader = true,
+        assert(flexValues.length == values.length,
+            'flexValues.length != values.length'),
+        super(key: key);
+
   const ProcessingItemsListTable.normal({
     Key? key,
     required this.values,
@@ -17,15 +23,11 @@ class ProcessingItemsListTable extends StatelessWidget {
             'flexValues.length != values.length'),
         super(key: key);
 
-  const ProcessingItemsListTable.header({
-    Key? key,
-    required this.values,
-    required this.flexValues,
-    // required this.textAlignValues,
-  })  : isHeader = true,
-        assert(flexValues.length == values.length,
-            'flexValues.length != values.length'),
-        super(key: key);
+  final List<int> flexValues;
+  // final List<TextAlign> textAlignValues;
+  final bool isHeader;
+
+  final List<Widget> values;
 
   @override
   Widget build(BuildContext context) {

@@ -59,14 +59,14 @@ class OrderSummaryResponse {
   Address? billingAddress;
   String? createDateTime;
   String? demandBusinessName;
-  String? supplyBusinessName;
   int? demandId;
-  int? supplyId;
   int? id;
   List<OrderItem>? orderItems;
   List<OrderTracking>? orderTracking;
   Address? shippingAddress;
   String? status;
+  String? supplyBusinessName;
+  int? supplyId;
   double? totalAmount;
   int? totalItems;
 

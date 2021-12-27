@@ -4,12 +4,6 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/widgets/app_textfield.dart';
 
 class QuantityWidget extends StatefulWidget {
-  final Function({required String value}) onChanged;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final int quantity;
-  final int index;
-  final String hint;
   const QuantityWidget(
       {Key? key,
       required this.index,
@@ -19,6 +13,13 @@ class QuantityWidget extends StatefulWidget {
       required this.focusNode,
       required this.controller})
       : super(key: key);
+
+  final Function({required String value}) onChanged;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final String hint;
+  final int index;
+  final int quantity;
 
   @override
   _QuantityWidgetState createState() => _QuantityWidgetState();
@@ -58,12 +59,6 @@ class _QuantityWidgetState extends State<QuantityWidget> {
 }
 
 class PriceWidget extends StatefulWidget {
-  final Function({required String value}) onChanged;
-  final double price;
-  final int index;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final String hint;
   const PriceWidget({
     Key? key,
     required this.index,
@@ -73,6 +68,13 @@ class PriceWidget extends StatefulWidget {
     required this.controller,
     required this.hint,
   }) : super(key: key);
+
+  final Function({required String value}) onChanged;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final String hint;
+  final int index;
+  final double price;
 
   @override
   _PriceWidgetState createState() => _PriceWidgetState();

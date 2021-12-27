@@ -4,13 +4,6 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 
 class OrderStatusWidget extends StatelessWidget {
-  final String? status;
-  final Color statusColor;
-  final TextStyle statusStyle;
-  final EdgeInsets padding;
-  final bool isCompact;
-  final bool isDropdown;
-
   const OrderStatusWidget({
     Key? key,
     required this.status,
@@ -40,6 +33,13 @@ class OrderStatusWidget extends StatelessWidget {
         isCompact = false,
         isDropdown = true,
         super(key: key);
+
+  final bool isCompact;
+  final bool isDropdown;
+  final EdgeInsets padding;
+  final String? status;
+  final Color statusColor;
+  final TextStyle statusStyle;
 
   @override
   Widget build(BuildContext context) {

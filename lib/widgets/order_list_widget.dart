@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
@@ -53,17 +55,20 @@ class OrderListWidget extends StatelessWidget {
   final bool isSupplyRole, isScrollable;
   final String label;
   final Function? onPreviousPageClick, onNextPageClick;
+  final List<String> orderStatuses;
   final List<Order> orders;
-  final bool showCompactView;
   final int pageNumber, totalPages, selectedOrderId;
   final String selectedOrderStatus;
-  final List<String> orderStatuses;
+  final bool showCompactView;
 
   _buildFullView(BuildContext context) {
     return [
       Flexible(
         child: orders.isNotEmpty
             ? ListView.separated(
+                controller: ScrollController(
+                  keepScrollOffset: true,
+                ),
                 physics: isScrollable
                     ? const AlwaysScrollableScrollPhysics()
                     : const NeverScrollableScrollPhysics(),
@@ -134,6 +139,10 @@ class OrderListWidget extends StatelessWidget {
       Flexible(
         child: orders.isNotEmpty
             ? ListView.separated(
+                controller: ScrollController(
+                  keepScrollOffset: true,
+                ),
+                key: const PageStorageKey('Order_list'),
                 physics: isScrollable
                     ? const AlwaysScrollableScrollPhysics()
                     : const NeverScrollableScrollPhysics(),
@@ -189,10 +198,12 @@ class OrderListWidget extends StatelessWidget {
                             right: 8.0,
                           ),
                           child: OrderStatusWidget.compact(
-                            status: orders.elementAt(index).status,
-                            statusColor: getOrderStatus(
+                            status: getApiToAppOrderStatus(
                               status: orders.elementAt(index).status,
-                            ).getStatusColors,
+                            ),
+                            statusColor: getBorderColor(
+                              status: orders.elementAt(index).status,
+                            ),
                             statusStyle:
                                 Theme.of(context).textTheme.overline!.copyWith(
                                       color: AppColors().white,
@@ -276,14 +287,11 @@ class OrderListWidget extends StatelessWidget {
                                           .textTheme
                                           .bodyText1!
                                           .copyWith(
-                                            color: getOrderStatus(
-                                                      status: location,
-                                                    ) ==
-                                                    OrderStatusTypes.NONE
+                                            color: location == 'ALL'
                                                 ? AppColors().black
-                                                : getOrderStatus(
+                                                : getBorderColor(
                                                     status: location,
-                                                  ).getStatusColors,
+                                                  ),
                                           ),
                                     ),
                                     value: location,
@@ -345,23 +353,6 @@ class OrderListTableWidget extends StatelessWidget {
 
   final bool isHeader, isSelected;
   final List<Value> titles;
-
-  getBorderColor({required String? status}) {
-    if (status == null) {
-      return Colors.transparent;
-    } else if (status ==
-        OrderStatusTypes.PROCESSING.getStatusRealStringValues) {
-      return OrderStatusTypes.PROCESSING.getStatusColors;
-    } else if (status == OrderStatusTypes.CREATED.getStatusRealStringValues) {
-      return OrderStatusTypes.CREATED.getStatusColors;
-    } else if (status == OrderStatusTypes.CANCELLED.getStatusRealStringValues) {
-      return OrderStatusTypes.CANCELLED.getStatusColors;
-    } else if (status == OrderStatusTypes.DELIVERED.getStatusRealStringValues) {
-      return OrderStatusTypes.DELIVERED.getStatusColors;
-    } else if (status == OrderStatusTypes.INTRANSIT.getStatusRealStringValues) {
-      return OrderStatusTypes.INTRANSIT.getStatusColors;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

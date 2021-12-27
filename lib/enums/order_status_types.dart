@@ -11,8 +11,11 @@ enum OrderStatusTypes {
   INTRANSIT,
   DELIVERED,
   CANCELLED,
+  //In App Statuses
   NONE,
   SHIPPED,
+  NEW_ORDER,
+  UNDER_PROCESS
 }
 
 extension OrderStatusTypesIntValues on OrderStatusTypes {
@@ -38,69 +41,30 @@ extension OrderStatusTypesIntValues on OrderStatusTypes {
 }
 
 extension OrderStatusTypesStringValues on OrderStatusTypes {
-  String get getStatusStringValues {
+  get title => describeEnum(this);
+
+  String get apiToAppTitles {
     switch (this) {
       case OrderStatusTypes.CREATED:
-        return 'NEW ORDER';
+        return "CREATED";
+
+      case OrderStatusTypes.NEW_ORDER:
+        return "NEW ORDER";
 
       case OrderStatusTypes.PROCESSING:
-        return 'UNDER PROCESS';
-
+        return "PROCESSING";
+      case OrderStatusTypes.UNDER_PROCESS:
+        return "UNDER PROCCESS";
       case OrderStatusTypes.INTRANSIT:
-        return 'SHIPPED';
-      case OrderStatusTypes.DELIVERED:
-        return 'DELIVERED';
-      case OrderStatusTypes.CANCELLED:
-        return 'CANCELLED';
-
-      default:
-        return 'UNKNOWN';
-    }
-  }
-}
-
-extension OrderStatusTypesGetActualStringValues on OrderStatusTypes {
-  String get getStatusRealStringValues {
-    switch (this) {
-      case OrderStatusTypes.CREATED:
-        return 'CREATED';
-
-      case OrderStatusTypes.PROCESSING:
-        return 'PROCESSING';
+        return "INTRANSIT";
       case OrderStatusTypes.SHIPPED:
-        return 'SHIPPED';
-
-      case OrderStatusTypes.INTRANSIT:
-        return 'INTRANSIT';
+        return "SHIPPED";
       case OrderStatusTypes.DELIVERED:
-        return 'DELIVERED';
+        return "DELIVERED";
       case OrderStatusTypes.CANCELLED:
-        return 'CANCELLED';
-
+        return "CANCELLED";
       default:
-        return 'UNKNOWN';
-    }
-  }
-}
-
-extension OrderStatusTypesColorValues on OrderStatusTypes {
-  Color get getStatusColors {
-    switch (this) {
-      case OrderStatusTypes.CREATED:
-        return AppColors().placedOrderBg;
-
-      case OrderStatusTypes.PROCESSING:
-        return AppColors().processingOrderBg;
-
-      case OrderStatusTypes.INTRANSIT:
-        return AppColors().shippedOrderBg;
-      case OrderStatusTypes.DELIVERED:
-        return AppColors().deliveredOrderBg;
-      case OrderStatusTypes.CANCELLED:
-        return AppColors().cancelledOrderBg;
-
-      default:
-        return Colors.transparent;
+        return "ALL";
     }
   }
 }
@@ -111,12 +75,15 @@ extension SelectedColorExtension on OrderStatusTypes {
   Color get displayColor {
     switch (this) {
       case OrderStatusTypes.CREATED:
+      case OrderStatusTypes.NEW_ORDER:
         return AppColors().placedOrderBg;
 
       case OrderStatusTypes.PROCESSING:
+      case OrderStatusTypes.UNDER_PROCESS:
         return AppColors().processingOrderBg;
 
       case OrderStatusTypes.INTRANSIT:
+      case OrderStatusTypes.SHIPPED:
         return AppColors().shippedOrderBg;
       case OrderStatusTypes.DELIVERED:
         return AppColors().deliveredOrderBg;

@@ -1068,9 +1068,7 @@ class ApiService {
             queryParameters: {
               'size': pageSize,
               'page': pageNumber,
-              'orderStatus': status
-                  ?.replaceAll('ALL', '')
-                  .replaceAll('SHIPPED', 'INTRANSIT'),
+              'orderStatus': status?.replaceAll('ALL', ''),
             },
           );
           break;
