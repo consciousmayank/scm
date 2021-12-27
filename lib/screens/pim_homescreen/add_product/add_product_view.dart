@@ -293,133 +293,129 @@ class AddProductView extends StatelessWidget {
                         wSizedBox(width: 10),
                       ],
                     ),
-                    model.isDeoSuperVisor() || model.isDeoGd()
-                        ? SizedBox(
-                            height: 420,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                wSizedBox(width: 10),
-                                Expanded(
-                                  flex: 3,
-                                  child: AppTextField.withCounter(
-                                    maxCharacters: Dimens().maxSummaryLength,
-                                    maxCounterValue: Dimens().maxTagsLength,
-                                    enteredCount: model.productToAdd.summary ==
-                                            null
-                                        ? 0
-                                        : model.productToAdd.summary!.length,
-                                    helperText: labelSummaryHelperText,
-                                    hintText: labelSummary,
-                                    keyboardType: TextInputType.multiline,
-                                    controller: model.summaryController,
-                                    focusNode: model.summaryFocusNode,
-                                    maxLines: 11,
-                                    onTextChange: (value) {
-                                      model.productToAdd =
-                                          model.productToAdd.copyWith(
-                                        summary: value.toUpperCase().trim(),
-                                      );
-                                      model.notifyListeners();
-                                    },
-                                  ),
-                                ),
-                                wSizedBox(width: 10),
-                                Expanded(
-                                  child: model.selectedFiles.isNotEmpty
-                                      ? Column(
-                                          children: [
-                                            const Text('Image'),
-                                            hSizedBox(height: 8),
-                                            Stack(
-                                              alignment: Alignment.topRight,
-                                              children: [
-                                                image_widget.Image.memory(
-                                                  model.selectedFiles
-                                                      .elementAt(0),
-                                                ),
-                                                AppInkwell(
-                                                  onTap: () {
-                                                    model.selectedFiles
-                                                        .removeAt(0);
-                                                    model.notifyListeners();
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                      10,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.black
-                                                          .withOpacity(0.5),
-                                                      borderRadius:
-                                                          const BorderRadius
-                                                              .only(
-                                                        bottomLeft:
-                                                            Radius.circular(20),
-                                                      ),
-                                                    ),
-                                                    child: const Icon(
-                                                      Icons.delete,
-                                                      color: Colors.white,
-                                                      size: 25,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      : Center(
-                                          child: TextButton.icon(
-                                            style: AppTextButtonsStyles()
-                                                .textButtonStyle,
-                                            onPressed: () {
-                                              model.pickImages();
+                    // model.isDeoSuperVisor() || model.isDeoGd()
+                    // ?
+                    SizedBox(
+                      height: 420,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          wSizedBox(width: 10),
+                          Expanded(
+                            flex: 3,
+                            child: AppTextField.withCounter(
+                              maxCharacters: Dimens().maxSummaryLength,
+                              maxCounterValue: Dimens().maxTagsLength,
+                              enteredCount: model.productToAdd.summary == null
+                                  ? 0
+                                  : model.productToAdd.summary!.length,
+                              helperText: labelSummaryHelperText,
+                              hintText: labelSummary,
+                              keyboardType: TextInputType.multiline,
+                              controller: model.summaryController,
+                              focusNode: model.summaryFocusNode,
+                              maxLines: 11,
+                              onTextChange: (value) {
+                                model.productToAdd =
+                                    model.productToAdd.copyWith(
+                                  summary: value.toUpperCase().trim(),
+                                );
+                                model.notifyListeners();
+                              },
+                            ),
+                          ),
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: model.selectedFiles.isNotEmpty
+                                ? Column(
+                                    children: [
+                                      const Text('Image'),
+                                      hSizedBox(height: 8),
+                                      Stack(
+                                        alignment: Alignment.topRight,
+                                        children: [
+                                          image_widget.Image.memory(
+                                            model.selectedFiles.elementAt(0),
+                                          ),
+                                          AppInkwell(
+                                            onTap: () {
+                                              model.selectedFiles.removeAt(0);
+                                              model.notifyListeners();
                                             },
-                                            icon: const Icon(Icons.add_a_photo),
-                                            label: const Text(
-                                              labelAddImage,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(
+                                                10,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                  bottomLeft:
+                                                      Radius.circular(20),
+                                                ),
+                                              ),
+                                              child: const Icon(
+                                                Icons.delete,
+                                                color: Colors.white,
+                                                size: 25,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                  flex: 1,
-                                ),
-                                wSizedBox(width: 10),
-                              ],
-                            ),
-                          )
-                        : Row(
-                            children: [
-                              wSizedBox(width: 10),
-                              Expanded(
-                                flex: 1,
-                                child: AppTextField.withCounter(
-                                  maxCharacters: Dimens().maxSummaryLength,
-                                  maxCounterValue: Dimens().minSummaryLength,
-                                  enteredCount:
-                                      model.productToAdd.summary == null
-                                          ? 0
-                                          : model.productToAdd.summary!.length,
-                                  helperText: labelSummaryHelperText,
-                                  hintText: labelSummary,
-                                  keyboardType: TextInputType.multiline,
-                                  controller: model.summaryController,
-                                  focusNode: model.summaryFocusNode,
-                                  maxLines: 11,
-                                  onTextChange: (value) {
-                                    model.productToAdd =
-                                        model.productToAdd.copyWith(
-                                      summary: value.toUpperCase().trim(),
-                                    );
-                                    model.notifyListeners();
-                                  },
-                                ),
-                              ),
-                              wSizedBox(width: 10),
-                            ],
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : Center(
+                                    child: TextButton.icon(
+                                      style: AppTextButtonsStyles()
+                                          .textButtonStyle,
+                                      onPressed: () {
+                                        model.pickImages();
+                                      },
+                                      icon: const Icon(Icons.add_a_photo),
+                                      label: const Text(
+                                        labelAddImage,
+                                      ),
+                                    ),
+                                  ),
+                            flex: 1,
                           ),
+                          wSizedBox(width: 10),
+                        ],
+                      ),
+                    ),
+                    // : Row(
+                    //     children: [
+                    //       wSizedBox(width: 10),
+                    //       Expanded(
+                    //         flex: 1,
+                    //         child: AppTextField.withCounter(
+                    //           maxCharacters: Dimens().maxSummaryLength,
+                    //           maxCounterValue: Dimens().minSummaryLength,
+                    //           enteredCount:
+                    //               model.productToAdd.summary == null
+                    //                   ? 0
+                    //                   : model.productToAdd.summary!.length,
+                    //           helperText: labelSummaryHelperText,
+                    //           hintText: labelSummary,
+                    //           keyboardType: TextInputType.multiline,
+                    //           controller: model.summaryController,
+                    //           focusNode: model.summaryFocusNode,
+                    //           maxLines: 11,
+                    //           onTextChange: (value) {
+                    //             model.productToAdd =
+                    //                 model.productToAdd.copyWith(
+                    //               summary: value.toUpperCase().trim(),
+                    //             );
+                    //             model.notifyListeners();
+                    //           },
+                    //         ),
+                    //       ),
+                    //       wSizedBox(width: 10),
+                    //     ],
+                    //   ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: SizedBox(

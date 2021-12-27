@@ -43,6 +43,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   FocusNode typeFocusNode = FocusNode();
 
   final ProductApis _productApis = di<ProductApis>();
+  int? selectedProductImageId;
 
   void addFocusChangeListener() {
     typeFocusNode.addListener(() {});
@@ -68,7 +69,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
       for (var element in selectedFiles) {
         images.add(
           productImage.Image(
-            id: null,
+            id: selectedProductImageId,
             image: base64ImagePrefix +
                 " " +
                 base64Encode(element).replaceAll("\n", "").trim(),
@@ -172,6 +173,8 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
 
       if (arguments.productToEdit!.images != null &&
           arguments.productToEdit!.images!.isNotEmpty) {
+        selectedProductImageId = arguments.productToEdit!.images![0].id;
+
         selectedFiles.add(
           base64Decode(
             arguments.productToEdit!.images!.first.image!
