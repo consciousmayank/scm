@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_status_widget.dart';
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_footer_widget.dart';
@@ -146,37 +148,58 @@ class OrderListWidget extends StatelessWidget {
                             );
                           }
                         : null,
-                    child: OrderListTableWidget.values(
-                      titles: [
-                        Value.withText(value: '${orders.elementAt(index).id}'),
-                        !isSupplyRole
-                            ? Value.withText(
-                                value:
-                                    '${orders.elementAt(index).supplyBusinessName}',
-                              )
-                            : Value.withText(
-                                value:
-                                    '${orders.elementAt(index).demandBusinessName}',
-                              ),
-                        // Value.withText(
-                        //   value: (DateTimeToStringConverter.ddMMMMyy(
-                        //           date: StringToDateTimeConverter.ddmmyy(
-                        //                   date: orders.elementAt(index).createDateTime!)
-                        //               .convert())
-                        //       .convert()),
-                        // ),
-                        Value.withText(
-                          value: '${orders.elementAt(index).totalItems}',
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        OrderListTableWidget.values(
+                          titles: [
+                            Value.withText(
+                                value: '${orders.elementAt(index).id}'),
+                            !isSupplyRole
+                                ? Value.withText(
+                                    value:
+                                        '${orders.elementAt(index).supplyBusinessName}',
+                                  )
+                                : Value.withText(
+                                    value:
+                                        '${orders.elementAt(index).demandBusinessName}',
+                                  ),
+                            // Value.withText(
+                            //   value: (DateTimeToStringConverter.ddMMMMyy(
+                            //           date: StringToDateTimeConverter.ddmmyy(
+                            //                   date: orders.elementAt(index).createDateTime!)
+                            //               .convert())
+                            //       .convert()),
+                            // ),
+                            Value.withText(
+                              value: '${orders.elementAt(index).totalItems}',
+                            ),
+                            // Value.withText(
+                            //   value: '${orders.elementAt(index).totalAmount}',
+                            // ),
+                            // Value.withOutlinedContainer(
+                            //   value: '${orders.elementAt(index).status}',
+                            // ),
+                          ],
+                          isSelected: selectedOrderId > 0 &&
+                              selectedOrderId == orders.elementAt(index).id,
                         ),
-                        // Value.withText(
-                        //   value: '${orders.elementAt(index).totalAmount}',
-                        // ),
-                        // Value.withOutlinedContainer(
-                        //   value: '${orders.elementAt(index).status}',
-                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 8.0,
+                          ),
+                          child: OrderStatusWidget.compact(
+                            status: orders.elementAt(index).status,
+                            statusColor: getOrderStatus(
+                              status: orders.elementAt(index).status,
+                            ).getStatusColors,
+                            statusStyle:
+                                Theme.of(context).textTheme.overline!.copyWith(
+                                      color: AppColors().white,
+                                    ),
+                          ),
+                        )
                       ],
-                      isSelected: selectedOrderId > 0 &&
-                          selectedOrderId == orders.elementAt(index).id,
                     ),
                   );
                 },
@@ -247,7 +270,22 @@ class OrderListWidget extends StatelessWidget {
                                   orderStatuses.map<DropdownMenuItem<String>>(
                                 (String location) {
                                   return DropdownMenuItem<String>(
-                                    child: Text(location),
+                                    child: Text(
+                                      location,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText1!
+                                          .copyWith(
+                                            color: getOrderStatus(
+                                                      status: location,
+                                                    ) ==
+                                                    OrderStatusTypes.NONE
+                                                ? AppColors().black
+                                                : getOrderStatus(
+                                                    status: location,
+                                                  ).getStatusColors,
+                                          ),
+                                    ),
                                     value: location,
                                   );
                                 },
@@ -277,7 +315,7 @@ class OrderListWidget extends StatelessWidget {
                 ? _buildCompactView(context)
                 : _buildFullView(context)),
             if (showCompactView)
-              ListFooter.previousNext(
+              ListFooter.previousNextCompact(
                 pageNumber: pageNumber,
                 totalPages: totalPages,
                 onPreviousPageClick: onPreviousPageClick,
@@ -311,16 +349,17 @@ class OrderListTableWidget extends StatelessWidget {
   getBorderColor({required String? status}) {
     if (status == null) {
       return Colors.transparent;
-    } else if (status == "PROCESSING") {
-      return AppColors().processingOrderBg;
-    } else if (status == "CREATED") {
-      return AppColors().placedOrderBg;
-    } else if (status == "CANCELLED") {
-      return AppColors().cancelledOrderBg;
-    } else if (status == "DELIVERED") {
-      return AppColors().deliveredOrderBg;
-    } else if (status == "INTRANSIT") {
-      return AppColors().shippedOrderBg;
+    } else if (status ==
+        OrderStatusTypes.PROCESSING.getStatusRealStringValues) {
+      return OrderStatusTypes.PROCESSING.getStatusColors;
+    } else if (status == OrderStatusTypes.CREATED.getStatusRealStringValues) {
+      return OrderStatusTypes.CREATED.getStatusColors;
+    } else if (status == OrderStatusTypes.CANCELLED.getStatusRealStringValues) {
+      return OrderStatusTypes.CANCELLED.getStatusColors;
+    } else if (status == OrderStatusTypes.DELIVERED.getStatusRealStringValues) {
+      return OrderStatusTypes.DELIVERED.getStatusColors;
+    } else if (status == OrderStatusTypes.INTRANSIT.getStatusRealStringValues) {
+      return OrderStatusTypes.INTRANSIT.getStatusColors;
     }
   }
 

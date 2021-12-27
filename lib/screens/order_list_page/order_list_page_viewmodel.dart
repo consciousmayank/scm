@@ -5,6 +5,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/routes/routes_constants.dart';
@@ -27,7 +28,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   ApiStatus ordersStatusListApi = ApiStatus.LOADING;
   int pageNumber = 0;
   int pageSize = 15;
-  late Order selectedOrder;
+  Order selectedOrder = Order().empty();
 
   void initializeEditexts() {
     orderDetails.orderItems?.forEach((element) {
@@ -51,6 +52,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
 
   init(OrderListPageViewArguments arguments) {
+    selectedOrder = Order().empty();
     getOrderStatusList();
     getOrderList();
   }
@@ -63,12 +65,15 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       status: selectedOrderStatus,
     );
 
-    selectedOrder =
-        orderList.orders!.isEmpty ? Order().empty() : orderList.orders!.first;
-    orderListApi = ApiStatus.FETCHED;
-    if (selectedOrder.id.toString() != '-1') {
+    if (selectedOrder.id == Order().empty().id) {
+      selectedOrder = orderList.orders!.first;
       getOrdersDetails();
+    } else {
+      selectedOrder = getSelectedOrder(ordersListResponse: orderList);
     }
+
+    orderListApi = ApiStatus.FETCHED;
+
     notifyListeners();
   }
 
@@ -85,6 +90,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     }
 
     orderDetailsApi = ApiStatus.FETCHED;
+
     notifyListeners();
   }
 
@@ -113,7 +119,8 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       turnSelectedOrderItemsEditable(value: false);
     }
     orderDetailsApi = ApiStatus.FETCHED;
-
+    orderListApi = ApiStatus.LOADING;
+    getOrderList();
     notifyListeners();
   }
 
@@ -155,6 +162,8 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       );
     }
     orderDetailsApi = ApiStatus.FETCHED;
+    orderListApi = ApiStatus.LOADING;
+    getOrderList();
     notifyListeners();
   }
 
@@ -266,5 +275,41 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     );
 
     notifyListeners();
+  }
+
+  // void updateOrderItem({OrderItem orderItem}) {}
+
+  updateOrder() async {
+    orderDetailsApi = ApiStatus.LOADING;
+    notifyListeners();
+    orderDetails = await _commonDashBoardApis.updateOrder(
+      orderDetials: orderDetails,
+    );
+
+    setBusy(false);
+    orderDetailsApi = ApiStatus.FETCHED;
+    orderListApi = ApiStatus.LOADING;
+    getOrderList();
+    notifyListeners();
+  }
+
+  Order getSelectedOrder({OrderListResponse? ordersListResponse}) {
+    Order order = Order().empty();
+    if (orderList.orders == null || orderList.orders!.isEmpty) {
+      return order;
+    }
+
+    for (var element in orderList.orders!) {
+      if (element.id == selectedOrder.id) {
+        order = element;
+        break;
+      }
+    }
+
+    if (ordersListResponse!.orders!.isNotEmpty) {
+      order = ordersListResponse.orders!.first;
+    }
+
+    return order;
   }
 }

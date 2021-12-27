@@ -50,7 +50,9 @@ class _BrandsDialogBoxViewState extends State<BrandsDialogBoxView> {
                 DialogResponse(
                   confirmed: true,
                   data: BrandsDialogBoxViewOutArguments(
-                    selectedBrand: selectedBrand,
+                    selectedBrand: selectedBrand.copyWith(
+                      title: selectedBrand.title!.toUpperCase(),
+                    ),
                   ),
                 ),
               );

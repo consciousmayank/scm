@@ -54,6 +54,7 @@ final ORDER = (
     required OrderApiType orderApiType}) {
   switch (orderApiType) {
     case OrderApiType.ORDER_LIST:
+    case OrderApiType.UPDATE_ORDERS:
       return "/api/$role/order";
     case OrderApiType.ORDER_DETAILS:
     case OrderApiType.ACCEPT_ORDER:

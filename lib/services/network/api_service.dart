@@ -11,6 +11,7 @@ import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
@@ -1050,6 +1051,7 @@ class ApiService {
     String? deliveredBy,
     required OrderApiType orderApiType,
     String? status,
+    OrderSummaryResponse? orderDetials,
   }) async {
     Response? response;
     DioError? error;
@@ -1109,6 +1111,16 @@ class ApiService {
                   urlParamOrderId: orderId,
                   orderApiType: orderApiType,
                 ),
+              );
+          break;
+        case OrderApiType.UPDATE_ORDERS:
+          response = await dioClient.getDio().put(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+                data: orderDetials!.toJson(),
               );
           break;
       }

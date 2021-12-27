@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_process_buttons.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/processing_items_list_table.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/quantity_input_widget.dart';
-import 'package:scm/screens/order_list_page/oder_item_containing_container_widget.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
-import 'package:scm/screens/order_list_page/order_process_buttons.dart';
-import 'package:scm/screens/order_list_page/orderitem_row_widget.dart';
-import 'package:scm/screens/order_list_page/processing_items_list_table.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:stacked/stacked.dart';
 
@@ -247,7 +245,7 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                                   ),
                                 );
                               },
-                              child: Icon(
+                              child: const Icon(
                                 Icons.done,
                                 size: 20,
                               ),

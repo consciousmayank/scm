@@ -4,4 +4,5 @@ enum OrderApiType {
   ACCEPT_ORDER,
   DELIVER_ORDER,
   REJECT_ORDER,
+  UPDATE_ORDERS
 }

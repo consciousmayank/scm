@@ -73,7 +73,8 @@ class AppColors {
 
   Color get shippedOrderBg => const Color(0xff4EB1D6);
 
-  Color get cancelledOrderBg => const Color(0xff646464);
+  // Color get cancelledOrderBg => const Color(0xff646464);
+  Color get cancelledOrderBg => Colors.red;
 
   Color get dashboardOrderInfoTileTitleBg => const Color(0xff979797);
 }

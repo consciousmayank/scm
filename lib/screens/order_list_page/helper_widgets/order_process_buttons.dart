@@ -86,9 +86,7 @@ class OrderPorcessButtonsWidget
                             .elementAt(index)
                             .requestFocus();
                       });
-                }
-
-                if (element.itemPrice == 0) {
+                } else if (element.itemPrice == 0) {
                   viewModel.showErrorSnackBar(
                       message: errorPriceRequired,
                       onSnackBarOkButton: () {
@@ -96,6 +94,8 @@ class OrderPorcessButtonsWidget
                             .elementAt(index)
                             .requestFocus();
                       });
+                } else {
+                  viewModel.updateOrder();
                 }
               });
             },

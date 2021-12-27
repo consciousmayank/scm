@@ -3,14 +3,16 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/address.dart';
 import 'package:scm/model_classes/order_list_response.dart';
-import 'package:scm/screens/order_list_page/oder_item_containing_container_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_process_buttons.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_status_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/processing_order_widget_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
-import 'package:scm/screens/order_list_page/order_process_buttons.dart';
-import 'package:scm/screens/order_list_page/orderitem_row_widget.dart';
-import 'package:scm/screens/order_list_page/processing_order_widget_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
@@ -116,37 +118,19 @@ class OrderListPageView extends StatelessWidget {
                                                   .headline6,
                                             ),
                                           ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(
-                                                  Dimens().defaultBorder,
+                                          OrderStatusWidget(
+                                            status: model.orderDetails.status,
+                                            statusColor: getOrderStatus(
+                                                    status: model
+                                                        .orderDetails.status)
+                                                .getStatusColors,
+                                            statusStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2!
+                                                .copyWith(
+                                                  color: AppColors().white,
                                                 ),
-                                                bottomLeft: Radius.circular(
-                                                  Dimens().defaultBorder,
-                                                ),
-                                              ),
-                                              color: isSelectedOrderDeliveredOrCancelled(
-                                                          model) ==
-                                                      null
-                                                  ? Colors.red
-                                                  : isSelectedOrderDeliveredOrCancelled(
-                                                          model)!
-                                                      ? Colors.green
-                                                      : Colors.grey,
-                                            ),
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              model.selectedOrder.status
-                                                  .toString(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2!
-                                                  .copyWith(
-                                                    color: AppColors().white,
-                                                  ),
-                                            ),
-                                          ),
+                                          )
                                         ],
                                       ),
                                       hSizedBox(
@@ -562,14 +546,6 @@ class OrderListPageView extends StatelessWidget {
       ),
       viewModelBuilder: () => OrderListPageViewModel(),
     );
-  }
-
-  bool? isSelectedOrderDeliveredOrCancelled(OrderListPageViewModel model) {
-    return model.orderDetails.status == 'DELIVERED'
-        ? true
-        : model.orderDetails.status == 'CANCELLED'
-            ? null
-            : false;
   }
 }
 

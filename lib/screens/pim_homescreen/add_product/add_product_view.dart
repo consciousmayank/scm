@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/add_images_widget/add_images_view.dart';
-import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';

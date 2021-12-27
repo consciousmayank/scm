@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
 
@@ -209,4 +210,23 @@ String getProductMeasurement({double? measurement, String? measurementUnit}) {
   String unit = measurementUnit ?? '';
 
   return '${measureMent.toStringAsFixed(2)} $unit';
+}
+
+OrderStatusTypes getOrderStatus({String? status}) {
+  if (status == null) {
+    return OrderStatusTypes.NONE;
+  } else if (status == OrderStatusTypes.CREATED.getStatusRealStringValues) {
+    return OrderStatusTypes.CREATED;
+  } else if (status == OrderStatusTypes.INTRANSIT.getStatusRealStringValues ||
+      status == OrderStatusTypes.SHIPPED.getStatusRealStringValues) {
+    return OrderStatusTypes.INTRANSIT;
+  } else if (status == OrderStatusTypes.PROCESSING.getStatusRealStringValues) {
+    return OrderStatusTypes.PROCESSING;
+  } else if (status == OrderStatusTypes.DELIVERED.getStatusRealStringValues) {
+    return OrderStatusTypes.DELIVERED;
+  } else if (status == OrderStatusTypes.CANCELLED.getStatusRealStringValues) {
+    return OrderStatusTypes.CANCELLED;
+  } else {
+    return OrderStatusTypes.NONE;
+  }
 }

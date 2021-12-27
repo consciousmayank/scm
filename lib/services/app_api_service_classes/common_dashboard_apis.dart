@@ -38,6 +38,10 @@ abstract class CommonDashBoardApisAbstractClass {
   });
 
   Future<List<String>> getOrderStatusList();
+
+  Future<OrderSummaryResponse> updateOrder({
+    required OrderSummaryResponse orderDetials,
+  });
 }
 
 class CommonDashBoardApis extends BaseApi
@@ -212,5 +216,21 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return statusListResponse;
+  }
+
+  @override
+  Future<OrderSummaryResponse> updateOrder(
+      {required OrderSummaryResponse orderDetials}) async {
+    OrderSummaryResponse updateOrderResponse = OrderSummaryResponse().empty();
+    // return null;
+    ParentApiResponse apiResponse = await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.UPDATE_ORDERS,
+      orderDetials: orderDetials,
+    );
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      updateOrderResponse =
+          OrderSummaryResponse.fromMap(apiResponse.response?.data);
+    }
+    return updateOrderResponse;
   }
 }
