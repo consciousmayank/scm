@@ -28,6 +28,8 @@ class AppColors {
     900: Color(0xFF4a148c),
   });
 
+  
+
   Color white = Colors.white;
 
   get getColumnWithTitleHeaderColor => primaryColor.shade200;

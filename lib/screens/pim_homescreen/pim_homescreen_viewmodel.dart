@@ -4,6 +4,7 @@ import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/pim_homescreen/add_brand/add_brand_view.dart';
@@ -38,7 +39,7 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
         case 1:
           return ProductsListView(
             arguments: ProductsListViewArguments(
-              productListType: ProductListType.TODO,
+              productListType: PimProductListType.TODO,
             ),
           );
         // case 2:
@@ -57,7 +58,7 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
         case 0:
           return ProductsListView(
             arguments: ProductsListViewArguments(
-              productListType: ProductListType.TODO,
+              productListType: PimProductListType.TODO,
             ),
           );
         case 1:

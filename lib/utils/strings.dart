@@ -101,6 +101,7 @@ const String labelSupplyLandingPageProduct = 'Products';
 const String labelSupplyLandingPageCategories = 'Categories';
 const String labelSupplyLandingPageOrder = 'Order';
 const String labelSupplyLandingPageMore = 'More';
+const String labelSubmit = 'Submit';
 
 const String labelDemandLandingPageCatalog = 'Home';
 const String labelDemandLandingPageCategories = 'Categories';
@@ -134,3 +135,7 @@ const String orderStatusCreated = 'PROCESSING';
 const String orderStatusInTransit = 'INTRANSIT';
 const String orderStatusInDelivered = 'DELIVERED';
 const String orderStatusInCancelled = 'CANCELLED';
+const String errorReasonRequired =
+    'Reason for discarding the product is required';
+const String errorReasonLength =
+    'Reason should be more then 8 characters. Please enter a valid reason';

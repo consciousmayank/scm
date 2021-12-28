@@ -44,12 +44,16 @@ class _UpdateProductDialogBoxViewState
           title: arguments.title,
           child: AddProductView(
             arguments: AddProductViewArguments(
-                productToEdit: arguments.product,
-                onProductUpdated: () {
-                  widget.completer(DialogResponse(
+              showDiscardProductButton: arguments.showDiscardProductButton,
+              productToEdit: arguments.product,
+              onProductUpdated: () {
+                widget.completer(
+                  DialogResponse(
                     confirmed: true,
-                  ));
-                }),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -61,8 +65,10 @@ class UpdateProductDialogBoxViewArguments {
   UpdateProductDialogBoxViewArguments({
     required this.title,
     required this.product,
+    this.showDiscardProductButton = false,
   });
 
   final Product product;
   final String title;
+  final bool showDiscardProductButton;
 }

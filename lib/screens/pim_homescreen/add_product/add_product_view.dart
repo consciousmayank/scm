@@ -363,6 +363,37 @@ class AddProductView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          // if (model.isDeoGd())
+                                          //   Positioned(
+                                          //     right: 1,
+                                          //     bottom: 1,
+                                          //     child: AppInkwell(
+                                          //       onTap: () {
+                                          //         model.downloadImage(
+                                          //             image: model
+                                          //                 .selectedFiles.first);
+                                          //       },
+                                          //       child: Container(
+                                          //         padding: const EdgeInsets.all(
+                                          //           10,
+                                          //         ),
+                                          //         decoration: BoxDecoration(
+                                          //           color: Colors.black
+                                          //               .withOpacity(0.5),
+                                          //           borderRadius:
+                                          //               const BorderRadius.only(
+                                          //             bottomLeft:
+                                          //                 Radius.circular(20),
+                                          //           ),
+                                          //         ),
+                                          //         child: const Icon(
+                                          //           Icons.download,
+                                          //           color: Colors.white,
+                                          //           size: 25,
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //   ),
                                         ],
                                       ),
                                     ],
@@ -442,7 +473,8 @@ class AddProductView extends StatelessWidget {
                             flex: 2,
                           ),
                           if (model.isDeoSuperVisor()) wSizedBox(width: 8),
-                          if (model.isDeoSuperVisor())
+                          if (model.isDeoSuperVisor() &&
+                              arguments.showDiscardProductButton)
                             Expanded(
                               child: SizedBox(
                                 width: double.infinity,
@@ -474,8 +506,10 @@ class AddProductViewArguments {
   AddProductViewArguments({
     this.productToEdit,
     this.onProductUpdated,
+    this.showDiscardProductButton = false,
   });
 
   final Function()? onProductUpdated;
   final Product? productToEdit;
+  final showDiscardProductButton;
 }

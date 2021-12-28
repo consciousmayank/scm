@@ -863,6 +863,7 @@ class ApiService {
       response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
         'page': pageNumber,
         'size': pageSize,
+        'status': 'PROCESSED',
       });
     } on DioError catch (e) {
       error = e;
@@ -882,7 +883,28 @@ class ApiService {
       response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
         'page': pageNumber,
         'size': pageSize,
-        'status': true,
+        'status': 'PUBLISHED',
+        'sort': 'DESC'
+      });
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getAllDiscardedProductsList({
+    required int pageNumber,
+    required int pageSize,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
+        'page': pageNumber,
+        'size': pageSize,
+        'status': 'DISCARDED',
         'sort': 'DESC'
       });
     } on DioError catch (e) {

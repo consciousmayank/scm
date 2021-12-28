@@ -1,6 +1,7 @@
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_view.dart';
@@ -26,16 +27,25 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
       }
       ProductListResponse tempResponse;
 
-      if (arguments.productListType == ProductListType.TODO) {
-        tempResponse = await _productApis.getAllAddedProductsList(
-          pageNumber: pageNumber,
-          pageSize: pageSize,
-        );
-      } else {
-        tempResponse = await _productApis.getAllPublishedProductsList(
-          pageNumber: pageNumber,
-          pageSize: pageSize,
-        );
+      switch (arguments.productListType) {
+        case PimProductListType.TODO:
+          tempResponse = await _productApis.getAllAddedProductsList(
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+          );
+          break;
+        case PimProductListType.PUBLISHED:
+          tempResponse = await _productApis.getAllPublishedProductsList(
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+          );
+          break;
+        case PimProductListType.DISCARDED:
+          tempResponse = await _productApis.getAllDiscardedProductsList(
+            pageNumber: pageNumber,
+            pageSize: pageSize,
+          );
+          break;
       }
 
       productListResponse = tempResponse;
@@ -59,6 +69,8 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
       variant: DialogType.UPDATE_PRODUCT,
       barrierDismissible: true,
       data: UpdateProductDialogBoxViewArguments(
+        showDiscardProductButton:
+            arguments.productListType == PimProductListType.TODO ? true : false,
         title: product.id!.toString(),
         product: product,
       ),

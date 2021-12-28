@@ -5,6 +5,7 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
+import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/utils/utils.dart';
@@ -58,6 +59,11 @@ void setupDialogUi() {
         ),
     DialogType.DELIVERY_DETAILS: (context, sheetRequest, completer) =>
         DeliveryDetilasDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.DISCARD_PRODUCT: (context, sheetRequest, completer) =>
+        DiscardProductReasonDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

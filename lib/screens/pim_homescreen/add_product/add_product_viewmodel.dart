@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
@@ -13,6 +14,7 @@ import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart' as productImage;
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
+import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -188,17 +190,53 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   }
 
   void discardProduct() async {
-    ApiResponse response = await _productApis.discardProduct(
-      product: productToAdd,
+    DialogResponse? discardProductDialogBoxResponse =
+        await dialogService.showCustomDialog(
+      variant: DialogType.DISCARD_PRODUCT,
+      data: DiscardProductReasonDialogBoxViewArguments(
+        title: 'Discard product #${productToAdd.id}',
+        productToDiscard: productToAdd,
+      ),
     );
 
-    if (response.isSuccessful()) {
-      showInfoSnackBar(message: response.message);
-      arguments.onProductUpdated!.call();
-    } else {
-      showErrorSnackBar(
-        message: response.message,
-      );
+    if (discardProductDialogBoxResponse != null) {
+      if (discardProductDialogBoxResponse.confirmed) {
+        arguments.onProductUpdated?.call();
+      }
     }
+  }
+
+  void downloadImage({required Uint8List image}) async {
+    setBusy(true);
+    final file = await _localFile;
+
+    // Write the file
+    return file.writeAsBytes(image).then((value) {
+      setBusy(false);
+      showInfoSnackBar(message: 'Image saved to Disk');
+    }, onError: () {
+      setBusy(false);
+      showErrorSnackBar(message: 'Error saving image to Disk');
+    });
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/${productToAdd.id}.jpg');
+  }
+
+  Future<String> getFilePath() async {
+    Directory appDocumentsDirectory =
+        await getApplicationDocumentsDirectory(); // 1
+    String appDocumentsPath = appDocumentsDirectory.path; // 2
+    String filePath = '$appDocumentsPath/demoTextFile.txt'; // 3
+
+    return filePath;
   }
 }

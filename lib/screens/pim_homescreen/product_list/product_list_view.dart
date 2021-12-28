@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -33,7 +34,7 @@ class ProductsListView extends StatelessWidget {
             : Column(
                 children: [
                   PageBarWidget(
-                    title: arguments.productListType == ProductListType.TODO
+                    title: arguments.productListType == PimProductListType.TODO
                         ? todoProductsListPageTitle
                         : publishedProductsListPageTitle,
                     subTitle: '#${model.productListResponse.totalItems}',
@@ -162,10 +163,8 @@ class ProductsListView extends StatelessWidget {
 class ProductsListViewArguments {
   ProductsListViewArguments({required this.productListType});
 
-  final ProductListType productListType;
+  final PimProductListType productListType;
 }
-
-enum ProductListType { TODO, PUBLISHED }
 
 class ProductListHeader extends StatelessWidget {
   const ProductListHeader({Key? key}) : super(key: key);
@@ -227,7 +226,7 @@ class ProductListHeader extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Text(
               'Created On',
               style: textStyle,
@@ -287,7 +286,7 @@ class ProductListItem extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 1,
+            flex: 2,
             child: NullableTextWidget(
               text: product.creationdate,
             ),
