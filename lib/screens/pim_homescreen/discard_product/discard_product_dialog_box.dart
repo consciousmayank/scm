@@ -10,14 +10,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class DiscardProductReasonDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const DiscardProductReasonDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _DiscardProductReasonDialogBoxViewState createState() =>
@@ -82,11 +82,11 @@ class _DiscardProductReasonDialogBoxViewState
 }
 
 class DiscardProductReasonDialogBoxViewArguments {
-  final String title;
-  final Product productToDiscard;
-
   DiscardProductReasonDialogBoxViewArguments({
     required this.title,
     required this.productToDiscard,
   });
+
+  final Product productToDiscard;
+  final String title;
 }

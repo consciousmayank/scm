@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/snackbar_types.dart';
+import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_textfield.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class ListFooter extends StatelessWidget {
-  const ListFooter.firstLast(
-      {Key? key,
-      required this.pageNumber,
-      required this.totalPages,
-      required this.onFirstPageClick,
-      required this.onLastPageClick,
-      this.onPreviousPageClick,
-      this.onNextPageClick})
-      : allIcons = false,
+  const ListFooter.firstLast({
+    Key? key,
+    required this.pageNumber,
+    this.onJumpToPage,
+    required this.totalPages,
+    required this.onFirstPageClick,
+    required this.onLastPageClick,
+    this.onPreviousPageClick,
+    this.onNextPageClick,
+    this.showJumpToPage = false,
+  })  : allIcons = false,
         super(key: key);
 
   const ListFooter.firstPreviousNextLast({
@@ -19,8 +28,10 @@ class ListFooter extends StatelessWidget {
     required this.pageNumber,
     required this.totalPages,
     required this.onFirstPageClick,
+    this.onJumpToPage,
     required this.onLastPageClick,
     required this.onPreviousPageClick,
+    this.showJumpToPage = false,
     required this.onNextPageClick,
   })  : allIcons = false,
         super(key: key);
@@ -31,6 +42,8 @@ class ListFooter extends StatelessWidget {
     required this.totalPages,
     required this.onPreviousPageClick,
     required this.onNextPageClick,
+    this.showJumpToPage = false,
+    this.onJumpToPage,
     this.onFirstPageClick,
     this.onLastPageClick,
   })  : allIcons = false,
@@ -43,16 +56,19 @@ class ListFooter extends StatelessWidget {
     required this.onPreviousPageClick,
     required this.onNextPageClick,
     this.onFirstPageClick,
+    this.showJumpToPage = false,
+    this.onJumpToPage,
     this.onLastPageClick,
   })  : allIcons = true,
         super(key: key);
 
-  final bool allIcons;
+  final Function({required int pageNumber})? onJumpToPage;
   final Function? onFirstPageClick;
   final Function? onLastPageClick;
   final Function? onNextPageClick;
   final Function? onPreviousPageClick;
   final int pageNumber;
+  final bool allIcons, showJumpToPage;
   final int totalPages;
 
   @override
@@ -105,9 +121,71 @@ class ListFooter extends StatelessWidget {
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              'Page ${pageNumber + 1} of ${totalPages + 1}',
-            ),
+            child: !showJumpToPage
+                ? Text('Page ${pageNumber + 1} of ${totalPages + 1}')
+                : Row(
+                    children: [
+                      const Text(
+                        'Page ',
+                      ),
+                      SizedBox(
+                        width: 80,
+                        child: AppTextField(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          formatter: <TextInputFormatter>[
+                            Dimens().getNumericTextInputFormatter,
+                          ],
+                          initialValue: (pageNumber + 1).toString(),
+                          onFieldSubmitted: (value) {
+                            if (int.parse(value) <= 0) {
+                              onJumpToPage?.call(
+                                pageNumber: 0,
+                              );
+                            } else if (int.parse(value) >= totalPages) {
+                              onJumpToPage?.call(
+                                pageNumber: totalPages,
+                              );
+                            } else {
+                              onJumpToPage?.call(
+                                pageNumber: int.parse(
+                                  value,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      // DropdownButton<int>(
+                      //   value: pageNumber + 1,
+                      //   icon: Icon(
+                      //     Icons.arrow_drop_down,
+                      //     color: AppColors().primaryColor.shade900,
+                      //   ),
+                      //   iconSize: 30,
+                      //   underline: Container(),
+                      //   onChanged: (int? value) {
+                      //     onJumpToPage?.call(pageNumber: value ?? 0);
+                      //   },
+                      //   items: [for (var i = 1; i < totalPages; i++) i]
+                      //       .map<DropdownMenuItem<int>>(
+                      //     (int location) {
+                      //       return DropdownMenuItem<int>(
+                      //         child: Text(
+                      //           location.toString(),
+                      //         ),
+                      //         value: location,
+                      //       );
+                      //     },
+                      //   ).toList(),
+                      // ),
+                      Text(
+                        ' of ${totalPages + 1}',
+                      ),
+                    ],
+                  ),
           ),
           if (onNextPageClick != null)
             TextButton.icon(

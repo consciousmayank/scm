@@ -22,6 +22,7 @@ abstract class ProductApisAbstractClass {
     required int pageNumber,
     required int pageSize,
   });
+
   Future<ProductListResponse> getAllDiscardedProductsList({
     required int pageNumber,
     required int pageSize,
@@ -44,6 +45,21 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
     ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
       productToBeAdded: product,
       productOperation: ProductOperations.ADD,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      response = ApiResponse.fromMap(apiResponse.response!.data);
+    }
+    return response;
+  }
+
+  @override
+  Future<ApiResponse> discardProduct({required Product product}) async {
+    ApiResponse response = ApiResponse();
+
+    ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
+      productToBeAdded: product,
+      productOperation: ProductOperations.DISCARD,
     );
 
     if (filterResponse(apiResponse) != null) {
@@ -129,21 +145,6 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
     ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
       productToBeAdded: product,
       productOperation: ProductOperations.UPDATE,
-    );
-
-    if (filterResponse(apiResponse) != null) {
-      response = ApiResponse.fromMap(apiResponse.response!.data);
-    }
-    return response;
-  }
-
-  @override
-  Future<ApiResponse> discardProduct({required Product product}) async {
-    ApiResponse response = ApiResponse();
-
-    ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
-      productToBeAdded: product,
-      productOperation: ProductOperations.DISCARD,
     );
 
     if (filterResponse(apiResponse) != null) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_viewmodel.dart';
@@ -44,7 +45,7 @@ class _UpdateProductDialogBoxViewState
           title: arguments.title,
           child: AddProductView(
             arguments: AddProductViewArguments(
-              showDiscardProductButton: arguments.showDiscardProductButton,
+              productListType: arguments.productListType,
               productToEdit: arguments.product,
               onProductUpdated: () {
                 widget.completer(
@@ -65,10 +66,10 @@ class UpdateProductDialogBoxViewArguments {
   UpdateProductDialogBoxViewArguments({
     required this.title,
     required this.product,
-    this.showDiscardProductButton = false,
+    required this.productListType,
   });
 
   final Product product;
+  final PimProductListType productListType;
   final String title;
-  final bool showDiscardProductButton;
 }

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -77,6 +78,14 @@ class AddProductView extends StatelessWidget {
       model.showErrorSnackBar(
         message: productMeasurementRequiredErrorMessage,
         onSnackBarOkButton: model.brandFocusNode.requestFocus,
+      );
+    }
+    if (model.selectedFiles.isEmpty) {
+      model.showErrorSnackBar(
+        message: productImageRequiredErrorMessage,
+        onSnackBarOkButton: () {
+          model.pickImages();
+        },
       );
     } else {
       model.addProduct();
@@ -363,37 +372,37 @@ class AddProductView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          // if (model.isDeoGd())
-                                          //   Positioned(
-                                          //     right: 1,
-                                          //     bottom: 1,
-                                          //     child: AppInkwell(
-                                          //       onTap: () {
-                                          //         model.downloadImage(
-                                          //             image: model
-                                          //                 .selectedFiles.first);
-                                          //       },
-                                          //       child: Container(
-                                          //         padding: const EdgeInsets.all(
-                                          //           10,
-                                          //         ),
-                                          //         decoration: BoxDecoration(
-                                          //           color: Colors.black
-                                          //               .withOpacity(0.5),
-                                          //           borderRadius:
-                                          //               const BorderRadius.only(
-                                          //             bottomLeft:
-                                          //                 Radius.circular(20),
-                                          //           ),
-                                          //         ),
-                                          //         child: const Icon(
-                                          //           Icons.download,
-                                          //           color: Colors.white,
-                                          //           size: 25,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   ),
+                                          if (model.isDeoGd())
+                                            Positioned(
+                                              right: 1,
+                                              bottom: 1,
+                                              child: AppInkwell(
+                                                onTap: () {
+                                                  model.downloadImage(
+                                                      image: model
+                                                          .selectedFiles.first);
+                                                },
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(
+                                                    10,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        const BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(20),
+                                                    ),
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.download,
+                                                    color: Colors.white,
+                                                    size: 25,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                         ],
                                       ),
                                     ],
@@ -417,82 +426,60 @@ class AddProductView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // : Row(
-                    //     children: [
-                    //       wSizedBox(width: 10),
-                    //       Expanded(
-                    //         flex: 1,
-                    //         child: AppTextField.withCounter(
-                    //           maxCharacters: Dimens().maxSummaryLength,
-                    //           maxCounterValue: Dimens().minSummaryLength,
-                    //           enteredCount:
-                    //               model.productToAdd.summary == null
-                    //                   ? 0
-                    //                   : model.productToAdd.summary!.length,
-                    //           helperText: labelSummaryHelperText,
-                    //           hintText: labelSummary,
-                    //           keyboardType: TextInputType.multiline,
-                    //           controller: model.summaryController,
-                    //           focusNode: model.summaryFocusNode,
-                    //           maxLines: 11,
-                    //           onTextChange: (value) {
-                    //             model.productToAdd =
-                    //                 model.productToAdd.copyWith(
-                    //               summary: value.toUpperCase().trim(),
-                    //             );
-                    //             model.notifyListeners();
-                    //           },
-                    //         ),
-                    //       ),
-                    //       wSizedBox(width: 10),
-                    //     ],
-                    //   ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: Dimens().buttonHeight,
-                              child: TextButton(
-                                clipBehavior: Clip.antiAlias,
-                                onPressed: () {
-                                  if (model.isDeoGd()) {
-                                    performCheckOnImage(model: model);
-                                  } else {
-                                    performChecksOnData(model: model);
-                                  }
-                                },
-                                child: Text(arguments.productToEdit == null
-                                    ? buttonLabelAddProduct
-                                    : buttonLabelUpdateProduct),
-                                style: AppTextButtonsStyles().textButtonStyle,
-                              ),
-                            ),
-                            flex: 2,
-                          ),
-                          if (model.isDeoSuperVisor()) wSizedBox(width: 8),
-                          if (model.isDeoSuperVisor() &&
-                              arguments.showDiscardProductButton)
-                            Expanded(
-                              child: SizedBox(
-                                width: double.infinity,
-                                height: Dimens().buttonHeight,
-                                child: TextButton(
-                                  clipBehavior: Clip.antiAlias,
-                                  onPressed: () {
-                                    model.discardProduct();
-                                  },
-                                  child: const Text(buttonLabelDiscardProduct),
-                                  style: AppTextButtonsStyles().textButtonStyle,
+                    arguments.productListType == PimProductListType.DISCARDED
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    height: Dimens().buttonHeight,
+                                    child: TextButton(
+                                      clipBehavior: Clip.antiAlias,
+                                      onPressed: () {
+                                        if (model.isDeoGd()) {
+                                          performCheckOnImage(model: model);
+                                        } else {
+                                          performChecksOnData(model: model);
+                                        }
+                                      },
+                                      child: Text(
+                                          arguments.productToEdit == null
+                                              ? buttonLabelAddProduct
+                                              : buttonLabelUpdateProduct),
+                                      style: AppTextButtonsStyles()
+                                          .textButtonStyle,
+                                    ),
+                                  ),
+                                  flex: 2,
                                 ),
-                              ),
-                              flex: 1,
+                                if (model.isDeoSuperVisor())
+                                  wSizedBox(width: 8),
+                                if (model.isDeoSuperVisor() &&
+                                    arguments.productListType ==
+                                        PimProductListType.TODO)
+                                  Expanded(
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: Dimens().buttonHeight,
+                                      child: TextButton(
+                                        clipBehavior: Clip.antiAlias,
+                                        onPressed: () {
+                                          model.discardProduct();
+                                        },
+                                        child: const Text(
+                                            buttonLabelDiscardProduct),
+                                        style: AppTextButtonsStyles()
+                                            .textButtonStyle,
+                                      ),
+                                    ),
+                                    flex: 1,
+                                  ),
+                              ],
                             ),
-                        ],
-                      ),
-                    ),
+                          ),
                   ],
                 ),
               ),
@@ -506,10 +493,10 @@ class AddProductViewArguments {
   AddProductViewArguments({
     this.productToEdit,
     this.onProductUpdated,
-    this.showDiscardProductButton = false,
+    required this.productListType,
   });
 
   final Function()? onProductUpdated;
+  final PimProductListType productListType;
   final Product? productToEdit;
-  final showDiscardProductButton;
 }

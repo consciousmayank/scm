@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
+import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -102,6 +103,7 @@ class _GetProductByIdDialogBoxViewState
                               ),
                             );
                           },
+                          productListType: PimProductListType.TODO,
                         ),
                       ),
               )

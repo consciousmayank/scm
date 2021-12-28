@@ -34,9 +34,7 @@ class ProductsListView extends StatelessWidget {
             : Column(
                 children: [
                   PageBarWidget(
-                    title: arguments.productListType == PimProductListType.TODO
-                        ? todoProductsListPageTitle
-                        : publishedProductsListPageTitle,
+                    title: model.getTitle(),
                     subTitle: '#${model.productListResponse.totalItems}',
                     options: [
                       if (model.isDeoSuperVisor())
@@ -130,6 +128,15 @@ class ProductsListView extends StatelessWidget {
                   ),
 
                   ListFooter.firstPreviousNextLast(
+                    showJumpToPage: model.isDeo() ||
+                            model.isDeoSuperVisor() ||
+                            model.isDeoSuperVisor()
+                        ? true
+                        : false,
+                    onJumpToPage: ({required int pageNumber}) {
+                      model.pageNumber = pageNumber;
+                      model.getProductList(showLoader: true);
+                    },
                     pageNumber: model.pageNumber,
                     totalPages: model.productListResponse.totalPages == null
                         ? 0

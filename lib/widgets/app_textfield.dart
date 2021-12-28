@@ -161,6 +161,7 @@ class AppTextField extends StatelessWidget {
                   obscureText: obscureText ?? false,
                   style: textStyle ??
                       AppTextStyles(context: context).appTextFieldTextStyle,
+
                   enableInteractiveSelection: true,
                   initialValue: initialValue,
                   autovalidateMode: autoValidateMode,

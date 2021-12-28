@@ -69,8 +69,7 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
       variant: DialogType.UPDATE_PRODUCT,
       barrierDismissible: true,
       data: UpdateProductDialogBoxViewArguments(
-        showDiscardProductButton:
-            arguments.productListType == PimProductListType.TODO ? true : false,
+        productListType: arguments.productListType,
         title: product.id!.toString(),
         product: product,
       ),
@@ -91,6 +90,17 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
       barrierDismissible: true,
       data: GetProductByIdDialogBoxViewArguments(title: labelGetProductById),
     );
+  }
+
+  String getTitle() {
+    switch (arguments.productListType) {
+      case PimProductListType.TODO:
+        return todoProductsListPageTitle;
+      case PimProductListType.PUBLISHED:
+        return publishedProductsListPageTitle;
+      case PimProductListType.DISCARDED:
+        return discardedProductsListPageTitle;
+    }
   }
 
   // void sort<T>(

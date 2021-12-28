@@ -33,7 +33,9 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
       switch (currentIndex) {
         case 0:
           return AddProductView(
-            arguments: AddProductViewArguments(),
+            arguments: AddProductViewArguments(
+              productListType: PimProductListType.TODO,
+            ),
           );
 
         case 1:
@@ -49,7 +51,9 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
 
         default:
           return AddProductView(
-            arguments: AddProductViewArguments(),
+            arguments: AddProductViewArguments(
+              productListType: PimProductListType.TODO,
+            ),
           );
       }
     } else if (isDeoGd()) {
@@ -96,7 +100,9 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
           );
         case 3:
           return AddProductView(
-            arguments: AddProductViewArguments(),
+            arguments: AddProductViewArguments(
+              productListType: PimProductListType.TODO,
+            ),
           );
 
         default:

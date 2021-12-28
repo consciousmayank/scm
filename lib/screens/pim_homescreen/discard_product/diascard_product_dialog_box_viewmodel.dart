@@ -8,10 +8,12 @@ import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/src/models/overlay_response.dart';
 
 class DiscardProductReasonDialogBoxViewModel extends GeneralisedBaseViewModel {
-  final ProductApis _productApis = di<ProductApis>();
+  late Function(DialogResponse p1) completer;
   late final DiscardProductReasonDialogBoxViewArguments args;
   String reason = '';
-  late Function(DialogResponse p1) completer;
+
+  final ProductApis _productApis = di<ProductApis>();
+
   void discardProduct() async {
     if (reason.isEmpty) {
       showErrorSnackBar(

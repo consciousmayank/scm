@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -33,7 +35,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   FocusNode priceFocusNode = FocusNode();
   Product productToAdd = Product().empty();
   List<Uint8List> selectedFiles = [];
-  int? selectedProductImageId;
+  int? selectedProductImageImageId, selectedProductImageProductId;
   TextEditingController subTypeController = TextEditingController();
   FocusNode subTypeFocusNode = FocusNode();
   TextEditingController summaryController = TextEditingController();
@@ -71,11 +73,11 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
       for (var element in selectedFiles) {
         images.add(
           productImage.Image(
-            id: selectedProductImageId,
+            id: selectedProductImageImageId,
             image: base64ImagePrefix +
                 " " +
                 base64Encode(element).replaceAll("\n", "").trim(),
-            productId: null,
+            productId: selectedProductImageProductId,
           ),
         );
       }
@@ -116,6 +118,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
         title: '',
         tags: '',
         summary: '',
+        images: [],
       );
     } else {
       showInfoSnackBar(message: apiResponse.message);
@@ -175,7 +178,9 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
 
       if (arguments.productToEdit!.images != null &&
           arguments.productToEdit!.images!.isNotEmpty) {
-        selectedProductImageId = arguments.productToEdit!.images![0].id;
+        selectedProductImageImageId = arguments.productToEdit!.images![0].id;
+        selectedProductImageProductId =
+            arguments.productToEdit!.images![0].productId;
 
         selectedFiles.add(
           base64Decode(
@@ -208,35 +213,21 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
 
   void downloadImage({required Uint8List image}) async {
     setBusy(true);
-    final file = await _localFile;
 
-    // Write the file
-    return file.writeAsBytes(image).then((value) {
+    FileSaver.instance
+        .saveFile(
+      productToAdd.id.toString(),
+      image,
+      '.jpg',
+      mimeType: MimeType.JPEG,
+    )
+        .then((value) {
       setBusy(false);
-      showInfoSnackBar(message: 'Image saved to Disk');
-    }, onError: () {
-      setBusy(false);
-      showErrorSnackBar(message: 'Error saving image to Disk');
+      showInfoSnackBar(
+        message: imageUploadedSuccessMessage(
+          storedDirectory: value,
+        ),
+      );
     });
-  }
-
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/${productToAdd.id}.jpg');
-  }
-
-  Future<String> getFilePath() async {
-    Directory appDocumentsDirectory =
-        await getApplicationDocumentsDirectory(); // 1
-    String appDocumentsPath = appDocumentsDirectory.path; // 2
-    String filePath = '$appDocumentsPath/demoTextFile.txt'; // 3
-
-    return filePath;
   }
 }

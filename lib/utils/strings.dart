@@ -135,6 +135,8 @@ const String orderStatusCreated = 'PROCESSING';
 const String orderStatusInTransit = 'INTRANSIT';
 const String orderStatusInDelivered = 'DELIVERED';
 const String orderStatusInCancelled = 'CANCELLED';
+final imageUploadedSuccessMessage =
+    ({required String storedDirectory}) => 'Image saved to $storedDirectory';
 const String errorReasonRequired =
     'Reason for discarding the product is required';
 const String errorReasonLength =

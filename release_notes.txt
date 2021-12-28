@@ -1,5 +1,9 @@
 In this build following was done.
 
+Tuesday 28 December 2021
+    - Added jump to page for deo, deoGraphicsDesigner, and deoSuperVisor.
+    - Added deiscard product for deoSuperVisor.
+
 Thursday 16th December 2021
     - Added get product by id for supervisor.
     - Added pagination by buttons for product list page.
