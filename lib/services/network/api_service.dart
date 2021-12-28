@@ -6,6 +6,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
+import 'package:scm/enums/product_operations.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/enums/user_roles.dart';
@@ -790,33 +791,31 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
-  Future<ParentApiResponse> addProduct({
+  Future<ParentApiResponse> performOperationOnProduct({
     required Product productToBeAdded,
+    required ProductOperations productOperation,
   }) async {
     Response? response;
     DioError? error;
 
     try {
-      response = await dioClient
-          .getDio()
-          .post(ADD_PRODUCT, data: productToBeAdded.toMap());
-    } on DioError catch (e) {
-      error = e;
-    }
-
-    return ParentApiResponse(error: error, response: response);
-  }
-
-  Future<ParentApiResponse> updateProduct({
-    required Product productToBeAdded,
-  }) async {
-    Response? response;
-    DioError? error;
-
-    try {
-      response = await dioClient
-          .getDio()
-          .put(ADD_PRODUCT, data: productToBeAdded.toMap());
+      switch (productOperation) {
+        case ProductOperations.ADD:
+          response = await dioClient
+              .getDio()
+              .post(ADD_PRODUCT, data: productToBeAdded.toMap());
+          break;
+        case ProductOperations.UPDATE:
+          response = await dioClient
+              .getDio()
+              .put(ADD_PRODUCT, data: productToBeAdded.toMap());
+          break;
+        case ProductOperations.DISCARD:
+          response = await dioClient
+              .getDio()
+              .delete(ADD_PRODUCT, data: productToBeAdded.toMap());
+          break;
+      }
     } on DioError catch (e) {
       error = e;
     }

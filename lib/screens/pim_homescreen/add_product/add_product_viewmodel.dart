@@ -31,6 +31,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   FocusNode priceFocusNode = FocusNode();
   Product productToAdd = Product().empty();
   List<Uint8List> selectedFiles = [];
+  int? selectedProductImageId;
   TextEditingController subTypeController = TextEditingController();
   FocusNode subTypeFocusNode = FocusNode();
   TextEditingController summaryController = TextEditingController();
@@ -43,7 +44,6 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   FocusNode typeFocusNode = FocusNode();
 
   final ProductApis _productApis = di<ProductApis>();
-  int? selectedProductImageId;
 
   void addFocusChangeListener() {
     typeFocusNode.addListener(() {});
@@ -184,6 +184,21 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
         );
         notifyListeners();
       }
+    }
+  }
+
+  void discardProduct() async {
+    ApiResponse response = await _productApis.discardProduct(
+      product: productToAdd,
+    );
+
+    if (response.isSuccessful()) {
+      showInfoSnackBar(message: response.message);
+      arguments.onProductUpdated!.call();
+    } else {
+      showErrorSnackBar(
+        message: response.message,
+      );
     }
   }
 }

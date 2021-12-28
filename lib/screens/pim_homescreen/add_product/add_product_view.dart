@@ -418,23 +418,47 @@ class AddProductView extends StatelessWidget {
                     //   ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: Dimens().buttonHeight,
-                        child: TextButton(
-                          clipBehavior: Clip.antiAlias,
-                          onPressed: () {
-                            if (model.isDeoGd()) {
-                              performCheckOnImage(model: model);
-                            } else {
-                              performChecksOnData(model: model);
-                            }
-                          },
-                          child: Text(arguments.productToEdit == null
-                              ? buttonLabelAddProduct
-                              : buttonLabelUpdateProduct),
-                          style: AppTextButtonsStyles().textButtonStyle,
-                        ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: double.infinity,
+                              height: Dimens().buttonHeight,
+                              child: TextButton(
+                                clipBehavior: Clip.antiAlias,
+                                onPressed: () {
+                                  if (model.isDeoGd()) {
+                                    performCheckOnImage(model: model);
+                                  } else {
+                                    performChecksOnData(model: model);
+                                  }
+                                },
+                                child: Text(arguments.productToEdit == null
+                                    ? buttonLabelAddProduct
+                                    : buttonLabelUpdateProduct),
+                                style: AppTextButtonsStyles().textButtonStyle,
+                              ),
+                            ),
+                            flex: 2,
+                          ),
+                          if (model.isDeoSuperVisor()) wSizedBox(width: 8),
+                          if (model.isDeoSuperVisor())
+                            Expanded(
+                              child: SizedBox(
+                                width: double.infinity,
+                                height: Dimens().buttonHeight,
+                                child: TextButton(
+                                  clipBehavior: Clip.antiAlias,
+                                  onPressed: () {
+                                    model.discardProduct();
+                                  },
+                                  child: const Text(buttonLabelDiscardProduct),
+                                  style: AppTextButtonsStyles().textButtonStyle,
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                        ],
                       ),
                     ),
                   ],

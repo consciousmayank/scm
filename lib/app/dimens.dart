@@ -36,7 +36,7 @@ class Dimens {
         color: AppColors().black,
       );
 
-  double get appTextButtonBorderRadius => getDefaultRadius * 2;
+  double get appTextButtonBorderRadius => getDefaultRadius;
 
   Color get getDecoratedContainerDefaultColor =>
       AppColors().primaryColor.shade200;

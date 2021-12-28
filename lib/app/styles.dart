@@ -164,7 +164,7 @@ class AppTextButtonsStyles {
             );
           }
           return BorderSide(
-            width: 1,
+            width: 0,
             color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
           ); // Defer to the widget's default.
         }),
@@ -234,7 +234,7 @@ class AppTextButtonsStyles {
             );
           }
           return BorderSide(
-            width: 1,
+            width: 2,
             color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
           ); // Defer to the widget's default.
         }),

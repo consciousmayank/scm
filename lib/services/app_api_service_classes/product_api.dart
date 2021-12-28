@@ -1,3 +1,4 @@
+import 'package:scm/enums/product_operations.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
@@ -25,6 +26,8 @@ abstract class ProductApisAbstractClass {
   Future<Product?> getProductById({
     required int productId,
   });
+
+  Future<ApiResponse> discardProduct({required Product product});
 }
 
 class ProductApis extends BaseApi implements ProductApisAbstractClass {
@@ -34,8 +37,10 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
   }) async {
     ApiResponse response = ApiResponse();
 
-    ParentApiResponse apiResponse =
-        await apiService.addProduct(productToBeAdded: product);
+    ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
+      productToBeAdded: product,
+      productOperation: ProductOperations.ADD,
+    );
 
     if (filterResponse(apiResponse) != null) {
       response = ApiResponse.fromMap(apiResponse.response!.data);
@@ -99,8 +104,25 @@ class ProductApis extends BaseApi implements ProductApisAbstractClass {
   }) async {
     ApiResponse response = ApiResponse();
 
-    ParentApiResponse apiResponse =
-        await apiService.updateProduct(productToBeAdded: product);
+    ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
+      productToBeAdded: product,
+      productOperation: ProductOperations.UPDATE,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      response = ApiResponse.fromMap(apiResponse.response!.data);
+    }
+    return response;
+  }
+
+  @override
+  Future<ApiResponse> discardProduct({required Product product}) async {
+    ApiResponse response = ApiResponse();
+
+    ParentApiResponse apiResponse = await apiService.performOperationOnProduct(
+      productToBeAdded: product,
+      productOperation: ProductOperations.DISCARD,
+    );
 
     if (filterResponse(apiResponse) != null) {
       response = ApiResponse.fromMap(apiResponse.response!.data);

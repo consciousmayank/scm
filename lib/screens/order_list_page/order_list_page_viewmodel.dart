@@ -30,9 +30,9 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   List<TextEditingController> quantityEditingControllers = [];
   List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
+  String selectedOrderStatus = 'ALL';
 
   final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
-  String selectedOrderStatus = 'ALL';
 
   void initializeEditexts() {
     orderDetails.orderItems?.forEach((element) {
