@@ -10,6 +10,16 @@ class PageBarWidget extends StatefulWidget {
     this.subTitle,
     this.showBackButton,
     this.options,
+  })  : filledColor = Colors.white,
+        super(key: key);
+
+  const PageBarWidget.withCustomFiledColor({
+    Key? key,
+    required this.title,
+    required this.filledColor,
+    this.subTitle,
+    this.showBackButton,
+    this.options,
   }) : super(key: key);
 
   const PageBarWidget.withBackArrowAndText({
@@ -18,7 +28,8 @@ class PageBarWidget extends StatefulWidget {
     required this.showBackButton,
     this.subTitle,
     this.options,
-  }) : super(key: key);
+  })  : filledColor = Colors.white,
+        super(key: key);
 
   const PageBarWidget.withBackArrowOnly({
     Key? key,
@@ -26,11 +37,13 @@ class PageBarWidget extends StatefulWidget {
     this.options,
     this.subTitle,
     required this.showBackButton,
-  }) : super(key: key);
+  })  : filledColor = Colors.white,
+        super(key: key);
 
   final List<Widget>? options;
   final bool? showBackButton;
   final String? title, subTitle;
+  final Color filledColor;
 
   @override
   _PageBarWidgetState createState() => _PageBarWidgetState();
@@ -42,7 +55,7 @@ class _PageBarWidgetState extends State<PageBarWidget> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16.0),
-      color: AppColors().white,
+      color: widget.filledColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:scm/model_classes/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class InterFaceAppPreferences {
@@ -22,6 +25,11 @@ abstract class InterFaceAppPreferences {
   String getAuthenticatedUserName();
 
   void setAuthenticatedUserName({required String user});
+  void setDemandersCart({
+    required Cart cart,
+  });
+
+  Cart getDemandersCart();
 }
 
 class AppPreferences implements InterFaceAppPreferences {
@@ -31,6 +39,7 @@ class AppPreferences implements InterFaceAppPreferences {
   final String loggedInUserCredentials = "logged_in_user_credentials";
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
+  final String demandersCart = "demanders_cart";
 
   late SharedPreferences _sharedPrefs;
 
@@ -129,5 +138,25 @@ class AppPreferences implements InterFaceAppPreferences {
 
   void clearPreferences() {
     _sharedPrefs.clear();
+  }
+
+  @override
+  Cart getDemandersCart() {
+    Cart cart = Cart().empty();
+
+    String? cartJson = _sharedPrefs.getString(demandersCart);
+    if (cartJson != null) {
+      cart = Cart.fromJson(cartJson);
+    }
+    return cart;
+  }
+
+  @override
+  void setDemandersCart({required Cart? cart}) {
+    if (cart == null) {
+      _sharedPrefs.remove(demandersCart);
+    } else {
+      _sharedPrefs.setString(demandersCart, cart.toJson());
+    }
   }
 }

@@ -63,7 +63,7 @@ class _BrandListViewState extends State<BrandListView> {
                             vertical: 10,
                           ),
                           title: NullableTextWidget(
-                            text: model.allBrandsResponse.brands!
+                            stringValue: model.allBrandsResponse.brands!
                                 .elementAt(index)
                                 .title,
                           ),

@@ -60,4 +60,13 @@ class ProductSubCategoriesResponse {
         "currentPage": currentPage,
         "subtypes": List<dynamic>.from(subtypes!.map((x) => x)),
       };
+
+  ProductSubCategoriesResponse empty() {
+    return ProductSubCategoriesResponse(
+      totalItems: 0,
+      totalPages: 0,
+      currentPage: 0,
+      subtypes: [],
+    );
+  }
 }

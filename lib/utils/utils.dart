@@ -6,11 +6,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
+import 'package:scm/utils/strings.dart';
 
 Uint8List? getImageFromBase64String({required String? base64String}) {
   return base64String == null || base64String.length == 0
@@ -264,6 +267,18 @@ Color getBorderColor({required String? status}) {
     return Colors.transparent;
   }
 }
+
+String? checkImageUrl({String? imageUrl}) {
+  if (imageUrl == null || imageUrl.isEmpty) {
+    return null;
+  } else {
+    if (!imageUrl.contains(base64ImagePrefix)) {
+      imageUrl = base64ImagePrefix + imageUrl;
+    }
+  }
+  return imageUrl;
+}
+
 
 
 // OrderStatusTypes getOrderStatusBeforeOrderList({

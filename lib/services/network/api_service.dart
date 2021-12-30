@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_operations.dart';
 import 'package:scm/enums/product_statuses.dart';
@@ -69,6 +70,7 @@ class ApiService {
     String? productTitle,
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
+    int? supplierId,
   }) async {
     Response? response;
     DioError? error;
@@ -133,7 +135,9 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-            GET_BRAND_LIST,
+            supplierId == null
+                ? GET_BRAND_LIST
+                : GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER(supplierId: supplierId),
             queryParameters: params,
           );
     } on DioError catch (e) {
@@ -148,6 +152,7 @@ class ApiService {
     List<String?>? checkedCategoryList,
     String? subCategoryTitle,
     String? productTitle,
+    int? supplierId,
   }) async {
     Response? response;
     DioError? error;
@@ -207,7 +212,11 @@ class ApiService {
     }
     try {
       response = await dioClient.getDio().get(
-            GET_PRODUCT_SUB_CATEGORIES_LIST,
+            supplierId == null
+                ? GET_PRODUCT_SUB_CATEGORIES_LIST
+                : GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER(
+                    supplierId: supplierId,
+                  ),
             queryParameters: params,
           );
     } on DioError catch (e) {
@@ -222,6 +231,7 @@ class ApiService {
     List<String?>? checkedSubCategoriesList,
     String? categoryTitle,
     String? productTitle,
+    int? supplierId,
   }) async {
     Response? response;
     DioError? error;
@@ -274,7 +284,11 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-            GET_CATEGORIES_LIST,
+            supplierId == null
+                ? GET_CATEGORIES_LIST
+                : GET_CATEGORY_TYPES_LIST_FOR_SELECTED_SUPPLIER(
+                    supplierId: supplierId,
+                  ),
             queryParameters: params,
           );
     } on DioError catch (e) {
@@ -494,7 +508,7 @@ class ApiService {
     Response? response;
     DioError? error;
     try {
-      if (supplierId != null) {
+      if (supplierId != null && supplierId > 0) {
         response = await dioClient
             .getDio()
             .get(GET_SUPPLIER_PRODUCTS(supplierId), queryParameters: params);
@@ -509,28 +523,46 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future<ParentApiResponse> getAllBrands({
-    required int pageNumber,
-    required int pageSize,
-    String? brandToSearch,
-  }) async {
+  Future<ParentApiResponse> getAllBrands(
+      {required int pageNumber,
+      required int pageSize,
+      String? brandToSearch,
+      int? supplierId}) async {
     Response? response;
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(
-            GET_BRANDS_FOR_DASHBOARD,
-            queryParameters: brandToSearch == null
-                ? {
-                    'page': pageNumber,
-                    'size': pageSize,
-                  }
-                : {
-                    'page': pageNumber,
-                    'size': pageSize,
-                    'title': brandToSearch
-                  },
-          );
+      if (supplierId == null) {
+        //api is for suppliers
+        response = await dioClient.getDio().get(
+              GET_BRANDS_FOR_DASHBOARD,
+              queryParameters: brandToSearch == null
+                  ? {
+                      'page': pageNumber,
+                      'size': pageSize,
+                    }
+                  : {
+                      'page': pageNumber,
+                      'size': pageSize,
+                      'title': brandToSearch
+                    },
+            );
+      } else {
+        //api is for demanders
+        response = await dioClient.getDio().get(
+              GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER(supplierId: supplierId),
+              queryParameters: brandToSearch == null
+                  ? {
+                      'page': pageNumber,
+                      'size': pageSize,
+                    }
+                  : {
+                      'page': pageNumber,
+                      'size': pageSize,
+                      'title': brandToSearch
+                    },
+            );
+      }
     } on DioError catch (e) {
       error = e;
     }
@@ -1159,6 +1191,76 @@ class ApiService {
     } else {
       return 'supply';
     }
+  }
+
+  Future<ParentApiResponse> getSuppliersList({
+    required int pageNumber,
+    required int pageSize,
+    String? type,
+    String? title,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    Map<String, String> queryParameters = {
+      'page': '$pageNumber',
+      'size': '$pageSize',
+    };
+
+    if (type != null) {
+      queryParameters.putIfAbsent('type', () => type);
+    }
+
+    if (title != null) {
+      queryParameters.putIfAbsent('title', () => title);
+    }
+
+    try {
+      response = await dioClient.getDio().get(
+            GET_SUPPLIERS_LIST,
+            queryParameters: queryParameters,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> performCartOperation({
+    required CartApiTypes? apiType,
+    String? addCartJson,
+    String? updateCartJson,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      switch (apiType) {
+        case CartApiTypes.GET_CART:
+          response = await dioClient.getDio().get(
+                GET_USER_CART,
+              );
+          break;
+        case CartApiTypes.UPDATE_CART:
+          response = await dioClient.getDio().put(
+                GET_USER_CART,
+                data: updateCartJson,
+              );
+          break;
+        case CartApiTypes.ADD_TO_CART:
+          response = await dioClient.getDio().put(
+                GET_USER_CART,
+                data: addCartJson,
+              );
+          break;
+        default:
+      }
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
   }
 }
 

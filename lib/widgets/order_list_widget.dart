@@ -360,11 +360,16 @@ class OrderListTableWidget extends StatelessWidget {
       padding: const EdgeInsets.all(
         8,
       ),
-      color: isHeader
-          ? AppColors().dashboardTableHeaderBg
-          : isSelected
-              ? AppColors().primaryColor.shade100
-              : Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          Dimens().suppliersListItemImageCiircularRaduis,
+        ),
+        color: isHeader
+            ? AppColors().dashboardTableHeaderBg
+            : isSelected
+                ? AppColors().primaryColor.shade100
+                : Colors.white,
+      ),
       child: Row(
         children: titles
             .map((title) => Expanded(

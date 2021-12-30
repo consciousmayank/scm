@@ -1,21 +1,20 @@
-import 'dart:convert';
+import 'dart:developer';
 
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
-import 'package:scm/widgets/product/filter/filters_view.dart';
-import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
+import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductListView extends StatelessWidget {
@@ -27,11 +26,15 @@ class ProductListView extends StatelessWidget {
   final ProductListViewArguments arguments;
 
   String getTitle({required ProductListViewModel model}) {
-    return model.brandsFilterList.isNotEmpty ||
-            model.categoryFilterList.isNotEmpty ||
-            model.subCategoryFilterList.isNotEmpty
-        ? 'Product List'
-        : 'Popular Products';
+    return arguments.supplierName == null
+        ? model.brandsFilterList.isNotEmpty ||
+                model.categoryFilterList.isNotEmpty ||
+                model.subCategoryFilterList.isNotEmpty
+            ? 'Product List'
+            : 'Popular Products'
+        : suppliersProductsListPageTitle(
+            suppliersName: arguments.supplierName ?? '',
+          );
   }
 
   List<Widget> getOptionsList({
@@ -85,14 +88,10 @@ class ProductListView extends StatelessWidget {
               ),
             ),
             wSizedBox(width: 8),
-            // TextButton.icon(
-            //   style: AppTextButtonsStyles().textButtonStyleForProductListItem,
-            //   onPressed: () => model.openSortDialogBox(),
-            //   icon: const Icon(Icons.sort),
-            //   label: const Text(
-            //     'Sort',
-            //   ),
-            // ),
+            if (arguments.supplierName != null)
+              CartIconView(
+                arguments: CartIconViewArguments(),
+              )
           ],
         ),
       wSizedBox(width: 10),
@@ -126,166 +125,188 @@ class ProductListView extends StatelessWidget {
               )
             : Card(
                 shape: Dimens().getCardShape(),
-                color: AppColors().popularBrandsBg,
+                color: arguments.productsPerLine == 3
+                    ? AppColors().white
+                    : AppColors().popularBrandsBg,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: Dimens().popularBrandsToppadding,
+                    top: arguments.supplierName == null
+                        ? Dimens().popularBrandsToppadding
+                        : 0,
                     left: Dimens().popularBrandsLeftpadding,
                     right: Dimens().popularBrandsRightpadding,
                   ),
-                  child: Row(
-                    children: [
-                      // if (arguments.showAppbar)
-                      //   Flexible(
-                      //     flex: 2,
-                      //     child: ProductsFilterView(
-                      //       arguments: ProductsFilterViewArguments(
-                      //         selectedBrand: model.brandsFilterList,
-                      //         selectedCategory: model.categoryFilterList,
-                      //         selectedSuCategory: model.subCategoryFilterList,
-                      //         searchProductTitle: model.producTitle,
-                      //         onApplyFilterButtonClicked: ({required outArgs}) {
-                      //           model.onFilterApplyButtonClicked(
-                      //             outArgs: outArgs,
-                      //           );
-                      //         },
-                      //         onCancelButtonClicked: () {},
-                      //       ),
-                      //     ),
-                      //   ),
-                      Flexible(
-                        flex: 3,
-                        child: Column(
+                  child: model.productListResponse!.products!.isNotEmpty
+                      ? Row(
                           children: [
-                            if (!arguments.showAppbar &&
-                                arguments.isScrollVertical)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton.icon(
-                                    style: AppTextButtonsStyles()
-                                        .textButtonStyleForProductListItem,
-                                    onPressed: () =>
-                                        model.openFiltersDialogBox(),
-                                    icon: const Icon(Icons.filter),
-                                    label: Text(
-                                      model.getAppliedFiltersCount() == 0
-                                          ? 'Filter'
-                                          : 'Filter (${model.getAppliedFiltersCount()})',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            if (arguments.showSeeAll)
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    getTitle(
-                                      model: model,
-                                    ),
-                                    style: AppTextStyles(context: context)
-                                        .popularBrandsTitleStyle,
-                                  ),
-                                  Row(
-                                    children: getOptionsList(
-                                        model: model, context: context),
-                                  )
-                                ],
-                              ),
-                            hSizedBox(height: 8),
                             Flexible(
-                              child: GridView.builder(
-                                //Enable endless list
-                                // key: const PageStorageKey('product_list'),
-                                scrollDirection: arguments.isScrollVertical
-                                    ? Axis.vertical
-                                    : Axis.horizontal,
-                                itemCount:
-                                    model.productListResponse!.products!.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: getValueForScreenType(
-                                    context: context,
-                                    mobile: 1,
-                                    tablet: arguments.isScrollVertical ? 5 : 2,
-                                    desktop: arguments.isScrollVertical ? 5 : 2,
-                                  ),
-                                  crossAxisSpacing: 8.0,
-                                  mainAxisSpacing: 8.0,
-                                ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return ProductListItem(
-                                    arguments: ProductListItemArguments(
-                                      productTitle: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .title,
-                                      productCategory: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .type,
-                                      productPrice: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .price,
-                                      onAddButtonClick: () {},
-                                      onProductClick: () {
-                                        model.openProductDetails(
-                                          product: model
-                                              .productListResponse!.products!
-                                              .elementAt(index),
+                              flex: 3,
+                              child: Column(
+                                children: [
+                                  if (!arguments.showAppbar &&
+                                      arguments.isScrollVertical)
+                                    Container(
+                                      color: Colors.white,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton.icon(
+                                            style: AppTextButtonsStyles()
+                                                .textButtonStyleForProductListItem,
+                                            onPressed: () =>
+                                                model.openFiltersDialogBox(),
+                                            icon: const Icon(Icons.filter),
+                                            label: Text(
+                                              model.getAppliedFiltersCount() ==
+                                                      0
+                                                  ? 'Filter'
+                                                  : 'Filter (${model.getAppliedFiltersCount()})',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  if (arguments.showSeeAll)
+                                    Container(
+                                      color: AppColors().white,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            getTitle(
+                                              model: model,
+                                            ),
+                                            style:
+                                                AppTextStyles(context: context)
+                                                    .popularBrandsTitleStyle,
+                                          ),
+                                          Row(
+                                            children: getOptionsList(
+                                                model: model, context: context),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  hSizedBox(height: 8),
+                                  Flexible(
+                                    child: GridView.builder(
+                                      //Enable endless list
+                                      // key: const PageStorageKey('product_list'),
+                                      scrollDirection:
+                                          arguments.isScrollVertical
+                                              ? Axis.vertical
+                                              : Axis.horizontal,
+                                      itemCount: model.productListResponse!
+                                          .products!.length,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: getValueForScreenType(
+                                          context: context,
+                                          mobile: 1,
+                                          tablet: arguments.isScrollVertical
+                                              ? arguments.productsPerLine
+                                              : 2,
+                                          desktop: arguments.isScrollVertical
+                                              ? arguments.productsPerLine
+                                              : 2,
+                                        ),
+                                        crossAxisSpacing: 8.0,
+                                        mainAxisSpacing: 8.0,
+                                        childAspectRatio:
+                                            arguments.productsPerLine == 2
+                                                ? 2
+                                                : 3,
+                                      ),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return ProductListItem(
+                                          arguments: ProductListItemArguments(
+                                            productTitle: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .title,
+                                            productCategory: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .type,
+                                            productPrice: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .price,
+                                            onAddButtonClick: () {
+                                              model.addToCartObject
+                                                  .openProductQuantityDialogBox(
+                                                product: model
+                                                    .productListResponse!
+                                                    .products!
+                                                    .elementAt(
+                                                  index,
+                                                ),
+                                              );
+                                            },
+                                            onProductClick: () {
+                                              model.openProductDetails(
+                                                product: model
+                                                    .productListResponse!
+                                                    .products!
+                                                    .elementAt(index),
+                                              );
+                                            },
+                                            // image: getProductImage(model, index),
+                                            image: getProductImage(
+                                                productImage: model
+                                                    .productListResponse!
+                                                    .products!
+                                                    .elementAt(
+                                                      index,
+                                                    )
+                                                    .images),
+                                            productId: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .id,
+                                            measurementUnit: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .measurementUnit,
+                                            measurement: model
+                                                .productListResponse!.products!
+                                                .elementAt(index)
+                                                .measurement,
+                                          ),
                                         );
                                       },
-                                      // image: getProductImage(model, index),
-                                      image: getProductImage(
-                                          productImage: model
-                                              .productListResponse!.products!
-                                              .elementAt(
-                                                index,
-                                              )
-                                              .images),
-                                      productId: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .id,
-                                      measurementUnit: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .measurementUnit,
-                                      measurement: model
-                                          .productListResponse!.products!
-                                          .elementAt(index)
-                                          .measurement,
                                     ),
-                                  );
-                                },
+                                  ),
+                                  if (arguments.showBottomPageChanger)
+                                    ListFooter.previousNext(
+                                      pageNumber: model.pageIndex,
+                                      totalPages: model.productListResponse!
+                                                  .totalPages ==
+                                              null
+                                          ? 0
+                                          : model.productListResponse!
+                                                  .totalPages! -
+                                              1,
+                                      onPreviousPageClick: () {
+                                        model.pageIndex = model.pageIndex - 1;
+                                        model.getProductList();
+                                      },
+                                      onNextPageClick: () {
+                                        model.pageIndex = model.pageIndex + 1;
+                                        model.getProductList();
+                                      },
+                                    )
+                                ],
                               ),
                             ),
-                            if (arguments.showBottomPageChanger)
-                              ListFooter.previousNext(
-                                pageNumber: model.pageIndex,
-                                totalPages: model
-                                            .productListResponse!.totalPages ==
-                                        null
-                                    ? 0
-                                    : model.productListResponse!.totalPages! -
-                                        1,
-                                onPreviousPageClick: () {
-                                  model.pageIndex = model.pageIndex - 1;
-                                  model.getProductList();
-                                },
-                                onNextPageClick: () {
-                                  model.pageIndex = model.pageIndex + 1;
-                                  model.getProductList();
-                                },
-                              )
                           ],
+                        )
+                      : const Center(
+                          child: Text(productListNoProductsFoundError),
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
       ),
@@ -306,7 +327,22 @@ class ProductListViewArguments {
     required this.subCategoryFilterList,
     required this.productTitle,
     required this.supplierId,
-  });
+  })  : productsPerLine = 4,
+        supplierName = null;
+
+  ProductListViewArguments.asSupplierProductList({
+    this.showAppbar = true,
+    this.isScrollVertical = true,
+    this.showBottomPageChanger = true,
+    this.showFilterAndSortOption = true,
+    this.showSeeAll = false,
+    required this.brandsFilterList,
+    required this.categoryFilterList,
+    required this.subCategoryFilterList,
+    required this.productTitle,
+    required this.supplierId,
+    required this.supplierName,
+  }) : productsPerLine = 3;
 
   ProductListViewArguments.asWidget({
     this.isScrollVertical = false,
@@ -319,7 +355,8 @@ class ProductListViewArguments {
     required this.subCategoryFilterList,
     required this.productTitle,
     required this.supplierId,
-  });
+  })  : productsPerLine = 4,
+        supplierName = null;
 
   ProductListViewArguments.fullScreen({
     this.showAppbar = true,
@@ -332,11 +369,13 @@ class ProductListViewArguments {
     required this.subCategoryFilterList,
     required this.productTitle,
     required this.supplierId,
-  });
+  })  : productsPerLine = 4,
+        supplierName = null;
 
   final List<String?>? brandsFilterList;
   final List<String?>? categoryFilterList;
   final String? productTitle;
+  final int productsPerLine;
   final bool isScrollVertical,
       showSeeAll,
       showBottomPageChanger,
@@ -345,6 +384,7 @@ class ProductListViewArguments {
 
   final List<String?>? subCategoryFilterList;
   final int? supplierId;
+  final String? supplierName;
 }
 
 class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {

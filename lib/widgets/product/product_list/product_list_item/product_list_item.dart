@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item_mobile.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item_web.dart';
 

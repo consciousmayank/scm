@@ -227,15 +227,21 @@ class PopularBrandsViewArguments {
   PopularBrandsViewArguments({
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
-  });
+  }) : supplierId = null;
 
   PopularBrandsViewArguments.fullScreen({
     this.isFullScreen = true,
     this.onSeeAllBrandsClicked,
-  });
+  }) : supplierId = null;
+
+  PopularBrandsViewArguments.demanderPopularBrands({
+    this.isFullScreen = true,
+    required this.supplierId,
+  }) : onSeeAllBrandsClicked = null;
 
   final bool isFullScreen;
   final Function? onSeeAllBrandsClicked;
+  final int? supplierId;
 }
 
 class SinglePopularBrandItem extends StatelessWidget {
@@ -250,46 +256,46 @@ class SinglePopularBrandItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = getValueForScreenType(
-      context: context,
-      mobile: 100,
-      tablet: 200,
-      desktop: 300,
-    );
+    // double width = getValueForScreenType(
+    //   context: context,
+    //   mobile: 100,
+    //   tablet: 200,
+    //   desktop: 300,
+    // );
 
-    return SizedBox(
-      width: width,
-      child: AppInkwell.withBorder(
-        onTap: () => onItemClicked(selectedItem: item),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ProfileImageWidget.withNoElevation(
-              profileImageSize: width / 2,
-              imageUrlString: item.image,
+    return AppInkwell.withBorder(
+      borderDerRadius: BorderRadius.circular(
+        Dimens().suppliersListItemImageCiircularRaduis,
+      ),
+      onTap: () => onItemClicked(selectedItem: item),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          ProfileImageWidget.withNoElevation(
+            profileImageSize: 100,
+            imageUrlString: item.image,
+          ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(4),
+            child: Text(
+              item.title ?? '',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.all(4),
-              child: Text(
-                item.title ?? '',
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(
-                    20,
-                  ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  Dimens().suppliersListItemImageCiircularRaduis,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -134,7 +134,7 @@ class ProductDetialItem extends StatelessWidget {
           flex: 2,
           child: NullableTextWidget(
             textStyle: Theme.of(context).textTheme.headline6,
-            text: value,
+            stringValue: value,
           ),
         ),
       ],

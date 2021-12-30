@@ -1,5 +1,8 @@
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/products_brands_response.dart';
+import 'package:scm/model_classes/products_brands_response.dart'
+    as supplierModuleBrandsResponse;
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/services/network/base_api.dart';
 
 abstract class ProductBrandsApis {
@@ -9,6 +12,7 @@ abstract class ProductBrandsApis {
     String? productTitle,
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
+    int? supplierId,
   });
 }
 
@@ -20,25 +24,36 @@ class ProductBrandsApiImpl extends BaseApi implements ProductBrandsApis {
     String? productTitle,
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
+    int? supplierId,
   }) async {
-    ProductBrandsResponse? brandsResponse;
-
     ParentApiResponse apiResponse = await apiService.getBrandsList(
       productTitle: productTitle,
       pageIndex: pageIndex,
       brandTitle: brandTitle,
       checkedCategoryFilterList: checkedCategoryFilterList,
       checkedSubCategoryFilterList: checkedSubCategoryFilterList,
+      supplierId: supplierId,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      brandsResponse =
-          ProductBrandsResponse.fromMap(apiResponse.response!.data);
-    }
+      if (supplierId == null) {
+        return ProductBrandsResponse.fromMap(apiResponse.response!.data);
+      } else {
+        SuppliersBrandsListResponse suppliersBrandsListResponse =
+            SuppliersBrandsListResponse().empty();
+        suppliersBrandsListResponse =
+            SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
 
-    if (brandsResponse != null) {
-      return brandsResponse;
-    } else {
-      return null;
+        return ProductBrandsResponse(
+          brands: suppliersBrandsListResponse.brands!
+              .map(
+                (element) => element.brand!,
+              )
+              .toList(),
+          currentPage: suppliersBrandsListResponse.currentPage,
+          totalItems: suppliersBrandsListResponse.totalItems,
+          totalPages: suppliersBrandsListResponse.totalPages,
+        );
+      }
     }
   }
 }

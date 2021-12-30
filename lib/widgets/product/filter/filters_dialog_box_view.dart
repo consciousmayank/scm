@@ -29,6 +29,7 @@ class _ProductFilterDialogBoxState extends State<ProductFilterDialogBoxView> {
         title: arguments.title,
         child: ProductsFilterView(
           arguments: ProductsFilterViewArguments(
+            supplierId: arguments.supplierId,
             selectedBrand: arguments.selectedBrand,
             selectedCategory: arguments.selectedCategory,
             selectedSuCategory: arguments.selectedSuCategory,
@@ -67,6 +68,7 @@ class ProductFilterDialogBoxViewArguments {
     required this.selectedCategory,
     required this.selectedSuCategory,
     required this.searchProductTitle,
+    required this.supplierId,
   });
 
   final String? searchProductTitle;
@@ -74,6 +76,7 @@ class ProductFilterDialogBoxViewArguments {
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
   final String title;
+  final int? supplierId;
 }
 
 class ProductFilterDialogBoxViewOutputArgs {

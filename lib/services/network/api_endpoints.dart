@@ -36,7 +36,8 @@ const String GET_CREATED_PRODUCTS_BY_USER_TYPE =
     "/api/admin/statistics/product/created";
 
 /// Supplier's API
-final GET_SUPPLIER_PRODUCTS = (supplierId) => '/api/supply/product/list';
+final GET_SUPPLIER_PRODUCTS =
+    (supplierId) => '/api/demand/supply/$supplierId/product/list';
 
 final ADD_REMOVE_PRODUCT_BY_ID =
     (productId) => "/api/supply/product/$productId";
@@ -84,3 +85,15 @@ const String SUPPLY_PROFILE = "/api/supply/profile";
 //Admin
 const String ADD_PRODUCT = "/api/admin/product";
 const String GET_ADDED_PRODUCTS = "/api/admin/product";
+
+const String GET_SUPPLIERS_LIST = "/api/demand/supply/list";
+final GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER = ({required int supplierId}) =>
+    "/api/demand/supply/$supplierId/product/brands";
+
+final GET_CATEGORY_TYPES_LIST_FOR_SELECTED_SUPPLIER = (
+        {required int supplierId}) =>
+    "/api/demand/supply/$supplierId/product/types";
+final GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER = (
+        {required int supplierId}) =>
+    "/api/demand/supply/$supplierId/product/subtypes";
+const String GET_USER_CART = "/api/demand/cart";

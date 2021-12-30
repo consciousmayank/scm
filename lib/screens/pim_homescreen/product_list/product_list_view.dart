@@ -265,37 +265,37 @@ class ProductListItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: product.id != null ? product.id.toString() : '0',
+              stringValue: product.id != null ? product.id.toString() : '0',
             ),
           ),
           Expanded(
             flex: 3,
             child: NullableTextWidget(
-              text: product.brand,
+              stringValue: product.brand,
             ),
           ),
           Expanded(
             flex: 2,
             child: NullableTextWidget(
-              text: product.type,
+              stringValue: product.type,
             ),
           ),
           Expanded(
             flex: 2,
             child: NullableTextWidget(
-              text: product.subType,
+              stringValue: product.subType,
             ),
           ),
           Expanded(
             flex: 6,
             child: NullableTextWidget(
-              text: product.title,
+              stringValue: product.title,
             ),
           ),
           Expanded(
             flex: 2,
             child: NullableTextWidget(
-              text: product.creationdate,
+              stringValue: product.creationdate,
             ),
           ),
         ],

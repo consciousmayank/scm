@@ -28,6 +28,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
       size: Dimens.defaultProductListPageSize,
       pageIndex: pageIndex,
       searchTerm: brandTitle,
+      supplierId: arguments.supplierId,
     );
     // AllBrandsResponse? tempObj = await _homePageApis.getAllBrands(
     //   size: Dimens.defaultProductListPageSize,

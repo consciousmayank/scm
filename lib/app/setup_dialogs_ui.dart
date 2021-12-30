@@ -14,6 +14,7 @@ import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
+import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -64,6 +65,11 @@ void setupDialogUi() {
         ),
     DialogType.DISCARD_PRODUCT: (context, sheetRequest, completer) =>
         DiscardProductReasonDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ADD_PRODUCT_TO_CART: (context, sheetRequest, completer) =>
+        ProductAddToCartDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

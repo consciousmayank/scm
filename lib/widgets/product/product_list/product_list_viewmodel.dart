@@ -3,13 +3,17 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/filter/filters_view.dart';
+import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
+import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -24,6 +28,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   late final int? supplierId;
 
   final ProductListApis _productListApis = di<ProductListApiImpl>();
+  final DemandCartApi _cartApi = di<DemandCartApi>();
 
   getProductList() async {
     setBusy(true);
@@ -37,41 +42,15 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       size: !arguments.showSeeAll
           ? Dimens.defaultProductListPageSize
           : Dimens.defaultProductListPageSizeWhenInHome,
+      supplierId: supplierId,
     );
-
-    //Enable endless list
-    // ProductListResponse? tempObject = await _productListApis.getProductList(
-    //   brandsFilterList: brandsFilterList,
-    //   categoryFilterList: categoryFilterList,
-    //   subCategoryFilterList: subCategoryFilterList,
-    //   pageIndex: pageIndex,
-    //   size: !arguments.showSeeAll
-    //       ? Dimens.defaultProductListPageSize
-    //       : Dimens.defaultProductListPageSizeWhenInHome,
-    // );
-
-    // if (productListResponse == null) {
-    //   productListResponse = ProductListResponse(
-    //     products: tempObject!.products,
-    //     totalItems: tempObject.totalItems,
-    //     totalPages: tempObject.totalPages,
-    //     currentPage: tempObject.currentPage,
-    //     filters: tempObject.filters,
-    //   );
-    // } else {
-    //   productListResponse!.products!.addAll(tempObject!.products!);
-    //   productListResponse = productListResponse!.copyWith(
-    //     totalItems: tempObject.totalItems,
-    //     totalPages: tempObject.totalPages,
-    //     currentPage: tempObject.currentPage,
-    //     filters: tempObject.filters,
-    //   );
-    // }
 
     setBusy(false);
 
     notifyListeners();
   }
+
+  late AddToCart addToCartObject;
 
   init({required ProductListViewArguments arguments}) {
     this.arguments = arguments;
@@ -80,6 +59,8 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     subCategoryFilterList = arguments.subCategoryFilterList ?? [];
     productTitle = arguments.productTitle;
     supplierId = arguments.supplierId;
+
+    addToCartObject = AddToCart(supplierId: supplierId!);
 
     getProductList();
   }
@@ -96,6 +77,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
         selectedCategory: categoryFilterList,
         selectedSuCategory: subCategoryFilterList,
         searchProductTitle: productTitle,
+        supplierId: supplierId,
       ),
     );
 
@@ -123,9 +105,10 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     await dialogService.showCustomDialog(
       variant: DialogType.PRODUCT_DETAILS,
       data: ProductDetailDialogBoxViewArguments(
-        // title: product.title ?? '',
+        productId: product.id,
         title: lableproductdetails.toUpperCase(),
-        product: product,
+        // product: product,
+        product: null,
       ),
     );
   }

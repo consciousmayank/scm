@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 
 class AppInkwell extends StatelessWidget {
-  const AppInkwell({Key? key, required this.child, required this.onTap})
-      : isCustomBorder = false,
+  const AppInkwell({
+    Key? key,
+    required this.child,
+    required this.onTap,
+  })  : isCustomBorder = false,
+        borderDerRadius = null,
         super(key: key);
 
-  const AppInkwell.withBorder(
-      {Key? key, required this.child, required this.onTap})
-      : isCustomBorder = true,
+  const AppInkwell.withBorder({
+    Key? key,
+    required this.child,
+    required this.onTap,
+    this.borderDerRadius,
+  })  : isCustomBorder = true,
         super(key: key);
 
   final Function()? onTap;
+  final BorderRadiusGeometry? borderDerRadius;
   final Widget child;
   final bool isCustomBorder;
 
@@ -19,7 +27,9 @@ class AppInkwell extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       customBorder: isCustomBorder
-          ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))
+          ? RoundedRectangleBorder(
+              borderRadius: borderDerRadius ?? BorderRadius.circular(50),
+            )
           : null,
       highlightColor: AppColors().white,
       hoverColor: AppColors().primaryColor.shade50,

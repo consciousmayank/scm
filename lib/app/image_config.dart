@@ -97,3 +97,4 @@ final String seventeen = _imagePath + '17.jpg';
 final String eighteen = _imagePath + '18.jpg';
 final String nineteen = _imagePath + '19.jpg';
 final String twenty = _imagePath + '20.jpg';
+final String cartIcon = _imagePath + 'cart_icon.png';

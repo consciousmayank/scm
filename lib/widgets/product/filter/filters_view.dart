@@ -406,7 +406,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       value: value,
       onChanged: onChanged,
       title: NullableTextWidget(
-        text: text,
+        stringValue: text,
         // text!.toLowerCase(),
         textStyle: Theme.of(context).textTheme.headline6!.copyWith(
               color: value == true
@@ -615,6 +615,7 @@ class ProductsFilterViewArguments {
     required this.searchProductTitle,
     required this.onApplyFilterButtonClicked,
     required this.onCancelButtonClicked,
+    required this.supplierId,
   });
 
   final Function({
@@ -626,6 +627,7 @@ class ProductsFilterViewArguments {
   final List<String?>? selectedBrand;
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
+  final int? supplierId;
 }
 
 class ProductsFilterViewOutputArguments {

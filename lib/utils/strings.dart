@@ -17,6 +17,8 @@ const String supervisorHomePageTitle = 'Dashboard';
 const String dailyEntriesTitle = 'Daily Work Summary';
 const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
+suppliersProductsListPageTitle({required String suppliersName}) =>
+    '$suppliersName Products List';
 const String todoProductsListPageTitle = 'Todo';
 const String publishedProductsListPageTitle = 'Published';
 const String discardedProductsListPageTitle = 'Discarded';
@@ -110,6 +112,7 @@ const String labelDemandLandingPageOrder = 'Order';
 const String labelDemandLandingPageMore = 'More';
 
 const String labelPopularBrands = 'Popular Brands';
+const String labelPopularProducts = 'Popular Products';
 const String lableproductdetails = 'Product Details';
 const String labelSearchBrands = 'Search Brands';
 const String labelSearchCategory = 'Search Categories';
@@ -141,3 +144,8 @@ const String errorReasonRequired =
     'Reason for discarding the product is required';
 const String errorReasonLength =
     'Reason should be more then 8 characters. Please enter a valid reason';
+const String suppliersListTitle = 'Suppliers';
+const String suppliersListSearchTitle = 'Search for a Supplier';
+const String suppliersListNoSupplierFoundError = 'No Supplier Found';
+const String productListNoProductsFoundError = 'No Products Found';
+const String labelSeeMore = 'See More';

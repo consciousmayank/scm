@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:scm/app/image_config.dart';
+import 'package:scm/utils/strings.dart';
 
 class ProfileImageWidget extends StatelessWidget {
   const ProfileImageWidget({
@@ -9,6 +10,15 @@ class ProfileImageWidget extends StatelessWidget {
     this.imageUrlString,
     this.profileImageSize,
     this.elevation = 10,
+  })  : borderDerRadius = null,
+        super(key: key);
+
+  const ProfileImageWidget.withCurvedBorder({
+    Key? key,
+    this.imageUrlString,
+    this.profileImageSize,
+    required this.elevation,
+    required this.borderDerRadius,
   }) : super(key: key);
 
   const ProfileImageWidget.withNoElevation({
@@ -16,8 +26,10 @@ class ProfileImageWidget extends StatelessWidget {
     this.imageUrlString,
     this.profileImageSize,
     this.elevation,
-  }) : super(key: key);
+  })  : borderDerRadius = null,
+        super(key: key);
 
+  final BorderRadiusGeometry? borderDerRadius;
   final double? elevation;
   final String? imageUrlString;
   final double? profileImageSize;
@@ -26,14 +38,16 @@ class ProfileImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: elevation,
+      color: Colors.white,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          profileImageSize ?? 40,
-        ),
+        borderRadius: borderDerRadius ??
+            BorderRadius.circular(
+              profileImageSize ?? 40,
+            ),
       ),
       child: imageUrlString == null
-          ? Image.asset(profileIconBlue)
+          ? Image.asset(profileIconBlue, height: profileImageSize ?? 40)
           // : Image.asset(profileIconBlue)
           : Image.memory(
               const Base64Codec().decode(

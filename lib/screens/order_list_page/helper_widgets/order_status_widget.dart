@@ -70,7 +70,7 @@ class OrderStatusWidget extends StatelessWidget {
       ),
       padding: padding,
       child: NullableTextWidget(
-        text: status,
+        stringValue: status,
         textStyle: statusStyle,
       ),
     );

@@ -1,8 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/model_classes/cart.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
+import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
 import 'package:scm/services/app_api_service_classes/login_apis.dart';
 import 'package:scm/services/app_api_service_classes/pim_supervisor_dashboard_statistics_api.dart';
@@ -11,6 +13,7 @@ import 'package:scm/services/app_api_service_classes/product_brands_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
+import 'package:scm/services/app_api_service_classes/suppliers_list_api.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -42,6 +45,8 @@ void declareDependencies() {
   di.registerLazySingleton(() => ProductBrandsApiImpl());
   di.registerLazySingleton(() => ProductSubCategoriesApisImpl());
   di.registerLazySingleton(() => CommonDashBoardApis());
+  di.registerLazySingleton(() => SuppliersListApi());
+  di.registerLazySingleton(() => DemandCartApi());
   // locator.registerLazySingleton(() => DioConfig(baseUrl: config.baseUrl));
   // locator.registerLazySingleton(() => NotificationsConfig());
 }

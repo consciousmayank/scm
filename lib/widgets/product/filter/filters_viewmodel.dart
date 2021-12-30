@@ -14,6 +14,7 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
+
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';
@@ -186,6 +187,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedCategoryFilterList: tempCheckedCategoriesList,
         checkedSubCategoryFilterList: tempCheckedSubCategoriesList,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForBrandsApi = brandsResponse?.totalItems;
@@ -414,6 +416,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedSubCategoriesList: tempCheckedSubCategoriesList,
         categoryTitle: categoryTitle,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForCategoriesApi = categoriesResponse?.totalItems;
@@ -543,6 +546,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedCategoryList: tempCheckedCategoriesList,
         checkedBrandList: tempCheckedBrandsList,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForSubCategoriesApi = subCategoriesResponse.totalItems;

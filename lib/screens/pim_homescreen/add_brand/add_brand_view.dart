@@ -245,7 +245,7 @@ class AddBrandView extends StatelessWidget {
                                         vertical: 10,
                                       ),
                                       title: NullableTextWidget(
-                                        text: model.addedProductList
+                                        stringValue: model.addedProductList
                                             .elementAt(index)
                                             .title,
                                       ),

@@ -212,13 +212,13 @@ class ProductCreatedListItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: item.user,
+              stringValue: item.user,
             ),
           ),
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: item.authority != null
+              stringValue: item.authority != null
                   ? getUserRole(role: item.authority!)
                   : null,
             ),
@@ -226,19 +226,19 @@ class ProductCreatedListItem extends StatelessWidget {
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: item.productCreated.toString(),
+              stringValue: item.productCreated.toString(),
             ),
           ),
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: item.brandCount.toString(),
+              stringValue: item.brandCount.toString(),
             ),
           ),
           Expanded(
             flex: 1,
             child: NullableTextWidget(
-              text: item.typeCount.toString(),
+              stringValue: item.typeCount.toString(),
             ),
           ),
         ],

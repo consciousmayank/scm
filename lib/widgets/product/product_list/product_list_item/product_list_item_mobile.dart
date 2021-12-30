@@ -3,8 +3,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/add_product_button.dart' as add;
+import 'package:flutter/src/widgets/image.dart' as image_widget;
 
 class ProductListItemMobile extends StatelessWidget {
   const ProductListItemMobile({
@@ -49,7 +51,14 @@ class ProductListItemMobile extends StatelessWidget {
         if (hideProductAddButton == false)
           Padding(
             padding: const EdgeInsets.all(0.0),
-            child: buildAddProductButton(),
+            child: TextButton(
+              clipBehavior: Clip.antiAlias,
+              style: AppTextButtonsStyles().textButtonStyleForProductListItem,
+              onPressed: arguments.onAddButtonClick,
+              // onPressed: arguments.onProductClick,
+              child: const Text('Add'),
+              // child: const Text('View'),
+            ),
           ),
         if (hideProductDeleteButton == false)
           Padding(
@@ -59,12 +68,6 @@ class ProductListItemMobile extends StatelessWidget {
       ],
     );
   }
-
-  Widget buildAddProductButton() => add.AddProductButton(
-        onTap: arguments.onAddButtonClick,
-        buttonText: 'ADD',
-        // appButtonTypes: AppButtonTypes.LARGE,
-      );
 
   Widget buildDeleteProductButton() => add.AddProductButton(
         onTap: arguments.onDeleteButtonClick,
@@ -131,8 +134,8 @@ class ProductListItemMobile extends StatelessWidget {
                   // height: 100,
                   // color: Colors.amber,
                   child: (arguments.image == null || arguments.image!.isEmpty)
-                      ? Image.asset(productDefaultImage)
-                      : Image.memory(
+                      ? image_widget.Image.asset(productDefaultImage)
+                      : image_widget.Image.memory(
                           arguments.image!,
                           fit: BoxFit.cover,
                           // height: size == 0 ? double.infinity : size,
