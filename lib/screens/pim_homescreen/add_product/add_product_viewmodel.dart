@@ -1,20 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
 // import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
-import 'package:scm/model_classes/product_list_response.dart' as productImage;
+import 'package:scm/model_classes/product_list_response.dart' as product_image;
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
@@ -69,10 +64,10 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   addProduct() async {
     setBusy(true);
     if (selectedFiles.isNotEmpty) {
-      List<productImage.Image> images = [];
+      List<product_image.Image> images = [];
       for (var element in selectedFiles) {
         images.add(
-          productImage.Image(
+          product_image.Image(
             id: selectedProductImageImageId,
             image: base64ImagePrefix +
                 " " +

@@ -1,5 +1,9 @@
 In this build following was done.
 
+Wednessday 29 December 2021
+    -Add/update cart implemented for demander
+    -reseting cart on adding item from another supplier also done.
+
 Tuesday 28 December 2021
     - Added jump to page for deo, deoGraphicsDesigner, and deoSuperVisor.
     - Added deiscard product for deoSuperVisor.

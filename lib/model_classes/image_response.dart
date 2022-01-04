@@ -16,17 +16,17 @@ class ImageResponse {
       ImageResponse.fromMap(json.decode(str));
 
   factory ImageResponse.fromMap(Map<String, dynamic> json) => ImageResponse(
-        title: json["title"],
-        type: json["type"],
-        image: json["image"],
+        title: json["title"] == null ? null : json["title"],
+        type: json["type"] == null ? null : json["type"],
+        image: json["image"] == null ? null : json["image"],
       );
 
-  String ?image;
-  String ?title;
+  String? image;
+  String? title;
   String? type;
 
   ImageResponse copyWith({
-    String ?title,
+    String? title,
     String? type,
     String? image,
   }) =>
@@ -43,4 +43,12 @@ class ImageResponse {
         "type": type,
         "image": image,
       };
+
+  ImageResponse empty() {
+    return ImageResponse(
+      title: null,
+      type: null,
+      image: null,
+    );
+  }
 }

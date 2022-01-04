@@ -44,7 +44,8 @@ final ADD_REMOVE_PRODUCT_BY_ID =
 
 final GET_PRODUCT_BY_ID = (productId) => "/api/product/$productId";
 
-final GET_PRODUCT_IMAGE = (imageName) => "/api/admin/image/get/$imageName.jpg";
+final GET_PRODUCT_IMAGE =
+    (imageName) => "/api/resource/image/get/$imageName.jpg";
 final GET_ORDER_SUMMARY = (orderId) => "/api/supply/order/$orderId";
 final ORDER_INFO = ({required String role}) => "/api/$role/order/info";
 final ORDERED_BRANDS = ({required String role}) => "/api/$role/order/brand";

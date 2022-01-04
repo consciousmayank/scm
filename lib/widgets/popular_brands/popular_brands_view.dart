@@ -12,7 +12,7 @@ import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_viewmodel.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PopularBrandsView extends StatelessWidget {
@@ -269,7 +269,8 @@ class SinglePopularBrandItem extends StatelessWidget {
       ),
       onTap: () => onItemClicked(selectedItem: item),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ProfileImageWidget.withNoElevation(
             profileImageSize: 100,
@@ -277,7 +278,7 @@ class SinglePopularBrandItem extends StatelessWidget {
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(2),
             margin: const EdgeInsets.all(4),
             child: Text(
               item.title ?? '',

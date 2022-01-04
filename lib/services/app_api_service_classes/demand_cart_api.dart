@@ -27,7 +27,11 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       apiType: CartApiTypes.GET_CART,
     );
 
-    if (filterResponse(cartResponse) != null) {
+    if (filterResponse(
+          cartResponse,
+          showSnackBar: false,
+        ) !=
+        null) {
       cart = Cart.fromMap(
         cartResponse.response!.data,
       );

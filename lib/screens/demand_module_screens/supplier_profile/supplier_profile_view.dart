@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
@@ -15,8 +18,11 @@ import 'package:scm/widgets/order_list_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/showing_data_widgets.dart';
+import 'package:scm/widgets/single_brand_item.dart';
+import 'package:scm/widgets/single_category_item.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:stacked/stacked.dart';
 
 class SuppplierProfileView extends StatefulWidget {
@@ -32,6 +38,22 @@ class SuppplierProfileView extends StatefulWidget {
 }
 
 class _SuppplierProfileViewState extends State<SuppplierProfileView> {
+  final ItemScrollController brandsItemScrollController =
+      ItemScrollController();
+  final ItemPositionsListener brandsItemPositionsListener =
+      ItemPositionsListener.create();
+
+  final ItemScrollController categoriesItemScrollController =
+      ItemScrollController();
+  final ItemPositionsListener categoriesItemPositionsListener =
+      ItemPositionsListener.create();
+
+  @override
+  void initState() {
+    super.initState();
+    brandsItemPositionsListener.itemPositions.addListener(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SuppplierProfileViewModel>.reactive(
@@ -144,54 +166,216 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     ],
                   ),
                 ),
-              model.brandsApiStatus == ApiStatus.LOADING
-                  ? const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 100,
-                        child: Center(
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 150,
+                  child: model.brandsApiStatus == ApiStatus.LOADING
+                      ? const Center(
                           child: LoadingWidgetWithText(
                               text: 'Fetching Brands. Please Wait...'),
+                        )
+                      : model.allBrandsResponse!.brands!.isEmpty
+                          ? const Center(
+                              child: Text('No Brands Found'),
+                            )
+                          : Container(
+                              color: AppColors().white,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 150,
+                                    child: AppInkwell(
+                                      onTap: () {
+                                        brandsItemScrollController.scrollTo(
+                                          index: 0,
+                                          duration: Duration(seconds: 2),
+                                          curve: Curves.easeInOutCubic,
+                                        );
+                                      },
+                                      child: const Center(
+                                        child: Icon(Icons.arrow_back_ios,
+                                            size: 30),
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: ScrollablePositionedList.builder(
+                                      itemScrollController:
+                                          brandsItemScrollController,
+                                      itemPositionsListener:
+                                          brandsItemPositionsListener,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        log('Indexx :: $index');
+                                        return SizedBox(
+                                          width: 250,
+                                          child: Builder(builder: (context) {
+                                            return SingleBrandItemWidget(
+                                              item: model
+                                                  .allBrandsResponse!.brands!
+                                                  .elementAt(
+                                                index,
+                                              ),
+                                              onItemClicked: ({
+                                                required Brand selectedItem,
+                                              }) {
+                                                model.takeToProductListView(
+                                                  selectedBrand: selectedItem,
+                                                );
+                                              },
+                                            );
+                                          }),
+                                        );
+                                      },
+                                      itemCount: model
+                                          .allBrandsResponse!.brands!.length,
+                                    ),
+                                  ),
+                                  AppInkwell(
+                                    onTap: () {
+                                      brandsItemScrollController.scrollTo(
+                                        index: model
+                                            .allBrandsResponse!.brands!.length,
+                                        duration: Duration(seconds: 2),
+                                        curve: Curves.easeInOutCubic,
+                                      );
+                                    },
+                                    child: const SizedBox(
+                                      height: 150,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 4, right: 4),
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                ),
+              ),
+              if (model.categoriesApiStatus == ApiStatus.FETCHED &&
+                  model.productCategoriesResponse!.types!.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: PageBarWidget.withCustomFiledColor(
+                    title: "Popular Categories",
+                    filledColor: AppColors().orderDetailsContainerBg,
+                    options: [
+                      AppInkwell(
+                        onTap: () => model
+                            .navigateToPopularBrandsFullScreenForDemander(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            labelSeeMore,
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      decoration: TextDecoration.underline,
+                                    ),
+                          ),
                         ),
                       ),
-                    )
-                  : model.allBrandsResponse!.brands!.isEmpty
-                      ? const SliverToBoxAdapter(
-                          child: SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: Text('No Brands Found'),
-                          ),
-                        ))
-                      : SliverGrid(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SinglePopularBrandItem(
-                                  item: model.allBrandsResponse!.brands!
-                                      .elementAt(
-                                    index,
+                    ],
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 150,
+                  child: model.categoriesApiStatus == ApiStatus.LOADING
+                      ? const Center(
+                          child: LoadingWidgetWithText(
+                              text: 'Fetching Categories. Please Wait...'),
+                        )
+                      : model.productCategoriesResponse!.types!.isEmpty
+                          ? const Center(
+                              child: Text('No Categories Found'),
+                            )
+                          : Container(
+                              color: AppColors().white,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 150,
+                                    child: AppInkwell(
+                                      onTap: () {
+                                        categoriesItemScrollController.scrollTo(
+                                          index: 0,
+                                          duration: Duration(seconds: 2),
+                                          curve: Curves.easeInOutCubic,
+                                        );
+                                      },
+                                      child: const Center(
+                                        child: Icon(Icons.arrow_back_ios,
+                                            size: 30),
+                                      ),
+                                    ),
                                   ),
-                                  onItemClicked: ({
-                                    required Brand selectedItem,
-                                  }) {
-                                    model.takeToProductListView(
-                                      selectedItem: selectedItem,
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            childCount: model.allBrandsResponse!.brands!.length,
-                          ),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 2.0,
-                            mainAxisSpacing: 2.0,
-                            childAspectRatio: 2,
-                          ),
-                        ),
+                                  Flexible(
+                                    child: ScrollablePositionedList.builder(
+                                      itemScrollController:
+                                          categoriesItemScrollController,
+                                      itemPositionsListener:
+                                          categoriesItemPositionsListener,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return SizedBox(
+                                          width: 180,
+                                          child: SingleCategoryItemWidget(
+                                            item: model
+                                                .productCategoriesResponse!
+                                                .types!
+                                                .elementAt(
+                                              index,
+                                            ),
+                                            onItemClicked: ({
+                                              required String selectedItem,
+                                            }) {
+                                              model.takeToProductListView(
+                                                selectedCategory: selectedItem,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      itemCount: model
+                                          .productCategoriesResponse!
+                                          .types!
+                                          .length,
+                                    ),
+                                  ),
+                                  AppInkwell(
+                                    onTap: () {
+                                      categoriesItemScrollController.scrollTo(
+                                        index: model.productCategoriesResponse!
+                                            .types!.length,
+                                        duration: Duration(seconds: 2),
+                                        curve: Curves.easeInOutCubic,
+                                      );
+                                    },
+                                    child: const SizedBox(
+                                      height: 150,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 4, right: 4),
+                                          child: Icon(
+                                            Icons.arrow_forward_ios,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                ),
+              ),
               if (model.productListApiStatus == ApiStatus.FETCHED &&
                   model.productListResponse!.products!.isNotEmpty)
                 SliverToBoxAdapter(

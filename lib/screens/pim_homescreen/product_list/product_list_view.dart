@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/product_list/product_list_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
-import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/decorative_container.dart';
 import 'package:scm/widgets/dotted_divider.dart';
@@ -91,38 +89,31 @@ class ProductsListView extends StatelessWidget {
                   // ),
 
                   Flexible(
-                    child: LazyLoadScrollView(
-                      scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
-                      onEndOfPage: () {
-                        // model.getProductList(showLoader: false);
-                      },
-                      child: ListView.separated(
-                        itemBuilder: (context, index) => AppInkwell(
-                          onTap: model.productListResponse.products == null
-                              ? null
-                              : () {
-                                  if (model.isDeo()) {
-                                    model.showErrorSnackBar(
-                                      message: errorNotAuthorisedToEditProducts,
-                                    );
-                                  } else {
-                                    model.openProductDetailsDialog(
-                                      product: model
-                                          .productListResponse.products!
-                                          .elementAt(index),
-                                    );
-                                  }
-                                },
-                          child: ProductListItem(
-                            index: index,
-                            product: model.productListResponse.products!
-                                .elementAt(index),
-                          ),
+                    child: ListView.separated(
+                      itemBuilder: (context, index) => AppInkwell(
+                        onTap: model.productListResponse.products == null
+                            ? null
+                            : () {
+                                if (model.isDeo()) {
+                                  model.showErrorSnackBar(
+                                    message: errorNotAuthorisedToEditProducts,
+                                  );
+                                } else {
+                                  model.openProductDetailsDialog(
+                                    product: model.productListResponse.products!
+                                        .elementAt(index),
+                                  );
+                                }
+                              },
+                        child: ProductListItem(
+                          index: index,
+                          product: model.productListResponse.products!
+                              .elementAt(index),
                         ),
-                        separatorBuilder: (context, index) =>
-                            const DottedDivider(),
-                        itemCount: model.productListResponse.products!.length,
                       ),
+                      separatorBuilder: (context, index) =>
+                          const DottedDivider(),
+                      itemCount: model.productListResponse.products!.length,
                     ),
                     flex: 1,
                   ),

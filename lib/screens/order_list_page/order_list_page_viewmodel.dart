@@ -110,6 +110,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       turnSelectedOrderItemsEditable();
       initializeEditexts();
     }
+    getOrderList();
     notifyListeners();
   }
 

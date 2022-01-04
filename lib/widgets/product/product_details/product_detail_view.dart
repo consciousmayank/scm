@@ -7,7 +7,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/product_details/product_detail_viewmodel.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 

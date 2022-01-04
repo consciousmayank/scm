@@ -10,6 +10,7 @@ abstract class ProductCategoriesApis {
     List<String?>? checkedSubCategoriesList,
     String? categoryTitle,
     String? productTitle,
+    int? pageSize,
     int? supplierId,
   });
 }
@@ -24,6 +25,7 @@ class ProductCategoriesApiImpl extends BaseApi
     String? categoryTitle,
     String? productTitle,
     int? supplierId,
+    int? pageSize,
   }) async {
     ParentApiResponse apiResponse = await apiService.getProductCategoriesList(
       pageIndex: pageIndex,
@@ -32,6 +34,7 @@ class ProductCategoriesApiImpl extends BaseApi
       checkedSubCategoriesList: checkedSubCategoriesList,
       productTitle: productTitle,
       supplierId: supplierId,
+      pageSize: pageSize,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
       // print(apiResponse.response!.data.);

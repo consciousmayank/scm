@@ -9,7 +9,7 @@ import 'package:scm/widgets/brands_dialog_box/brand_list_view.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_viewmodel.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 

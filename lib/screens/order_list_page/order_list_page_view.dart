@@ -85,6 +85,7 @@ class OrderListPageView extends StatelessWidget {
                                   {required String selectedOrderStatus}) {
                                 model.selectedOrderStatus = selectedOrderStatus;
                                 model.notifyListeners();
+                                model.pageNumber = 0;
                                 model.getOrderList();
                               },
                               // orderStatuses: model.getInAppOrderStatusList(),

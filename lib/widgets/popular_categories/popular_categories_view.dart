@@ -6,7 +6,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/popular_categories/popular_categories_viewmodel.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PopularCategoriesView extends StatelessWidget {

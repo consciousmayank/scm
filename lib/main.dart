@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';

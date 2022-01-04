@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
@@ -19,6 +20,7 @@ import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/network/dio_client.dart';
+import 'package:scm/services/network/image_dio_client.dart';
 
 class ApiService {
   final dioClient = di<DioConfig>();
@@ -232,6 +234,7 @@ class ApiService {
     String? categoryTitle,
     String? productTitle,
     int? supplierId,
+    int? pageSize,
   }) async {
     Response? response;
     DioError? error;
@@ -280,6 +283,13 @@ class ApiService {
         };
         params.addAll(tempMap);
       }
+    }
+
+    if (pageIndex != null) {
+      final tempMap = <String, dynamic>{
+        'pageIndex': pageIndex,
+      };
+      params.addAll(tempMap);
     }
 
     try {
@@ -749,7 +759,9 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(GET_PRODUCT_BY_ID(productId));
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_BY_ID(productId),
+          );
     } on DioError catch (e) {
       error = e;
     }

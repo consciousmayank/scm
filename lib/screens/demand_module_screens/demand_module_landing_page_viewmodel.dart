@@ -24,6 +24,7 @@ class DemandModuleLandingPageViewModel
   ApiStatus getCartApiStatus = ApiStatus.LOADING;
 
   initScreen() {
+    setIndex(2);
     authenticatedUserName = preferences.getAuthenticatedUserName();
     getCart();
   }

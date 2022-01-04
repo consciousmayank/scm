@@ -6,6 +6,7 @@ class NullableTextWidget extends StatelessWidget {
     Key? key,
     this.stringValue,
     this.selectable = false,
+    this.textAlign = TextAlign.left,
     this.textStyle,
     this.decoration,
     this.maxLines = 4,
@@ -18,30 +19,33 @@ class NullableTextWidget extends StatelessWidget {
     required this.intValue,
     this.selectable = false,
     this.textStyle,
+    this.textAlign = TextAlign.left,
     this.decoration,
     this.maxLines = 4,
   })  : stringValue = null,
         doubleValue = null,
         super(key: key);
-  const NullableTextWidget.double({
-    Key? key,
-    required this.doubleValue,
-    this.selectable = false,
-    this.textStyle,
-    this.decoration,
-    this.maxLines = 4,
-  })  : stringValue = null,
+  const NullableTextWidget.double(
+      {Key? key,
+      required this.doubleValue,
+      this.selectable = false,
+      this.textStyle,
+      this.decoration,
+      this.maxLines = 4,
+      this.textAlign = TextAlign.left})
+      : stringValue = null,
         intValue = null,
         super(key: key);
 
-  const NullableTextWidget.selectable({
-    this.selectable = true,
-    Key? key,
-    this.stringValue,
-    this.textStyle,
-    this.decoration,
-    this.maxLines = 4,
-  })  : intValue = null,
+  const NullableTextWidget.selectable(
+      {this.selectable = true,
+      Key? key,
+      this.stringValue,
+      this.textStyle,
+      this.decoration,
+      this.maxLines = 4,
+      this.textAlign = TextAlign.left})
+      : intValue = null,
         doubleValue = null,
         super(key: key);
 
@@ -52,6 +56,7 @@ class NullableTextWidget extends StatelessWidget {
   final int? intValue;
   final double? doubleValue;
   final TextStyle? textStyle;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,8 @@ class NullableTextWidget extends StatelessWidget {
               style: textStyle ??
                   AppTextStyles(context: context)
                       .getNormalTableNoValueTextStyle,
-              maxLines: 4,
+              maxLines: maxLines,
+              textAlign: textAlign,
             )
           : Text(
               getValue() ?? '--',
@@ -74,7 +80,8 @@ class NullableTextWidget extends StatelessWidget {
                   AppTextStyles(context: context)
                       .getNormalTableNoValueTextStyle,
               overflow: TextOverflow.ellipsis,
-              maxLines: 4,
+              maxLines: maxLines,
+              textAlign: textAlign,
             ),
     );
   }
