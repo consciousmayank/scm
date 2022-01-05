@@ -19,12 +19,19 @@ const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
 suppliersProductsListPageTitle({required String suppliersName}) =>
     '$suppliersName Products List';
+
+suppliersCategoryListPageTitle({required String suppliersName}) =>
+    '$suppliersName Categories List';
+
+suppliersBrandListPageTitle({required String suppliersName}) =>
+    '$suppliersName Brands List';
 const String todoProductsListPageTitle = 'Todo';
 const String publishedProductsListPageTitle = 'Published';
 const String discardedProductsListPageTitle = 'Discarded';
 const String addBrandPageTitle = 'Add Brand';
 const String brandTitleHintText = 'Add Brand Title';
 const String labelBrands = 'Brand';
+const String labelCategories = 'Categories';
 const String labelAddBrand = 'Add Brand';
 const String labelViewProducts = 'View Products';
 const String labelDashboard = 'Home';
@@ -149,3 +156,38 @@ const String suppliersListSearchTitle = 'Search for a Supplier';
 const String suppliersListNoSupplierFoundError = 'No Supplier Found';
 const String productListNoProductsFoundError = 'No Products Found';
 const String labelSeeMore = 'See More';
+const String labelCartPageTitle = 'Cart Items';
+const String labelCart = 'Cart';
+const String labelCancel = 'Cancel';
+const String labelYes = 'Yes';
+const String labelPlaceOrder = 'PLACE ORDER';
+const String labelAddNewAddress = 'Address';
+const String labelDeleteAddress = 'Delete Address';
+const String labelDeleteAddressDescription =
+    'Are you sure you want to delete this address?';
+const String labelErrorAddressTypeRequired = 'Address Type is required';
+const String labelErrorAddressLine1Required = 'Address is required';
+const String labelErrorAddressLocalityRequired = 'Locality is required';
+const String labelErrorAddressPincodeRequired = 'Pincode is required';
+const String labelErrorAddressCountryRequired = 'Country is required';
+const String labelErrorAddressCityRequired = 'City is required';
+const String labelErrorAddressStateRequired = 'State is required';
+const String labelErrorAddressPincodeInvalid = 'Pincode is invalid';
+const List<String> addressTypes = [
+  'Head Office',
+  'Branch Office',
+  // 'Other',
+];
+const String labelResetOrder = 'Reset Cart ?';
+const String labelResetOrderDescription =
+    'You already have a cart populated with another suppleir\'s products. Adding this product will reset your old cart. Do you want to reset the cart ?';
+addedProductTocart({required String productTitle}) =>
+    '$productTitle added to cart';
+addedProductTocartError({required String productTitle}) =>
+    '$productTitle not added to cart';
+removedFromCart({required String productTitle}) =>
+    '$productTitle removed from cart';
+updatedInCart({required String productTitle, required int quantity}) =>
+    '$productTitle\'s quantity updated to $quantity';
+notUpdatedInCart({required String productTitle, required int quantity}) =>
+    '$productTitle\'s quantity not updated to $quantity';

@@ -276,24 +276,11 @@ String? checkImageUrl({String? imageUrl}) {
   return imageUrl;
 }
 
-
-
-// OrderStatusTypes getOrderStatusBeforeOrderList({
-//   String? status,
-// }) {
-//   if (status == null) {
-//     return OrderStatusTypes.NONE;
-//   } else if (status == OrderStatusTypes.NEW_ORDER.title) {
-//     return OrderStatusTypes.CREATED;
-//   } else if (status == OrderStatusTypes.SHIPPED.title) {
-//     return OrderStatusTypes.INTRANSIT;
-//   } else if (status == OrderStatusTypes.UNDER_PROCESS.title) {
-//     return OrderStatusTypes.PROCESSING;
-//   } else if (status == OrderStatusTypes.DELIVERED.title) {
-//     return OrderStatusTypes.DELIVERED;
-//   } else if (status == OrderStatusTypes.CANCELLED.title) {
-//     return OrderStatusTypes.CANCELLED;
-//   } else {
-//     return OrderStatusTypes.NONE;
-//   }
-// }
+void fieldFocusChange({
+  required BuildContext context,
+  required FocusNode currentFocus,
+  required FocusNode nextFocus,
+}) {
+  currentFocus.unfocus();
+  FocusScope.of(context).requestFocus(nextFocus);
+}

@@ -1,11 +1,16 @@
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
+import 'package:scm/model_classes/api_response.dart';
+import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
+import 'package:scm/model_classes/post_order_request.dart';
 import 'package:scm/services/network/base_api.dart';
+import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/utils/utils.dart';
 
 abstract class CommonDashBoardApisAbstractClass {
@@ -43,10 +48,16 @@ abstract class CommonDashBoardApisAbstractClass {
   Future<OrderSummaryResponse> updateOrder({
     required OrderSummaryResponse orderDetials,
   });
+
+  Future<ApiResponse> placeOrder({
+    required PostOrderRequest postOrderRequest,
+  });
 }
 
 class CommonDashBoardApis extends BaseApi
     implements CommonDashBoardApisAbstractClass {
+  final CartStream cartService = di<CartStream>();
+
   @override
   Future<OrderSummaryResponse> acceptOrder({required String? orderId}) async {
     OrderSummaryResponse returningResponse = OrderSummaryResponse().empty();
@@ -199,6 +210,24 @@ class CommonDashBoardApis extends BaseApi
     }
 
     return returingResponse;
+  }
+
+  @override
+  Future<ApiResponse> placeOrder(
+      {required PostOrderRequest postOrderRequest}) async {
+    ApiResponse apiResponse = ApiResponse().empty();
+
+    ParentApiResponse parentApiResponse =
+        await apiService.performOrderApiOperation(
+      orderApiType: OrderApiType.PLACE_ORDER,
+      postOrderRequest: postOrderRequest,
+    );
+
+    if (filterResponse(parentApiResponse) != null) {
+      apiResponse = ApiResponse.fromMap(parentApiResponse.response!.data);
+    }
+    cartService.controller.add(Cart().empty());
+    return apiResponse;
   }
 
   @override

@@ -511,7 +511,10 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     );
   }
 
-  Widget buildClearAndApplyButtons({ProductsFilterViewModel? viewModel}) {
+  Widget buildClearAndApplyButtons({
+    ProductsFilterViewModel? viewModel,
+    required BuildContext context,
+  }) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Row(
@@ -520,7 +523,9 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
             child: SizedBox(
               height: Dimens().buttonHeight,
               child: TextButton(
-                  style: AppTextButtonsStyles().textButtonStyle,
+                  style: AppTextButtonsStyles(
+                    context: context,
+                  ).textButtonStyle,
                   onPressed: () {
                     viewModel?.unCheckAllFilters();
                     viewModel?.tempCheckedBrandsList.clear();
@@ -551,7 +556,9 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                 child: const Text(
                   'Apply',
                 ),
-                style: AppTextButtonsStyles().textButtonStyle,
+                style: AppTextButtonsStyles(
+                  context: context,
+                ).textButtonStyle,
               ),
             ),
           ),
@@ -597,6 +604,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
               context: context,
             ),
             buildClearAndApplyButtons(
+              context: context,
               viewModel: model,
             ),
           ],

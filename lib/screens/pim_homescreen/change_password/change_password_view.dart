@@ -126,7 +126,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                       ),
                       hSizedBox(height: 16),
                       TextButton(
-                        style: AppTextButtonsStyles().textButtonStyle,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
                         onPressed: model.isPasswordsMatch &&
                                 model.newPasswordController.text
                                     .trim()

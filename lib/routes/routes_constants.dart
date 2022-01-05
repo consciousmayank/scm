@@ -17,6 +17,7 @@ const String demandLandingScreenRoute = '/demandLandingScreenRoute';
 
 //copied
 const String brandsListViewPageRoute = '/brandsListViewPageRoute';
+const String categoriesListViewPageRoute = '/categoriesListViewPageRoute';
 const String allProductCategoriesViewPageRoute =
     '/allProductCategoriesViewPageRoute';
 const String supplierCatalogViewPageRoute = '/distributorCatalogViewPageRoute';
@@ -50,3 +51,4 @@ const String testTransitionViewPageRoute = '/testTransitionViewPageRoute';
 const String searchProductsViewPageRoute = '/searchProductsViewPageRoute';
 
 const String productListViewPageRoute = '/productListViewPageRoute';
+const String cartViewPageRoute = '/cartViewPageRoute';

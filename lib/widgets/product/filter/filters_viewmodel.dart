@@ -14,7 +14,6 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
-
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';

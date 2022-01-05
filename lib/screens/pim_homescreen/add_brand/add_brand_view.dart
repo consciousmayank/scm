@@ -160,7 +160,8 @@ class AddBrandView extends StatelessWidget {
                                           height: Dimens().buttonHeight,
                                           width: Dimens().buttonHeight * 5,
                                           child: TextButton.icon(
-                                            style: AppTextButtonsStyles()
+                                            style: AppTextButtonsStyles(
+                                                    context: context)
                                                 .textButtonStyle,
                                             onPressed: () {
                                               model.pickImages();
@@ -231,8 +232,9 @@ class AddBrandView extends StatelessWidget {
                                         }
                                       },
                                       child: const Text(labelAddBrand),
-                                      style: AppTextButtonsStyles()
-                                          .textButtonStyle,
+                                      style:
+                                          AppTextButtonsStyles(context: context)
+                                              .textButtonStyle,
                                     ),
                                   ),
                                 ),

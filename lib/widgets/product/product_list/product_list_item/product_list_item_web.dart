@@ -99,8 +99,9 @@ class ProductListItemWeb extends StatelessWidget {
                       flex: 1,
                       child: TextButton(
                         clipBehavior: Clip.antiAlias,
-                        style: AppTextButtonsStyles()
-                            .textButtonStyleForProductListItem,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyleForProductListItem,
                         onPressed: arguments.onAddButtonClick,
                         // onPressed: arguments.onProductClick,
                         child: const Text('Add'),

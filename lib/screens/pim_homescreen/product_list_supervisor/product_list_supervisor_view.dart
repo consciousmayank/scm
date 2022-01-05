@@ -29,7 +29,7 @@ class ProductListSupervisorView extends StatelessWidget {
               NavigationRail(
                 extended: false,
                 groupAlignment: 1.0,
-                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                backgroundColor: Theme.of(context).colorScheme.primary,
                 selectedLabelTextStyle:
                     Theme.of(context).textTheme.button!.copyWith(
                           fontWeight: FontWeight.w500,

@@ -14,17 +14,6 @@ class NullableTextWidget extends StatelessWidget {
         doubleValue = null,
         super(key: key);
 
-  const NullableTextWidget.int({
-    Key? key,
-    required this.intValue,
-    this.selectable = false,
-    this.textStyle,
-    this.textAlign = TextAlign.left,
-    this.decoration,
-    this.maxLines = 4,
-  })  : stringValue = null,
-        doubleValue = null,
-        super(key: key);
   const NullableTextWidget.double(
       {Key? key,
       required this.doubleValue,
@@ -35,6 +24,18 @@ class NullableTextWidget extends StatelessWidget {
       this.textAlign = TextAlign.left})
       : stringValue = null,
         intValue = null,
+        super(key: key);
+
+  const NullableTextWidget.int({
+    Key? key,
+    required this.intValue,
+    this.selectable = false,
+    this.textStyle,
+    this.textAlign = TextAlign.left,
+    this.decoration,
+    this.maxLines = 4,
+  })  : stringValue = null,
+        doubleValue = null,
         super(key: key);
 
   const NullableTextWidget.selectable(
@@ -50,13 +51,25 @@ class NullableTextWidget extends StatelessWidget {
         super(key: key);
 
   final BoxDecoration? decoration;
+  final double? doubleValue;
+  final int? intValue;
   final int maxLines;
   final bool selectable;
   final String? stringValue;
-  final int? intValue;
-  final double? doubleValue;
-  final TextStyle? textStyle;
   final TextAlign textAlign;
+  final TextStyle? textStyle;
+
+  getValue() {
+    if (intValue == null && doubleValue == null) {
+      return stringValue;
+    } else if (stringValue == null && doubleValue == null) {
+      return intValue != null ? intValue.toString() : '--';
+    } else if (stringValue == null && intValue == null) {
+      return doubleValue != null ? doubleValue.toString() : '--';
+    } else {
+      return '--';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,17 +97,5 @@ class NullableTextWidget extends StatelessWidget {
               textAlign: textAlign,
             ),
     );
-  }
-
-  getValue() {
-    if (intValue == null && doubleValue == null) {
-      return stringValue;
-    } else if (stringValue == null && doubleValue == null) {
-      return intValue != null ? intValue.toString() : '--';
-    } else if (stringValue == null && intValue == null) {
-      return doubleValue != null ? doubleValue.toString() : '--';
-    } else {
-      return '--';
-    }
   }
 }

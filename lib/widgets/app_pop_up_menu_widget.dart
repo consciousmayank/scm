@@ -23,7 +23,7 @@ class AppPopUpMenuWidget extends StatelessWidget {
         ),
       ),
       elevation: Dimens().getDefaultElevation,
-      color: Theme.of(context).appBarTheme.backgroundColor,
+      color: Theme.of(context).colorScheme.secondaryVariant,
       tooltip: toolTipLabel,
       icon: Icon(
         Icons.more_vert,

@@ -5,13 +5,14 @@ import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 
 class SingleCategoryItemWidget extends StatelessWidget {
-  final Function({required String selectedItem}) onItemClicked;
-  final String item;
   const SingleCategoryItemWidget({
     Key? key,
     required this.onItemClicked,
     required this.item,
   }) : super(key: key);
+
+  final Function({required String selectedItem}) onItemClicked;
+  final String item;
 
   @override
   Widget build(BuildContext context) {

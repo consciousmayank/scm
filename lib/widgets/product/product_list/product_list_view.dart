@@ -78,7 +78,9 @@ class ProductListView extends StatelessWidget {
               width: 8,
             ),
             TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyleForProductListItem,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyleForProductListItem,
               onPressed: () => model.openFiltersDialogBox(),
               icon: const Icon(Icons.filter),
               label: Text(
@@ -90,6 +92,7 @@ class ProductListView extends StatelessWidget {
             wSizedBox(width: 8),
             if (arguments.supplierName != null)
               CartIconView(
+                key: UniqueKey(),
                 arguments: CartIconViewArguments(),
               )
           ],
@@ -152,8 +155,9 @@ class ProductListView extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           TextButton.icon(
-                                            style: AppTextButtonsStyles()
-                                                .textButtonStyleForProductListItem,
+                                            style: AppTextButtonsStyles(
+                                              context: context,
+                                            ).textButtonStyleForProductListItem,
                                             onPressed: () =>
                                                 model.openFiltersDialogBox(),
                                             icon: const Icon(Icons.filter),
@@ -418,7 +422,9 @@ class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {
                     text: 'Loading More Products. Please wait')
                 : Center(
                     child: TextButton(
-                        style: AppTextButtonsStyles().textButtonStyle,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
                         onPressed:
                             viewModel.productListResponse!.totalPages! - 1 ==
                                     viewModel.pageIndex

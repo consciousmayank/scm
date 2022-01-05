@@ -16,15 +16,14 @@ import 'package:stacked_services/stacked_services.dart';
 class DemandModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';
+  ApiStatus getCartApiStatus = ApiStatus.LOADING;
   String searchTerm = '';
   bool showProductList = false;
 
   final DemandCartApi _demandCartApi = di<DemandCartApi>();
 
-  ApiStatus getCartApiStatus = ApiStatus.LOADING;
-
   initScreen() {
-    setIndex(2);
+    // setIndex(2);
     authenticatedUserName = preferences.getAuthenticatedUserName();
     getCart();
   }

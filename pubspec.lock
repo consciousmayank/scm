@@ -230,6 +230,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
+  flutter_statusbarcolor_ns:
+    dependency: transitive
+    description:
+      name: flutter_statusbarcolor_ns
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -443,6 +450,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.1"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.3"
   scrollable_positioned_list:
     dependency: "direct main"
     description:
@@ -539,6 +553,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.16"
+  stacked_themes:
+    dependency: "direct main"
+    description:
+      name: stacked_themes
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.8+1"
   stream_channel:
     dependency: transitive
     description:

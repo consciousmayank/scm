@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/order_status_types.dart';
@@ -16,8 +17,6 @@ import 'package:scm/widgets/list_footer.dart';
 class OrderListWidget extends StatelessWidget {
   const OrderListWidget.dashboard({
     Key? key,
-    this.orderStatuses = const [],
-    this.showCompactView = false,
     required this.orders,
     required this.isScrollable,
     required this.isSupplyRole,
@@ -30,7 +29,9 @@ class OrderListWidget extends StatelessWidget {
     required this.label,
     this.onOrderStatusClick,
     this.selectedOrderStatus = '',
-  }) : super(key: key);
+  })  : orderStatuses = const [],
+        showCompactView = false,
+        super(key: key);
 
   const OrderListWidget.orderPage({
     Key? key,
@@ -268,7 +269,7 @@ class OrderListWidget extends StatelessWidget {
                               value: selectedOrderStatus,
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: AppColors().primaryColor.shade900,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                               iconSize: 30,
                               underline: Container(),
@@ -364,11 +365,8 @@ class OrderListTableWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Dimens().suppliersListItemImageCiircularRaduis,
         ),
-        color: isHeader
-            ? AppColors().dashboardTableHeaderBg
-            : isSelected
-                ? AppColors().primaryColor.shade100
-                : Colors.white,
+        color:
+            isHeader ? Theme.of(context).colorScheme.background : Colors.white,
       ),
       child: Row(
         children: titles
@@ -411,6 +409,14 @@ class OrderListTableWidget extends StatelessWidget {
                                 titles.indexOf(title) == titles.length - 1
                                     ? TextAlign.center
                                     : TextAlign.left,
+                            style: Theme.of(context).textTheme.button!.copyWith(
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  decoration: isSelected
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
                           ),
                   ),
                 ))

@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/model_classes/cart.dart';
+import 'package:scm/services/app_api_service_classes/address_apis.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
 import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
@@ -18,6 +19,7 @@ import 'package:scm/services/app_api_service_classes/suppliers_list_api.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
 import 'package:scm/services/network/image_dio_client.dart';
+import 'package:scm/services/streams/cart_stream.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 final di = GetIt.instance;
@@ -55,6 +57,8 @@ void declareDependencies() {
   di.registerLazySingleton(() => SuppliersListApi());
   di.registerLazySingleton(() => DemandCartApi());
   di.registerLazySingleton(() => ImageApi());
+  di.registerLazySingleton(() => CartStream());
+  di.registerLazySingleton(() => AddressApis());
   // locator.registerLazySingleton(() => DioConfig(baseUrl: config.baseUrl));
   // locator.registerLazySingleton(() => NotificationsConfig());
 }

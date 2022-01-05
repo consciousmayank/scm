@@ -8,6 +8,15 @@ import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class ProfileImageWidget extends StatelessWidget {
+  const ProfileImageWidget({
+    Key? key,
+    this.imageUrlString,
+    this.profileImageSize,
+    this.elevation = 10,
+  })  : borderDerRadius = null,
+        imageDownloadString = null,
+        super(key: key);
+
   const ProfileImageWidget.downloadImage({
     Key? key,
     required this.imageDownloadString,
@@ -24,15 +33,6 @@ class ProfileImageWidget extends StatelessWidget {
     this.elevation = 0,
     required this.borderDerRadius,
   })  : imageUrlString = null,
-        super(key: key);
-
-  const ProfileImageWidget({
-    Key? key,
-    this.imageUrlString,
-    this.profileImageSize,
-    this.elevation = 10,
-  })  : borderDerRadius = null,
-        imageDownloadString = null,
         super(key: key);
 
   const ProfileImageWidget.withCurvedBorder({
@@ -55,8 +55,8 @@ class ProfileImageWidget extends StatelessWidget {
 
   final BorderRadiusGeometry? borderDerRadius;
   final double? elevation;
-  final String? imageUrlString;
   final String? imageDownloadString;
+  final String? imageUrlString;
   final double? profileImageSize;
 
   @override

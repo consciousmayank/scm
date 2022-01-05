@@ -4,42 +4,31 @@ import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/base_api.dart';
+import 'package:scm/services/streams/cart_stream.dart';
 
 abstract class DemandCartApiAbstractClass {
   Future<Cart> getCart();
+
   Future<Cart> addToCart({
     required int productId,
     required int quantity,
     required String productTitle,
     required int supplierId,
   });
+
   Future<Cart> updateCart({
+    required CartItem cartItem,
+    required int supplierId,
+  });
+
+  Future<Cart> updateCartItem({
     required CartItem cartItem,
     required int supplierId,
   });
 }
 
 class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
-  @override
-  Future<Cart> getCart() async {
-    Cart cart = Cart().empty();
-    ParentApiResponse cartResponse = await apiService.performCartOperation(
-      apiType: CartApiTypes.GET_CART,
-    );
-
-    if (filterResponse(
-          cartResponse,
-          showSnackBar: false,
-        ) !=
-        null) {
-      cart = Cart.fromMap(
-        cartResponse.response!.data,
-      );
-      saveCartToPreferences(cart: cart);
-    }
-
-    return cart;
-  }
+  final CartStream cartService = di<CartStream>();
 
   @override
   Future<Cart> addToCart({
@@ -86,12 +75,31 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       );
       saveCartToPreferences(cart: returningCart);
     }
-
+    cartService.controller.add(returningCart);
     return returningCart;
   }
 
-  saveCartToPreferences({required Cart cart}) {
-    preferences.setDemandersCart(cart: cart);
+  @override
+  Future<Cart> getCart() async {
+    Cart cart = Cart().empty();
+    ParentApiResponse cartResponse = await apiService.performCartOperation(
+      apiType: CartApiTypes.GET_CART,
+    );
+
+    if (filterResponse(
+          cartResponse,
+          showSnackBar: false,
+        ) !=
+        null) {
+      cart = Cart.fromMap(
+        cartResponse.response!.data,
+      );
+      saveCartToPreferences(cart: cart);
+    }
+
+    cartService.controller.add(cart);
+
+    return cart;
   }
 
   @override
@@ -119,7 +127,9 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
 
       if (index != -1) {
         returningCart.cartItems!.removeAt(index);
-        returningCart.cartItems!.add(cartItem);
+        if (cartItem.itemQuantity! > 0) {
+          returningCart.cartItems!.add(cartItem);
+        }
       }
 
       // returningCart.cartItems!.add(
@@ -143,7 +153,18 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       );
       saveCartToPreferences(cart: returningCart);
     }
-
+    cartService.controller.add(returningCart);
     return returningCart;
+  }
+
+  @override
+  Future<Cart> updateCartItem(
+      {required CartItem cartItem, required int supplierId}) {
+    // TODO: implement updateCartItem
+    throw UnimplementedError();
+  }
+
+  saveCartToPreferences({required Cart cart}) {
+    preferences.setDemandersCart(cart: cart);
   }
 }

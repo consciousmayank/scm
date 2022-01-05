@@ -13,6 +13,7 @@ import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 import 'firebase_options.dart';
 
 import 'services/notification/local_notification_service.dart';
@@ -29,6 +30,7 @@ void main() async {
   setupDialogUi();
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  await ThemeManager.initialise();
   runApp(const MyApp());
 }
 
@@ -125,14 +127,19 @@ class _MyAppState extends State<MyApp> {
           future: di.allReady(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return MaterialApp(
-                title: appName,
-                theme: ThemeConfiguration().myTheme,
-                debugShowCheckedModeBanner: false,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: _router.generateRoute,
-                initialRoute: mainViewRoute,
-                // initialRoute: dashBoardPageRoute,
+              return ThemeBuilder(
+                themes: ApplicationTheme().getThemes(),
+                builder: (context, regularTheme, darkTheme, themeMode) {
+                  return MaterialApp(
+                    title: appName,
+                    theme: regularTheme,
+                    debugShowCheckedModeBanner: false,
+                    navigatorKey: StackedService.navigatorKey,
+                    onGenerateRoute: _router.generateRoute,
+                    initialRoute: mainViewRoute,
+                    // initialRoute: dashBoardPageRoute,
+                  );
+                },
               );
             } else {
               return const CircularProgressIndicator();

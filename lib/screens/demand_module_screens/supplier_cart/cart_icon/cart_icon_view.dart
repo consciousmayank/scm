@@ -3,17 +3,22 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/api_status.dart';
+import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_viewmodel.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class CartIconView extends StatefulWidget {
-  final CartIconViewArguments arguments;
   const CartIconView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final CartIconViewArguments arguments;
+
   @override
   _CartIconViewState createState() => _CartIconViewState();
 }
@@ -22,43 +27,63 @@ class _CartIconViewState extends State<CartIconView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CartIconViewModel>.reactive(
+      createNewModelOnInsert: false,
+      disposeViewModel: true,
+      fireOnModelReadyOnce: true,
+      initialiseSpecialViewModelsOnce: true,
       onModelReady: (model) => model.init(args: widget.arguments),
-      builder: (context, model, child) => Center(
-        child: SizedBox(
-          height: 70,
-          width: 70,
-          child: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(
-                  12.0,
-                ),
-                child: Image.asset(
-                  cartIcon,
-                  height: 80,
-                  width: 80,
-                  color: AppColors().primaryColor.shade50,
-                ),
+      builder: (context, model, child) => InkWell(
+        onTap: () {
+          if (model.cart.cartItems!.isNotEmpty) {
+            model.takeToCart();
+          } else {
+            di<SnackbarService>().showCustomSnackBar(
+              variant: SnackbarType.ERROR,
+              duration: const Duration(
+                seconds: 4,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                ),
-                child: NullableTextWidget.int(
-                  intValue: model.getCartApiStatus == ApiStatus.LOADING
-                      ? null
-                      : model.cart.totalItems,
-                  textStyle: Theme.of(context).textTheme.button,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors().primaryColor.shade300,
-                  borderRadius: BorderRadius.circular(
-                    40,
+              title: "Error",
+              message: 'Your cart is empty. Please add some products.',
+            );
+          }
+        },
+        child: Center(
+          child: SizedBox(
+            height: 50,
+            width: 50,
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(
+                    12.0,
+                  ),
+                  child: Image.asset(
+                    cartIcon,
+                    height: 40,
+                    width: 40,
+                    color: AppColors().primaryColor.shade50,
                   ),
                 ),
-              )
-            ],
+                Container(
+                  // padding: const EdgeInsets.symmetric(
+                  //   horizontal: 2,
+                  // ),
+                  child: NullableTextWidget.int(
+                    intValue: model.getCartApiStatus == ApiStatus.LOADING
+                        ? null
+                        : model.cart.totalItems,
+                    textStyle: Theme.of(context).textTheme.button!.copyWith(
+                          color: AppColors().white,
+                        ),
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors().primaryColor.shade300,
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

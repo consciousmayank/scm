@@ -64,7 +64,7 @@ class LabelValueDataShowWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         border: Border.all(
-          color: AppColors().orderDetailsContainerBg,
+          color: Theme.of(context).colorScheme.primaryVariant,
           width: 0.5,
         ),
         borderRadius: BorderRadius.circular(

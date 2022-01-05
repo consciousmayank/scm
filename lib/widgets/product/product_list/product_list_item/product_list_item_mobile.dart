@@ -53,7 +53,9 @@ class ProductListItemMobile extends StatelessWidget {
             padding: const EdgeInsets.all(0.0),
             child: TextButton(
               clipBehavior: Clip.antiAlias,
-              style: AppTextButtonsStyles().textButtonStyleForProductListItem,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyleForProductListItem,
               onPressed: arguments.onAddButtonClick,
               // onPressed: arguments.onProductClick,
               child: const Text('Add'),

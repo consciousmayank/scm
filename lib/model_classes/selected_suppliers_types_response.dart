@@ -13,11 +13,23 @@ class SuppliersTypesListResponse {
     this.currentPage,
   });
 
-  final List<Type>? types;
+  factory SuppliersTypesListResponse.fromJson(String str) =>
+      SuppliersTypesListResponse.fromMap(json.decode(str));
+
+  factory SuppliersTypesListResponse.fromMap(Map<String, dynamic> json) =>
+      SuppliersTypesListResponse(
+        types: List<Type>.from(json["types"].map((x) => Type.fromMap(x))),
+        totalItems: json["totalItems"],
+        totalPages: json["totalPages"],
+        filters: Filters.fromMap(json["filters"]),
+        currentPage: json["currentPage"],
+      );
+
+  final int? currentPage;
+  final Filters? filters;
   final int? totalItems;
   final int? totalPages;
-  final Filters? filters;
-  final int? currentPage;
+  final List<Type>? types;
 
   SuppliersTypesListResponse copyWith({
     List<Type>? types,
@@ -34,19 +46,7 @@ class SuppliersTypesListResponse {
         currentPage: currentPage ?? this.currentPage,
       );
 
-  factory SuppliersTypesListResponse.fromJson(String str) =>
-      SuppliersTypesListResponse.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory SuppliersTypesListResponse.fromMap(Map<String, dynamic> json) =>
-      SuppliersTypesListResponse(
-        types: List<Type>.from(json["types"].map((x) => Type.fromMap(x))),
-        totalItems: json["totalItems"],
-        totalPages: json["totalPages"],
-        filters: Filters.fromMap(json["filters"]),
-        currentPage: json["currentPage"],
-      );
 
   Map<String, dynamic> toMap() => {
         "types": List<dynamic>.from(types!.map((x) => x.toMap())),
@@ -75,10 +75,19 @@ class Filters {
     this.brand,
   });
 
+  factory Filters.fromJson(String str) => Filters.fromMap(json.decode(str));
+
+  factory Filters.fromMap(Map<String, dynamic> json) => Filters(
+        pTitle: json["pTitle"],
+        subType: json["subType"],
+        title: json["title"],
+        brand: json["brand"],
+      );
+
+  final dynamic brand;
   final dynamic pTitle;
   final dynamic subType;
   final dynamic title;
-  final dynamic brand;
 
   Filters copyWith({
     dynamic pTitle,
@@ -102,16 +111,7 @@ class Filters {
     );
   }
 
-  factory Filters.fromJson(String str) => Filters.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory Filters.fromMap(Map<String, dynamic> json) => Filters(
-        pTitle: json["pTitle"],
-        subType: json["subType"],
-        title: json["title"],
-        brand: json["brand"],
-      );
 
   Map<String, dynamic> toMap() => {
         "pTitle": pTitle,
@@ -125,6 +125,12 @@ class Type {
   Type({
     this.type,
   });
+
+  factory Type.fromJson(String str) => Type.fromMap(json.decode(str));
+
+  factory Type.fromMap(Map<String, dynamic> json) => Type(
+        type: json["type"],
+      );
 
   final String? type;
 
@@ -141,13 +147,7 @@ class Type {
         type: type ?? this.type,
       );
 
-  factory Type.fromJson(String str) => Type.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory Type.fromMap(Map<String, dynamic> json) => Type(
-        type: json["type"],
-      );
 
   Map<String, dynamic> toMap() => {
         "type": type,

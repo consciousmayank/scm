@@ -9,6 +9,7 @@ import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialo
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
@@ -70,6 +71,11 @@ void setupDialogUi() {
         ),
     DialogType.ADD_PRODUCT_TO_CART: (context, sheetRequest, completer) =>
         ProductAddToCartDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ADD_ADDRESS: (context, sheetRequest, completer) =>
+        AddressDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
@@ -203,7 +209,7 @@ class RightSidedBaseDialog extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors().getColumnWithTitleHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,

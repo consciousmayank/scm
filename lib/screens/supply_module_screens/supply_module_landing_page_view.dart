@@ -3,7 +3,6 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -11,6 +10,7 @@ import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class SupplyModuleLandingPageView extends StatefulWidget {
   const SupplyModuleLandingPageView({
@@ -29,6 +29,7 @@ class _SupplyModuleLandingPageViewState
     extends State<SupplyModuleLandingPageView> {
   @override
   Widget build(BuildContext context) {
+    getThemeManager(context).selectThemeAtIndex(2);
     return ViewModelBuilder<SupplyModuleLandingPageViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
       builder: (context, model, child) => ScreenTypeLayout.builder(
@@ -176,7 +177,7 @@ class SupplyModuleLandingPageWebView
           NavigationRail(
             extended: false,
             groupAlignment: 1.0,
-            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             selectedLabelTextStyle:
                 Theme.of(context).textTheme.button!.copyWith(
                       fontWeight: FontWeight.w500,

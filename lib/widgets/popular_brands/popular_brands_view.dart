@@ -31,7 +31,11 @@ class PopularBrandsView extends StatelessWidget {
         appBar: arguments.isFullScreen
             ? appbarWidget(
                 context: context,
-                title: labelBrands,
+                title: arguments.supplierId == null
+                    ? labelBrands
+                    : suppliersBrandListPageTitle(
+                        suppliersName: arguments.supplierName!,
+                      ),
                 automaticallyImplyLeading: true,
                 options: [
                   AnimatedSearchWidget(
@@ -108,6 +112,7 @@ class PopularBrandsView extends StatelessWidget {
                                   ),
                                   crossAxisSpacing: 8.0,
                                   mainAxisSpacing: 8.0,
+                                  childAspectRatio: 2.0,
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
@@ -227,21 +232,25 @@ class PopularBrandsViewArguments {
   PopularBrandsViewArguments({
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
-  }) : supplierId = null;
-
-  PopularBrandsViewArguments.fullScreen({
-    this.isFullScreen = true,
-    this.onSeeAllBrandsClicked,
-  }) : supplierId = null;
+  })  : supplierId = null,
+        supplierName = null;
 
   PopularBrandsViewArguments.demanderPopularBrands({
     this.isFullScreen = true,
     required this.supplierId,
+    required this.supplierName,
   }) : onSeeAllBrandsClicked = null;
+
+  PopularBrandsViewArguments.fullScreen({
+    this.isFullScreen = true,
+    this.onSeeAllBrandsClicked,
+  })  : supplierId = null,
+        supplierName = null;
 
   final bool isFullScreen;
   final Function? onSeeAllBrandsClicked;
   final int? supplierId;
+  final String? supplierName;
 }
 
 class SinglePopularBrandItem extends StatelessWidget {
@@ -333,7 +342,9 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
                     text: 'Loading More Brands. Please wait')
                 : Center(
                     child: TextButton(
-                        style: AppTextButtonsStyles().textButtonStyle,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
                         onPressed:
                             viewModel.allBrandsResponse!.totalPages! - 1 ==
                                     viewModel.pageIndex

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/enums/snackbar_types.dart';
-import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_textfield.dart';
-import 'package:stacked_services/stacked_services.dart';
 
 class ListFooter extends StatelessWidget {
   const ListFooter.firstLast({
@@ -81,7 +77,7 @@ class ListFooter extends StatelessWidget {
         top: 10,
       ),
       decoration: BoxDecoration(
-        color: AppColors().primaryColor.shade50,
+        color: AppColors().white,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -93,7 +89,9 @@ class ListFooter extends StatelessWidget {
         children: [
           if (onFirstPageClick != null)
             TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyle,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyle,
               onPressed: pageNumber == 0 || onFirstPageClick == null
                   ? null
                   : () {
@@ -106,7 +104,9 @@ class ListFooter extends StatelessWidget {
             ),
           if (onPreviousPageClick != null)
             TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyle,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyle,
               onPressed: pageNumber == 0 || onPreviousPageClick == null
                   ? null
                   : () {
@@ -136,7 +136,7 @@ class ListFooter extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                           formatter: <TextInputFormatter>[
-                            Dimens().getNumericTextInputFormatter,
+                            Dimens().numericTextInputFormatter,
                           ],
                           initialValue: (pageNumber + 1).toString(),
                           onFieldSubmitted: (value) {
@@ -189,7 +189,9 @@ class ListFooter extends StatelessWidget {
           ),
           if (onNextPageClick != null)
             TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyle,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyle,
               onPressed: pageNumber == (totalPages) ||
                       onNextPageClick == null ||
                       totalPages < 0
@@ -205,7 +207,9 @@ class ListFooter extends StatelessWidget {
             ),
           if (onLastPageClick != null)
             TextButton.icon(
-              style: AppTextButtonsStyles().textButtonStyle,
+              style: AppTextButtonsStyles(
+                context: context,
+              ).textButtonStyle,
               onPressed: pageNumber == (totalPages) || onLastPageClick == null
                   ? null
                   : () {

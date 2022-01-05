@@ -126,7 +126,7 @@ class OrderInfoTile extends StatelessWidget {
 
             CircleAvatar(
               radius: 30,
-              backgroundColor: AppColors().dashboardOrderInfoTileTitleBg,
+              backgroundColor: Theme.of(context).colorScheme.background,
               child: Image.asset(
                 icon,
                 height: 40,

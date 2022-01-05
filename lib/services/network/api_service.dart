@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
+import 'package:scm/enums/address_api_type.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_operations.dart';
@@ -16,6 +17,7 @@ import 'package:scm/model_classes/app_versioning_request.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
+import 'package:scm/model_classes/post_order_request.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/services/network/api_endpoints.dart';
@@ -1117,6 +1119,7 @@ class ApiService {
     required OrderApiType orderApiType,
     String? status,
     OrderSummaryResponse? orderDetials,
+    PostOrderRequest? postOrderRequest,
   }) async {
     Response? response;
     DioError? error;
@@ -1184,6 +1187,16 @@ class ApiService {
                   orderApiType: orderApiType,
                 ),
                 data: orderDetials!.toJson(),
+              );
+          break;
+        case OrderApiType.PLACE_ORDER:
+          response = await dioClient.getDio().post(
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+                data: postOrderRequest!.toJson(),
               );
           break;
       }
@@ -1265,6 +1278,32 @@ class ApiService {
                 GET_USER_CART,
                 data: addCartJson,
               );
+          break;
+        default:
+      }
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> performAddressOperations({
+    required AddressApiType? apiType,
+    String? newAddressJsonBody,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      switch (apiType) {
+        case AddressApiType.GET_ADDRESS:
+          response = await dioClient.getDio().get(GET_ADDRESS);
+          break;
+        case AddressApiType.UPDATE_ADDRESS:
+          response = await dioClient
+              .getDio()
+              .put(GET_ADDRESS, data: newAddressJsonBody);
           break;
         default:
       }

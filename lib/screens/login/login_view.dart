@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
@@ -9,6 +10,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({
@@ -20,6 +22,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getThemeManager(context).selectThemeAtIndex(0);
     return ViewModelBuilder<LoginViewModel>.reactive(
       builder: (context, model, child) => WillPopScope(
         onWillPop: () {
@@ -98,10 +101,16 @@ class LoginView extends StatelessWidget {
                             height: 16,
                           ),
                           TextButton(
-                            style: AppTextButtonsStyles().textButtonStyle,
+                            style: AppTextButtonsStyles(
+                              context: context,
+                              // backgroundColor: Colors.red,
+                            ).textButtonStyle,
                             onPressed: model.login,
-                            child: const Text(
+                            child: Text(
                               labelLoginButton,
+                              style: AppTextStyles(
+                                context: context,
+                              ).appTextButtonStyle,
                             ),
                           ),
                         ],

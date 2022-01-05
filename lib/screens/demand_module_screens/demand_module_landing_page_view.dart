@@ -4,12 +4,14 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
+import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class DemandModuleLandingPageView extends StatefulWidget {
   const DemandModuleLandingPageView({
@@ -28,6 +30,7 @@ class _DemandModuleLandingPageViewState
     extends State<DemandModuleLandingPageView> {
   @override
   Widget build(BuildContext context) {
+    getThemeManager(context).selectThemeAtIndex(1);
     return ViewModelBuilder<DemandModuleLandingPageViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
       builder: (context, model, child) => ScreenTypeLayout.builder(
@@ -162,12 +165,17 @@ class SupplyModuleLandingPageWebView
         // wSizedBox(width: 10),
         Center(child: Text('Hi, ${model.authenticatedUserName}')),
         wSizedBox(width: 30),
+        CartIconView(
+          arguments: CartIconViewArguments(),
+        ),
+        wSizedBox(width: 30),
         AppPopUpMenuWidget(
           onOptionsSelected: ({value}) =>
               model.actionPopUpItemSelected(selectedValue: value),
           options: profileOptions,
           toolTipLabel: popUpMenuLabelToolTip,
         ),
+
         wSizedBox(width: 10),
       ]),
       body: Row(
@@ -175,7 +183,7 @@ class SupplyModuleLandingPageWebView
           NavigationRail(
             extended: false,
             groupAlignment: 1.0,
-            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             selectedLabelTextStyle:
                 Theme.of(context).textTheme.button!.copyWith(
                       fontWeight: FontWeight.w500,

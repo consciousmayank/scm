@@ -6,6 +6,7 @@ import 'package:scm/utils/utils.dart';
 
 class AppImageViewModel extends GeneralisedBaseViewModel {
   late String? image;
+
   final ImageApi _imageApi = di<ImageApi>();
 
   init({String? imageUrlString, String? imageDownloadString}) {

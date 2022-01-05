@@ -12,18 +12,21 @@ import 'package:scm/services/app_api_service_classes/product_categories_apis.dar
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
+import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
+  late final AddToCart addToCartObject;
   AllBrandsResponse? allBrandsResponse;
   late final SuppplierProfileViewArguments arguments;
   ApiStatus brandsApiStatus = ApiStatus.LOADING;
-  ApiStatus categoriesApiStatus = ApiStatus.LOADING;
   List<String?> brandsFilterList = [];
+  ApiStatus categoriesApiStatus = ApiStatus.LOADING;
   List<String?> categoryFilterList = [];
   int pageIndex = 0;
+  ProductCategoriesResponse? productCategoriesResponse;
   ApiStatus productListApiStatus = ApiStatus.LOADING;
   ProductListResponse? productListResponse = ProductListResponse().empty();
   String? productTitle;
@@ -31,11 +34,10 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   late final int? supplierId;
 
   final HomePageApis _homePageApis = di<HomePageApisImpl>();
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
-
-  ProductCategoriesResponse? productCategoriesResponse;
   final ProductCategoriesApis _productCategoriesApis =
       di<ProductCategoriesApiImpl>();
+
+  final ProductListApis _productListApis = di<ProductListApiImpl>();
 
   getCategories() async {
     productCategoriesResponse =
@@ -98,8 +100,6 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
     );
   }
 
-  late final AddToCart addToCartObject;
-
   init({required SuppplierProfileViewArguments args}) {
     arguments = args;
     supplierId = args.selectedSupplier!.id;
@@ -128,6 +128,17 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
       brandsListViewPageRoute,
       arguments: PopularBrandsViewArguments.demanderPopularBrands(
         supplierId: arguments.selectedSupplier!.id,
+        supplierName: arguments.selectedSupplier!.businessName,
+      ),
+    );
+  }
+
+  navigateToCategoriesFullScreenForDemander() {
+    navigationService.navigateTo(
+      categoriesListViewPageRoute,
+      arguments: PopularCategoriesViewArguments.demanderPopularBrands(
+        supplierId: arguments.selectedSupplier!.id,
+        supplierName: arguments.selectedSupplier!.businessName,
       ),
     );
   }

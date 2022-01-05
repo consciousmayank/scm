@@ -57,6 +57,7 @@ final ORDER = (
   switch (orderApiType) {
     case OrderApiType.ORDER_LIST:
     case OrderApiType.UPDATE_ORDERS:
+    case OrderApiType.PLACE_ORDER:
       return "/api/$role/order";
     case OrderApiType.ORDER_DETAILS:
     case OrderApiType.ACCEPT_ORDER:
@@ -98,3 +99,4 @@ final GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER = (
         {required int supplierId}) =>
     "/api/demand/supply/$supplierId/product/subtypes";
 const String GET_USER_CART = "/api/demand/cart";
+const String GET_ADDRESS = "/api/demand/address";

@@ -11,6 +11,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class PimHomeScreenView extends StatelessWidget {
   const PimHomeScreenView({
@@ -75,6 +76,7 @@ class PimHomeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getThemeManager(context).selectThemeAtIndex(0);
     return ViewModelBuilder<PimHomeScreenViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
       builder: (context, model, child) => WillPopScope(
@@ -123,8 +125,7 @@ class PimHomeScreenView extends StatelessWidget {
                   //   ],
                   // ),
                   groupAlignment: model.navRailIsExtended ? -1.0 : 1.0,
-                  backgroundColor:
-                      Theme.of(context).appBarTheme.backgroundColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   selectedLabelTextStyle:
                       Theme.of(context).textTheme.button!.copyWith(
                             fontWeight: FontWeight.w500,

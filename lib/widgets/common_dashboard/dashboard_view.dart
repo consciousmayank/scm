@@ -24,7 +24,9 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CommonDashboardViewModel>.reactive(
-      onModelReady: (model) => model.init(args: widget.arguments),
+      onModelReady: (model) => model.init(
+          args: widget.arguments,
+          barColor: Theme.of(context).colorScheme.background),
       builder: (context, model, child) => const Scaffold(
         body: CustomScrollView(
           slivers: [

@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  // late final BuildContext context;
+
+  // AppColors({required this.context});
+
+  static const MaterialColor demandPrimaryColor = MaterialColor(0xFF2D2F42, {
+    50: Color(0xFFefedfc),
+    100: Color(0xFFd2d6e9),
+    200: Color(0xFFb8bad2),
+    300: Color(0xFF9c9fbb),
+    400: Color(0xFF888ba9),
+    500: Color(0xFF737798),
+    600: Color(0xFF646987),
+    700: Color(0xFF525570),
+    800: Color(0xFF41435a),
+    900: Color(0xFF2D2F42),
+  });
+
   static const MaterialColor shadesOfBlack = MaterialColor(0xFF000000, {
-    50: Color(0xFFff5f5f5),
+    50: Color(0xffff5f5f5),
     100: Color(0xFFe9e9e9),
     200: Color(0xFFd9d9d9),
     300: Color(0xFFc4c4c4),
@@ -12,6 +29,19 @@ class AppColors {
     700: Color(0xFF434343),
     800: Color(0xFF262626),
     900: Color(0xFF000000),
+  });
+
+  static const MaterialColor supplyPrimaryColor = MaterialColor(0xff003f63, {
+    50: Color(0xFFe2eff3),
+    100: Color(0xFFb8d8e4),
+    200: Color(0xFF8fc0d2),
+    300: Color(0xFF69a7c1),
+    400: Color(0xFF4e96b7),
+    500: Color(0xFF3486ad),
+    600: Color(0xFF287aa2),
+    700: Color(0xFF1a6a92),
+    800: Color(0xFF0f5a81),
+    900: Color(0xFF003f63),
   });
 
   Color black = Colors.black;
@@ -30,15 +60,15 @@ class AppColors {
 
   Color white = Colors.white;
 
-  get getColumnWithTitleHeaderColor => primaryColor.shade200;
+  // get getColumnWithTitleHeaderColor => primaryColor.shade200;
 
   get appScaffoldBgColor => Colors.white;
 
-  get appOutlinedTextButtonBackgroundColor => primaryColor.shade200;
+  // get appOutlinedTextButtonBackgroundColor => primaryColor.shade200;
 
-  get appTextButtonForegroundColor => primaryColor.shade50;
+  // get appTextButtonForegroundColor => primaryColor.shade50;
 
-  get appTextButtonBackgroundColor => primaryColor.shade200;
+  // get appTextButtonBackgroundColor => primaryColor.shade200;
 
   get tabIndicatorColor => primaryColor.shade900;
 
@@ -58,7 +88,7 @@ class AppColors {
 
   get productListItemWebCategoryContainerBg => const Color(0xff979797);
 
-  get orderDetailsContainerBg => const Color(0xffC5C5C5);
+  // get orderDetailsContainerBg => const Color(0xffC5C5C5);
 
   get productListItemWebCategoryTextColor => const Color(0xff6C757D);
 

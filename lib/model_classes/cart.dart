@@ -13,11 +13,22 @@ class Cart {
     this.cartItems,
   });
 
+  factory Cart.fromJson(String str) => Cart.fromMap(json.decode(str));
+
+  factory Cart.fromMap(Map<String, dynamic> json) => Cart(
+        id: json["id"],
+        supplyId: json["supplyId"],
+        totalItems: json["totalItems"],
+        totalAmount: json["totalAmount"],
+        cartItems: List<CartItem>.from(
+            json["cartItems"].map((x) => CartItem.fromMap(x))),
+      );
+
+  final List<CartItem>? cartItems;
   final int? id;
   final int? supplyId;
-  final int? totalItems;
   final int? totalAmount;
-  final List<CartItem>? cartItems;
+  final int? totalItems;
 
   Cart empty() {
     return Cart(
@@ -44,18 +55,7 @@ class Cart {
         cartItems: cartItems ?? this.cartItems,
       );
 
-  factory Cart.fromJson(String str) => Cart.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory Cart.fromMap(Map<String, dynamic> json) => Cart(
-        id: json["id"],
-        supplyId: json["supplyId"],
-        totalItems: json["totalItems"],
-        totalAmount: json["totalAmount"],
-        cartItems: List<CartItem>.from(
-            json["cartItems"].map((x) => CartItem.fromMap(x))),
-      );
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -76,11 +76,22 @@ class CartItem {
     this.itemTotalPrice,
   });
 
+  factory CartItem.fromJson(String str) => CartItem.fromMap(json.decode(str));
+
+  factory CartItem.fromMap(Map<String, dynamic> json) => CartItem(
+        id: json["id"],
+        itemId: json["itemId"],
+        itemTitle: json["itemTitle"],
+        itemPrice: json["itemPrice"],
+        itemQuantity: json["itemQuantity"],
+        itemTotalPrice: json["itemTotalPrice"],
+      );
+
   final int? id;
   final int? itemId;
-  final String? itemTitle;
   final int? itemPrice;
   final int? itemQuantity;
+  final String? itemTitle;
   final int? itemTotalPrice;
 
   CartItem copyWith({
@@ -100,18 +111,7 @@ class CartItem {
         itemTotalPrice: itemTotalPrice ?? this.itemTotalPrice,
       );
 
-  factory CartItem.fromJson(String str) => CartItem.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory CartItem.fromMap(Map<String, dynamic> json) => CartItem(
-        id: json["id"],
-        itemId: json["itemId"],
-        itemTitle: json["itemTitle"],
-        itemPrice: json["itemPrice"],
-        itemQuantity: json["itemQuantity"],
-        itemTotalPrice: json["itemTotalPrice"],
-      );
 
   Map<String, dynamic> toMap() => {
         "id": id,

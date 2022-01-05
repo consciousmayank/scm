@@ -64,21 +64,7 @@ class _SuppliersListViewState extends State<SuppliersListView> {
                           selectedSupplier: model.selectedSupplier,
                         ),
                       ),
-
-                // ProductListView(
-                //     key: UniqueKey(),
-                //     arguments:
-                //         ProductListViewArguments.asSupplierProductList(
-                //       brandsFilterList: [],
-                //       categoryFilterList: [],
-                //       subCategoryFilterList: [],
-                //       productTitle: '',
-                //       supplierId: model.selectedSupplier!.id,
-                //       supplierName: model.selectedSupplier!.businessName,
-                //     ),
-                //   ),
-
-                flex: 2,
+                flex: 3,
               ),
             ],
           ),
@@ -102,7 +88,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
       children: [
         PageBarWidget.withCustomFiledColor(
           title: suppliersListTitle,
-          filledColor: AppColors().orderDetailsContainerBg,
+          filledColor: Theme.of(context).colorScheme.secondary,
         ),
         hSizedBox(height: 8),
         AppTextField(

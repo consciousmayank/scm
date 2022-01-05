@@ -4,21 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
-import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/suppliers_list_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
-import 'package:scm/widgets/order_list_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
-import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
-import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/showing_data_widgets.dart';
 import 'package:scm/widgets/single_brand_item.dart';
 import 'package:scm/widgets/single_category_item.dart';
@@ -38,15 +34,17 @@ class SuppplierProfileView extends StatefulWidget {
 }
 
 class _SuppplierProfileViewState extends State<SuppplierProfileView> {
+  final ItemPositionsListener brandsItemPositionsListener =
+      ItemPositionsListener.create();
+
   final ItemScrollController brandsItemScrollController =
       ItemScrollController();
-  final ItemPositionsListener brandsItemPositionsListener =
+
+  final ItemPositionsListener categoriesItemPositionsListener =
       ItemPositionsListener.create();
 
   final ItemScrollController categoriesItemScrollController =
       ItemScrollController();
-  final ItemPositionsListener categoriesItemPositionsListener =
-      ItemPositionsListener.create();
 
   @override
   void initState() {
@@ -76,7 +74,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 child: PageBarWidget.withCustomFiledColor(
                   title:
                       "${widget.arguments.selectedSupplier!.businessName!}'\s Info",
-                  filledColor: AppColors().orderDetailsContainerBg,
+                  filledColor: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               SliverToBoxAdapter(
@@ -88,7 +86,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
-                    height: 205,
+                    height: 180,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +106,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                         Flexible(
                           flex: 1,
                           child: GridView.count(
-                            childAspectRatio: 5 / 1,
+                            childAspectRatio: 6.5,
                             crossAxisCount: 2,
                             children: [
                               LabelValueDataShowWidget.column(
@@ -147,7 +145,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
                     title: "Popular Brands",
-                    filledColor: AppColors().orderDetailsContainerBg,
+                    filledColor: Theme.of(context).colorScheme.secondary,
                     options: [
                       AppInkwell(
                         onTap: () => model
@@ -264,11 +262,11 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
                     title: "Popular Categories",
-                    filledColor: AppColors().orderDetailsContainerBg,
+                    filledColor: Theme.of(context).colorScheme.secondary,
                     options: [
                       AppInkwell(
-                        onTap: () => model
-                            .navigateToPopularBrandsFullScreenForDemander(),
+                        onTap: () =>
+                            model.navigateToCategoriesFullScreenForDemander(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -381,7 +379,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
                     title: "Popular Products",
-                    filledColor: AppColors().orderDetailsContainerBg,
+                    filledColor: Theme.of(context).colorScheme.secondary,
                     options: [
                       AppInkwell(
                         onTap: () =>

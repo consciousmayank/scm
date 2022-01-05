@@ -25,6 +25,7 @@ abstract class InterFaceAppPreferences {
   String getAuthenticatedUserName();
 
   void setAuthenticatedUserName({required String user});
+
   void setDemandersCart({
     required Cart cart,
   });
@@ -36,10 +37,10 @@ class AppPreferences implements InterFaceAppPreferences {
   final String apiToken = "api_token";
   final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
+  final String demandersCart = "demanders_cart";
   final String loggedInUserCredentials = "logged_in_user_credentials";
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
-  final String demandersCart = "demanders_cart";
 
   late SharedPreferences _sharedPrefs;
 
@@ -66,6 +67,17 @@ class AppPreferences implements InterFaceAppPreferences {
     return _sharedPrefs.getString(authenticatedUserRoles) == null
         ? []
         : _sharedPrefs.getString(authenticatedUserRoles)!.split(',');
+  }
+
+  @override
+  Cart getDemandersCart() {
+    Cart cart = Cart().empty();
+
+    String? cartJson = _sharedPrefs.getString(demandersCart);
+    if (cartJson != null) {
+      cart = Cart.fromJson(cartJson);
+    }
+    return cart;
   }
 
   @override
@@ -128,6 +140,15 @@ class AppPreferences implements InterFaceAppPreferences {
   }
 
   @override
+  void setDemandersCart({required Cart? cart}) {
+    if (cart == null) {
+      _sharedPrefs.remove(demandersCart);
+    } else {
+      _sharedPrefs.setString(demandersCart, cart.toJson());
+    }
+  }
+
+  @override
   void setSelectedUserRole({required String userRole}) {
     _sharedPrefs.setString(selectedUserRole, userRole);
   }
@@ -138,25 +159,5 @@ class AppPreferences implements InterFaceAppPreferences {
 
   void clearPreferences() {
     _sharedPrefs.clear();
-  }
-
-  @override
-  Cart getDemandersCart() {
-    Cart cart = Cart().empty();
-
-    String? cartJson = _sharedPrefs.getString(demandersCart);
-    if (cartJson != null) {
-      cart = Cart.fromJson(cartJson);
-    }
-    return cart;
-  }
-
-  @override
-  void setDemandersCart({required Cart? cart}) {
-    if (cart == null) {
-      _sharedPrefs.remove(demandersCart);
-    } else {
-      _sharedPrefs.setString(demandersCart, cart.toJson());
-    }
   }
 }

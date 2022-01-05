@@ -83,12 +83,12 @@ class Dimens {
     );
   }
 
-  TextInputFormatter get getNumericTextInputFormatter =>
+  TextInputFormatter get numericTextInputFormatter =>
       FilteringTextInputFormatter.allow(
         RegExp(r'[0-9]'),
       );
 
-  TextInputFormatter get getNumericWithDecimalsTextInputFormatter =>
+  TextInputFormatter get numericWithDecimalsTextInputFormatter =>
       FilteringTextInputFormatter.allow(
         RegExp(r'^\d+\.?\d{0,2}'),
       );

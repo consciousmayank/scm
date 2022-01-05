@@ -75,8 +75,8 @@ class ProductFilterDialogBoxViewArguments {
   final List<String?>? selectedBrand;
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
-  final String title;
   final int? supplierId;
+  final String title;
 }
 
 class ProductFilterDialogBoxViewOutputArgs {

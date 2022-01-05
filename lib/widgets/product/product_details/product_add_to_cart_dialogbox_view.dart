@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/app/shared_preferences.dart';
@@ -16,14 +18,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductAddToCartDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const ProductAddToCartDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _ProductAddToCartDialogBoxViewState createState() =>
@@ -34,12 +36,38 @@ class _ProductAddToCartDialogBoxViewState
     extends State<ProductAddToCartDialogBoxView> {
   TextEditingController quantityController = TextEditingController();
 
+  void sendFeedBack({
+    required int productId,
+    required int productCount,
+    bool isConfirmed = false,
+  }) {
+    widget.completer(
+      DialogResponse(
+        confirmed: true,
+        data: ProductAddToCartDialogBoxViewOutArguments(
+            productId: productId,
+            quantity: int.parse(quantityController.text),
+            cartItem: productCount > 0
+                ? di<AppPreferences>()
+                    .getDemandersCart()
+                    .cartItems!
+                    .firstWhere(
+                      (element) => element.itemId == productId,
+                      orElse: () => CartItem(),
+                    )
+                    .copyWith(itemQuantity: int.parse(quantityController.text))
+                : null),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductAddToCartDialogBoxViewArguments arguments =
         widget.request.data as ProductAddToCartDialogBoxViewArguments;
 
-    int productCount = di<AppPreferences>()
+    int productCount = arguments.quantity ??
+        di<AppPreferences>()
             .getDemandersCart()
             .cartItems!
             .firstWhere(
@@ -73,103 +101,105 @@ class _ProductAddToCartDialogBoxViewState
               ),
             ),
             hSizedBox(height: 4),
-            Row(
-              children: [
-                Expanded(
-                  child: AppTextField(
-                    hintText: 'Product Quantity',
-                    controller: quantityController,
-                    onFieldSubmitted: (value) {
-                      if (value.isNotEmpty) {
-                        sendFeedBack(
-                          productId: arguments.productId!,
-                          productCount: productCount,
-                          isConfirmed: true,
-                        );
-                      } else {
-                        di<SnackbarService>().showCustomSnackBar(
-                          message: 'Please enter a valid quantity',
-                          variant: SnackbarType.ERROR,
-                        );
-                      }
-                    },
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                bottom: 8.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: AppTextField(
+                      autoFocus: true,
+                      formatter: <TextInputFormatter>[
+                        Dimens().numericTextInputFormatter,
+                      ],
+                      hintText: 'Product Quantity',
+                      controller: quantityController,
+                      onFieldSubmitted: (value) {
+                        if (value.isNotEmpty) {
+                          sendFeedBack(
+                            productId: arguments.productId!,
+                            productCount: productCount,
+                            isConfirmed: true,
+                          );
+                        } else {
+                          di<SnackbarService>().showCustomSnackBar(
+                            message: 'Please enter a valid quantity',
+                            variant: SnackbarType.ERROR,
+                          );
+                        }
+                      },
+                    ),
+                    flex: 2,
                   ),
-                  flex: 2,
-                ),
-                wSizedBox(width: 8),
-                Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      if (quantityController.text.trim().isNotEmpty &&
-                          int.parse(quantityController.text.trim()) > 0) {
-                        sendFeedBack(
-                          productId: arguments.productId!,
-                          productCount: productCount,
-                          isConfirmed: true,
-                        );
-                      } else {
-                        di<SnackbarService>().showCustomSnackBar(
-                          message: 'Please enter a valid quantity',
-                          variant: SnackbarType.ERROR,
-                        );
-                      }
-                    },
-                    child: const Text('Add To Cart'),
-                    style: AppTextButtonsStyles().textButtonStyle,
+                  wSizedBox(width: 8),
+                  Expanded(
+                    child: SizedBox(
+                      height: Dimens().buttonHeight,
+                      child: TextButton(
+                        onPressed: () {
+                          if (quantityController.text.trim().isNotEmpty &&
+                              int.parse(quantityController.text.trim()) > 0) {
+                            sendFeedBack(
+                              productId: arguments.productId!,
+                              productCount: productCount,
+                              isConfirmed: true,
+                            );
+                          } else {
+                            di<SnackbarService>().showCustomSnackBar(
+                              message: 'Please enter a valid quantity',
+                              variant: SnackbarType.ERROR,
+                            );
+                          }
+                        },
+                        child: Text(productCount == 0
+                            ? 'Add To Cart'
+                            : 'Update Quantity'),
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
+                      ),
+                    ),
+                    flex: 1,
                   ),
-                  flex: 1,
-                ),
-              ],
+                ],
+              ),
             )
           ],
         ),
       ),
     );
   }
-
-  void sendFeedBack({
-    required int productId,
-    required int productCount,
-    bool isConfirmed = false,
-  }) {
-    widget.completer(
-      DialogResponse(
-        confirmed: true,
-        data: ProductAddToCartDialogBoxViewOutArguments(
-            productId: productId,
-            quantity: int.parse(quantityController.text),
-            cartItem: productCount > 0
-                ? di<AppPreferences>()
-                    .getDemandersCart()
-                    .cartItems!
-                    .firstWhere(
-                      (element) => element.itemId == productId,
-                      orElse: () => CartItem(),
-                    )
-                    .copyWith(itemQuantity: int.parse(quantityController.text))
-                : null),
-      ),
-    );
-  }
 }
 
 class ProductAddToCartDialogBoxViewArguments {
-  final String title;
-  final int? productId, supplierId;
-
   ProductAddToCartDialogBoxViewArguments({
     required this.title,
     required this.productId,
     required this.supplierId,
+  }) : quantity = null;
+
+  ProductAddToCartDialogBoxViewArguments.fromCartPage({
+    required this.title,
+    required this.productId,
+    required this.supplierId,
+    required this.quantity,
   });
+
+  final int? productId, supplierId, quantity;
+  final String title;
 }
 
 class ProductAddToCartDialogBoxViewOutArguments {
-  final int productId, quantity;
-  final CartItem? cartItem;
   ProductAddToCartDialogBoxViewOutArguments({
     required this.productId,
     required this.quantity,
     required this.cartItem,
   });
+
+  final CartItem? cartItem;
+  final int productId, quantity;
 }
