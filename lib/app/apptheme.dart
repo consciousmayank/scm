@@ -1,8 +1,9 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
 
 AppBarTheme getAppBarTheme() {
   return AppBarTheme(
@@ -148,6 +149,58 @@ TextTheme getAppTextTheme() {
 }
 
 class ApplicationTheme {
+  final MaterialColor demandPrimaryColor = const MaterialColor(0xFF2D2F42, {
+    50: Color(0xFFefedfc),
+    100: const Color(0xFFd2d6e9),
+    200: const Color(0xFFb8bad2),
+    300: const Color(0xFF9c9fbb),
+    400: const Color(0xFF888ba9),
+    500: const Color(0xFF737798),
+    600: const Color(0xFF646987),
+    700: const Color(0xFF525570),
+    800: const Color(0xFF41435a),
+    900: const Color(0xFF2D2F42),
+  });
+
+  final MaterialColor primaryColor = const MaterialColor(0xFF2d4235, {
+    50: Color(0xFF92c4b0),
+    100: Color(0xFF92c4b0),
+    200: Color(0xFF92c4b0),
+    300: Color(0xFF6fac94),
+    400: Color(0xFF5b9b80),
+    500: Color(0xFF4f8a6f),
+    600: Color(0xFF497d64),
+    700: Color(0xFF416e57),
+    800: Color(0xFF3a5e4b),
+    900: Color(0xFF2d4235),
+  });
+
+  final MaterialColor shadesOfBlack = const MaterialColor(0xFF000000, {
+    50: const Color(0xffff5f5f5),
+    100: const Color(0xFFe9e9e9),
+    200: const Color(0xFFd9d9d9),
+    300: const Color(0xFFc4c4c4),
+    400: const Color(0xFF9d9d9d),
+    500: const Color(0xFF7b7b7b),
+    600: const Color(0xFF555555),
+    700: const Color(0xFF434343),
+    800: const Color(0xFF262626),
+    900: const Color(0xFF000000),
+  });
+
+  final MaterialColor supplyPrimaryColor = const MaterialColor(0xff003f63, {
+    50: const Color(0xFFe2eff3),
+    100: const Color(0xFFb8d8e4),
+    200: const Color(0xFF8fc0d2),
+    300: const Color(0xFF69a7c1),
+    400: const Color(0xFF4e96b7),
+    500: const Color(0xFF3486ad),
+    600: const Color(0xFF287aa2),
+    700: const Color(0xFF1a6a92),
+    800: const Color(0xFF0f5a81),
+    900: const Color(0xFF003f63),
+  });
+
   List<ThemeData> getThemes() {
     return [
       getDefaultTheme(),
@@ -159,7 +212,7 @@ class ApplicationTheme {
   getDefaultTheme() {
     return ThemeData(
       appBarTheme: getAppBarTheme(),
-      primarySwatch: AppColors().primaryColor,
+      primarySwatch: primaryColor,
       brightness: Brightness.light,
       // primaryColor: AppColors().primaryColor[400],
       primaryColorBrightness: Brightness.light,
@@ -219,7 +272,7 @@ class ApplicationTheme {
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             // color: AppColors().primaryColor[900]!,
             width: 1,
             style: BorderStyle.solid,
@@ -243,7 +296,7 @@ class ApplicationTheme {
           ),
         ),
         disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             // color: AppColors().primaryColor[700]!,
             width: 1,
             style: BorderStyle.solid,
@@ -255,7 +308,7 @@ class ApplicationTheme {
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             // color: AppColors().primaryColor[800]!,
             width: 1,
             style: BorderStyle.solid,
@@ -267,7 +320,7 @@ class ApplicationTheme {
           ),
         ),
         border: OutlineInputBorder(
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             // color: AppColors().primaryColor[900]!,
             width: 1,
             style: BorderStyle.solid,
@@ -279,12 +332,12 @@ class ApplicationTheme {
           ),
         ),
       ),
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         // color: AppColors().primaryColor[800],
         opacity: 1,
         size: 24,
       ),
-      primaryIconTheme: IconThemeData(
+      primaryIconTheme: const IconThemeData(
         // color: AppColors().primaryColor[700],
         opacity: 1,
         size: 24,
@@ -368,7 +421,7 @@ class ApplicationTheme {
         style: getOutlinedButtonStyle(),
       ),
       colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: AppColors().primaryColor,
+        primarySwatch: primaryColor,
         brightness: Brightness.light,
       ),
     );
@@ -377,13 +430,13 @@ class ApplicationTheme {
   getSupplyTheme() {
     return ThemeData(
       appBarTheme: getAppBarTheme(),
-      primarySwatch: AppColors.supplyPrimaryColor,
+      primarySwatch: supplyPrimaryColor,
       brightness: Brightness.light,
-      primaryColor: AppColors.supplyPrimaryColor[400],
+      primaryColor: supplyPrimaryColor[400],
       primaryColorBrightness: Brightness.light,
-      primaryColorLight: AppColors.supplyPrimaryColor[100],
-      primaryColorDark: AppColors.supplyPrimaryColor[800],
-      canvasColor: AppColors.supplyPrimaryColor[50],
+      primaryColorLight: supplyPrimaryColor[100],
+      primaryColorDark: supplyPrimaryColor[800],
+      canvasColor: supplyPrimaryColor[50],
       scaffoldBackgroundColor: Colors.white,
       bottomAppBarColor: Colors.white,
       cardTheme: CardTheme(
@@ -391,18 +444,18 @@ class ApplicationTheme {
           shape: Dimens().getCardShape(),
           elevation: 2,
           margin: const EdgeInsets.all(4)),
-      dividerColor: AppColors.supplyPrimaryColor[800],
-      highlightColor: AppColors.supplyPrimaryColor[200],
+      dividerColor: supplyPrimaryColor[800],
+      highlightColor: supplyPrimaryColor[200],
       // the splash color in tabs of bottombar items.
-      splashColor: AppColors.supplyPrimaryColor[900],
-      selectedRowColor: AppColors.supplyPrimaryColor[400],
-      unselectedWidgetColor: AppColors.supplyPrimaryColor[100],
+      splashColor: supplyPrimaryColor[900],
+      selectedRowColor: supplyPrimaryColor[400],
+      unselectedWidgetColor: supplyPrimaryColor[100],
       disabledColor: Colors.grey[400],
-      toggleableActiveColor: AppColors.supplyPrimaryColor[700],
-      secondaryHeaderColor: AppColors.supplyPrimaryColor[300],
-      backgroundColor: AppColors.supplyPrimaryColor[300],
-      dialogBackgroundColor: AppColors.supplyPrimaryColor[100],
-      indicatorColor: AppColors.supplyPrimaryColor[900],
+      toggleableActiveColor: supplyPrimaryColor[700],
+      secondaryHeaderColor: supplyPrimaryColor[300],
+      backgroundColor: supplyPrimaryColor[300],
+      dialogBackgroundColor: supplyPrimaryColor[100],
+      indicatorColor: supplyPrimaryColor[900],
       hintColor: const Color(0x8a000000),
       errorColor: const Color(0xffd32f2f),
       textTheme: getAppTextTheme(),
@@ -429,7 +482,7 @@ class ApplicationTheme {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         errorBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.supplyPrimaryColor[400]!,
+            color: supplyPrimaryColor[400]!,
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -441,7 +494,7 @@ class ApplicationTheme {
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.supplyPrimaryColor[900]!,
+            color: supplyPrimaryColor[900]!,
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -477,7 +530,7 @@ class ApplicationTheme {
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.supplyPrimaryColor[800]!,
+            color: supplyPrimaryColor[800]!,
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -489,7 +542,7 @@ class ApplicationTheme {
         ),
         border: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: AppColors.supplyPrimaryColor[900]!,
+            color: supplyPrimaryColor[900]!,
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -501,28 +554,28 @@ class ApplicationTheme {
         ),
       ),
       iconTheme: IconThemeData(
-        color: AppColors.supplyPrimaryColor[800],
+        color: supplyPrimaryColor[800],
         opacity: 1,
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: AppColors.supplyPrimaryColor[700],
+        color: supplyPrimaryColor[700],
         opacity: 1,
         size: 24,
       ),
       sliderTheme: SliderThemeData(
-        activeTrackColor: AppColors.supplyPrimaryColor[600],
-        inactiveTrackColor: AppColors.supplyPrimaryColor[300],
+        activeTrackColor: supplyPrimaryColor[600],
+        inactiveTrackColor: supplyPrimaryColor[300],
         disabledActiveTrackColor: Colors.grey[400],
         disabledInactiveTrackColor: Colors.grey[400],
-        activeTickMarkColor: AppColors.supplyPrimaryColor[600],
-        inactiveTickMarkColor: AppColors.supplyPrimaryColor[300],
+        activeTickMarkColor: supplyPrimaryColor[600],
+        inactiveTickMarkColor: supplyPrimaryColor[300],
         disabledActiveTickMarkColor: Colors.grey[400],
         disabledInactiveTickMarkColor: Colors.grey[400],
-        thumbColor: AppColors.supplyPrimaryColor[600],
+        thumbColor: supplyPrimaryColor[600],
         disabledThumbColor: Colors.grey[400],
         thumbShape: SliderComponentShape.noOverlay,
-        overlayColor: AppColors.supplyPrimaryColor[300],
+        overlayColor: supplyPrimaryColor[300],
         valueIndicatorColor: null,
         valueIndicatorShape: null,
         showValueIndicator: ShowValueIndicator.always,
@@ -544,20 +597,20 @@ class ApplicationTheme {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.supplyPrimaryColor[600]!,
+        backgroundColor: supplyPrimaryColor[600]!,
         brightness: Brightness.light,
-        deleteIconColor: AppColors.supplyPrimaryColor[900],
+        deleteIconColor: supplyPrimaryColor[900],
         disabledColor: Colors.grey[400]!,
         labelPadding:
             const EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
         labelStyle: getAppTextTheme().bodyText1!,
         padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
         secondaryLabelStyle: getAppTextTheme().bodyText2!,
-        secondarySelectedColor: AppColors.supplyPrimaryColor[400]!,
-        selectedColor: AppColors.supplyPrimaryColor[900]!,
+        secondarySelectedColor: supplyPrimaryColor[400]!,
+        selectedColor: supplyPrimaryColor[900]!,
         shape: StadiumBorder(
             side: BorderSide(
-          color: AppColors.supplyPrimaryColor[400]!,
+          color: supplyPrimaryColor[400]!,
           width: 1,
           style: BorderStyle.solid,
         )),
@@ -594,13 +647,13 @@ class ApplicationTheme {
   getDemandTheme() {
     return ThemeData(
       appBarTheme: getAppBarTheme(),
-      primarySwatch: AppColors.demandPrimaryColor,
+      primarySwatch: demandPrimaryColor,
       brightness: Brightness.light,
-      primaryColor: AppColors.demandPrimaryColor[400],
+      primaryColor: demandPrimaryColor[400],
       primaryColorBrightness: Brightness.light,
-      primaryColorLight: AppColors.demandPrimaryColor[100],
-      primaryColorDark: AppColors.demandPrimaryColor[800],
-      canvasColor: AppColors.demandPrimaryColor[50],
+      primaryColorLight: demandPrimaryColor[100],
+      primaryColorDark: demandPrimaryColor[800],
+      canvasColor: demandPrimaryColor[50],
       scaffoldBackgroundColor: Colors.white,
       bottomAppBarColor: Colors.white,
       cardTheme: CardTheme(
@@ -608,18 +661,18 @@ class ApplicationTheme {
           shape: Dimens().getCardShape(),
           elevation: 2,
           margin: const EdgeInsets.all(4)),
-      dividerColor: AppColors.demandPrimaryColor[800],
-      highlightColor: AppColors.demandPrimaryColor[200],
+      dividerColor: demandPrimaryColor[800],
+      highlightColor: demandPrimaryColor[200],
       // the splash color in tabs of bottombar items.
-      splashColor: AppColors.demandPrimaryColor[900],
-      selectedRowColor: AppColors.demandPrimaryColor[400],
-      unselectedWidgetColor: AppColors.demandPrimaryColor[100],
+      splashColor: demandPrimaryColor[900],
+      selectedRowColor: demandPrimaryColor[400],
+      unselectedWidgetColor: demandPrimaryColor[100],
       disabledColor: Colors.grey[400],
-      toggleableActiveColor: AppColors.demandPrimaryColor[700],
-      secondaryHeaderColor: AppColors.demandPrimaryColor[300],
-      backgroundColor: AppColors.demandPrimaryColor[300],
-      dialogBackgroundColor: AppColors.demandPrimaryColor[100],
-      indicatorColor: AppColors.demandPrimaryColor[900],
+      toggleableActiveColor: demandPrimaryColor[700],
+      secondaryHeaderColor: demandPrimaryColor[300],
+      backgroundColor: demandPrimaryColor[300],
+      dialogBackgroundColor: demandPrimaryColor[100],
+      indicatorColor: demandPrimaryColor[900],
       hintColor: const Color(0x8a000000),
       errorColor: const Color(0xffd32f2f),
       textTheme: getAppTextTheme(),
@@ -658,7 +711,7 @@ class ApplicationTheme {
           borderRadius: BorderRadius.circular(Dimens().defaultBorder),
           borderSide: BorderSide(
             width: 1.5,
-            color: AppColors.demandPrimaryColor[500]!,
+            color: demandPrimaryColor[500]!,
             // color: Colors.yellow,
           ),
         ),
@@ -672,7 +725,7 @@ class ApplicationTheme {
         disabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(Dimens().defaultBorder),
           borderSide: BorderSide(
-            color: AppColors.shadesOfBlack[500]!,
+            color: shadesOfBlack[500]!,
             // color: Colors.green,
             width: 1.50,
           ),
@@ -680,7 +733,7 @@ class ApplicationTheme {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(Dimens().defaultBorder),
           borderSide: BorderSide(
-            color: AppColors.shadesOfBlack[500]!,
+            color: shadesOfBlack[500]!,
             // color: Colors.green,
             width: 1.50,
           ),
@@ -688,35 +741,35 @@ class ApplicationTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(Dimens().defaultBorder),
           borderSide: BorderSide(
-            color: AppColors.shadesOfBlack[500]!,
+            color: shadesOfBlack[500]!,
             // color: Colors.green,
             width: 1.50,
           ),
         ),
       ),
       iconTheme: IconThemeData(
-        color: AppColors.demandPrimaryColor[800],
+        color: demandPrimaryColor[800],
         opacity: 1,
         size: 24,
       ),
       primaryIconTheme: IconThemeData(
-        color: AppColors.demandPrimaryColor[700],
+        color: demandPrimaryColor[700],
         opacity: 1,
         size: 24,
       ),
       sliderTheme: SliderThemeData(
-        activeTrackColor: AppColors.demandPrimaryColor[600],
-        inactiveTrackColor: AppColors.demandPrimaryColor[300],
+        activeTrackColor: demandPrimaryColor[600],
+        inactiveTrackColor: demandPrimaryColor[300],
         disabledActiveTrackColor: Colors.grey[400],
         disabledInactiveTrackColor: Colors.grey[400],
-        activeTickMarkColor: AppColors.demandPrimaryColor[600],
-        inactiveTickMarkColor: AppColors.demandPrimaryColor[300],
+        activeTickMarkColor: demandPrimaryColor[600],
+        inactiveTickMarkColor: demandPrimaryColor[300],
         disabledActiveTickMarkColor: Colors.grey[400],
         disabledInactiveTickMarkColor: Colors.grey[400],
-        thumbColor: AppColors.demandPrimaryColor[600],
+        thumbColor: demandPrimaryColor[600],
         disabledThumbColor: Colors.grey[400],
         thumbShape: SliderComponentShape.noOverlay,
-        overlayColor: AppColors.demandPrimaryColor[300],
+        overlayColor: demandPrimaryColor[300],
         valueIndicatorColor: null,
         valueIndicatorShape: null,
         showValueIndicator: ShowValueIndicator.always,
@@ -738,20 +791,20 @@ class ApplicationTheme {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: AppColors.demandPrimaryColor[600]!,
+        backgroundColor: demandPrimaryColor[600]!,
         brightness: Brightness.light,
-        deleteIconColor: AppColors.demandPrimaryColor[900],
+        deleteIconColor: demandPrimaryColor[900],
         disabledColor: Colors.grey[400]!,
         labelPadding:
             const EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
         labelStyle: getAppTextTheme().bodyText1!,
         padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
         secondaryLabelStyle: getAppTextTheme().bodyText2!,
-        secondarySelectedColor: AppColors.demandPrimaryColor[400]!,
-        selectedColor: AppColors.demandPrimaryColor[900]!,
+        secondarySelectedColor: demandPrimaryColor[400]!,
+        selectedColor: demandPrimaryColor[900]!,
         shape: StadiumBorder(
             side: BorderSide(
-          color: AppColors.demandPrimaryColor[400]!,
+          color: demandPrimaryColor[400]!,
           width: 1,
           style: BorderStyle.solid,
         )),

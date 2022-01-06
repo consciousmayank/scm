@@ -1,5 +1,11 @@
 In this build following was done.
 
+Thursday, 6 January, 2022
+    - Completed, add to catalog, remove from catalog, and catalog view of the supply module.
+    - Completed the Add to cart, update cart, place order, add address, update address for demand module.
+    - Now the Graphics Designer also can enter-page-to-jump to a particular products page.
+    - Not resetting the page number on successful updation of product.
+
 Wednessday 29 December 2021
     -Add/update cart implemented for demander
     -reseting cart on adding item from another supplier also done.

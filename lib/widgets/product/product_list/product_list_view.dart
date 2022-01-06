@@ -29,7 +29,8 @@ class ProductListView extends StatelessWidget {
     return arguments.supplierName == null
         ? model.brandsFilterList.isNotEmpty ||
                 model.categoryFilterList.isNotEmpty ||
-                model.subCategoryFilterList.isNotEmpty
+                model.subCategoryFilterList.isNotEmpty ||
+                arguments.supplierId == null
             ? 'Product List'
             : 'Popular Products'
         : suppliersProductsListPageTitle(
@@ -226,60 +227,128 @@ class ProductListView extends StatelessWidget {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return ProductListItem(
-                                          arguments: ProductListItemArguments(
-                                            productTitle: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .title,
-                                            productCategory: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .type,
-                                            productPrice: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .price,
-                                            onAddButtonClick: () {
-                                              model.addToCartObject
-                                                  .openProductQuantityDialogBox(
-                                                product: model
-                                                    .productListResponse!
-                                                    .products!
-                                                    .elementAt(
-                                                  index,
+                                          arguments: arguments.isSupplierCatalog
+                                              ? ProductListItemArguments
+                                                  .forCatalog(
+                                                  productTitle: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .title,
+                                                  productCategory: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .type,
+                                                  productPrice: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .price,
+                                                  onAddButtonClick: () {
+                                                    model.addToCartObject
+                                                        .openProductQuantityDialogBox(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(
+                                                        index,
+                                                      ),
+                                                    );
+                                                  },
+                                                  onProductClick: () {
+                                                    model.openProductDetails(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(index),
+                                                    );
+                                                  },
+                                                  // image: getProductImage(model, index),
+                                                  image: getProductImage(
+                                                      productImage: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(
+                                                            index,
+                                                          )
+                                                          .images),
+                                                  productId: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .id,
+                                                  measurementUnit: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .measurementUnit,
+                                                  measurement: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .measurement,
+                                                )
+                                              : ProductListItemArguments(
+                                                  productTitle: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .title,
+                                                  productCategory: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .type,
+                                                  productPrice: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .price,
+                                                  onAddButtonClick: () {
+                                                    model.addToCartObject
+                                                        .openProductQuantityDialogBox(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(
+                                                        index,
+                                                      ),
+                                                    );
+                                                  },
+                                                  onProductClick: () {
+                                                    model.openProductDetails(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(index),
+                                                    );
+                                                  },
+                                                  // image: getProductImage(model, index),
+                                                  image: getProductImage(
+                                                      productImage: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(
+                                                            index,
+                                                          )
+                                                          .images),
+                                                  productId: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .id,
+                                                  measurementUnit: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .measurementUnit,
+                                                  measurement: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index)
+                                                      .measurement,
                                                 ),
-                                              );
-                                            },
-                                            onProductClick: () {
-                                              model.openProductDetails(
-                                                product: model
-                                                    .productListResponse!
-                                                    .products!
-                                                    .elementAt(index),
-                                              );
-                                            },
-                                            // image: getProductImage(model, index),
-                                            image: getProductImage(
-                                                productImage: model
-                                                    .productListResponse!
-                                                    .products!
-                                                    .elementAt(
-                                                      index,
-                                                    )
-                                                    .images),
-                                            productId: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .id,
-                                            measurementUnit: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .measurementUnit,
-                                            measurement: model
-                                                .productListResponse!.products!
-                                                .elementAt(index)
-                                                .measurement,
-                                          ),
                                         );
                                       },
                                     ),
@@ -332,6 +401,7 @@ class ProductListViewArguments {
     required this.productTitle,
     required this.supplierId,
   })  : productsPerLine = 4,
+        isSupplierCatalog = false,
         supplierName = null;
 
   ProductListViewArguments.asSupplierProductList({
@@ -346,7 +416,8 @@ class ProductListViewArguments {
     required this.productTitle,
     required this.supplierId,
     required this.supplierName,
-  }) : productsPerLine = 3;
+  })  : productsPerLine = 3,
+        isSupplierCatalog = false;
 
   ProductListViewArguments.asWidget({
     this.isScrollVertical = false,
@@ -360,9 +431,11 @@ class ProductListViewArguments {
     required this.productTitle,
     required this.supplierId,
   })  : productsPerLine = 4,
+        isSupplierCatalog = false,
         supplierName = null;
 
   ProductListViewArguments.fullScreen({
+    this.isSupplierCatalog = false,
     this.showAppbar = true,
     this.isScrollVertical = true,
     this.showBottomPageChanger = true,
@@ -372,20 +445,21 @@ class ProductListViewArguments {
     required this.categoryFilterList,
     required this.subCategoryFilterList,
     required this.productTitle,
-    required this.supplierId,
-  })  : productsPerLine = 4,
-        supplierName = null;
+  })  : productsPerLine = 3,
+        supplierName = null,
+        supplierId = null;
 
   final List<String?>? brandsFilterList;
   final List<String?>? categoryFilterList;
-  final String? productTitle;
-  final int productsPerLine;
   final bool isScrollVertical,
       showSeeAll,
       showBottomPageChanger,
       showFilterAndSortOption,
-      showAppbar;
+      showAppbar,
+      isSupplierCatalog;
 
+  final String? productTitle;
+  final int productsPerLine;
   final List<String?>? subCategoryFilterList;
   final int? supplierId;
   final String? supplierName;

@@ -105,7 +105,7 @@ class OrderInfoTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: AppColors().dashboardOrderInfoTileTitleBg,
+                          color: Colors.black,
                         ),
                   ),
                   const Spacer(),

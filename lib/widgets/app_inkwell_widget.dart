@@ -32,8 +32,8 @@ class AppInkwell extends StatelessWidget {
             )
           : null,
       highlightColor: AppColors().white,
-      hoverColor: AppColors().primaryColor.shade50,
-      splashColor: AppColors().primaryColor.shade900,
+      hoverColor: Theme.of(context).colorScheme.background,
+      splashColor: Theme.of(context).colorScheme.primaryVariant,
       child: child,
       onTap: onTap,
     );

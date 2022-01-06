@@ -32,9 +32,11 @@ class PopularCategoriesView extends StatelessWidget {
         appBar: arguments.isFullScreen
             ? appbarWidget(
                 context: context,
-                title: suppliersCategoryListPageTitle(
-                  suppliersName: arguments.supplierName!,
-                ),
+                title: arguments.supplierName != null
+                    ? suppliersCategoryListPageTitle(
+                        suppliersName: arguments.supplierName!,
+                      )
+                    : suppliersCategoryPageTitle,
                 automaticallyImplyLeading: true,
                 options: [
                   AnimatedSearchWidget(
@@ -216,17 +218,20 @@ class PopularCategoriesView extends StatelessWidget {
 }
 
 class PopularCategoriesViewArguments {
-  const PopularCategoriesViewArguments()
-      : isFullScreen = true,
+  const PopularCategoriesViewArguments({
+    this.isSupplierCatalog = false,
+  })  : isFullScreen = true,
         supplierId = null,
         supplierName = null;
 
   PopularCategoriesViewArguments.demanderPopularBrands({
     required this.supplierId,
     required this.supplierName,
-  }) : isFullScreen = true;
+  })  : isFullScreen = true,
+        isSupplierCatalog = false;
 
   final bool isFullScreen;
+  final bool isSupplierCatalog;
   final int? supplierId;
   final String? supplierName;
 }

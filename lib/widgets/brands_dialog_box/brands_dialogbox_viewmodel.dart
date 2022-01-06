@@ -18,7 +18,7 @@ class BrandsDialogBoxViewModel extends GeneralisedBaseViewModel {
         setBusy(true);
       }
 
-      AllBrandsResponse tempResponse = await _brandsApi.getAllBrands(
+      AllBrandsResponse tempResponse = await _brandsApi.getAllBrandsFromPim(
         pageNumber: pageNumber,
         pageSize: pageSize,
         brandToSearch: brandToSearch,

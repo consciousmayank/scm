@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/appcolors.dart';
 import 'package:scm/screens/pim_homescreen/product_list_supervisor/product_list_supervisor_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductListSupervisorView extends StatelessWidget {
@@ -26,31 +26,7 @@ class ProductListSupervisorView extends StatelessWidget {
                 ),
               ),
               const VerticalDivider(thickness: 1, width: 1),
-              NavigationRail(
-                extended: false,
-                groupAlignment: 1.0,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                selectedLabelTextStyle:
-                    Theme.of(context).textTheme.button!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
-                          color: Colors.yellow,
-                          decorationColor: Colors.yellow,
-                          decoration: TextDecoration.overline,
-                          decorationStyle: TextDecorationStyle.wavy,
-                        ),
-                unselectedLabelTextStyle:
-                    Theme.of(context).textTheme.overline!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: AppColors().primaryColor.shade50,
-                        ),
-                selectedIndex: model.currentIndex,
-                onDestinationSelected: (int index) {
-                  model.setIndex(index);
-                  model.notifyListeners();
-                },
-                labelType: NavigationRailLabelType.all,
+              AppNavigationRailWidget(
                 destinations: [
                   buildRotatedTextRailDestination(
                     turn: 1,
@@ -68,6 +44,11 @@ class ProductListSupervisorView extends StatelessWidget {
                     isTurned: false,
                   ),
                 ],
+                currentIndex: model.currentIndex,
+                onNavigationIndexChanged: (int index) {
+                  model.setIndex(index);
+                  model.notifyListeners();
+                },
               ),
             ],
           ),

@@ -2,7 +2,6 @@
 //
 //     final pimSupervisorDashboardStatisticsResponse = pimSupervisorDashboardStatisticsResponseFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class PimSupervisorDashboardStatisticsResponse {

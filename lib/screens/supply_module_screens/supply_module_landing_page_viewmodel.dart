@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
-import 'package:scm/screens/supply_module_screens/products/products_page_view.dart';
-import 'package:scm/screens/supply_module_screens/products/products_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -55,14 +54,18 @@ class SupplyModuleLandingPageViewModel
         return CommonDashboardView(arguments: CommonDashboardViewArguments());
 
       case 1:
-        return const SupplyProductsOptionsPageView();
+        // return const SupplyProductsOptionsPageView();
+        return const SuppplierProfileView(
+          arguments: SuppplierProfileViewArguments(
+            selectedSupplier: null,
+          ),
+        );
 
       case 2:
         // return ProductCategoriesListView();
-        return const Center(
-          child: Text(
-            'Supplier\'s Product Category list view Page',
-          ),
+        return SuppplierProfileView(
+          key: UniqueKey(),
+          arguments: const SuppplierProfileViewArguments.catalog(),
         );
 
       case 3:

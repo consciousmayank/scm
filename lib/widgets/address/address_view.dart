@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/enums/address_actions.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/address/address_viewmodel.dart';
@@ -48,10 +47,10 @@ class _AddressViewState extends State<AddressView> {
                         bottom: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors().primaryColor[50],
+                        color: Theme.of(context).colorScheme.background,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: AppColors().primaryColor[900]!,
+                          color: Theme.of(context).colorScheme.primaryVariant,
                           width: 1,
                           style: BorderStyle.solid,
                         ),
@@ -64,7 +63,7 @@ class _AddressViewState extends State<AddressView> {
                             : addressTypes.first,
                         icon: Icon(
                           Icons.arrow_drop_down,
-                          color: AppColors().primaryColor.shade900,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         iconSize: 30,
                         underline: Container(),

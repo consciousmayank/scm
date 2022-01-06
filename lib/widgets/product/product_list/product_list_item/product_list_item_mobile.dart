@@ -198,12 +198,28 @@ class ProductListItemMobileArguments {
     required this.productId,
     required this.measurementUnit,
     required this.measurement,
-  });
+  }) : isForCatalog = false;
+
+  ProductListItemMobileArguments.forCatalog({
+    required this.productTitle,
+    required this.productCategory,
+    required this.productPrice,
+    required this.onAddButtonClick,
+    required this.onProductClick,
+    required this.image,
+    this.hideAddProductButton = false,
+    this.hideDeleteProductButton = false,
+    this.onDeleteButtonClick,
+    required this.productId,
+    required this.measurementUnit,
+    required this.measurement,
+  }) : isForCatalog = true;
 
   final void Function() onProductClick;
   final bool? hideAddProductButton;
   final bool? hideDeleteProductButton;
   final Uint8List? image;
+  final bool isForCatalog;
   final double? measurement;
   final String? measurementUnit;
   final GestureTapCallback? onAddButtonClick;

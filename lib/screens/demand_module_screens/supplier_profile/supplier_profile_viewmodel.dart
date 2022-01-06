@@ -15,10 +15,12 @@ import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
+import 'package:scm/widgets/product/product_list/add_to_catalog_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   late final AddToCart addToCartObject;
+  late final AddToCatalog addToCatalogObject;
   AllBrandsResponse? allBrandsResponse;
   late final SuppplierProfileViewArguments arguments;
   ApiStatus brandsApiStatus = ApiStatus.LOADING;
@@ -43,12 +45,13 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
     productCategoriesResponse =
         await _productCategoriesApis.getProductCategoriesList(
       pageIndex: 0,
-      pageSize: 6,
+      pageSize: arguments.selectedSupplier != null ? 6 : 12,
       checkedBrandList: [],
       checkedSubCategoriesList: [],
       categoryTitle: null,
       productTitle: null,
-      supplierId: arguments.selectedSupplier!.id,
+      supplierId: arguments.selectedSupplier?.id,
+      isSupplierCatalog: arguments.isSupplierCatalog,
     );
 
     categoriesApiStatus = ApiStatus.FETCHED;
@@ -62,8 +65,9 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
       subCategoryFilterList: subCategoryFilterList,
       pageIndex: pageIndex,
       productTitle: productTitle,
-      size: 8,
+      size: 6,
       supplierId: supplierId,
+      isSupplierCatalog: arguments.isSupplierCatalog,
     );
 
     productListApiStatus = ApiStatus.FETCHED;
@@ -73,7 +77,12 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
 
   getBrands() async {
     allBrandsResponse = await _homePageApis.getAllBrands(
-        size: 6, pageIndex: 0, searchTerm: '', supplierId: supplierId);
+      size: arguments.selectedSupplier != null ? 6 : 12,
+      pageIndex: 0,
+      searchTerm: '',
+      supplierId: supplierId,
+      isSupplierCatalog: arguments.isSupplierCatalog,
+    );
     brandsApiStatus = ApiStatus.FETCHED;
     notifyListeners();
   }
@@ -102,9 +111,15 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
 
   init({required SuppplierProfileViewArguments args}) {
     arguments = args;
-    supplierId = args.selectedSupplier!.id;
 
-    addToCartObject = AddToCart(supplierId: args.selectedSupplier!.id!);
+    if (arguments.selectedSupplier != null) {
+      supplierId = args.selectedSupplier!.id;
+
+      addToCartObject = AddToCart(supplierId: args.selectedSupplier!.id!);
+    } else {
+      supplierId = null;
+      addToCatalogObject = AddToCatalog();
+    }
 
     getBrands();
     getProductList();
@@ -123,13 +138,30 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
     );
   }
 
+  navigateToPopularBrandsFullScreenForSupplier() {
+    navigationService.navigateTo(
+      brandsListViewPageRoute,
+      arguments: PopularBrandsViewArguments.fullScreen(
+        isSupplierCatalog: arguments.isSupplierCatalog,
+      ),
+    );
+  }
+
   navigateToPopularBrandsFullScreenForDemander() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
       arguments: PopularBrandsViewArguments.demanderPopularBrands(
-        supplierId: arguments.selectedSupplier!.id,
+        supplierId: arguments.selectedSupplier?.id,
         supplierName: arguments.selectedSupplier!.businessName,
       ),
+    );
+  }
+
+  navigateToCategoriesFullScreenForSupplier() {
+    navigationService.navigateTo(
+      categoriesListViewPageRoute,
+      arguments: PopularCategoriesViewArguments(
+          isSupplierCatalog: arguments.isSupplierCatalog),
     );
   }
 
@@ -137,8 +169,21 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
       arguments: PopularCategoriesViewArguments.demanderPopularBrands(
-        supplierId: arguments.selectedSupplier!.id,
-        supplierName: arguments.selectedSupplier!.businessName,
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
+      ),
+    );
+  }
+
+  navigateToProductListFullScreenForSupplier() {
+    navigationService.navigateTo(
+      productListViewPageRoute,
+      arguments: ProductListViewArguments.fullScreen(
+        isSupplierCatalog: arguments.isSupplierCatalog,
+        brandsFilterList: [],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
       ),
     );
   }
@@ -151,8 +196,8 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
         categoryFilterList: [],
         subCategoryFilterList: [],
         productTitle: '',
-        supplierId: arguments.selectedSupplier!.id,
-        supplierName: arguments.selectedSupplier!.businessName,
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }

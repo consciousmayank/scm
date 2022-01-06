@@ -39,6 +39,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
           ? Dimens.defaultProductListPageSize
           : Dimens.defaultProductListPageSizeWhenInHome,
       supplierId: supplierId,
+      isSupplierCatalog: arguments.isSupplierCatalog,
     );
 
     setBusy(false);
@@ -48,13 +49,18 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
 
   init({required ProductListViewArguments arguments}) {
     this.arguments = arguments;
+    if (arguments.supplierId != null) {
+      supplierId = arguments.supplierId;
+
+      addToCartObject = AddToCart(supplierId: supplierId!);
+    } else {
+      supplierId = null;
+    }
+
     brandsFilterList = arguments.brandsFilterList ?? [];
     categoryFilterList = arguments.categoryFilterList ?? [];
     subCategoryFilterList = arguments.subCategoryFilterList ?? [];
     productTitle = arguments.productTitle;
-    supplierId = arguments.supplierId;
-
-    addToCartObject = AddToCart(supplierId: supplierId!);
 
     getProductList();
   }
@@ -115,7 +121,6 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
         categoryFilterList: [],
         subCategoryFilterList: [],
         productTitle: '',
-        supplierId: -1,
       ),
     );
   }

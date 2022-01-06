@@ -87,7 +87,8 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                 widget.subTitle == null
                     ? Container()
                     : Chip(
-                        backgroundColor: AppColors().primaryColor.shade100,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondaryVariant,
                         label: Text(
                           widget.subTitle!,
                           style: Dimens().pageSubTitleHeadingStyle.copyWith(

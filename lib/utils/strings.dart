@@ -17,12 +17,15 @@ const String supervisorHomePageTitle = 'Dashboard';
 const String dailyEntriesTitle = 'Daily Work Summary';
 const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
+const String supplierProductsListPageTitle = 'Products List';
 suppliersProductsListPageTitle({required String suppliersName}) =>
     '$suppliersName Products List';
 
+const String suppliersCategoryPageTitle = 'Categories List';
 suppliersCategoryListPageTitle({required String suppliersName}) =>
     '$suppliersName Categories List';
 
+const String suppliersBrandPageTitle = 'Brands List';
 suppliersBrandListPageTitle({required String suppliersName}) =>
     '$suppliersName Brands List';
 const String todoProductsListPageTitle = 'Todo';
@@ -108,6 +111,7 @@ const List<String> profileOptions = [
 const String labelSupplyLandingPageCatalog = 'Home';
 const String labelSupplyLandingPageProduct = 'Products';
 const String labelSupplyLandingPageCategories = 'Categories';
+const String labelSupplyLandingPageMyCatalog = 'Catalog';
 const String labelSupplyLandingPageOrder = 'Order';
 const String labelSupplyLandingPageMore = 'More';
 const String labelSubmit = 'Submit';
@@ -183,8 +187,13 @@ const String labelResetOrderDescription =
     'You already have a cart populated with another suppleir\'s products. Adding this product will reset your old cart. Do you want to reset the cart ?';
 addedProductTocart({required String productTitle}) =>
     '$productTitle added to cart';
+addedProductToCatalog({required String productTitle}) =>
+    '$productTitle added to Catalog';
 addedProductTocartError({required String productTitle}) =>
     '$productTitle not added to cart';
+
+addedProductToCatalogError({required String productTitle}) =>
+    '$productTitle not added to Catalog';
 removedFromCart({required String productTitle}) =>
     '$productTitle removed from cart';
 updatedInCart({required String productTitle, required int quantity}) =>

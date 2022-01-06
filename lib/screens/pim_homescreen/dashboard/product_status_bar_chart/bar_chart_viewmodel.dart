@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
@@ -10,6 +12,7 @@ import 'package:scm/services/app_api_service_classes/pim_supervisor_dashboard_st
 
 class BarChartBasedOnProductStatusesViewModel extends GeneralisedBaseViewModel {
   late final BarChartBasedOnProductStatusesViewArguments args;
+  late final Color barColor;
   late ProductStatuses selectedProductStatus;
   List<charts.Series<BarChartProductsStatus, String>> seriesBarData = [];
   List<String> uniqueDates = [];
@@ -17,8 +20,11 @@ class BarChartBasedOnProductStatusesViewModel extends GeneralisedBaseViewModel {
   final PimSupervisorDashboardStatisticsApi _dashboardStatisticsApi =
       di<PimSupervisorDashboardStatisticsApi>();
 
-  init({required BarChartBasedOnProductStatusesViewArguments arguments}) {
+  init(
+      {required BarChartBasedOnProductStatusesViewArguments arguments,
+      required Color barColor}) {
     args = arguments;
+    this.barColor = barColor;
     selectedProductStatus = arguments.productStatus;
     getBarChartData();
   }
@@ -52,7 +58,7 @@ class BarChartBasedOnProductStatusesViewModel extends GeneralisedBaseViewModel {
         domainFn: (BarChartProductsStatus series, _) => series.date!,
         measureFn: (BarChartProductsStatus series, _) => series.count,
         colorFn: (BarChartProductsStatus series, _) =>
-            charts.ColorUtil.fromDartColor(AppColors().primaryColor.shade200),
+            charts.ColorUtil.fromDartColor(barColor),
         labelAccessorFn: (BarChartProductsStatus series, _) =>
             series.count.toString(),
       ),

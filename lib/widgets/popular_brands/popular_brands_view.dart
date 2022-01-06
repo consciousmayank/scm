@@ -233,21 +233,25 @@ class PopularBrandsViewArguments {
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
   })  : supplierId = null,
+        isSupplierCatalog = false,
         supplierName = null;
 
   PopularBrandsViewArguments.demanderPopularBrands({
     this.isFullScreen = true,
     required this.supplierId,
     required this.supplierName,
-  }) : onSeeAllBrandsClicked = null;
+  })  : onSeeAllBrandsClicked = null,
+        isSupplierCatalog = false;
 
   PopularBrandsViewArguments.fullScreen({
     this.isFullScreen = true,
     this.onSeeAllBrandsClicked,
+    this.isSupplierCatalog = false,
   })  : supplierId = null,
         supplierName = null;
 
   final bool isFullScreen;
+  final bool isSupplierCatalog;
   final Function? onSeeAllBrandsClicked;
   final int? supplierId;
   final String? supplierName;

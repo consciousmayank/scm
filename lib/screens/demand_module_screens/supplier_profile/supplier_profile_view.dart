@@ -10,6 +10,7 @@ import 'package:scm/model_classes/suppliers_list_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_footer_widget.dart';
 import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -46,10 +47,87 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
   final ItemScrollController categoriesItemScrollController =
       ItemScrollController();
 
-  @override
-  void initState() {
-    super.initState();
-    brandsItemPositionsListener.itemPositions.addListener(() {});
+  getSupplierProfileForDemandModule() {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          hSizedBox(
+            height: 8,
+          ),
+          PageBarWidget.withCustomFiledColor(
+            title:
+                "${widget.arguments.selectedSupplier!.businessName!}'\s Info",
+            filledColor: Theme.of(context).colorScheme.background,
+          ),
+          hSizedBox(
+            height: 8,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 180,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProfileImageWidget.withCurvedBorder(
+                    elevation: 0,
+                    profileImageSize: 210,
+                    borderDerRadius: BorderRadius.all(
+                      Radius.circular(
+                        Dimens().suppliersListItemImageCiircularRaduis,
+                      ),
+                    ),
+                    imageUrlString: checkImageUrl(
+                      imageUrl: widget.arguments.selectedSupplier!.image,
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: GridView.count(
+                      childAspectRatio: 6.5,
+                      crossAxisCount: 2,
+                      children: [
+                        LabelValueDataShowWidget.column(
+                          label: 'Contact Person',
+                          value:
+                              widget.arguments.selectedSupplier!.contactPerson,
+                        ),
+                        LabelValueDataShowWidget.column(
+                          label: 'Mobile Number',
+                          value: widget.arguments.selectedSupplier!.mobile,
+                        ),
+                        LabelValueDataShowWidget.column(
+                          label: 'Email',
+                          value: widget.arguments.selectedSupplier!.email,
+                        ),
+                        LabelValueDataShowWidget.column(
+                          label: 'Phone',
+                          value: widget.arguments.selectedSupplier!.phone,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  getSupplierProfileForSupplyModule() {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 300,
+        width: double.infinity,
+        color: Colors.red,
+        child: const Center(
+          child: Text('Load Supplier Profile,'),
+        ),
+      ),
+    );
   }
 
   @override
@@ -65,76 +143,8 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
               keepScrollOffset: true,
             ),
             slivers: [
-              SliverToBoxAdapter(
-                child: hSizedBox(
-                  height: 8,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: PageBarWidget.withCustomFiledColor(
-                  title:
-                      "${widget.arguments.selectedSupplier!.businessName!}'\s Info",
-                  filledColor: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: hSizedBox(
-                  height: 8,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 180,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProfileImageWidget.withCurvedBorder(
-                          elevation: 0,
-                          profileImageSize: 210,
-                          borderDerRadius: BorderRadius.all(
-                            Radius.circular(
-                              Dimens().suppliersListItemImageCiircularRaduis,
-                            ),
-                          ),
-                          imageUrlString: checkImageUrl(
-                            imageUrl: widget.arguments.selectedSupplier!.image,
-                          ),
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: GridView.count(
-                            childAspectRatio: 6.5,
-                            crossAxisCount: 2,
-                            children: [
-                              LabelValueDataShowWidget.column(
-                                label: 'Contact Person',
-                                value: widget
-                                    .arguments.selectedSupplier!.contactPerson,
-                              ),
-                              LabelValueDataShowWidget.column(
-                                label: 'Mobile Number',
-                                value:
-                                    widget.arguments.selectedSupplier!.mobile,
-                              ),
-                              LabelValueDataShowWidget.column(
-                                label: 'Email',
-                                value: widget.arguments.selectedSupplier!.email,
-                              ),
-                              LabelValueDataShowWidget.column(
-                                label: 'Phone',
-                                value: widget.arguments.selectedSupplier!.phone,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              if (widget.arguments.selectedSupplier != null)
+                getSupplierProfileForDemandModule(),
               SliverToBoxAdapter(
                 child: hSizedBox(
                   height: 8,
@@ -144,12 +154,17 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                   model.allBrandsResponse!.brands!.isNotEmpty)
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
-                    title: "Popular Brands",
-                    filledColor: Theme.of(context).colorScheme.secondary,
+                    title: widget.arguments.isSupplierCatalog
+                        ? 'My Brands'
+                        : "Popular Brands",
+                    filledColor: Theme.of(context).colorScheme.background,
                     options: [
                       AppInkwell(
-                        onTap: () => model
-                            .navigateToPopularBrandsFullScreenForDemander(),
+                        onTap: () => widget.arguments.selectedSupplier != null
+                            ? model
+                                .navigateToPopularBrandsFullScreenForDemander()
+                            : model
+                                .navigateToPopularBrandsFullScreenForSupplier(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -186,13 +201,15 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                       onTap: () {
                                         brandsItemScrollController.scrollTo(
                                           index: 0,
-                                          duration: Duration(seconds: 2),
+                                          duration: const Duration(seconds: 2),
                                           curve: Curves.easeInOutCubic,
                                         );
                                       },
                                       child: const Center(
-                                        child: Icon(Icons.arrow_back_ios,
-                                            size: 30),
+                                        child: Icon(
+                                          Icons.arrow_back_ios,
+                                          size: 30,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -204,7 +221,6 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                           brandsItemPositionsListener,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
-                                        log('Indexx :: $index');
                                         return SizedBox(
                                           width: 250,
                                           child: Builder(builder: (context) {
@@ -234,7 +250,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                       brandsItemScrollController.scrollTo(
                                         index: model
                                             .allBrandsResponse!.brands!.length,
-                                        duration: Duration(seconds: 2),
+                                        duration: const Duration(seconds: 2),
                                         curve: Curves.easeInOutCubic,
                                       );
                                     },
@@ -261,12 +277,15 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                   model.productCategoriesResponse!.types!.isNotEmpty)
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
-                    title: "Popular Categories",
-                    filledColor: Theme.of(context).colorScheme.secondary,
+                    title: widget.arguments.isSupplierCatalog
+                        ? 'My Categories'
+                        : "Popular Categories",
+                    filledColor: Theme.of(context).colorScheme.background,
                     options: [
                       AppInkwell(
-                        onTap: () =>
-                            model.navigateToCategoriesFullScreenForDemander(),
+                        onTap: () => widget.arguments.selectedSupplier != null
+                            ? model.navigateToCategoriesFullScreenForDemander()
+                            : model.navigateToCategoriesFullScreenForSupplier(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -303,7 +322,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                       onTap: () {
                                         categoriesItemScrollController.scrollTo(
                                           index: 0,
-                                          duration: Duration(seconds: 2),
+                                          duration: const Duration(seconds: 2),
                                           curve: Curves.easeInOutCubic,
                                         );
                                       },
@@ -351,7 +370,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                       categoriesItemScrollController.scrollTo(
                                         index: model.productCategoriesResponse!
                                             .types!.length,
-                                        duration: Duration(seconds: 2),
+                                        duration: const Duration(seconds: 2),
                                         curve: Curves.easeInOutCubic,
                                       );
                                     },
@@ -378,12 +397,16 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                   model.productListResponse!.products!.isNotEmpty)
                 SliverToBoxAdapter(
                   child: PageBarWidget.withCustomFiledColor(
-                    title: "Popular Products",
-                    filledColor: Theme.of(context).colorScheme.secondary,
+                    title: widget.arguments.isSupplierCatalog
+                        ? 'My Products'
+                        : "Popular Products",
+                    filledColor: Theme.of(context).colorScheme.background,
                     options: [
                       AppInkwell(
-                        onTap: () =>
-                            model.navigateToProductListFullScreenForDemander(),
+                        onTap: () => widget.arguments.selectedSupplier != null
+                            ? model.navigateToProductListFullScreenForDemander()
+                            : model
+                                .navigateToProductListFullScreenForSupplier(),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -398,7 +421,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     ],
                   ),
                 ),
-              model.brandsApiStatus == ApiStatus.LOADING
+              model.productListApiStatus == ApiStatus.LOADING
                   ? const SliverToBoxAdapter(
                       child: SizedBox(
                         height: 100,
@@ -420,70 +443,158 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
                               return ProductListItem(
-                                arguments: ProductListItemArguments(
-                                  productTitle: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .title,
-                                  productCategory: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .type,
-                                  productPrice: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .price,
-                                  onAddButtonClick: () {
-                                    model.addToCartObject
-                                        .openProductQuantityDialogBox(
-                                      product: model
-                                          .productListResponse!.products!
-                                          .elementAt(
-                                        index,
-                                      ),
-                                    );
-                                  },
-                                  onProductClick: () {
-                                    model.openProductDetails(
-                                      product: model
-                                          .productListResponse!.products!
-                                          .elementAt(index),
-                                    );
-                                  },
-                                  // image: getProductImage(model, index),
-                                  image: getProductImage(
-                                      productImage:
-                                          model.productListResponse!.products!
-                                              .elementAt(
+                                arguments: widget.arguments.isSupplierCatalog
+                                    ? ProductListItemArguments.forCatalog(
+                                        productTitle: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .title,
+                                        productCategory: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .type,
+                                        productPrice: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .price,
+                                        onDeleteButtonClick: () {
+                                          model.addToCatalogObject
+                                              .removeProductFromCatalog(
+                                            productId: model
+                                                .productListResponse!.products!
+                                                .elementAt(
+                                                  index,
+                                                )
+                                                .id!,
+                                            productTitle: model
+                                                .productListResponse!.products!
+                                                .elementAt(
+                                                  index,
+                                                )
+                                                .title!,
+                                          );
+                                        },
+                                        onProductClick: () {
+                                          model.openProductDetails(
+                                            product: model
+                                                .productListResponse!.products!
+                                                .elementAt(index),
+                                          );
+                                        },
+                                        // image: getProductImage(model, index),
+                                        image: getProductImage(
+                                            productImage: model
+                                                .productListResponse!.products!
+                                                .elementAt(
+                                                  index,
+                                                )
+                                                .images),
+                                        productId: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .id,
+                                        measurementUnit: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .measurementUnit,
+                                        measurement: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .measurement,
+                                      )
+                                    : ProductListItemArguments(
+                                        productTitle: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .title,
+                                        productCategory: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .type,
+                                        productPrice: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .price,
+                                        onAddButtonClick: () {
+                                          if (widget
+                                                  .arguments.selectedSupplier ==
+                                              null) {
+                                            model.addToCatalogObject
+                                                .addProductToCatalog(
+                                                    productId: model
+                                                        .productListResponse!
+                                                        .products!
+                                                        .elementAt(
+                                                          index,
+                                                        )
+                                                        .id!,
+                                                    productTitle: model
+                                                        .productListResponse!
+                                                        .products!
+                                                        .elementAt(
+                                                          index,
+                                                        )
+                                                        .title!);
+                                          } else {
+                                            model.addToCartObject
+                                                .openProductQuantityDialogBox(
+                                              product: model
+                                                  .productListResponse!
+                                                  .products!
+                                                  .elementAt(
                                                 index,
-                                              )
-                                              .images),
-                                  productId: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .id,
-                                  measurementUnit: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .measurementUnit,
-                                  measurement: model
-                                      .productListResponse!.products!
-                                      .elementAt(index)
-                                      .measurement,
-                                ),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        onProductClick: () {
+                                          model.openProductDetails(
+                                            product: model
+                                                .productListResponse!.products!
+                                                .elementAt(index),
+                                          );
+                                        },
+                                        // image: getProductImage(model, index),
+                                        image: getProductImage(
+                                            productImage: model
+                                                .productListResponse!.products!
+                                                .elementAt(
+                                                  index,
+                                                )
+                                                .images),
+                                        productId: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .id,
+                                        measurementUnit: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .measurementUnit,
+                                        measurement: model
+                                            .productListResponse!.products!
+                                            .elementAt(index)
+                                            .measurement,
+                                      ),
                               );
                             },
                             childCount:
                                 model.productListResponse!.products!.length,
                           ),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                widget.arguments.selectedSupplier == null
+                                    ? 3
+                                    : 2,
                             crossAxisSpacing: 2.0,
                             mainAxisSpacing: 2.0,
                             childAspectRatio: 3,
                           ),
-                        )
+                        ),
+              if (model.productListApiStatus == ApiStatus.FETCHED)
+                const SliverToBoxAdapter(
+                  child: AppFooterWidget(),
+                ),
             ],
           ),
         ),
@@ -496,7 +607,12 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
 class SuppplierProfileViewArguments {
   const SuppplierProfileViewArguments({
     required this.selectedSupplier,
-  });
+  }) : isSupplierCatalog = false;
 
+  const SuppplierProfileViewArguments.catalog()
+      : isSupplierCatalog = true,
+        selectedSupplier = null;
+
+  final bool isSupplierCatalog;
   final Supplier? selectedSupplier;
 }

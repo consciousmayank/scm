@@ -50,12 +50,28 @@ class ProductListItemArguments {
     required this.productId,
     required this.measurementUnit,
     required this.measurement,
-  });
+  }) : isForCatalog = false;
+
+  ProductListItemArguments.forCatalog({
+    required this.productTitle,
+    required this.productCategory,
+    required this.productPrice,
+    this.onAddButtonClick,
+    required this.onProductClick,
+    required this.image,
+    this.hideAddProductButton = false,
+    this.hideDeleteProductButton = false,
+    this.onDeleteButtonClick,
+    required this.productId,
+    required this.measurementUnit,
+    required this.measurement,
+  }) : isForCatalog = true;
 
   final void Function() onProductClick;
   final bool? hideAddProductButton;
   final bool? hideDeleteProductButton;
   final Uint8List? image;
+  final bool isForCatalog;
   final double? measurement;
   final String? measurementUnit;
   final GestureTapCallback? onAddButtonClick;
@@ -65,33 +81,63 @@ class ProductListItemArguments {
   final double? productPrice;
   final String? productTitle;
 
-  getproductListItemMobileArguments() => ProductListItemMobileArguments(
-        productTitle: productTitle,
-        productCategory: productCategory,
-        productPrice: productPrice,
-        onAddButtonClick: onAddButtonClick,
-        onProductClick: onProductClick,
-        image: image,
-        productId: productId,
-        measurementUnit: measurementUnit,
-        measurement: measurement,
-        hideAddProductButton: hideAddProductButton,
-        hideDeleteProductButton: hideDeleteProductButton,
-        onDeleteButtonClick: onDeleteButtonClick,
-      );
+  getproductListItemMobileArguments() => isForCatalog
+      ? ProductListItemMobileArguments.forCatalog(
+          productTitle: productTitle,
+          productCategory: productCategory,
+          productPrice: productPrice,
+          onAddButtonClick: onAddButtonClick,
+          onProductClick: onProductClick,
+          image: image,
+          productId: productId,
+          measurementUnit: measurementUnit,
+          measurement: measurement,
+          hideAddProductButton: hideAddProductButton,
+          hideDeleteProductButton: hideDeleteProductButton,
+          onDeleteButtonClick: onDeleteButtonClick,
+        )
+      : ProductListItemMobileArguments(
+          productTitle: productTitle,
+          productCategory: productCategory,
+          productPrice: productPrice,
+          onAddButtonClick: onAddButtonClick,
+          onProductClick: onProductClick,
+          image: image,
+          productId: productId,
+          measurementUnit: measurementUnit,
+          measurement: measurement,
+          hideAddProductButton: hideAddProductButton,
+          hideDeleteProductButton: hideDeleteProductButton,
+          onDeleteButtonClick: onDeleteButtonClick,
+        );
 
-  getProductListItemWebArguments() => ProductListItemWebArguments(
-        productTitle: productTitle,
-        productCategory: productCategory,
-        productPrice: productPrice,
-        onAddButtonClick: onAddButtonClick,
-        onProductClick: onProductClick,
-        image: image,
-        productId: productId,
-        measurementUnit: measurementUnit,
-        measurement: measurement,
-        hideAddProductButton: hideAddProductButton,
-        hideDeleteProductButton: hideDeleteProductButton,
-        onDeleteButtonClick: onDeleteButtonClick,
-      );
+  getProductListItemWebArguments() => isForCatalog
+      ? ProductListItemWebArguments.forCatalog(
+          productTitle: productTitle,
+          productCategory: productCategory,
+          productPrice: productPrice,
+          onAddButtonClick: onAddButtonClick,
+          onProductClick: onProductClick,
+          image: image,
+          productId: productId,
+          measurementUnit: measurementUnit,
+          measurement: measurement,
+          hideAddProductButton: hideAddProductButton,
+          hideDeleteProductButton: hideDeleteProductButton,
+          onDeleteButtonClick: onDeleteButtonClick,
+        )
+      : ProductListItemWebArguments(
+          productTitle: productTitle,
+          productCategory: productCategory,
+          productPrice: productPrice,
+          onAddButtonClick: onAddButtonClick,
+          onProductClick: onProductClick,
+          image: image,
+          productId: productId,
+          measurementUnit: measurementUnit,
+          measurement: measurement,
+          hideAddProductButton: hideAddProductButton,
+          hideDeleteProductButton: hideDeleteProductButton,
+          onDeleteButtonClick: onDeleteButtonClick,
+        );
 }

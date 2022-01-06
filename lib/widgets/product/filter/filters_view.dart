@@ -410,7 +410,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
         // text!.toLowerCase(),
         textStyle: Theme.of(context).textTheme.headline6!.copyWith(
               color: value == true
-                  ? AppColors().productFilterBg
+                  ? Theme.of(context).colorScheme.secondaryVariant
                   : AppColors().black,
             ),
       ),
@@ -443,7 +443,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       decoration: BoxDecoration(
         color: viewModel!.clickedFilter != filterTypeTitle
             ? AppColors().white
-            : AppColors().productFilterBg,
+            : Theme.of(context).colorScheme.secondaryVariant,
         borderRadius: BorderRadius.circular(Dimens().defaultBorder),
         // border: Border(
         //   bottom: BorderSide(

@@ -121,7 +121,7 @@ class ProductsListView extends StatelessWidget {
                   ListFooter.firstPreviousNextLast(
                     showJumpToPage: model.isDeo() ||
                             model.isDeoSuperVisor() ||
-                            model.isDeoSuperVisor()
+                            model.isDeoGd()
                         ? true
                         : false,
                     onJumpToPage: ({required int pageNumber}) {

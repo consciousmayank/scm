@@ -38,9 +38,6 @@ class Dimens {
 
   double get appTextButtonBorderRadius => getDefaultRadius;
 
-  Color get getDecoratedContainerDefaultColor =>
-      AppColors().primaryColor.shade200;
-
   double get getDecoratedContainerDefaultPadding => 8;
 
   double get defaultBorder => 16;

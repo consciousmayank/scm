@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:scm/model_classes/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

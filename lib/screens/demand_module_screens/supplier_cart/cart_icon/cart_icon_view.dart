@@ -4,9 +4,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/snackbar_types.dart';
-import 'package:scm/model_classes/cart.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_viewmodel.dart';
-import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -62,7 +60,7 @@ class _CartIconViewState extends State<CartIconView> {
                     cartIcon,
                     height: 40,
                     width: 40,
-                    color: AppColors().primaryColor.shade50,
+                    color: AppColors().white,
                   ),
                 ),
                 Container(
@@ -79,7 +77,7 @@ class _CartIconViewState extends State<CartIconView> {
                   ),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors().primaryColor.shade300,
+                    color: Theme.of(context).colorScheme.background,
                   ),
                 )
               ],

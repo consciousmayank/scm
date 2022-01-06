@@ -38,10 +38,10 @@ class ProcessingItemsListTable extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isHeader
-              ? Theme.of(context).colorScheme.primaryVariant
+              ? Theme.of(context).colorScheme.background
               : Colors.white,
           border: Border.all(
-            color: Theme.of(context).colorScheme.primaryVariant,
+            color: Theme.of(context).colorScheme.background,
             width: 0.5,
           ),
         ),

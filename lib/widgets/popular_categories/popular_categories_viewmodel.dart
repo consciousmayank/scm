@@ -18,9 +18,11 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
   getAllCategories() async {
     setBusy(true);
     categoriesResponse = await _productCategoriesApis.getProductCategoriesList(
-        pageIndex: pageIndex,
-        supplierId: args.supplierId,
-        categoryTitle: categoryTitle);
+      pageIndex: pageIndex,
+      supplierId: args.supplierId,
+      categoryTitle: categoryTitle,
+      isSupplierCatalog: args.isSupplierCatalog,
+    );
     setBusy(false);
     notifyListeners();
   }
@@ -33,16 +35,28 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({
     required String selectedCategory,
   }) {
-    navigationService.navigateTo(
-      productListViewPageRoute,
-      arguments: ProductListViewArguments.asSupplierProductList(
-        brandsFilterList: [],
-        categoryFilterList: [selectedCategory],
-        subCategoryFilterList: [],
-        productTitle: '',
-        supplierId: args.supplierId,
-        supplierName: args.supplierName,
-      ),
-    );
+    if (args.supplierId == null) {
+      navigationService.navigateTo(
+        productListViewPageRoute,
+        arguments: ProductListViewArguments.fullScreen(
+          brandsFilterList: [],
+          categoryFilterList: [selectedCategory],
+          subCategoryFilterList: [],
+          productTitle: '',
+        ),
+      );
+    } else {
+      navigationService.navigateTo(
+        productListViewPageRoute,
+        arguments: ProductListViewArguments.asSupplierProductList(
+          brandsFilterList: [],
+          categoryFilterList: [selectedCategory],
+          subCategoryFilterList: [],
+          productTitle: '',
+          supplierId: args.supplierId,
+          supplierName: args.supplierName,
+        ),
+      );
+    }
   }
 }

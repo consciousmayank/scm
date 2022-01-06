@@ -66,7 +66,6 @@ class DemandModuleLandingPageViewModel
     switch (currentIndex) {
       case 0:
         return CommonDashboardView(arguments: CommonDashboardViewArguments());
-        ;
 
       case 1:
         // return const HomePageView();

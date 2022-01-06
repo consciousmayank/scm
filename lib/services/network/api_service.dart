@@ -11,6 +11,7 @@ import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_operations.dart';
 import 'package:scm/enums/product_statuses.dart';
+import 'package:scm/enums/profile_api_operations_type.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/app_versioning_request.dart';
@@ -237,6 +238,7 @@ class ApiService {
     String? productTitle,
     int? supplierId,
     int? pageSize,
+    bool isSupplierCatalog = false,
   }) async {
     Response? response;
     DioError? error;
@@ -296,11 +298,13 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-            supplierId == null
-                ? GET_CATEGORIES_LIST
-                : GET_CATEGORY_TYPES_LIST_FOR_SELECTED_SUPPLIER(
-                    supplierId: supplierId,
-                  ),
+            isSupplierCatalog
+                ? GET_SUPPLIER_CATALOG_CATEGORIES_LIST
+                : supplierId == null
+                    ? GET_CATEGORIES_LIST
+                    : GET_CATEGORY_TYPES_LIST_FOR_SELECTED_SUPPLIER(
+                        supplierId: supplierId,
+                      ),
             queryParameters: params,
           );
     } on DioError catch (e) {
@@ -317,6 +321,7 @@ class ApiService {
     int? pageIndex,
     int? supplierId,
     int size = Dimens.defaultProductListPageSize,
+    bool isSupplierCatalog = false,
   }) async {
     Map<String, dynamic> params = Map<String, dynamic>();
 
@@ -520,7 +525,11 @@ class ApiService {
     Response? response;
     DioError? error;
     try {
-      if (supplierId != null && supplierId > 0) {
+      if (isSupplierCatalog) {
+        response = await dioClient
+            .getDio()
+            .get(GET_SUPPLIER_CATALOG_PRODUCT_LIST, queryParameters: params);
+      } else if (supplierId != null && supplierId > 0) {
         response = await dioClient
             .getDio()
             .get(GET_SUPPLIER_PRODUCTS(supplierId), queryParameters: params);
@@ -535,19 +544,64 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future<ParentApiResponse> getAllBrands(
-      {required int pageNumber,
-      required int pageSize,
-      String? brandToSearch,
-      int? supplierId}) async {
+  Future<ParentApiResponse> getAllBrandsForPim({
+    required int pageNumber,
+    required int pageSize,
+    String? brandToSearch,
+  }) async {
     Response? response;
     DioError? error;
 
     try {
-      if (supplierId == null) {
+      response = await dioClient.getDio().get(
+            GET_BRANDS_FOR_PIM,
+            queryParameters: brandToSearch == null
+                ? {
+                    'page': pageNumber,
+                    'size': pageSize,
+                  }
+                : {
+                    'page': pageNumber,
+                    'size': pageSize,
+                    'title': brandToSearch
+                  },
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getAllBrands({
+    required int pageNumber,
+    required int pageSize,
+    String? brandToSearch,
+    int? supplierId,
+    bool isSupplierCatalog = false,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      if (isSupplierCatalog) {
+        response = await dioClient.getDio().get(
+              GET_SUPPLIER_CATALOG_BRAND_LIST,
+              queryParameters: brandToSearch == null
+                  ? {
+                      'page': pageNumber,
+                      'size': pageSize,
+                    }
+                  : {
+                      'page': pageNumber,
+                      'size': pageSize,
+                      'title': brandToSearch
+                    },
+            );
+      } else if (supplierId == null) {
         //api is for suppliers
         response = await dioClient.getDio().get(
-              GET_BRANDS_FOR_DASHBOARD,
+              GET_BRAND_LIST,
               queryParameters: brandToSearch == null
                   ? {
                       'page': pageNumber,
@@ -967,7 +1021,7 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().post(GET_BRANDS_FOR_DASHBOARD,
+      response = await dioClient.getDio().post(GET_BRANDS_FOR_PIM,
           data: brand.image == null
               ? {
                   'title': brand.title,
@@ -1313,8 +1367,91 @@ class ApiService {
 
     return ParentApiResponse(error: error, response: response);
   }
+
+  Future<ParentApiResponse> updateBusinessName(
+      {required String? businessNameJsonBody}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+            UPDATE_BUSINESS_NAME,
+            data: businessNameJsonBody,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updateContactPerson(
+      {required String? contactPersonJsonBody}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+            UPDATE_CONTACT_PERSON,
+            data: contactPersonJsonBody,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updateEmail(
+      {required String? emailJsonBody}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+            UPDATE_EMAIL,
+            data: emailJsonBody,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updateMobileNumber(
+      {required String? mobileNumberJsonBody}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+            UPDATE_MOBILE_NUMBER,
+            data: mobileNumberJsonBody,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updatePhoneNumber(
+      {required String? phoneNumberJsonBody}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+            UPDATE_PHONE_NUMBER,
+            data: phoneNumberJsonBody,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
 }
 
 enum AuthApiType { CHECK_USER_EXISTENCE, AUTHENTICATE_USER }
-
-enum ProfileApiType { GET_PROFILE, UPDATE_PROFILE }

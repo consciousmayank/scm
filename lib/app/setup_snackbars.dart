@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
-import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:get/get.dart';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void setupSnackbarUi() {
@@ -46,7 +40,7 @@ void setupSnackbarUi() {
   service.registerCustomSnackbarConfig(
     variant: SnackbarType.ERROR,
     config: errorConfig
-      ..backgroundColor = AppColors().primaryColor.shade200
+      ..backgroundColor = ApplicationTheme().primaryColor.shade200
       ..borderColor = Colors.red
       ..borderWidth = 2,
   );
@@ -54,7 +48,7 @@ void setupSnackbarUi() {
   service.registerCustomSnackbarConfig(
     variant: SnackbarType.NORMAL,
     config: config
-      ..backgroundColor = AppColors().primaryColor.shade900
+      ..backgroundColor = ApplicationTheme().primaryColor.shade900
       ..textColor = Colors.white,
   );
 }

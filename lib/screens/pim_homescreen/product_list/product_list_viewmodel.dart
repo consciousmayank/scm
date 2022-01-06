@@ -79,7 +79,7 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
         updateProductDialogResponse.confirmed) {
       shouldCallGetProductsApi = true;
       productListResponse = ProductListResponse().empty();
-      pageNumber = 0;
+      // pageNumber = 0; not move to the first page
       getProductList();
     }
   }

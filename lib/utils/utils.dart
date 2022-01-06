@@ -110,7 +110,9 @@ NavigationRailDestination buildRotatedTextRailDestination({
       padding: EdgeInsets.symmetric(vertical: padding),
       child: RotatedBox(
         quarterTurns: isTurned ? 0 : turn,
-        child: Text(text),
+        child: Text(
+          text,
+        ),
       ),
     ),
   );

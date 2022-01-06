@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
@@ -14,8 +12,6 @@ import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
-import 'package:scm/widgets/product/product_list/product_list_view.dart';
-import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class SuppliersListView extends StatefulWidget {
@@ -155,7 +151,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                                       viewModel.suppliersListResponse.suppliers!
                                           .elementAt(index)
                                           .id
-                                  ? AppColors().primaryColor.shade100
+                                  ? Theme.of(context).colorScheme.secondary
                                   : AppColors().white,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(

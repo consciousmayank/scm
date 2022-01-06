@@ -18,7 +18,7 @@ class AppFooterWidget extends StatelessWidget {
         margin: const EdgeInsets.only(
           top: 10,
         ),
-        color: Theme.of(context).appBarTheme.backgroundColor,
+        color: Theme.of(context).colorScheme.primary,
         padding: const EdgeInsets.all(32),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

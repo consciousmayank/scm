@@ -28,7 +28,7 @@ class DecorativeContainer extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: color ?? Dimens().getDecoratedContainerDefaultColor,
+        color: color ?? Theme.of(context).colorScheme.background,
       ),
       padding: EdgeInsets.all(
         Dimens().getDecoratedContainerDefaultPadding,

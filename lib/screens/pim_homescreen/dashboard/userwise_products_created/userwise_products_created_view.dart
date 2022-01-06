@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/user_roles.dart';
@@ -12,7 +11,6 @@ import 'package:scm/widgets/dashboard_sub_views_title_text.dart';
 import 'package:scm/widgets/decorative_container.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
-import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class UserwiseProductsCreatedView extends StatefulWidget {
@@ -35,9 +33,7 @@ class _UserwiseProductsCreatedViewState
       builder: (context, child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: AppColors().primaryColor.shade200,
-            ),
+            colorScheme: Theme.of(context).colorScheme,
           ),
           child: child!,
         );
@@ -78,7 +74,7 @@ class _UserwiseProductsCreatedViewState
                 Wrap(
                   children: [
                     FilterChip(
-                      label: Text('OverAll'),
+                      label: const Text('OverAll'),
                       labelStyle: TextStyle(
                         color: model.workSummaryTableOptions ==
                                 WorkSummaryTableOptions.OVER_ALL
@@ -99,7 +95,7 @@ class _UserwiseProductsCreatedViewState
                     ),
                     wSizedBox(width: 4),
                     FilterChip(
-                      label: Text('Today'),
+                      label: const Text('Today'),
                       labelStyle: TextStyle(
                         color: model.workSummaryTableOptions ==
                                 WorkSummaryTableOptions.TODAY
@@ -120,7 +116,7 @@ class _UserwiseProductsCreatedViewState
                     ),
                     wSizedBox(width: 4),
                     FilterChip(
-                      label: Text('Yesterday'),
+                      label: const Text('Yesterday'),
                       labelStyle: TextStyle(
                         color: model.workSummaryTableOptions ==
                                 WorkSummaryTableOptions.YESTERDAY
@@ -141,7 +137,7 @@ class _UserwiseProductsCreatedViewState
                     ),
                     wSizedBox(width: 4),
                     FilterChip(
-                      label: Text('Custom'),
+                      label: const Text('Custom'),
                       labelStyle: TextStyle(
                         color: model.workSummaryTableOptions ==
                                 WorkSummaryTableOptions.CUSTOM
