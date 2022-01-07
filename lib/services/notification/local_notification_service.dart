@@ -65,20 +65,21 @@ class LocalNotificationService {
 
       const NotificationDetails notificationDetails = NotificationDetails(
           android: AndroidNotificationDetails(
-        'bml_driver_channel', // id
+        'scms_channel', // id
         'High Importance Notifications', // title
         channelDescription:
-            'This channel is used for important notifications for BML Driver.', // description
+            'This channel is used for important notifications for SCMS Project.', // description
         importance: Importance.high,
         priority: Priority.high,
         showWhen: true,
       ));
 
       notificationParams = RemoteNotificationParams(
+        id: message.data['id'],
         screen: message.data['screen'],
         type: message.data['type'],
-        title: message.notification?.title,
-        body: message.notification?.body,
+        title: message.notification?.title ?? '',
+        body: message.notification?.body ?? '',
       );
 
       await _notificationsPlugin.show(

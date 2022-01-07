@@ -245,16 +245,29 @@ class ProductListView extends StatelessWidget {
                                                       .products!
                                                       .elementAt(index)
                                                       .price,
-                                                  onAddButtonClick: () {
-                                                    model.addToCartObject
-                                                        .openProductQuantityDialogBox(
-                                                      product: model
-                                                          .productListResponse!
-                                                          .products!
-                                                          .elementAt(
-                                                        index,
-                                                      ),
-                                                    );
+                                                  onDeleteButtonClick: () {
+                                                    model.addToCatalog
+                                                        .removeProductFromCatalog(
+                                                            productId: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index)
+                                                                .id!,
+                                                            productTitle: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index)
+                                                                .title!)
+                                                        .then(
+                                                          (value) => value !=
+                                                                      null &&
+                                                                  value
+                                                              ? model
+                                                                  .reloadPage()
+                                                              : null,
+                                                        );
                                                   },
                                                   onProductClick: () {
                                                     model.openProductDetails(
@@ -306,15 +319,33 @@ class ProductListView extends StatelessWidget {
                                                       .elementAt(index)
                                                       .price,
                                                   onAddButtonClick: () {
-                                                    model.addToCartObject
-                                                        .openProductQuantityDialogBox(
-                                                      product: model
-                                                          .productListResponse!
-                                                          .products!
-                                                          .elementAt(
-                                                        index,
-                                                      ),
-                                                    );
+                                                    if (arguments.supplierId !=
+                                                        null) {
+                                                      model.addToCartObject
+                                                          .openProductQuantityDialogBox(
+                                                        product: model
+                                                            .productListResponse!
+                                                            .products!
+                                                            .elementAt(
+                                                          index,
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      model.addToCatalog
+                                                          .addProductToCatalog(
+                                                              productId: model
+                                                                  .productListResponse!
+                                                                  .products!
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .id!,
+                                                              productTitle: model
+                                                                  .productListResponse!
+                                                                  .products!
+                                                                  .elementAt(
+                                                                      index)
+                                                                  .title!);
+                                                    }
                                                   },
                                                   onProductClick: () {
                                                     model.openProductDetails(

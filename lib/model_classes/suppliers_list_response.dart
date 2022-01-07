@@ -151,6 +151,21 @@ class Supplier {
   final String? mobile;
   final String? phone;
 
+  Supplier empty() {
+    return Supplier(
+      businessName: "",
+      contactPerson: "",
+      email: "",
+      fcmId: "",
+      id: 0,
+      image: "",
+      imageType: "",
+      mobile: "",
+      phone: "",
+      address: [],
+    );
+  }
+
   Supplier copyWith({
     String? businessName,
     String? contactPerson,

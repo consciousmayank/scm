@@ -27,8 +27,8 @@ void setupSnackbarUi() {
     titleTextAlign: TextAlign.center,
     snackPosition: SnackPosition.TOP,
     isDismissible: false,
-    titleColor: Colors.white,
-    messageColor: Colors.white,
+    titleColor: Colors.black,
+    messageColor: Colors.black,
     padding: const EdgeInsets.symmetric(
       vertical: 20,
       horizontal: 10,
@@ -40,15 +40,15 @@ void setupSnackbarUi() {
   service.registerCustomSnackbarConfig(
     variant: SnackbarType.ERROR,
     config: errorConfig
-      ..backgroundColor = ApplicationTheme().primaryColor.shade200
-      ..borderColor = Colors.red
-      ..borderWidth = 2,
+      ..backgroundColor = Colors.white
+      ..borderColor = Colors.black
+      ..borderWidth = 1,
   );
 
   service.registerCustomSnackbarConfig(
     variant: SnackbarType.NORMAL,
     config: config
-      ..backgroundColor = ApplicationTheme().primaryColor.shade900
-      ..textColor = Colors.white,
+      ..backgroundColor = Colors.white
+      ..textColor = Colors.black,
   );
 }

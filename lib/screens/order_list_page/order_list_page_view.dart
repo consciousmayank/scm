@@ -2,22 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
-import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/address.dart';
 import 'package:scm/model_classes/order_list_response.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/order_process_buttons.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/order_status_widget.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/processing_order_widget_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
-import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/order_list_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -39,6 +30,7 @@ class OrderListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("SelectedOrderId :: ${arguments.selectedOrder?.id}");
     return ViewModelBuilder<OrderListPageViewModel>.reactive(
       onModelReady: (model) => model.init(arguments),
       builder: (context, model, child) => Scaffold(
@@ -50,49 +42,54 @@ class OrderListPageView extends StatelessWidget {
               ? const LoadingWidget()
               : Row(
                   children: [
-                    Expanded(
-                      child: model.orderListApi == ApiStatus.LOADING
-                          ? const LoadingWidgetWithText(
-                              text: 'Fetching Orders. Please Wait...')
-                          : OrderListWidget.orderPage(
-                              key: UniqueKey(),
-                              selectedOrderId: model.selectedOrder.id ?? -1,
-                              onOrderClick: ({
-                                required Order selectedOrder,
-                              }) {
-                                model.selectedOrder = selectedOrder;
-                                model.getOrdersDetails();
-                              },
-                              label: labelOrders,
-                              isScrollable: true,
-                              isSupplyRole:
-                                  model.preferences.getSelectedUserRole() ==
-                                      AuthenticatedUserRoles
-                                          .ROLE_SUPPLY.getStatusString,
-                              orders: model.orderList.orders!,
-                              onNextPageClick: () {
-                                model.pageNumber++;
-                                model.getOrderList();
-                              },
-                              onPreviousPageClick: () {
-                                model.pageNumber--;
-                                model.getOrderList();
-                              },
-                              pageNumber: model.pageNumber,
-                              totalPages: model.orderList.totalPages! - 1,
-                              selectedOrderStatus: model.selectedOrderStatus,
-                              onOrderStatusClick: (
-                                  {required String selectedOrderStatus}) {
-                                model.selectedOrderStatus = selectedOrderStatus;
-                                model.notifyListeners();
-                                model.pageNumber = 0;
-                                model.getOrderList();
-                              },
-                              // orderStatuses: model.getInAppOrderStatusList(),
-                              orderStatuses: model.orderStatusList,
-                            ),
-                      flex: 1,
-                    ),
+                    if (!arguments.hideOrdersList)
+                      Expanded(
+                        child: model.orderListApi == ApiStatus.LOADING
+                            ? const LoadingWidgetWithText(
+                                text: 'Fetching Orders. Please Wait...')
+                            : OrderListWidget.orderPage(
+                                key: UniqueKey(),
+                                selectedOrderId: arguments.selectedOrder != null
+                                    ? arguments.selectedOrder!.id ?? -1
+                                    : model.selectedOrder.id ?? -1,
+                                onOrderClick: ({
+                                  required Order selectedOrder,
+                                }) {
+                                  model.selectedOrder = selectedOrder;
+                                  model.getOrdersDetails();
+                                },
+                                label: labelOrders,
+                                isScrollable: true,
+                                isSupplyRole:
+                                    model.preferences.getSelectedUserRole() ==
+                                        AuthenticatedUserRoles
+                                            .ROLE_SUPPLY.getStatusString,
+                                orders: model.orderList.orders!,
+                                onNextPageClick: () {
+                                  model.pageNumber++;
+                                  model.getOrderList();
+                                },
+                                onPreviousPageClick: () {
+                                  model.pageNumber--;
+                                  model.getOrderList();
+                                },
+                                pageNumber: model.pageNumber,
+                                totalPages: model.orderList.totalPages! - 1,
+                                selectedOrderStatus:
+                                    arguments.preDefinedOrderStatus,
+                                onOrderStatusClick: (
+                                    {required String selectedOrderStatus}) {
+                                  model.selectedOrderStatus =
+                                      selectedOrderStatus;
+                                  model.notifyListeners();
+                                  model.pageNumber = 0;
+                                  model.getOrderList();
+                                },
+                                // orderStatuses: model.getInAppOrderStatusList(),
+                                orderStatuses: model.orderStatusList,
+                              ),
+                        flex: 1,
+                      ),
                     Expanded(
                       key: UniqueKey(),
                       child: model.orderDetailsApi == ApiStatus.LOADING
@@ -114,4 +111,21 @@ class OrderListPageView extends StatelessWidget {
   }
 }
 
-class OrderListPageViewArguments {}
+class OrderListPageViewArguments {
+  OrderListPageViewArguments({
+    this.preDefinedOrderStatus = 'All',
+    this.selectedOrder,
+  })  : hideOrdersList = false,
+        orderId = null;
+
+  OrderListPageViewArguments.notification({
+    required this.orderId,
+  })  : hideOrdersList = true,
+        preDefinedOrderStatus = '',
+        selectedOrder = null;
+
+  final bool hideOrdersList;
+  final int? orderId;
+  final String preDefinedOrderStatus;
+  final Order? selectedOrder;
+}

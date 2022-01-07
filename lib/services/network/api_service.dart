@@ -57,18 +57,6 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
-  Future updateFCMID({required String fcmId}) async {
-    var body = {'fcmId': fcmId};
-    Response? response;
-    DioError? error;
-    try {
-      response = await dioClient.getDio().put(UPDATE_FCM_ID, data: body);
-    } on DioError catch (e) {
-      error = e;
-    }
-    return ParentApiResponse(response: response, error: error);
-  }
-
   Future<ParentApiResponse> getBrandsList({
     required int? pageIndex,
     String? brandTitle,
@@ -79,7 +67,7 @@ class ApiService {
   }) async {
     Response? response;
     DioError? error;
-    Map<String, dynamic> params = Map<String, dynamic>();
+    Map<String, dynamic> params = <String, dynamic>{};
 
     // / if searched by brand title
     // if (brandTitle != null) {
@@ -1446,6 +1434,26 @@ class ApiService {
             UPDATE_PHONE_NUMBER,
             data: phoneNumberJsonBody,
           );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> updateWebFcmId({required String? fcmId}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().put(
+        UPDATE_FCM_ID(
+          role: getLoggedInRole(),
+        ),
+        data: {
+          'fcmIdW ': fcmId,
+        },
+      );
     } on DioError catch (e) {
       error = e;
     }

@@ -10,11 +10,13 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
+import 'package:scm/widgets/product/product_list/add_to_catalog_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductListViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
+  late AddToCatalog addToCatalog;
   late final ProductListViewArguments arguments;
   List<String?> brandsFilterList = [];
   List<String?> categoryFilterList = [];
@@ -55,6 +57,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       addToCartObject = AddToCart(supplierId: supplierId!);
     } else {
       supplierId = null;
+      addToCatalog = AddToCatalog();
     }
 
     brandsFilterList = arguments.brandsFilterList ?? [];
@@ -150,4 +153,8 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   }
 
   openSortDialogBox() {}
+
+  reloadPage() {
+    getProductList();
+  }
 }

@@ -1,5 +1,10 @@
 In this build following was done.
 
+Friday, 7 January, 2022
+    - Now taking to orderlist on click on homepage ordertiles and order status.
+    - Now getting notification in web. Need to take care of showing them to user.
+
+
 Thursday, 6 January, 2022
     - Completed, add to catalog, remove from catalog, and catalog view of the supply module.
     - Completed the Add to cart, update cart, place order, add address, update address for demand module.

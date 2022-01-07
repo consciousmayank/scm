@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getPermission();
+    // getPermission();
     LocalNotificationService.initialize(context);
 
     ///gives you the message on which user taps
@@ -78,10 +78,11 @@ class _MyAppState extends State<MyApp> {
 
   void handleRemoteMessage({RemoteMessage? message}) {
     RemoteNotificationParams notificationParams = RemoteNotificationParams(
+      id: message?.data['id'],
       screen: message?.data['screen'],
       type: message?.data['type'],
-      title: message?.notification?.title,
-      body: message?.notification?.body,
+      title: message?.notification?.title as String,
+      body: message?.notification?.body as String,
     );
 
     OnNotificationClick notificationClick = OnNotificationClick(
@@ -90,28 +91,28 @@ class _MyAppState extends State<MyApp> {
     notificationClick.handle();
   }
 
-  Future<void> getPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // Future<void> getPermission() async {
+  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+  //   NotificationSettings settings = await messaging.requestPermission(
+  //     alert: true,
+  //     announcement: false,
+  //     badge: true,
+  //     carPlay: false,
+  //     criticalAlert: false,
+  //     provisional: false,
+  //     sound: true,
+  //   );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
-      FirebaseMessaging.instance.getToken().then((value) {
-        log("Token :: $value");
-      });
-    }
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+  //       settings.authorizationStatus == AuthorizationStatus.provisional) {
+  //     FirebaseMessaging.instance.getToken().then((value) {
+  //       log("Token :: $value");
+  //     });
+  //   }
 
-    log('User granted permission: ${settings.authorizationStatus}');
-  }
+  //   log('User granted permission: ${settings.authorizationStatus}');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -130,15 +131,19 @@ class _MyAppState extends State<MyApp> {
               return ThemeBuilder(
                 themes: ApplicationTheme().getThemes(),
                 builder: (context, regularTheme, darkTheme, themeMode) {
-                  return MaterialApp(
-                    title: appName,
-                    theme: regularTheme,
-                    debugShowCheckedModeBanner: false,
-                    navigatorKey: StackedService.navigatorKey,
-                    onGenerateRoute: _router.generateRoute,
-                    initialRoute: mainViewRoute,
-                    // initialRoute: dashBoardPageRoute,
-                  );
+                  return AnimatedTheme(
+                      duration: const Duration(seconds: 5),
+                      curve: Curves.easeOutCubic,
+                      data: regularTheme!,
+                      child: MaterialApp(
+                        title: appName,
+                        theme: regularTheme,
+                        debugShowCheckedModeBanner: false,
+                        navigatorKey: StackedService.navigatorKey,
+                        onGenerateRoute: _router.generateRoute,
+                        initialRoute: mainViewRoute,
+                        // initialRoute: dashBoardPageRoute,
+                      ));
                 },
               );
             } else {

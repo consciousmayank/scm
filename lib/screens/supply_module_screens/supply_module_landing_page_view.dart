@@ -1,8 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
+import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
@@ -28,6 +31,34 @@ class SupplyModuleLandingPageView extends StatefulWidget {
 
 class _SupplyModuleLandingPageViewState
     extends State<SupplyModuleLandingPageView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPermission();
+  }
+
+  Future<void> getPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional) {
+      FirebaseMessaging.instance.getToken().then((value) {
+        di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     getThemeManager(context).selectThemeAtIndex(2);
@@ -198,6 +229,7 @@ class SupplyModuleLandingPageWebView
             ],
             currentIndex: viewModel.currentIndex,
             onNavigationIndexChanged: (int index) {
+              viewModel.clickedOrderStatus = orderStatusAll;
               viewModel.showProductList = false;
               viewModel.setIndex(index);
             },

@@ -16,6 +16,8 @@ abstract class ProfileApis {
   Future<ApiResponse?>? updatePhoneNumber(
       {required String? phoneNumberJsonBody});
 
+  Future<ApiResponse> updateWebFcmId({required String fcmId});
+
   Future<ApiResponse?>? updateMobileNumber(
       {required String? mobileNumberJsonBody});
 
@@ -123,6 +125,27 @@ class ProfileApisImpl extends BaseApi implements ProfileApis {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<ApiResponse> updateWebFcmId({required String fcmId}) async {
+    ApiResponse updateFcmIdResponse = ApiResponse(
+      status: '',
+      message: '',
+      statusCode: 400,
+    );
+
+    if (fcmId.isEmpty) {
+      return updateFcmIdResponse;
+    }
+
+    ParentApiResponse? apiResponse = await apiService.updateWebFcmId(
+      fcmId: fcmId,
+    );
+    if (filterResponse(apiResponse, showSnackBar: false) != null) {
+      updateFcmIdResponse = ApiResponse.fromMap(apiResponse.response?.data);
+    }
+    return updateFcmIdResponse;
   }
 
   // @override

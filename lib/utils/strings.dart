@@ -183,6 +183,7 @@ const List<String> addressTypes = [
   // 'Other',
 ];
 const String labelResetOrder = 'Reset Cart ?';
+const String orderStatusAll = 'ALL';
 const String labelResetOrderDescription =
     'You already have a cart populated with another suppleir\'s products. Adding this product will reset your old cart. Do you want to reset the cart ?';
 addedProductTocart({required String productTitle}) =>
@@ -192,6 +193,11 @@ addedProductToCatalog({required String productTitle}) =>
 addedProductTocartError({required String productTitle}) =>
     '$productTitle not added to cart';
 
+removeProductToCatalog({required String productTitle}) =>
+    '$productTitle removed from Catalog';
+removeProductTocartError({required String productTitle}) =>
+    '$productTitle not removed to cart';
+
 addedProductToCatalogError({required String productTitle}) =>
     '$productTitle not added to Catalog';
 removedFromCart({required String productTitle}) =>
@@ -200,3 +206,9 @@ updatedInCart({required String productTitle, required int quantity}) =>
     '$productTitle\'s quantity updated to $quantity';
 notUpdatedInCart({required String productTitle, required int quantity}) =>
     '$productTitle\'s quantity not updated to $quantity';
+const String labelNoBrandsFound = 'No Brands Found';
+const String labelNoProductsFound = 'No Products Found';
+const String labelNoCategoriesFound = 'No Categories Found';
+const String labelFetchingBrands = 'Fetching Brands. Please Wait...';
+const String labelFetchingProducts = 'Fetching Products. Please Wait...';
+const String labelFetchingCategories = 'Fetching Categories. Please Wait...';

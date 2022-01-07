@@ -81,7 +81,7 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                     ? Container()
                     : Text(
                         widget.title!,
-                        style: Dimens().pageTitleHeadingStyle,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
                 if (widget.subTitle != null) wSizedBox(width: 20),
                 widget.subTitle == null
@@ -91,9 +91,10 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                             Theme.of(context).colorScheme.secondaryVariant,
                         label: Text(
                           widget.subTitle!,
-                          style: Dimens().pageSubTitleHeadingStyle.copyWith(
-                                color: Colors.white,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Colors.white,
+                                  ),
                         ),
                       ),
               ],

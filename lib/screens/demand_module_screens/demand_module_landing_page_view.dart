@@ -88,10 +88,6 @@ class SupplyModuleLandingPageMobileView
                 ),
                 label: labelDemandLandingPageCatalog,
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.api),
-                label: labelDemandLandingPageCategories,
-              ),
               BottomNavigationBarItem(
                 icon: ImageIcon(
                   AssetImage(categoryIcon),
@@ -177,11 +173,6 @@ class SupplyModuleLandingPageWebView
                 ),
               ),
               buildRotatedTextRailDestinationWithIcon(
-                text: labelDemandLandingPageCategories,
-                isTurned: true,
-                icon: const Icon(Icons.api),
-              ),
-              buildRotatedTextRailDestinationWithIcon(
                 isTurned: true,
                 icon: ImageIcon(
                   AssetImage(categoryIcon),
@@ -203,26 +194,14 @@ class SupplyModuleLandingPageWebView
             ],
             currentIndex: viewModel.currentIndex,
             onNavigationIndexChanged: (int index) {
+              viewModel.clickedOrderStatus = orderStatusAll;
               viewModel.setIndex(index);
             },
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
             child: Center(
-              child:
-                  // model.showProductList && model.searchTerm.length > 2
-                  // ? ProductListView(
-                  //     key: UniqueKey(),
-                  //     arguments: ProductListViewArguments.appbar(
-                  //       brandsFilterList: [],
-                  //       categoryFilterList: [],
-                  //       subCategoryFilterList: [],
-                  //       productTitle: model.searchTerm,
-                  //       supplierId: -1,
-                  //     ),
-                  //   )
-                  // :
-                  viewModel.getSelectedView(),
+              child: viewModel.getSelectedView(),
             ),
           ),
         ],

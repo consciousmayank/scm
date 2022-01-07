@@ -107,4 +107,5 @@ const String UPDATE_PHONE_NUMBER = "/api/supply/profile/phone";
 const String UPDATE_MOBILE_NUMBER = "/api/supply/profile/mobile";
 const String UPDATE_EMAIL = "/api/supply/profile/email";
 const String UPDATE_CONTACT_PERSON = "/api/supply/profile/contactPerson";
-const String UPDATE_FCM_ID = "/api/supply/profile/fcmid";
+final UPDATE_FCM_ID =
+    ({required String role}) => "/api/$role/profile/fcmid/web";

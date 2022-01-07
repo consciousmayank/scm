@@ -8,6 +8,7 @@ import 'package:scm/screens/pim_homescreen/change_password/change_password_dialo
 import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
+import 'package:scm/services/notification/notification_dialog_box.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/app_button.dart';
@@ -24,8 +25,8 @@ void setupDialogUi() {
   final builders = {
     DialogType.BASIC: (context, sheetRequest, completer) =>
         _BasicDialog(request: sheetRequest, completer: completer),
-    DialogType.NEW_GPS_REQUEST: (context, sheetRequest, completer) =>
-        _NewGpsRequestDialog(
+    DialogType.NOTIFICATION: (context, sheetRequest, completer) =>
+        NotificationDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

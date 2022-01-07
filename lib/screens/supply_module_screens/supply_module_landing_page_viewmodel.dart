@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
@@ -12,7 +13,9 @@ import 'package:stacked_services/stacked_services.dart';
 class SupplyModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';
+  String clickedOrderStatus = orderStatusAll;
   String searchTerm = '';
+  Order? selectedOrder;
   bool showProductList = false;
 
   initScreen() {
@@ -51,14 +54,23 @@ class SupplyModuleLandingPageViewModel
   getSelectedView() {
     switch (currentIndex) {
       case 0:
-        return CommonDashboardView(arguments: CommonDashboardViewArguments());
+        return CommonDashboardView(
+            arguments: CommonDashboardViewArguments(
+          onClickOfOrderTile: ({required String clickedOrderStatus}) {
+            this.clickedOrderStatus = clickedOrderStatus;
+            setIndex(3);
+          },
+          onClickOfOrder: ({required Order clickedOrder}) {
+            selectedOrder = clickedOrder;
+            clickedOrderStatus = orderStatusAll;
+            setIndex(3);
+          },
+        ));
 
       case 1:
         // return const SupplyProductsOptionsPageView();
         return const SuppplierProfileView(
-          arguments: SuppplierProfileViewArguments(
-            selectedSupplier: null,
-          ),
+          arguments: SuppplierProfileViewArguments.allProductsForSupplier(),
         );
 
       case 2:
@@ -70,7 +82,12 @@ class SupplyModuleLandingPageViewModel
 
       case 3:
         // return OrderListView();
-        return OrderListPageView(arguments: OrderListPageViewArguments());
+        return OrderListPageView(
+          arguments: OrderListPageViewArguments(
+            preDefinedOrderStatus: clickedOrderStatus,
+            selectedOrder: selectedOrder,
+          ),
+        );
       case 4:
         // return MenuItemsView();
         return const Center(

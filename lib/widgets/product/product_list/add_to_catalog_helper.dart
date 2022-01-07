@@ -37,7 +37,7 @@ class AddToCatalog extends GeneralisedBaseViewModel {
     }
   }
 
-  void removeProductFromCatalog({
+  Future removeProductFromCatalog({
     required int productId,
     required String productTitle,
   }) async {
@@ -51,16 +51,18 @@ class AddToCatalog extends GeneralisedBaseViewModel {
 
     if (response.isSuccessful()) {
       showInfoSnackBar(
-          message: addedProductToCatalog(
+          message: removeProductToCatalog(
             productTitle: productTitle,
           ),
           secondsToShowSnackBar: 1);
+      return Future.value(true);
     } else {
       showErrorSnackBar(
-        message: addedProductToCatalogError(
+        message: removeProductTocartError(
           productTitle: productTitle,
         ),
       );
+      return Future.value(false);
     }
   }
 }

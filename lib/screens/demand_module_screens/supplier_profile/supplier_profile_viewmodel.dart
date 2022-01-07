@@ -103,8 +103,8 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
               ],
         subCategoryFilterList: [],
         productTitle: '',
-        supplierId: arguments.selectedSupplier!.id,
-        supplierName: arguments.selectedSupplier!.businessName,
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }
@@ -152,7 +152,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
       brandsListViewPageRoute,
       arguments: PopularBrandsViewArguments.demanderPopularBrands(
         supplierId: arguments.selectedSupplier?.id,
-        supplierName: arguments.selectedSupplier!.businessName,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }
@@ -200,5 +200,15 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
         supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
+  }
+
+  reloadPage() {
+    brandsApiStatus = ApiStatus.LOADING;
+    categoriesApiStatus = ApiStatus.LOADING;
+    productListApiStatus = ApiStatus.LOADING;
+    notifyListeners();
+    getBrands();
+    getCategories();
+    getProductList();
   }
 }

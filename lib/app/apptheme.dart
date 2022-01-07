@@ -70,47 +70,47 @@ getTextButtonStyle() {
 TextTheme getAppTextTheme() {
   return TextTheme(
     headline1: GoogleFonts.openSans(
-      fontSize: 100,
+      fontSize: 36,
       fontWeight: FontWeight.w300,
       color: Colors.black,
       // letterSpacing: -1.5,
     ),
     headline2: GoogleFonts.openSans(
-      fontSize: 62,
+      fontSize: 32,
       fontWeight: FontWeight.w300,
       color: Colors.black,
       // letterSpacing: -0.5,
     ),
     headline3: GoogleFonts.openSans(
-      fontSize: 50,
+      fontSize: 30,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
     headline4: GoogleFonts.openSans(
-      fontSize: 35,
+      fontSize: 28,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       color: Colors.black,
     ),
     headline5: GoogleFonts.openSans(
-      fontSize: 25,
+      fontSize: 24,
       fontWeight: FontWeight.w400,
       color: Colors.black,
     ),
     headline6: GoogleFonts.openSans(
-      fontSize: 21,
+      fontSize: 22,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.15,
       color: Colors.black,
     ),
     subtitle1: GoogleFonts.openSans(
-      fontSize: 17,
+      fontSize: 20,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
       color: Colors.black,
     ),
     subtitle2: GoogleFonts.openSans(
-      fontSize: 15,
+      fontSize: 18,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.1,
       color: Colors.black,
@@ -128,7 +128,7 @@ TextTheme getAppTextTheme() {
       color: Colors.black,
     ),
     button: GoogleFonts.openSans(
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       letterSpacing: 1.25,
       color: Colors.black,

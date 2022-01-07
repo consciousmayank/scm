@@ -14,6 +14,7 @@ import 'package:scm/services/app_api_service_classes/product_brands_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
+import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/services/app_api_service_classes/supplier_catalog_apis.dart';
 import 'package:scm/services/app_api_service_classes/suppliers_list_api.dart';
 import 'package:scm/services/network/api_service.dart';
@@ -61,7 +62,7 @@ void declareDependencies() {
   di.registerLazySingleton(() => CartStream());
   di.registerLazySingleton(() => AddressApis());
   di.registerLazySingleton(() => SupplierCatalogApis());
-  di.registerSingleton(() => ThemeService.getInstance());
+  di.registerLazySingleton(() => ProfileApisImpl());
 
 // or add it to your third_party_services_module if you’re using injectable
   // locator.registerLazySingleton(() => DioConfig(baseUrl: config.baseUrl));

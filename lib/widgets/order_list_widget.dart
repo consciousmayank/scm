@@ -122,6 +122,13 @@ class OrderListWidget extends StatelessWidget {
                     ],
                     isSelected: selectedOrderId > 0 &&
                         selectedOrderId == orders.elementAt(index).id,
+                    onOrderClick: () {
+                      onOrderClick!(
+                        selectedOrder: orders.elementAt(
+                          index,
+                        ),
+                      );
+                    },
                   );
                 },
                 separatorBuilder: (context, index) =>
@@ -149,15 +156,13 @@ class OrderListWidget extends StatelessWidget {
                     : const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return AppInkwell(
-                    onTap: showCompactView
-                        ? () {
-                            onOrderClick!(
-                              selectedOrder: orders.elementAt(
-                                index,
-                              ),
-                            );
-                          }
-                        : null,
+                    onTap: () {
+                      onOrderClick!(
+                        selectedOrder: orders.elementAt(
+                          index,
+                        ),
+                      );
+                    },
                     child: Stack(
                       alignment: Alignment.topRight,
                       children: [
@@ -193,6 +198,13 @@ class OrderListWidget extends StatelessWidget {
                           ],
                           isSelected: selectedOrderId > 0 &&
                               selectedOrderId == orders.elementAt(index).id,
+                          onOrderClick: () {
+                            // onOrderClick!(
+                            //   selectedOrder: orders.elementAt(
+                            //     index,
+                            //   ),
+                            // );
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -227,6 +239,7 @@ class OrderListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(selectedOrderId.toString());
     return Card(
       shape: Dimens().getCardShape(),
       elevation: Dimens().getDefaultElevation,
@@ -343,16 +356,19 @@ class OrderListTableWidget extends StatelessWidget {
     this.isHeader = true,
     required this.titles,
     this.isSelected = false,
-  }) : super(key: key);
+  })  : onOrderClick = null,
+        super(key: key);
 
   const OrderListTableWidget.values({
     Key? key,
     this.isHeader = false,
     required this.titles,
     required this.isSelected,
+    required this.onOrderClick,
   }) : super(key: key);
 
   final bool isHeader, isSelected;
+  final Function? onOrderClick;
   final List<Value> titles;
 
   @override
@@ -375,29 +391,34 @@ class OrderListTableWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: title.widgetType == WidgetType.OUTLINED_CONTAINER
-                        ? Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: getBorderColor(status: title.value),
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(
-                                Dimens().defaultBorder,
+                        ? AppInkwell.withBorder(
+                            onTap: onOrderClick != null
+                                ? () => onOrderClick!()
+                                : null,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: getBorderColor(status: title.value),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(
+                                  Dimens().defaultBorder,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                title.value,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                      color: getBorderColor(
-                                        status: title.value,
+                              child: Center(
+                                child: Text(
+                                  title.value,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: getBorderColor(
+                                          status: title.value,
+                                        ),
                                       ),
-                                    ),
+                                ),
                               ),
                             ),
                           )
