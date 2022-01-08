@@ -1,5 +1,9 @@
 In this build following was done.
 
+Saturday, 8 January, 2022
+    - Handled notifications properly, while app is in foreground
+    
+
 Friday, 7 January, 2022
     - Now taking to orderlist on click on homepage ordertiles and order status.
     - Now getting notification in web. Need to take care of showing them to user.

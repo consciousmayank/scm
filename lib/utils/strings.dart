@@ -212,3 +212,6 @@ const String labelNoCategoriesFound = 'No Categories Found';
 const String labelFetchingBrands = 'Fetching Brands. Please Wait...';
 const String labelFetchingProducts = 'Fetching Products. Please Wait...';
 const String labelFetchingCategories = 'Fetching Categories. Please Wait...';
+const String ordersNotificationDescription = 'You have new a order';
+const String changePasswordDisclaimer =
+    'Changing your password will log you out. You will have to login again.';

@@ -31,6 +31,7 @@ final String otpScreenImage = _imagePath + 'otp_screen_image.png';
 final String orderStatsIcon = _imagePath + 'order_stats_icon.png';
 final String successAnimation = _animationPath + 'success.json';
 final String splashAnimation = _animationPath + 'splash_animation.json';
+const String notificationsAnimation = 'notification_bell_animation.json';
 final String profileIconBlue = _imagePath + 'profile_icon_blue.png';
 
 final String scmLogo = _imagePath + 'scm_logo.png';

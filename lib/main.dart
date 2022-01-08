@@ -19,7 +19,20 @@ import 'firebase_options.dart';
 import 'services/notification/local_notification_service.dart';
 
 ///Receive message when app is in background solution for on message
-Future<void> backgroundHandler(RemoteMessage message) async {}
+Future<void> backgroundHandler(RemoteMessage message) async {
+  RemoteNotificationParams notificationParams = RemoteNotificationParams(
+    id: message.data['id'],
+    screen: message.data['screen'],
+    type: message.data['type'],
+    title: message.notification?.title as String,
+    body: message.notification?.body as String,
+  );
+
+  OnNotificationClick notificationClick = OnNotificationClick(
+    notificationParams: notificationParams,
+  );
+  notificationClick.handle();
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -90,29 +103,6 @@ class _MyAppState extends State<MyApp> {
     );
     notificationClick.handle();
   }
-
-  // Future<void> getPermission() async {
-  //   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  //   NotificationSettings settings = await messaging.requestPermission(
-  //     alert: true,
-  //     announcement: false,
-  //     badge: true,
-  //     carPlay: false,
-  //     criticalAlert: false,
-  //     provisional: false,
-  //     sound: true,
-  //   );
-
-  //   if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-  //       settings.authorizationStatus == AuthorizationStatus.provisional) {
-  //     FirebaseMessaging.instance.getToken().then((value) {
-  //       log("Token :: $value");
-  //     });
-  //   }
-
-  //   log('User granted permission: ${settings.authorizationStatus}');
-  // }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
@@ -6,6 +7,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
+import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
@@ -53,9 +55,19 @@ class _SupplyModuleLandingPageViewState
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized ||
         settings.authorizationStatus == AuthorizationStatus.provisional) {
-      FirebaseMessaging.instance.getToken().then((value) {
-        di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
-      });
+      if (kIsWeb) {
+        FirebaseMessaging.instance
+            .getToken(
+                vapidKey:
+                    'BIMrjbnsSE5DJMVg7poE9gyyDt6IccuuMm3FuaX1YYRZcVkJWaNNeP2Rr7KzeYU8bxmTKxNJLzIxZhvtTW2o3Sc')
+            .then((value) {
+          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
+        });
+      } else {
+        FirebaseMessaging.instance.getToken().then((value) {
+          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
+        });
+      }
     }
   }
 
@@ -190,6 +202,9 @@ class SupplyModuleLandingPageWebView
       body: Row(
         children: [
           AppNavigationRailWidget(
+            leading: NotificationIconView(
+              arguments: NotificationIconViewArguments(),
+            ),
             destinations: [
               buildRotatedTextRailDestinationWithIcon(
                 text: labelSupplyLandingPageCatalog,

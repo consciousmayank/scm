@@ -52,3 +52,4 @@ const String searchProductsViewPageRoute = '/searchProductsViewPageRoute';
 
 const String productListViewPageRoute = '/productListViewPageRoute';
 const String cartViewPageRoute = '/cartViewPageRoute';
+const String notificationScreenPageRoute = '/notificationScreenPageRoute';

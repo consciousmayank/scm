@@ -21,6 +21,7 @@ import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
 import 'package:scm/services/network/image_dio_client.dart';
 import 'package:scm/services/streams/cart_stream.dart';
+import 'package:scm/services/streams/notifications_stream.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -60,6 +61,7 @@ void declareDependencies() {
   di.registerLazySingleton(() => DemandCartApi());
   di.registerLazySingleton(() => ImageApi());
   di.registerLazySingleton(() => CartStream());
+  di.registerLazySingleton(() => NotificationsStream());
   di.registerLazySingleton(() => AddressApis());
   di.registerLazySingleton(() => SupplierCatalogApis());
   di.registerLazySingleton(() => ProfileApisImpl());

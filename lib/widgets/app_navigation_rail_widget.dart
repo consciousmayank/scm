@@ -7,11 +7,13 @@ class AppNavigationRailWidget extends StatefulWidget {
     required this.currentIndex,
     required this.onNavigationIndexChanged,
     required this.destinations,
+    this.leading,
   }) : super(key: key);
 
   final Function(int) onNavigationIndexChanged;
   final int currentIndex;
   final List<NavigationRailDestination> destinations;
+  final Widget? leading;
 
   @override
   _AppNavigationRailWidgetState createState() =>
@@ -22,6 +24,7 @@ class _AppNavigationRailWidgetState extends State<AppNavigationRailWidget> {
   @override
   Widget build(BuildContext context) {
     return NavigationRail(
+      leading: widget.leading,
       extended: false,
       groupAlignment: 1.0,
       backgroundColor: Theme.of(context).colorScheme.primary,

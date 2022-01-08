@@ -9,6 +9,7 @@ import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
 import 'package:scm/screens/splash/splash_view.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
+import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
@@ -89,6 +90,15 @@ class AppRouter {
             settings.arguments as CartPageViewArguments;
         return FadeRoute(
           page: CartPageView(
+            arguments: arguments,
+          ),
+        );
+
+      case notificationScreenPageRoute:
+        NotificationsScreenArguments arguments =
+            settings.arguments as NotificationsScreenArguments;
+        return FadeRoute(
+          page: NotificationsScreenView(
             arguments: arguments,
           ),
         );
