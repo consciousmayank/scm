@@ -1,5 +1,18 @@
 In this build following was done.
 
+Monday, 10 January, 2022
+    - When logged in as a 
+        - Demander => 
+                        1. After adding a product to cart, will break "Add" button to "remove" and "update" buttons. 
+                        2. Clicking on Remove will remove product from cart.
+                        3. Clicking on Update will update the quantity of product in cart.
+
+        - Supplier => 
+                        1. After adding a product to cart, it will be "Add" button only.
+                        2. In catalog all products will be showing "remove" button. Clicking on which will remove product from catalog and reload the page.
+
+                   
+
 Saturday, 8 January, 2022
     - Handled notifications properly, while app is in foreground
     
