@@ -142,7 +142,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                           },
                           borderDerRadius: BorderRadius.all(
                             Radius.circular(
-                              Dimens().suppliersListItemImageCiircularRaduis,
+                              Dimens().suppliersListItemImageCircularRaduis,
                             ),
                           ),
                           child: Container(
@@ -155,8 +155,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                                   : AppColors().white,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(
-                                  Dimens()
-                                      .suppliersListItemImageCiircularRaduis,
+                                  Dimens().suppliersListItemImageCircularRaduis,
                                 ),
                               ),
                             ),

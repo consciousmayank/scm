@@ -226,7 +226,7 @@ class CommonDashBoardApis extends BaseApi
     if (filterResponse(parentApiResponse) != null) {
       apiResponse = ApiResponse.fromMap(parentApiResponse.response!.data);
     }
-    cartService.controller.add(Cart().empty());
+    cartService.addToStream(Cart().empty());
     return apiResponse;
   }
 

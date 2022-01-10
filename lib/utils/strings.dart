@@ -215,3 +215,4 @@ const String labelFetchingCategories = 'Fetching Categories. Please Wait...';
 const String ordersNotificationDescription = 'You have new a order';
 const String changePasswordDisclaimer =
     'Changing your password will log you out. You will have to login again.';
+const addedProductToCatalogServerMEssage = 'Cannot Add Product, Already Added.';

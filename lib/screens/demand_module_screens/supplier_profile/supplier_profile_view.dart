@@ -13,6 +13,7 @@ import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
+import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:scm/widgets/showing_data_widgets.dart';
 import 'package:scm/widgets/single_brand_item.dart';
 import 'package:scm/widgets/single_category_item.dart';
@@ -72,7 +73,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     profileImageSize: 210,
                     borderDerRadius: BorderRadius.all(
                       Radius.circular(
-                        Dimens().suppliersListItemImageCiircularRaduis,
+                        Dimens().suppliersListItemImageCircularRaduis,
                       ),
                     ),
                     imageUrlString: checkImageUrl(
@@ -127,13 +128,14 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
               keepScrollOffset: true,
             ),
             slivers: [
-              // if (widget.arguments.selectedSupplier != null)
-              //   getSupplierProfileForDemandModule(),
-              // SliverToBoxAdapter(
-              //   child: hSizedBox(
-              //     height: 8,
-              //   ),
-              // ),
+              if (widget.arguments.selectedSupplier != null)
+                getSupplierProfileForDemandModule(),
+              if (widget.arguments.selectedSupplier != null)
+                SliverToBoxAdapter(
+                  child: hSizedBox(
+                    height: 8,
+                  ),
+                ),
               if (model.brandsApiStatus == ApiStatus.FETCHED &&
                   model.allBrandsResponse!.brands!.isNotEmpty)
                 SliverToBoxAdapter(
@@ -403,45 +405,14 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                       : SliverGrid(
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
-                              return ProductListItem(
+                              return ProductListItem2View(
                                 arguments: widget.arguments.isSupplierCatalog
-                                    ? ProductListItemArguments.forCatalog(
-                                        productTitle: model
+                                    ? ProductListItem2ViewArguments.catalog(
+                                        product: model
                                             .productListResponse!.products!
-                                            .elementAt(index)
-                                            .title,
-                                        productCategory: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .type,
-                                        productPrice: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .price,
-                                        onDeleteButtonClick: () {
-                                          model.addToCatalogObject
-                                              .removeProductFromCatalog(
-                                                productId: model
-                                                    .productListResponse!
-                                                    .products!
-                                                    .elementAt(
-                                                      index,
-                                                    )
-                                                    .id!,
-                                                productTitle: model
-                                                    .productListResponse!
-                                                    .products!
-                                                    .elementAt(
-                                                      index,
-                                                    )
-                                                    .title!,
-                                              )
-                                              .then(
-                                                (value) =>
-                                                    value != null && value
-                                                        ? model.reloadPage()
-                                                        : null,
-                                              );
+                                            .elementAt(index),
+                                        onProductOperationCompleted: () {
+                                          model.reloadPage();
                                         },
                                         onProductClick: () {
                                           model.openProductDetails(
@@ -450,71 +421,15 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                                 .elementAt(index),
                                           );
                                         },
-                                        // image: getProductImage(model, index),
-                                        image: getProductImage(
-                                            productImage: model
-                                                .productListResponse!.products!
-                                                .elementAt(
-                                                  index,
-                                                )
-                                                .images),
-                                        productId: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .id,
-                                        measurementUnit: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .measurementUnit,
-                                        measurement: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .measurement,
                                       )
-                                    : ProductListItemArguments(
-                                        productTitle: model
+                                    : ProductListItem2ViewArguments(
+                                        supplierId: widget
+                                            .arguments.selectedSupplier?.id,
+                                        product: model
                                             .productListResponse!.products!
-                                            .elementAt(index)
-                                            .title,
-                                        productCategory: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .type,
-                                        productPrice: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .price,
-                                        onAddButtonClick: () {
-                                          if (widget
-                                                  .arguments.selectedSupplier ==
-                                              null) {
-                                            model.addToCatalogObject
-                                                .addProductToCatalog(
-                                                    productId: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(
-                                                          index,
-                                                        )
-                                                        .id!,
-                                                    productTitle: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(
-                                                          index,
-                                                        )
-                                                        .title!);
-                                          } else {
-                                            model.addToCartObject
-                                                .openProductQuantityDialogBox(
-                                              product: model
-                                                  .productListResponse!
-                                                  .products!
-                                                  .elementAt(
-                                                index,
-                                              ),
-                                            );
-                                          }
+                                            .elementAt(index),
+                                        onProductOperationCompleted: () {
+                                          model.reloadPage();
                                         },
                                         onProductClick: () {
                                           model.openProductDetails(
@@ -523,28 +438,151 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                                 .elementAt(index),
                                           );
                                         },
-                                        // image: getProductImage(model, index),
-                                        image: getProductImage(
-                                            productImage: model
-                                                .productListResponse!.products!
-                                                .elementAt(
-                                                  index,
-                                                )
-                                                .images),
-                                        productId: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .id,
-                                        measurementUnit: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .measurementUnit,
-                                        measurement: model
-                                            .productListResponse!.products!
-                                            .elementAt(index)
-                                            .measurement,
                                       ),
                               );
+
+                              // ProductListItem(
+                              //   arguments: widget.arguments.isSupplierCatalog
+                              //       ? ProductListItemArguments.forCatalog(
+                              //           productTitle: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .title,
+                              //           productCategory: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .type,
+                              //           productPrice: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .price,
+                              //           onDeleteButtonClick: () {
+                              //             model.addToCatalogObject
+                              //                 .removeProductFromCatalog(
+                              //                   productId: model
+                              //                       .productListResponse!
+                              //                       .products!
+                              //                       .elementAt(
+                              //                         index,
+                              //                       )
+                              //                       .id!,
+                              //                   productTitle: model
+                              //                       .productListResponse!
+                              //                       .products!
+                              //                       .elementAt(
+                              //                         index,
+                              //                       )
+                              //                       .title!,
+                              //                 )
+                              //                 .then(
+                              //                   (value) =>
+                              //                       value != null && value
+                              //                           ? model.reloadPage()
+                              //                           : null,
+                              //                 );
+                              //           },
+                              //           onProductClick: () {
+                              //             model.openProductDetails(
+                              //               product: model
+                              //                   .productListResponse!.products!
+                              //                   .elementAt(index),
+                              //             );
+                              //           },
+                              // image: getProductImage(model, index),
+                              //           image: getProductImage(
+                              //               productImage: model
+                              //                   .productListResponse!.products!
+                              //                   .elementAt(
+                              //                     index,
+                              //                   )
+                              //                   .images),
+                              //           productId: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .id,
+                              //           measurementUnit: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .measurementUnit,
+                              //           measurement: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .measurement,
+                              //         )
+                              //       : ProductListItemArguments(
+                              //           productTitle: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .title,
+                              //           productCategory: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .type,
+                              //           productPrice: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .price,
+                              //           onAddButtonClick: () {
+                              //             if (widget
+                              //                     .arguments.selectedSupplier ==
+                              //                 null) {
+                              //               model.addToCatalogObject
+                              //                   .addProductToCatalog(
+                              //                       productId: model
+                              //                           .productListResponse!
+                              //                           .products!
+                              //                           .elementAt(
+                              //                             index,
+                              //                           )
+                              //                           .id!,
+                              //                       productTitle: model
+                              //                           .productListResponse!
+                              //                           .products!
+                              //                           .elementAt(
+                              //                             index,
+                              //                           )
+                              //                           .title!);
+                              //             } else {
+                              //               model.addToCartObject
+                              //                   .openProductQuantityDialogBox(
+                              //                 product: model
+                              //                     .productListResponse!
+                              //                     .products!
+                              //                     .elementAt(
+                              //                   index,
+                              //                 ),
+                              //               );
+                              //             }
+                              //           },
+                              //           onProductClick: () {
+                              //             model.openProductDetails(
+                              //               product: model
+                              //                   .productListResponse!.products!
+                              //                   .elementAt(index),
+                              //             );
+                              //           },
+                              //           // image: getProductImage(model, index),
+                              //           image: getProductImage(
+                              //               productImage: model
+                              //                   .productListResponse!.products!
+                              //                   .elementAt(
+                              //                     index,
+                              //                   )
+                              //                   .images),
+                              //           productId: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .id,
+                              //           measurementUnit: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .measurementUnit,
+                              //           measurement: model
+                              //               .productListResponse!.products!
+                              //               .elementAt(index)
+                              //               .measurement,
+                              //         ),
+                              // );
                             },
                             childCount:
                                 model.productListResponse!.products!.length,

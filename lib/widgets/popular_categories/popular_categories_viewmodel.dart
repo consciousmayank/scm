@@ -43,6 +43,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
           categoryFilterList: [selectedCategory],
           subCategoryFilterList: [],
           productTitle: '',
+          isSupplierCatalog: args.isSupplierCatalog,
         ),
       );
     } else {

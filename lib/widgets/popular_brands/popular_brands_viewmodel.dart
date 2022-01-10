@@ -60,6 +60,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
         categoryFilterList: [],
         subCategoryFilterList: [],
         productTitle: '',
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }

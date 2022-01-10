@@ -278,7 +278,7 @@ class SinglePopularBrandItem extends StatelessWidget {
 
     return AppInkwell.withBorder(
       borderDerRadius: BorderRadius.circular(
-        Dimens().suppliersListItemImageCiircularRaduis,
+        Dimens().suppliersListItemImageCircularRaduis,
       ),
       onTap: () => onItemClicked(selectedItem: item),
       child: Column(
@@ -304,7 +304,7 @@ class SinglePopularBrandItem extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.all(
                 Radius.circular(
-                  Dimens().suppliersListItemImageCiircularRaduis,
+                  Dimens().suppliersListItemImageCircularRaduis,
                 ),
               ),
             ),

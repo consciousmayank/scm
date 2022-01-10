@@ -180,7 +180,8 @@ class ProductAddToCartDialogBoxViewArguments {
     required this.title,
     required this.productId,
     required this.supplierId,
-  }) : quantity = null;
+    this.quantity,
+  });
 
   ProductAddToCartDialogBoxViewArguments.fromCartPage({
     required this.title,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';

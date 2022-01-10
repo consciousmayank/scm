@@ -64,7 +64,7 @@ class Dimens {
 
   get dashboardOrderListCardHeight => 500;
 
-  double get suppliersListItemImageCiircularRaduis => 8;
+  double get suppliersListItemImageCircularRaduis => 8;
 
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(

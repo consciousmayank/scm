@@ -15,6 +15,7 @@ import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
 import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
+import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:stacked/stacked.dart';
 
 class ProductListView extends StatelessWidget {
@@ -226,48 +227,17 @@ class ProductListView extends StatelessWidget {
                                       ),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return ProductListItem(
+                                        return ProductListItem2View(
                                           arguments: arguments.isSupplierCatalog
-                                              ? ProductListItemArguments
-                                                  .forCatalog(
-                                                  productTitle: model
+                                              ? ProductListItem2ViewArguments
+                                                  .catalog(
+                                                  product: model
                                                       .productListResponse!
                                                       .products!
-                                                      .elementAt(index)
-                                                      .title,
-                                                  productCategory: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .type,
-                                                  productPrice: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .price,
-                                                  onDeleteButtonClick: () {
-                                                    model.addToCatalog
-                                                        .removeProductFromCatalog(
-                                                            productId: model
-                                                                .productListResponse!
-                                                                .products!
-                                                                .elementAt(
-                                                                    index)
-                                                                .id!,
-                                                            productTitle: model
-                                                                .productListResponse!
-                                                                .products!
-                                                                .elementAt(
-                                                                    index)
-                                                                .title!)
-                                                        .then(
-                                                          (value) => value !=
-                                                                      null &&
-                                                                  value
-                                                              ? model
-                                                                  .reloadPage()
-                                                              : null,
-                                                        );
+                                                      .elementAt(index),
+                                                  onProductOperationCompleted:
+                                                      () {
+                                                    model.reloadPage();
                                                   },
                                                   onProductClick: () {
                                                     model.openProductDetails(
@@ -277,75 +247,15 @@ class ProductListView extends StatelessWidget {
                                                           .elementAt(index),
                                                     );
                                                   },
-                                                  // image: getProductImage(model, index),
-                                                  image: getProductImage(
-                                                      productImage: model
-                                                          .productListResponse!
-                                                          .products!
-                                                          .elementAt(
-                                                            index,
-                                                          )
-                                                          .images),
-                                                  productId: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .id,
-                                                  measurementUnit: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .measurementUnit,
-                                                  measurement: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .measurement,
                                                 )
-                                              : ProductListItemArguments(
-                                                  productTitle: model
+                                              : ProductListItem2ViewArguments(
+                                                  product: model
                                                       .productListResponse!
                                                       .products!
-                                                      .elementAt(index)
-                                                      .title,
-                                                  productCategory: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .type,
-                                                  productPrice: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .price,
-                                                  onAddButtonClick: () {
-                                                    if (arguments.supplierId !=
-                                                        null) {
-                                                      model.addToCartObject
-                                                          .openProductQuantityDialogBox(
-                                                        product: model
-                                                            .productListResponse!
-                                                            .products!
-                                                            .elementAt(
-                                                          index,
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      model.addToCatalog
-                                                          .addProductToCatalog(
-                                                              productId: model
-                                                                  .productListResponse!
-                                                                  .products!
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .id!,
-                                                              productTitle: model
-                                                                  .productListResponse!
-                                                                  .products!
-                                                                  .elementAt(
-                                                                      index)
-                                                                  .title!);
-                                                    }
+                                                      .elementAt(index),
+                                                  onProductOperationCompleted:
+                                                      () {
+                                                    model.reloadPage();
                                                   },
                                                   onProductClick: () {
                                                     model.openProductDetails(
@@ -355,32 +265,166 @@ class ProductListView extends StatelessWidget {
                                                           .elementAt(index),
                                                     );
                                                   },
-                                                  // image: getProductImage(model, index),
-                                                  image: getProductImage(
-                                                      productImage: model
-                                                          .productListResponse!
-                                                          .products!
-                                                          .elementAt(
-                                                            index,
-                                                          )
-                                                          .images),
-                                                  productId: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .id,
-                                                  measurementUnit: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .measurementUnit,
-                                                  measurement: model
-                                                      .productListResponse!
-                                                      .products!
-                                                      .elementAt(index)
-                                                      .measurement,
+                                                  supplierId:
+                                                      arguments.supplierId,
                                                 ),
                                         );
+
+                                        // ProductListItem(
+                                        //   arguments: arguments.isSupplierCatalog
+                                        //       ? ProductListItemArguments
+                                        //           .forCatalog(
+                                        //           productTitle: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .title,
+                                        //           productCategory: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .type,
+                                        //           productPrice: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .price,
+                                        //           onDeleteButtonClick: () {
+                                        //             model.addToCatalog
+                                        //                 .removeProductFromCatalog(
+                                        //                     productId: model
+                                        //                         .productListResponse!
+                                        //                         .products!
+                                        //                         .elementAt(
+                                        //                             index)
+                                        //                         .id!,
+                                        //                     productTitle: model
+                                        //                         .productListResponse!
+                                        //                         .products!
+                                        //                         .elementAt(
+                                        //                             index)
+                                        //                         .title!)
+                                        //                 .then(
+                                        //                   (value) => value !=
+                                        //                               null &&
+                                        //                           value
+                                        //                       ? model
+                                        //                           .reloadPage()
+                                        //                       : null,
+                                        //                 );
+                                        //           },
+                                        //           onProductClick: () {
+                                        //             model.openProductDetails(
+                                        //               product: model
+                                        //                   .productListResponse!
+                                        //                   .products!
+                                        //                   .elementAt(index),
+                                        //             );
+                                        //           },
+                                        //           // image: getProductImage(model, index),
+                                        //           image: getProductImage(
+                                        //               productImage: model
+                                        //                   .productListResponse!
+                                        //                   .products!
+                                        //                   .elementAt(
+                                        //                     index,
+                                        //                   )
+                                        //                   .images),
+                                        //           productId: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .id,
+                                        //           measurementUnit: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .measurementUnit,
+                                        //           measurement: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .measurement,
+                                        //         )
+                                        //       : ProductListItemArguments(
+                                        //           productTitle: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .title,
+                                        //           productCategory: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .type,
+                                        //           productPrice: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .price,
+                                        //           onAddButtonClick: () {
+                                        //             if (arguments.supplierId !=
+                                        //                 null) {
+                                        //               model.addToCartObject
+                                        //                   .openProductQuantityDialogBox(
+                                        //                 product: model
+                                        //                     .productListResponse!
+                                        //                     .products!
+                                        //                     .elementAt(
+                                        //                   index,
+                                        //                 ),
+                                        //               );
+                                        //             } else {
+                                        //               model.addToCatalog
+                                        //                   .addProductToCatalog(
+                                        //                       productId: model
+                                        //                           .productListResponse!
+                                        //                           .products!
+                                        //                           .elementAt(
+                                        //                               index)
+                                        //                           .id!,
+                                        //                       productTitle: model
+                                        //                           .productListResponse!
+                                        //                           .products!
+                                        //                           .elementAt(
+                                        //                               index)
+                                        //                           .title!);
+                                        //             }
+                                        //           },
+                                        //           onProductClick: () {
+                                        //             model.openProductDetails(
+                                        //               product: model
+                                        //                   .productListResponse!
+                                        //                   .products!
+                                        //                   .elementAt(index),
+                                        //             );
+                                        //           },
+                                        //           // image: getProductImage(model, index),
+                                        //           image: getProductImage(
+                                        //               productImage: model
+                                        //                   .productListResponse!
+                                        //                   .products!
+                                        //                   .elementAt(
+                                        //                     index,
+                                        //                   )
+                                        //                   .images),
+                                        //           productId: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .id,
+                                        //           measurementUnit: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .measurementUnit,
+                                        //           measurement: model
+                                        //               .productListResponse!
+                                        //               .products!
+                                        //               .elementAt(index)
+                                        //               .measurement,
+                                        //         ),
+                                        // );
                                       },
                                     ),
                                   ),
@@ -447,8 +491,8 @@ class ProductListViewArguments {
     required this.productTitle,
     required this.supplierId,
     required this.supplierName,
-  })  : productsPerLine = 3,
-        isSupplierCatalog = false;
+    this.isSupplierCatalog = false,
+  }) : productsPerLine = 3;
 
   ProductListViewArguments.asWidget({
     this.isScrollVertical = false,

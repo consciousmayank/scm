@@ -379,7 +379,7 @@ class OrderListTableWidget extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
-          Dimens().suppliersListItemImageCiircularRaduis,
+          Dimens().suppliersListItemImageCircularRaduis,
         ),
         color:
             isHeader ? Theme.of(context).colorScheme.background : Colors.white,

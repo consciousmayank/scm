@@ -178,6 +178,58 @@ class AppTextButtonsStyles {
         return const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
       }));
 
+  ButtonStyle get textButtonStyleForProductListItemReversed =>
+      textButtonStyle.copyWith(shape: MaterialStateProperty.resolveWith(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                topRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          } else {
+            return RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+                width: Dimens().defaultBorder / 2,
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                bottomRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          }
+        },
+      ), side: MaterialStateProperty.resolveWith<BorderSide>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return BorderSide(
+            width: 0.0,
+            color: Theme.of(context).colorScheme.background,
+          );
+        }
+        return BorderSide(
+          width: 0,
+          color: foregroundColor ?? Theme.of(context).colorScheme.secondary,
+        ); // Defer to the widget's default.
+      }), textStyle: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const TextStyle(
+            fontSize: 16,
+          );
+        }
+        return const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+      }));
+
   ButtonStyle get textButtonStyle => ButtonStyle(
         side: MaterialStateProperty.resolveWith<BorderSide>(
             (Set<MaterialState> states) {

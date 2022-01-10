@@ -19,7 +19,7 @@ class SingleBrandItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppInkwell.withBorder(
       borderDerRadius: BorderRadius.circular(
-        Dimens().suppliersListItemImageCiircularRaduis,
+        Dimens().suppliersListItemImageCircularRaduis,
       ),
       onTap: () => onItemClicked(selectedItem: item),
       child: Column(
@@ -28,7 +28,7 @@ class SingleBrandItemWidget extends StatelessWidget {
         children: [
           ProfileImageWidget.downloadImageWithCurvedBorders(
             borderDerRadius: BorderRadius.circular(
-              Dimens().suppliersListItemImageCiircularRaduis,
+              Dimens().suppliersListItemImageCircularRaduis,
             ),
             profileImageSize: 100,
             imageDownloadString: item.title,
@@ -48,7 +48,7 @@ class SingleBrandItemWidget extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.all(
                 Radius.circular(
-                  Dimens().suppliersListItemImageCiircularRaduis,
+                  Dimens().suppliersListItemImageCircularRaduis,
                 ),
               ),
             ),

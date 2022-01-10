@@ -105,6 +105,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
         productTitle: '',
         supplierId: arguments.selectedSupplier?.id,
         supplierName: arguments.selectedSupplier?.businessName,
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }

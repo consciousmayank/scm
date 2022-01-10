@@ -19,6 +19,7 @@ class AddToCart extends GeneralisedBaseViewModel {
 
   void openProductQuantityDialogBox({
     required Product product,
+    int? quantity,
   }) async {
     DialogResponse? resetCartResponse;
     if (preferences.getDemandersCart().supplyId != null &&
@@ -65,6 +66,7 @@ class AddToCart extends GeneralisedBaseViewModel {
         variant: DialogType.ADD_PRODUCT_TO_CART,
         data: ProductAddToCartDialogBoxViewArguments(
           title: product.title!,
+          quantity: quantity,
           productId: product.id!,
           supplierId: supplierId,
         ),

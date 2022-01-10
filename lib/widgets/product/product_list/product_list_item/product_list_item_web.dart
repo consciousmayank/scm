@@ -25,7 +25,7 @@ class ProductListItemWeb extends StatelessWidget {
     return AppInkwell.withBorder(
       onTap: () => arguments.onProductClick(),
       borderDerRadius: BorderRadius.circular(
-        Dimens().suppliersListItemImageCiircularRaduis,
+        Dimens().suppliersListItemImageCircularRaduis,
       ),
       child: Row(
         children: [

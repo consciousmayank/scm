@@ -75,7 +75,7 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       );
       saveCartToPreferences(cart: returningCart);
     }
-    cartService.controller.add(returningCart);
+    cartService.addToStream(returningCart);
     return returningCart;
   }
 
@@ -97,7 +97,7 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       saveCartToPreferences(cart: cart);
     }
 
-    cartService.controller.add(cart);
+    cartService.addToStream(cart);
 
     return cart;
   }
@@ -153,7 +153,7 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       );
       saveCartToPreferences(cart: returningCart);
     }
-    cartService.controller.add(returningCart);
+    cartService.addToStream(returningCart);
     return returningCart;
   }
 
