@@ -3,26 +3,26 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
 class DioConfig {
-  DioConfig({
-    required this.baseUrl,
-  }) {
+  DioConfig() {
     configureDio();
   }
 
   final appPreferences = di<AppPreferences>();
-  final String baseUrl;
+  late String baseUrl;
   final apiCancelToken = CancelToken();
   ApiStatus refreshTokenApiStatus = ApiStatus.FETCHED;
 
@@ -30,7 +30,7 @@ class DioConfig {
 
   configureDio() {
     _dio.options
-      ..baseUrl = baseUrl
+      ..baseUrl = EnvironmentConfig.BASE_URL
       ..contentType = "application/json"
       ..headers = {
         "X-Requested-With": "XmlHttpRequest",
@@ -94,9 +94,13 @@ class DioConfig {
                     appPreferences.clearPreferences();
                     di<stacked_service.NavigationService>().clearStackAndShow(
                       mainViewRoute,
-                      arguments: LoginReasons(
-                        title: invalidTokenTitle,
-                        description: invalidTokenDescription,
+                      arguments: LoginViewArguments(
+                        arguments: LoginViewArgs(
+                          reasons: LoginReasons(
+                            title: invalidTokenTitle,
+                            description: invalidTokenDescription,
+                          ),
+                        ),
                       ),
                     );
                   },

@@ -24,7 +24,7 @@ class ProductListView extends StatelessWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final ProductListViewArguments arguments;
+  final ProductListViewArgs arguments;
 
   String getTitle({required ProductListViewModel model}) {
     return arguments.supplierName == null
@@ -463,8 +463,8 @@ class ProductListView extends StatelessWidget {
   }
 }
 
-class ProductListViewArguments {
-  ProductListViewArguments.appbar({
+class ProductListViewArgs {
+  ProductListViewArgs.appbar({
     this.showAppbar = false,
     this.isScrollVertical = true,
     this.showBottomPageChanger = true,
@@ -479,7 +479,7 @@ class ProductListViewArguments {
         isSupplierCatalog = false,
         supplierName = null;
 
-  ProductListViewArguments.asSupplierProductList({
+  ProductListViewArgs.asSupplierProductList({
     this.showAppbar = true,
     this.isScrollVertical = true,
     this.showBottomPageChanger = true,
@@ -494,7 +494,7 @@ class ProductListViewArguments {
     this.isSupplierCatalog = false,
   }) : productsPerLine = 3;
 
-  ProductListViewArguments.asWidget({
+  ProductListViewArgs.asWidget({
     this.isScrollVertical = false,
     this.showBottomPageChanger = false,
     this.showFilterAndSortOption = false,
@@ -509,7 +509,7 @@ class ProductListViewArguments {
         isSupplierCatalog = false,
         supplierName = null;
 
-  ProductListViewArguments.fullScreen({
+  ProductListViewArgs.fullScreen({
     this.isSupplierCatalog = false,
     this.showAppbar = true,
     this.isScrollVertical = true,

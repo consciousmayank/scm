@@ -19,7 +19,7 @@ class LoginView extends StatelessWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final LoginViewArguments arguments;
+  final LoginViewArgs arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -128,8 +128,8 @@ class LoginView extends StatelessWidget {
   }
 }
 
-class LoginViewArguments {
+class LoginViewArgs {
   final LoginReasons? reasons;
 
-  LoginViewArguments({this.reasons});
+  LoginViewArgs({this.reasons});
 }

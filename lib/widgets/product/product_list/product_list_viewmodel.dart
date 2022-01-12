@@ -17,7 +17,7 @@ import 'package:stacked_services/stacked_services.dart';
 class ProductListViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
   late AddToCatalog addToCatalog;
-  late final ProductListViewArguments arguments;
+  late final ProductListViewArgs arguments;
   List<String?> brandsFilterList = [];
   List<String?> categoryFilterList = [];
   int pageIndex = 0;
@@ -49,7 +49,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  init({required ProductListViewArguments arguments}) {
+  init({required ProductListViewArgs arguments}) {
     this.arguments = arguments;
     if (arguments.supplierId != null) {
       supplierId = arguments.supplierId;
@@ -119,7 +119,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   takeToProductListFullScreen() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments.fullScreen(
+      arguments: ProductListViewArgs.fullScreen(
         brandsFilterList: [],
         categoryFilterList: [],
         subCategoryFilterList: [],

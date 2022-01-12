@@ -23,10 +23,7 @@ import 'package:stacked_themes/stacked_themes.dart';
 class SupplyModuleLandingPageView extends StatefulWidget {
   const SupplyModuleLandingPageView({
     Key? key,
-    required this.arguments,
   }) : super(key: key);
-
-  final SupplyModuleLandingPageViewArguments arguments;
 
   @override
   _SupplyModuleLandingPageViewState createState() =>
@@ -227,7 +224,7 @@ class SupplyModuleLandingPageWebView
                   viewModel.showProductList && viewModel.searchTerm.length > 2
                       ? ProductListView(
                           key: UniqueKey(),
-                          arguments: ProductListViewArguments.appbar(
+                          arguments: ProductListViewArgs.appbar(
                             brandsFilterList: [],
                             categoryFilterList: [],
                             subCategoryFilterList: [],
@@ -243,5 +240,3 @@ class SupplyModuleLandingPageWebView
     );
   }
 }
-
-class SupplyModuleLandingPageViewArguments {}

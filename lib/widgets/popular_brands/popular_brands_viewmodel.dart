@@ -10,7 +10,7 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   AllBrandsResponse? allBrandsResponse;
-  late final PopularBrandsViewArguments arguments;
+  late final PopularBrandsViewArgs arguments;
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocusNode = FocusNode();
 
@@ -55,7 +55,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({required Brand selectedItem}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments.fullScreen(
+      arguments: ProductListViewArgs.fullScreen(
         brandsFilterList: [selectedItem.title],
         categoryFilterList: [],
         subCategoryFilterList: [],
@@ -65,7 +65,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
     );
   }
 
-  init({required PopularBrandsViewArguments arguments}) {
+  init({required PopularBrandsViewArgs arguments}) {
     this.arguments = arguments;
     getAllBrands();
   }

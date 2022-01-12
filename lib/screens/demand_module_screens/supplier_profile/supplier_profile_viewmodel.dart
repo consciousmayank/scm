@@ -91,7 +91,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({Brand? selectedBrand, String? selectedCategory}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments.asSupplierProductList(
+      arguments: ProductListViewArgs.asSupplierProductList(
         brandsFilterList: selectedBrand == null
             ? []
             : [
@@ -143,7 +143,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForSupplier() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArguments.fullScreen(
+      arguments: PopularBrandsViewArgs.fullScreen(
         isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
@@ -152,7 +152,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForDemander() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArguments.demanderPopularBrands(
+      arguments: PopularBrandsViewArgs.demanderPopularBrands(
         supplierId: arguments.selectedSupplier?.id,
         supplierName: arguments.selectedSupplier?.businessName,
       ),
@@ -162,7 +162,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToCategoriesFullScreenForSupplier() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArguments(
+      arguments: PopularCategoriesViewArgs(
           isSupplierCatalog: arguments.isSupplierCatalog),
     );
   }
@@ -170,7 +170,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToCategoriesFullScreenForDemander() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArguments.demanderPopularBrands(
+      arguments: PopularCategoriesViewArgs.demanderPopularBrands(
         supplierId: arguments.selectedSupplier?.id,
         supplierName: arguments.selectedSupplier?.businessName,
       ),
@@ -180,7 +180,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForSupplier() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments.fullScreen(
+      arguments: ProductListViewArgs.fullScreen(
         isSupplierCatalog: arguments.isSupplierCatalog,
         brandsFilterList: [],
         categoryFilterList: [],
@@ -193,7 +193,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForDemander() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments.asSupplierProductList(
+      arguments: ProductListViewArgs.asSupplierProductList(
         brandsFilterList: [],
         categoryFilterList: [],
         subCategoryFilterList: [],

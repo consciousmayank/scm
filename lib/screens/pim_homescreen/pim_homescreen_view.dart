@@ -10,10 +10,7 @@ import 'package:stacked_themes/stacked_themes.dart';
 class PimHomeScreenView extends StatelessWidget {
   const PimHomeScreenView({
     Key? key,
-    required this.arguments,
   }) : super(key: key);
-
-  final PimHomeScreenViewArguments arguments;
 
   getDeoDestinations({required bool isRotated}) {
     return [
@@ -122,5 +119,3 @@ class PimHomeScreenView extends StatelessWidget {
     );
   }
 }
-
-class PimHomeScreenViewArguments {}

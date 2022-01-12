@@ -203,7 +203,7 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
   takeToFullScreenBrandsView() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArguments.fullScreen(),
+      arguments: PopularBrandsViewArgs.fullScreen(),
     );
   }
 }

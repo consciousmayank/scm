@@ -7,7 +7,7 @@ import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
-  late final PopularCategoriesViewArguments args;
+  late final PopularCategoriesViewArgs args;
   ProductCategoriesResponse? categoriesResponse;
   String? categoryTitle;
   int pageIndex = 0;
@@ -27,7 +27,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  init({required PopularCategoriesViewArguments args}) {
+  init({required PopularCategoriesViewArgs args}) {
     this.args = args;
     getAllCategories();
   }
@@ -38,7 +38,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
     if (args.supplierId == null) {
       navigationService.navigateTo(
         productListViewPageRoute,
-        arguments: ProductListViewArguments.fullScreen(
+        arguments: ProductListViewArgs.fullScreen(
           brandsFilterList: [],
           categoryFilterList: [selectedCategory],
           subCategoryFilterList: [],
@@ -49,7 +49,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
     } else {
       navigationService.navigateTo(
         productListViewPageRoute,
-        arguments: ProductListViewArguments.asSupplierProductList(
+        arguments: ProductListViewArgs.asSupplierProductList(
           brandsFilterList: [],
           categoryFilterList: [selectedCategory],
           subCategoryFilterList: [],

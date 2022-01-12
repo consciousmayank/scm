@@ -19,10 +19,7 @@ import 'package:stacked_themes/stacked_themes.dart';
 class DemandModuleLandingPageView extends StatefulWidget {
   const DemandModuleLandingPageView({
     Key? key,
-    required this.arguments,
   }) : super(key: key);
-
-  final DemandModuleLandingPageViewArguments arguments;
 
   @override
   _DemandModuleLandingPageViewState createState() =>
@@ -223,5 +220,3 @@ class SupplyModuleLandingPageWebView
     );
   }
 }
-
-class DemandModuleLandingPageViewArguments {}

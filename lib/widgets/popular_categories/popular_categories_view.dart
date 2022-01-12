@@ -20,7 +20,7 @@ class PopularCategoriesView extends StatelessWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final PopularCategoriesViewArguments arguments;
+  final PopularCategoriesViewArgs arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -217,14 +217,14 @@ class PopularCategoriesView extends StatelessWidget {
   }
 }
 
-class PopularCategoriesViewArguments {
-  const PopularCategoriesViewArguments({
+class PopularCategoriesViewArgs {
+  const PopularCategoriesViewArgs({
     this.isSupplierCatalog = false,
   })  : isFullScreen = true,
         supplierId = null,
         supplierName = null;
 
-  PopularCategoriesViewArguments.demanderPopularBrands({
+  PopularCategoriesViewArgs.demanderPopularBrands({
     required this.supplierId,
     required this.supplierName,
   })  : isFullScreen = true,

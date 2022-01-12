@@ -53,7 +53,9 @@ class LoginViewModel extends GeneralisedBaseViewModel {
               navigationService.replaceWith(pimHomeScreenRoute);
             } else if (loadSupplyModule(
                 authenticateResponse.authorities!.first)) {
-              navigationService.replaceWith(supplyLandingScreenRoute);
+              navigationService.replaceWith(
+                supplyLandingScreenRoute,
+              );
             } else {
               navigationService.replaceWith(demandLandingScreenRoute);
             }
@@ -86,7 +88,7 @@ class LoginViewModel extends GeneralisedBaseViewModel {
     }
   }
 
-  init({required LoginViewArguments? args}) {
+  init({required LoginViewArgs? args}) {
     if (args?.reasons != null) {
       showErrorSnackBar(
         message: args?.reasons?.description ?? "",

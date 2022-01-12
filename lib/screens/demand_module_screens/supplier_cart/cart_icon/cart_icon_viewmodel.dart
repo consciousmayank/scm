@@ -64,7 +64,7 @@ class CartIconViewModel extends StreamViewModel<Cart> {
   takeToCart() {
     _navigationService.navigateTo(
       cartViewPageRoute,
-      arguments: CartPageViewArguments(),
+      arguments: CartPageViewArgs(),
     );
   }
 }

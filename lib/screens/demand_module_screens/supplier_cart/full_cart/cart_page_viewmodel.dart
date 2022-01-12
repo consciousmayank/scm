@@ -23,7 +23,7 @@ import 'package:scm/model_classes/address.dart' as demanders_address;
 class CartPageViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
   List<demanders_address.Address> addressList = [];
-  late final CartPageViewArguments args;
+  late final CartPageViewArgs args;
   Cart cart = Cart().empty();
   ApiStatus cartApiStatus = ApiStatus.LOADING;
   ApiStatus getAddressListApiStatus = ApiStatus.LOADING;
@@ -34,7 +34,7 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
   final DemandCartApi _demandCartApi = di<DemandCartApi>();
 
-  init({required CartPageViewArguments args}) {
+  init({required CartPageViewArgs args}) {
     this.args = args;
     getCartItems();
     getDemadersAddressList();

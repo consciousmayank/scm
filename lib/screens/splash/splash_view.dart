@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
@@ -11,6 +12,7 @@ import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked/stacked.dart';
@@ -61,7 +63,11 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       di<NavigationService>().replaceWith(
         logInPageRoute,
-        arguments: widget.reasons,
+        arguments: LoginViewArguments(
+          arguments: LoginViewArgs(
+            reasons: widget.reasons,
+          ),
+        ),
       );
     }
   }

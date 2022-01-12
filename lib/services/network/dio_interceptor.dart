@@ -12,7 +12,7 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
-class AppDioInterceptor extends QueuedInterceptor {
+class ApiServiceAppDioInterceptor extends QueuedInterceptor {
   Dio getTokenDioClient = Dio();
   ApiStatus refreshTokenApiStatus = ApiStatus.LOADING;
   late final Function({required RequestOptions requestOptions})

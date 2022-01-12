@@ -34,6 +34,18 @@ abstract class InterFaceAppPreferences {
 }
 
 class AppPreferences implements InterFaceAppPreferences {
+  static Future<AppPreferences> getInstance() async {
+    if (_instance == null) {
+      // Initialise the asynchronous shared preferences
+      _sharedPrefs = await SharedPreferences.getInstance();
+      _instance = AppPreferences();
+    }
+
+    return Future.value(_instance);
+  }
+
+  static AppPreferences? _instance;
+
   final String apiToken = "api_token";
   final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
@@ -42,12 +54,12 @@ class AppPreferences implements InterFaceAppPreferences {
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
 
-  late SharedPreferences _sharedPrefs;
+  static SharedPreferences? _sharedPrefs;
 
   @override
   String? getApiToken() {
     // return "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NjExODg2MzM5IiwiaXNTdXBwbHkiOnRydWUsImlzcyI6ImdlZWt0ZWNobm90b25pYyIsImV4cCI6MTY0MTkzMjgzNSwiaWF0IjoxNjQxOTA0MDM1fQ.iGrsNsM8Bs6wE9kg0IGKLiglwuhjrIrK6GgRWVeJ2E6SK1NUoH7Oa9-jE-BZvTFyvr-QOwMPMPR5H1E8NfAh2A";
-    String? savedToken = _sharedPrefs.getString(apiToken);
+    String? savedToken = _sharedPrefs?.getString(apiToken);
     if (savedToken != null) {
       return savedToken;
     } else {
@@ -57,7 +69,7 @@ class AppPreferences implements InterFaceAppPreferences {
 
   @override
   String getAuthenticatedUserName() {
-    return _sharedPrefs.getString(
+    return _sharedPrefs?.getString(
           authenticatedUserName,
         ) ??
         '';
@@ -65,16 +77,16 @@ class AppPreferences implements InterFaceAppPreferences {
 
   @override
   List<String> getAuthenticatedUserRoles() {
-    return _sharedPrefs.getString(authenticatedUserRoles) == null
+    return _sharedPrefs?.getString(authenticatedUserRoles) == null
         ? []
-        : _sharedPrefs.getString(authenticatedUserRoles)!.split(',');
+        : _sharedPrefs!.getString(authenticatedUserRoles)!.split(',');
   }
 
   @override
   Cart getDemandersCart() {
     Cart cart = Cart().empty();
 
-    String? cartJson = _sharedPrefs.getString(demandersCart);
+    String? cartJson = _sharedPrefs?.getString(demandersCart);
     if (cartJson != null) {
       cart = Cart.fromJson(cartJson);
     }
@@ -83,12 +95,12 @@ class AppPreferences implements InterFaceAppPreferences {
 
   @override
   String getSelectedUserRole() {
-    return _sharedPrefs.getString(selectedUserRole) ?? '';
+    return _sharedPrefs?.getString(selectedUserRole) ?? '';
   }
 
   @override
   String? getSupplierBusinessName() {
-    String? savedBusinessName = _sharedPrefs.getString(supplierBusinessName);
+    String? savedBusinessName = _sharedPrefs?.getString(supplierBusinessName);
     if (savedBusinessName != null) {
       return savedBusinessName;
     } else {
@@ -99,32 +111,32 @@ class AppPreferences implements InterFaceAppPreferences {
   @override
   void saveApiToken({String? tokenString}) {
     if (tokenString == null) {
-      _sharedPrefs.remove(apiToken);
+      _sharedPrefs?.remove(apiToken);
     } else {
-      _sharedPrefs.setString(apiToken, tokenString);
+      _sharedPrefs?.setString(apiToken, tokenString);
     }
   }
 
   @override
   void saveCredentials(String value) {
-    _sharedPrefs.setString(loggedInUserCredentials, value);
+    _sharedPrefs?.setString(loggedInUserCredentials, value);
   }
 
   @override
   void saveSupplierBusinessName({required String? name}) {
     if (name == null) {
-      _sharedPrefs.remove(supplierBusinessName);
+      _sharedPrefs?.remove(supplierBusinessName);
     } else {
-      _sharedPrefs.setString(supplierBusinessName, name);
+      _sharedPrefs?.setString(supplierBusinessName, name);
     }
   }
 
   @override
   void setAuthenticatedUserName({String? user}) {
     if (user == null) {
-      _sharedPrefs.remove(authenticatedUserName);
+      _sharedPrefs?.remove(authenticatedUserName);
     } else {
-      _sharedPrefs.setString(
+      _sharedPrefs?.setString(
         authenticatedUserName,
         user,
       );
@@ -134,24 +146,24 @@ class AppPreferences implements InterFaceAppPreferences {
   @override
   void setAuthenticatedUserRoles({List<String>? userRoles}) {
     if (userRoles == null) {
-      _sharedPrefs.remove(authenticatedUserRoles);
+      _sharedPrefs?.remove(authenticatedUserRoles);
     } else {
-      _sharedPrefs.setString(authenticatedUserRoles, userRoles.join(","));
+      _sharedPrefs?.setString(authenticatedUserRoles, userRoles.join(","));
     }
   }
 
   @override
   void setDemandersCart({required Cart? cart}) {
     if (cart == null) {
-      _sharedPrefs.remove(demandersCart);
+      _sharedPrefs?.remove(demandersCart);
     } else {
-      _sharedPrefs.setString(demandersCart, cart.toJson());
+      _sharedPrefs?.setString(demandersCart, cart.toJson());
     }
   }
 
   @override
   void setSelectedUserRole({required String userRole}) {
-    _sharedPrefs.setString(selectedUserRole, userRole);
+    _sharedPrefs?.setString(selectedUserRole, userRole);
   }
 
   Future<void> init() async {
@@ -160,6 +172,6 @@ class AppPreferences implements InterFaceAppPreferences {
 
   void clearPreferences() async {
     await FirebaseMessaging.instance.deleteToken();
-    _sharedPrefs.clear();
+    _sharedPrefs?.clear();
   }
 }

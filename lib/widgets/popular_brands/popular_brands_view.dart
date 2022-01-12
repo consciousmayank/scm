@@ -21,7 +21,7 @@ class PopularBrandsView extends StatelessWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final PopularBrandsViewArguments arguments;
+  final PopularBrandsViewArgs arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -228,22 +228,22 @@ class PopularBrandsView extends StatelessWidget {
   }
 }
 
-class PopularBrandsViewArguments {
-  PopularBrandsViewArguments({
+class PopularBrandsViewArgs {
+  PopularBrandsViewArgs({
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
   })  : supplierId = null,
         isSupplierCatalog = false,
         supplierName = null;
 
-  PopularBrandsViewArguments.demanderPopularBrands({
+  PopularBrandsViewArgs.demanderPopularBrands({
     this.isFullScreen = true,
     required this.supplierId,
     required this.supplierName,
   })  : onSeeAllBrandsClicked = null,
         isSupplierCatalog = false;
 
-  PopularBrandsViewArguments.fullScreen({
+  PopularBrandsViewArgs.fullScreen({
     this.isFullScreen = true,
     this.onSeeAllBrandsClicked,
     this.isSupplierCatalog = false,

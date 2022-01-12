@@ -20,7 +20,7 @@ class CartPageView extends StatefulWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final CartPageViewArguments arguments;
+  final CartPageViewArgs arguments;
 
   @override
   _CartPageViewState createState() => _CartPageViewState();
@@ -130,4 +130,4 @@ class _CartPageViewState extends State<CartPageView> {
   }
 }
 
-class CartPageViewArguments {}
+class CartPageViewArgs {}

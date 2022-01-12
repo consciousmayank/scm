@@ -84,7 +84,7 @@ class HomePageBodyWidget
           child: SizedBox(
             height: Dimens().popularBrandsHeight,
             child: PopularBrandsView(
-              arguments: PopularBrandsViewArguments(
+              arguments: PopularBrandsViewArgs(
                   onSeeAllBrandsClicked: () =>
                       viewModel.takeToFullScreenBrandsView()),
             ),
@@ -94,7 +94,7 @@ class HomePageBodyWidget
           child: SizedBox(
             height: Dimens().popularCategoryHeight,
             child: PopularCategoriesView(
-              arguments: PopularCategoriesViewArguments(),
+              arguments: PopularCategoriesViewArgs(),
             ),
           ),
         ),
@@ -107,7 +107,7 @@ class HomePageBodyWidget
               desktop: Dimens().popularProductsHeight,
             ),
             child: ProductListView(
-              arguments: ProductListViewArguments.asWidget(
+              arguments: ProductListViewArgs.asWidget(
                 brandsFilterList: [],
                 categoryFilterList: [],
                 productTitle: '',
