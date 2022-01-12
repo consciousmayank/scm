@@ -12,7 +12,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 import 'notification_dialog_box.dart';
 
-const String notificationType = 'ORDER';
+const String orderNotificationType = 'ORDER';
 
 class OnNotificationClick {
   OnNotificationClick({required this.notificationParams});
@@ -29,7 +29,7 @@ class OnNotificationClick {
     Function? onButtonClicked;
 
     switch (notificationParams.screen) {
-      case notificationType:
+      case orderNotificationType:
         notificationsStream.addToStream(notificationParams);
         message = ordersNotificationDescription;
         onButtonClicked = () {

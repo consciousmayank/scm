@@ -8,6 +8,7 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
+import 'package:scm/services/notification/fcm_permissions.dart';
 import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -38,38 +39,7 @@ class _SupplyModuleLandingPageViewState
   void initState() {
     // TODO: implement initState
     super.initState();
-    getPermission();
-  }
-
-  Future<void> getPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
-      if (kIsWeb) {
-        FirebaseMessaging.instance
-            .getToken(
-          vapidKey: EnvironmentConfig.VAPID_KEY,
-        )
-            .then((value) {
-          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
-        });
-      } else {
-        FirebaseMessaging.instance.getToken().then((value) {
-          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
-        });
-      }
-    }
+    FirebasePushNotificationsPermissions().getPermission();
   }
 
   @override

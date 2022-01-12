@@ -21,14 +21,15 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   late final AddToCart addToCartObject;
   late final AddToCatalog addToCatalogObject;
-  AllBrandsResponse? allBrandsResponse;
+  AllBrandsResponse? allBrandsResponse = AllBrandsResponse().empty();
   late final SuppplierProfileViewArguments arguments;
   ApiStatus brandsApiStatus = ApiStatus.LOADING;
   List<String?> brandsFilterList = [];
   ApiStatus categoriesApiStatus = ApiStatus.LOADING;
   List<String?> categoryFilterList = [];
   int pageIndex = 0;
-  ProductCategoriesResponse? productCategoriesResponse;
+  ProductCategoriesResponse? productCategoriesResponse =
+      ProductCategoriesResponse().empty();
   ApiStatus productListApiStatus = ApiStatus.LOADING;
   ProductListResponse? productListResponse = ProductListResponse().empty();
   String? productTitle;

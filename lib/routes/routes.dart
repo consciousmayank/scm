@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
 import 'package:scm/screens/login/login_view.dart';
@@ -21,18 +22,30 @@ class AppRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case mainViewRoute:
+        LoginReasons? reasons;
+        if (settings.arguments != null) {
+          reasons = settings.arguments as LoginReasons;
+        }
         return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
+          builder: (_) => SplashScreen(
+            reasons: reasons,
+          ),
           // builder: (_) => PimHomeScreenView(
           //   arguments: PimHomeScreenViewArguments(),
           // ),
         );
 
       case logInPageRoute:
+        LoginReasons? reasons;
+        if (settings.arguments != null) {
+          reasons = settings.arguments as LoginReasons;
+        }
         return FadeRoute(
           page: BaseView(
             child: LoginView(
-              arguments: LoginViewArguments(),
+              arguments: LoginViewArguments(
+                reasons: reasons,
+              ),
             ),
           ),
         );

@@ -20,6 +20,7 @@ import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/post_order_request.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/model_classes/update_web_fcm_id_request.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/network/dio_client.dart';
@@ -36,7 +37,10 @@ class ApiService {
     Response? response;
     DioError? error;
     try {
-      response = await dioClient.getDio().get(LOGIN);
+      response = await dioClient.getDio().get(
+            LOGIN,
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -48,9 +52,11 @@ class ApiService {
     Response? response;
     DioError? error;
     try {
-      response = await dioClient
-          .getDio()
-          .post(GET_APP_VERSION, data: request.toJson());
+      response = await dioClient.getDio().post(
+            GET_APP_VERSION,
+            data: request.toJson(),
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -128,11 +134,11 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-            supplierId == null
-                ? GET_BRAND_LIST
-                : GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER(supplierId: supplierId),
-            queryParameters: params,
-          );
+          supplierId == null
+              ? GET_BRAND_LIST
+              : GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER(supplierId: supplierId),
+          queryParameters: params,
+          cancelToken: dioClient.apiCancelToken);
     } on DioError catch (e) {
       error = e;
     }
@@ -205,13 +211,13 @@ class ApiService {
     }
     try {
       response = await dioClient.getDio().get(
-            supplierId == null
-                ? GET_PRODUCT_SUB_CATEGORIES_LIST
-                : GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER(
-                    supplierId: supplierId,
-                  ),
-            queryParameters: params,
-          );
+          supplierId == null
+              ? GET_PRODUCT_SUB_CATEGORIES_LIST
+              : GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER(
+                  supplierId: supplierId,
+                ),
+          queryParameters: params,
+          cancelToken: dioClient.apiCancelToken);
     } on DioError catch (e) {
       error = e;
     }
@@ -294,6 +300,7 @@ class ApiService {
                         supplierId: supplierId,
                       ),
             queryParameters: params,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -514,17 +521,23 @@ class ApiService {
     DioError? error;
     try {
       if (isSupplierCatalog) {
-        response = await dioClient
-            .getDio()
-            .get(GET_SUPPLIER_CATALOG_PRODUCT_LIST, queryParameters: params);
+        response = await dioClient.getDio().get(
+              GET_SUPPLIER_CATALOG_PRODUCT_LIST,
+              queryParameters: params,
+              cancelToken: dioClient.apiCancelToken,
+            );
       } else if (supplierId != null && supplierId > 0) {
-        response = await dioClient
-            .getDio()
-            .get(GET_SUPPLIER_PRODUCTS(supplierId), queryParameters: params);
+        response = await dioClient.getDio().get(
+              GET_SUPPLIER_PRODUCTS(supplierId),
+              queryParameters: params,
+              cancelToken: dioClient.apiCancelToken,
+            );
       } else {
-        response = await dioClient
-            .getDio()
-            .get(GET_PRODUCT_LIST, queryParameters: params);
+        response = await dioClient.getDio().get(
+              GET_PRODUCT_LIST,
+              queryParameters: params,
+              cancelToken: dioClient.apiCancelToken,
+            );
       }
     } on DioError catch (e) {
       error = e;
@@ -553,6 +566,7 @@ class ApiService {
                     'size': pageSize,
                     'title': brandToSearch
                   },
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -585,6 +599,7 @@ class ApiService {
                       'size': pageSize,
                       'title': brandToSearch
                     },
+              cancelToken: dioClient.apiCancelToken,
             );
       } else if (supplierId == null) {
         //api is for suppliers
@@ -600,6 +615,7 @@ class ApiService {
                       'size': pageSize,
                       'title': brandToSearch
                     },
+              cancelToken: dioClient.apiCancelToken,
             );
       } else {
         //api is for demanders
@@ -615,6 +631,7 @@ class ApiService {
                       'size': pageSize,
                       'title': brandToSearch
                     },
+              cancelToken: dioClient.apiCancelToken,
             );
       }
     } on DioError catch (e) {
@@ -629,7 +646,10 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(GET_PRODUCT_IMAGE(imageName));
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_IMAGE(imageName),
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -732,13 +752,14 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().post(
-        UPDATE_PASSWORD,
-        data: {
-          "username": userName,
-          "password": password,
-          "newPassword": newPassword
-        },
-      );
+            UPDATE_PASSWORD,
+            data: {
+              "username": userName,
+              "password": password,
+              "newPassword": newPassword
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -753,9 +774,13 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(USER_AUTH, queryParameters: {
-        'username': authenticatUserRequest.username,
-      });
+      response = await dioClient.getDio().get(
+            USER_AUTH,
+            queryParameters: {
+              'username': authenticatUserRequest.username,
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -788,9 +813,11 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient
-          .getDio()
-          .post(USER_REGISTER, data: registerUserRequestJsonBody);
+      response = await dioClient.getDio().post(
+            USER_REGISTER,
+            data: registerUserRequestJsonBody,
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -805,6 +832,7 @@ class ApiService {
     try {
       response = await dioClient.getDio().get(
             GET_PRODUCT_BY_ID(productId),
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -818,7 +846,10 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(REFRESH_TOKEN);
+      response = await dioClient.getDio().get(
+            REFRESH_TOKEN,
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -847,12 +878,16 @@ class ApiService {
     try {
       switch (apiType) {
         case ProfileApiType.GET_PROFILE:
-          response = await dioClient.getDio().get(SUPPLY_PROFILE);
+          response = await dioClient.getDio().get(
+                SUPPLY_PROFILE,
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         case ProfileApiType.UPDATE_PROFILE:
           response = await dioClient.getDio().put(
                 SUPPLY_PROFILE,
                 data: profileJsonBody,
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         default:
@@ -889,19 +924,25 @@ class ApiService {
     try {
       switch (productOperation) {
         case ProductOperations.ADD:
-          response = await dioClient
-              .getDio()
-              .post(ADD_PRODUCT, data: productToBeAdded.toMap());
+          response = await dioClient.getDio().post(
+                ADD_PRODUCT,
+                data: productToBeAdded.toMap(),
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         case ProductOperations.UPDATE:
-          response = await dioClient
-              .getDio()
-              .put(ADD_PRODUCT, data: productToBeAdded.toMap());
+          response = await dioClient.getDio().put(
+                ADD_PRODUCT,
+                data: productToBeAdded.toMap(),
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         case ProductOperations.DISCARD:
-          response = await dioClient
-              .getDio()
-              .delete(ADD_PRODUCT, data: productToBeAdded.toMap());
+          response = await dioClient.getDio().delete(
+                ADD_PRODUCT,
+                data: productToBeAdded.toMap(),
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
       }
     } on DioError catch (e) {
@@ -926,9 +967,10 @@ class ApiService {
               await dioClient.getDio().put(ADD_REMOVE_PRODUCT_BY_ID(productId));
           break;
         case UpdateProductApiSelection.DELETE_PRODUCT:
-          response = await dioClient
-              .getDio()
-              .delete(ADD_REMOVE_PRODUCT_BY_ID(productId));
+          response = await dioClient.getDio().delete(
+                ADD_REMOVE_PRODUCT_BY_ID(productId),
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         default:
           break;
@@ -948,11 +990,15 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
-        'page': pageNumber,
-        'size': pageSize,
-        'status': 'PROCESSED',
-      });
+      response = await dioClient.getDio().get(
+            ADD_PRODUCT,
+            queryParameters: {
+              'page': pageNumber,
+              'size': pageSize,
+              'status': 'PROCESSED'
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -968,12 +1014,16 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
-        'page': pageNumber,
-        'size': pageSize,
-        'status': 'PUBLISHED',
-        'sort': 'DESC'
-      });
+      response = await dioClient.getDio().get(
+            ADD_PRODUCT,
+            queryParameters: {
+              'page': pageNumber,
+              'size': pageSize,
+              'status': 'PUBLISHED',
+              'sort': 'DESC'
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -989,12 +1039,16 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().get(ADD_PRODUCT, queryParameters: {
-        'page': pageNumber,
-        'size': pageSize,
-        'status': 'DISCARDED',
-        'sort': 'DESC'
-      });
+      response = await dioClient.getDio().get(
+            ADD_PRODUCT,
+            queryParameters: {
+              'page': pageNumber,
+              'size': pageSize,
+              'status': 'DISCARDED',
+              'sort': 'DESC'
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -1009,15 +1063,18 @@ class ApiService {
     DioError? error;
 
     try {
-      response = await dioClient.getDio().post(GET_BRANDS_FOR_PIM,
-          data: brand.image == null
-              ? {
-                  'title': brand.title,
-                }
-              : {
-                  'title': brand.title,
-                  'image': brand.image,
-                });
+      response = await dioClient.getDio().post(
+            GET_BRANDS_FOR_PIM,
+            data: brand.image == null
+                ? {
+                    'title': brand.title,
+                  }
+                : {
+                    'title': brand.title,
+                    'image': brand.image,
+                  },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -1052,6 +1109,7 @@ class ApiService {
                 : {
                     'date': selectedDate,
                   },
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1088,6 +1146,7 @@ class ApiService {
             ORDER_INFO(
               role: getLoggedInRole(),
             ),
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1102,13 +1161,14 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-        ORDERED_BRANDS(
-          role: getLoggedInRole(),
-        ),
-        queryParameters: {
-          'size': pageSize,
-        },
-      );
+            ORDERED_BRANDS(
+              role: getLoggedInRole(),
+            ),
+            queryParameters: {
+              'size': pageSize,
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -1122,13 +1182,14 @@ class ApiService {
 
     try {
       response = await dioClient.getDio().get(
-        ORDERED_TYPES(
-          role: getLoggedInRole(),
-        ),
-        queryParameters: {
-          'size': pageSize,
-        },
-      );
+            ORDERED_TYPES(
+              role: getLoggedInRole(),
+            ),
+            queryParameters: {
+              'size': pageSize,
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
     } on DioError catch (e) {
       error = e;
     }
@@ -1145,6 +1206,7 @@ class ApiService {
             GET_ORDER_STATUS_LIST(
               role: getLoggedInRole(),
             ),
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1170,17 +1232,18 @@ class ApiService {
       switch (orderApiType) {
         case OrderApiType.ORDER_LIST:
           response = await dioClient.getDio().get(
-            ORDER(
-              role: getLoggedInRole(),
-              urlParamOrderId: orderId,
-              orderApiType: orderApiType,
-            ),
-            queryParameters: {
-              'size': pageSize,
-              'page': pageNumber,
-              'orderStatus': status?.replaceAll('ALL', ''),
-            },
-          );
+                ORDER(
+                  role: getLoggedInRole(),
+                  urlParamOrderId: orderId,
+                  orderApiType: orderApiType,
+                ),
+                queryParameters: {
+                  'size': pageSize,
+                  'page': pageNumber,
+                  'orderStatus': status?.replaceAll('ALL', ''),
+                },
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         case OrderApiType.ORDER_DETAILS:
           response = await dioClient.getDio().get(
@@ -1189,6 +1252,7 @@ class ApiService {
                   urlParamOrderId: orderId,
                   orderApiType: orderApiType,
                 ),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case OrderApiType.ACCEPT_ORDER:
@@ -1198,6 +1262,7 @@ class ApiService {
                   urlParamOrderId: orderId,
                   orderApiType: orderApiType,
                 ),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case OrderApiType.DELIVER_ORDER:
@@ -1210,6 +1275,7 @@ class ApiService {
                 data: json.encode({
                   'deliverBy': deliveredBy,
                 }),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case OrderApiType.REJECT_ORDER:
@@ -1219,6 +1285,7 @@ class ApiService {
                   urlParamOrderId: orderId,
                   orderApiType: orderApiType,
                 ),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case OrderApiType.UPDATE_ORDERS:
@@ -1229,6 +1296,7 @@ class ApiService {
                   orderApiType: orderApiType,
                 ),
                 data: orderDetials!.toJson(),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case OrderApiType.PLACE_ORDER:
@@ -1239,6 +1307,7 @@ class ApiService {
                   orderApiType: orderApiType,
                 ),
                 data: postOrderRequest!.toJson(),
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
       }
@@ -1286,6 +1355,7 @@ class ApiService {
       response = await dioClient.getDio().get(
             GET_SUPPLIERS_LIST,
             queryParameters: queryParameters,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1307,18 +1377,21 @@ class ApiService {
         case CartApiTypes.GET_CART:
           response = await dioClient.getDio().get(
                 GET_USER_CART,
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case CartApiTypes.UPDATE_CART:
           response = await dioClient.getDio().put(
                 GET_USER_CART,
                 data: updateCartJson,
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         case CartApiTypes.ADD_TO_CART:
           response = await dioClient.getDio().put(
                 GET_USER_CART,
                 data: addCartJson,
+                cancelToken: dioClient.apiCancelToken,
               );
           break;
         default:
@@ -1340,12 +1413,17 @@ class ApiService {
     try {
       switch (apiType) {
         case AddressApiType.GET_ADDRESS:
-          response = await dioClient.getDio().get(GET_ADDRESS);
+          response = await dioClient.getDio().get(
+                GET_ADDRESS,
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         case AddressApiType.UPDATE_ADDRESS:
-          response = await dioClient
-              .getDio()
-              .put(GET_ADDRESS, data: newAddressJsonBody);
+          response = await dioClient.getDio().put(
+                GET_ADDRESS,
+                data: newAddressJsonBody,
+                cancelToken: dioClient.apiCancelToken,
+              );
           break;
         default:
       }
@@ -1365,6 +1443,7 @@ class ApiService {
       response = await dioClient.getDio().put(
             UPDATE_BUSINESS_NAME,
             data: businessNameJsonBody,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1382,6 +1461,7 @@ class ApiService {
       response = await dioClient.getDio().put(
             UPDATE_CONTACT_PERSON,
             data: contactPersonJsonBody,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1399,6 +1479,7 @@ class ApiService {
       response = await dioClient.getDio().put(
             UPDATE_EMAIL,
             data: emailJsonBody,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1416,6 +1497,7 @@ class ApiService {
       response = await dioClient.getDio().put(
             UPDATE_MOBILE_NUMBER,
             data: mobileNumberJsonBody,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1433,6 +1515,7 @@ class ApiService {
       response = await dioClient.getDio().put(
             UPDATE_PHONE_NUMBER,
             data: phoneNumberJsonBody,
+            cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
       error = e;
@@ -1445,15 +1528,16 @@ class ApiService {
     Response? response;
     DioError? error;
 
+    UpdateWebFcmIdRequest fcmIdRequest =
+        UpdateWebFcmIdRequest(fcmIdW: fcmId ?? '');
+
     try {
       response = await dioClient.getDio().put(
-        UPDATE_FCM_ID(
-          role: getLoggedInRole(),
-        ),
-        data: {
-          'fcmIdW ': fcmId,
-        },
-      );
+          UPDATE_FCM_ID(
+            role: getLoggedInRole(),
+          ),
+          data: fcmIdRequest.toJson(),
+          cancelToken: dioClient.apiCancelToken);
     } on DioError catch (e) {
       error = e;
     }

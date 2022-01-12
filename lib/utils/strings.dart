@@ -216,3 +216,12 @@ const String ordersNotificationDescription = 'You have new a order';
 const String changePasswordDisclaimer =
     'Changing your password will log you out. You will have to login again.';
 const addedProductToCatalogServerMEssage = 'Cannot Add Product, Already Added.';
+const String TOKEN_STATUS = 'tokenStatus';
+const String EXPIRED = 'EXPIRED';
+const String INVALID_TOKEN = 'INVALID';
+const String invalidTokenTitle = 'Please Login again';
+const String invalidTokenDescription =
+    'It seems you logged from some other device. Please login again.';
+noOrderInState({required String state}) => 'No $state Orders.';
+const String expiredTokenDescription =
+    'Your session has expired. Please login again.';

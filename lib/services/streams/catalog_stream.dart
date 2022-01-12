@@ -1,10 +1,10 @@
 import 'dart:async';
 
 class CatalogStream {
-  List<CatalogItems> loggedInSupplerCatalogItemsList = [];
-
   StreamController<CatalogItems> catalogController =
       StreamController<CatalogItems>.broadcast();
+
+  List<CatalogItems> loggedInSupplerCatalogItemsList = [];
 
   Stream<CatalogItems> get onNewData => catalogController.stream;
 
@@ -28,10 +28,11 @@ class CatalogStream {
 }
 
 class CatalogItems {
-  final int productId;
-  final String productTitle;
   CatalogItems({
     required this.productId,
     required this.productTitle,
   });
+
+  final int productId;
+  final String productTitle;
 }

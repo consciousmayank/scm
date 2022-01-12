@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:scm/model_classes/cart.dart';
+import 'package:scm/model_classes/login_reasons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class InterFaceAppPreferences {
@@ -44,6 +46,7 @@ class AppPreferences implements InterFaceAppPreferences {
 
   @override
   String? getApiToken() {
+    // return "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NjExODg2MzM5IiwiaXNTdXBwbHkiOnRydWUsImlzcyI6ImdlZWt0ZWNobm90b25pYyIsImV4cCI6MTY0MTkzMjgzNSwiaWF0IjoxNjQxOTA0MDM1fQ.iGrsNsM8Bs6wE9kg0IGKLiglwuhjrIrK6GgRWVeJ2E6SK1NUoH7Oa9-jE-BZvTFyvr-QOwMPMPR5H1E8NfAh2A";
     String? savedToken = _sharedPrefs.getString(apiToken);
     if (savedToken != null) {
       return savedToken;
@@ -155,7 +158,8 @@ class AppPreferences implements InterFaceAppPreferences {
     _sharedPrefs = await SharedPreferences.getInstance();
   }
 
-  void clearPreferences() {
+  void clearPreferences() async {
+    await FirebaseMessaging.instance.deleteToken();
     _sharedPrefs.clear();
   }
 }

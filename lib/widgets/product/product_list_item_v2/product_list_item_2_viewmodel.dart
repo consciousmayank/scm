@@ -18,13 +18,35 @@ const String _CatalogStreamKey = 'catalog-stream';
 const String _CartStreamKey = 'cart-stream';
 
 class ProductListItem2ViewModel extends MultipleStreamViewModel {
-  // final AppPreferences _preferences = di<AppPreferences>();
-  final CatalogStream _catalogStream = di<CatalogStream>();
-
+  late AddToCart? addToCarthelper;
+  late final ProductListItem2ViewArguments args;
   late Cart cartData;
   late CartItem cartItem;
   late CatalogItems catalogItem;
-  late AddToCart? addToCarthelper;
+  SnackbarService snackBarService = di<SnackbarService>();
+
+  final SupplierCatalogApis _catalogApis = di<SupplierCatalogApis>();
+  // final AppPreferences _preferences = di<AppPreferences>();
+  final CatalogStream _catalogStream = di<CatalogStream>();
+
+  @override
+  void onData(String key, data) {
+    super.onData(key, data);
+    if (key == _CartStreamKey) {
+      cartData = data;
+      notifyListeners();
+    } else {
+      catalogItem = data;
+      notifyListeners();
+    }
+  }
+
+  @override
+  Map<String, StreamData> get streamsMap => {
+        _CartStreamKey: StreamData<Cart>(cartStream()),
+        _CatalogStreamKey: StreamData<CatalogItems>(catalogStream()),
+      };
+
   // late AddToCatalog? addToCataloghelper;
 
   onRemoveButtonClick() {
@@ -52,7 +74,6 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     }
   }
 
-  late final ProductListItem2ViewArguments args;
   init({required ProductListItem2ViewArguments args}) {
     this.args = args;
     cartData = di<CartStream>().appCart;
@@ -68,26 +89,9 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     }
   }
 
-  @override
-  Map<String, StreamData> get streamsMap => {
-        _CartStreamKey: StreamData<Cart>(cartStream()),
-        _CatalogStreamKey: StreamData<CatalogItems>(catalogStream()),
-      };
-
   Stream<Cart> cartStream() => di<CartStream>().onNewData;
-  Stream<CatalogItems> catalogStream() => di<CatalogStream>().onNewData;
 
-  @override
-  void onData(String key, data) {
-    super.onData(key, data);
-    if (key == _CartStreamKey) {
-      cartData = data;
-      notifyListeners();
-    } else {
-      catalogItem = data;
-      notifyListeners();
-    }
-  }
+  Stream<CatalogItems> catalogStream() => di<CatalogStream>().onNewData;
 
   bool isProductInCart({required int? productId}) {
     if (productId == null) {
@@ -118,8 +122,6 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
       );
     }
   }
-
-  final SupplierCatalogApis _catalogApis = di<SupplierCatalogApis>();
 
   void addProductToCatalog({
     required int productId,
@@ -195,7 +197,6 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     }
   }
 
-  SnackbarService snackBarService = di<SnackbarService>();
   void showErrorSnackBar({
     required String message,
     Function? onSnackBarOkButton,

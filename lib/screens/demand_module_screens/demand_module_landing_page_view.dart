@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
@@ -5,6 +7,8 @@ import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
+import 'package:scm/services/notification/fcm_permissions.dart';
+import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
@@ -27,6 +31,13 @@ class DemandModuleLandingPageView extends StatefulWidget {
 
 class _DemandModuleLandingPageViewState
     extends State<DemandModuleLandingPageView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebasePushNotificationsPermissions().getPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     getThemeManager(context).selectThemeAtIndex(1);
@@ -164,6 +175,9 @@ class SupplyModuleLandingPageWebView
       body: Row(
         children: [
           AppNavigationRailWidget(
+            leading: NotificationIconView(
+              arguments: NotificationIconViewArguments(),
+            ),
             destinations: [
               buildRotatedTextRailDestinationWithIcon(
                 text: labelDemandLandingPageCatalog,

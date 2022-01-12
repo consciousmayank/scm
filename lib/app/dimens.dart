@@ -6,6 +6,8 @@ class Dimens {
   static const int defaultProductListPageSize = 25;
   static const int defaultProductListPageSizeWhenInHome = 14;
 
+  double get orderInfoTilesHeight => 110;
+
   double get buttonHeight => 50;
 
   double get getDefaultRadius => 8;

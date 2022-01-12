@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/app_footer_widget.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_order_list_widget.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_viewmodel.dart';
@@ -35,9 +36,18 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
               child: PageBarWidget(title: 'DashBoard'),
             ),
             OrderInfoWidget(
-              onClickOfOrderTile: ({required String clickedOrderStatus}) {
-                widget.arguments.onClickOfOrderTile!(
-                    clickedOrderStatus: clickedOrderStatus);
+              onClickOfOrderTile: (
+                  {required String clickedOrderStatus, int? count}) {
+                if (count != null && count > 0) {
+                  widget.arguments.onClickOfOrderTile!(
+                      clickedOrderStatus: clickedOrderStatus);
+                } else {
+                  model.showErrorSnackBar(
+                    message: noOrderInState(
+                      state: clickedOrderStatus,
+                    ),
+                  );
+                }
               },
             ),
             const OrderedBrands(),

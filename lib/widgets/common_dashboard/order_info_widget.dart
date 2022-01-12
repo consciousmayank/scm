@@ -17,7 +17,10 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
     required this.onClickOfOrderTile,
   }) : super(key: key);
 
-  final Function({required String clickedOrderStatus}) onClickOfOrderTile;
+  final Function({
+    required String clickedOrderStatus,
+    required int? count,
+  }) onClickOfOrderTile;
 
   @override
   Widget build(BuildContext context, CommonDashboardViewModel viewModel) {
@@ -33,11 +36,11 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
             ),
           )
         : SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 5 / 1,
+              crossAxisSpacing: 1.0,
+              mainAxisSpacing: 1.0,
+              mainAxisExtent: Dimens().orderInfoTilesHeight,
             ),
             delegate: SliverChildListDelegate.fixed(
               [
@@ -45,9 +48,9 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus:
-                          OrderStatusTypes.NEW_ORDER.apiToAppTitles,
-                    );
+                        clickedOrderStatus:
+                            OrderStatusTypes.NEW_ORDER.apiToAppTitles,
+                        count: viewModel.orderInfo.created);
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.NEW_ORDER.apiToAppTitles
@@ -65,9 +68,9 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus:
-                          OrderStatusTypes.UNDER_PROCESS.apiToAppTitles,
-                    );
+                        clickedOrderStatus:
+                            OrderStatusTypes.UNDER_PROCESS.apiToAppTitles,
+                        count: viewModel.orderInfo.processing);
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.UNDER_PROCESS.apiToAppTitles
@@ -91,9 +94,9 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus:
-                          OrderStatusTypes.SHIPPED.apiToAppTitles,
-                    );
+                        clickedOrderStatus:
+                            OrderStatusTypes.SHIPPED.apiToAppTitles,
+                        count: viewModel.orderInfo.intransit);
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.SHIPPED.apiToAppTitles
@@ -116,9 +119,9 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus:
-                          OrderStatusTypes.DELIVERED.apiToAppTitles,
-                    );
+                        clickedOrderStatus:
+                            OrderStatusTypes.DELIVERED.apiToAppTitles,
+                        count: viewModel.orderInfo.delivered);
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.DELIVERED.apiToAppTitles
@@ -141,9 +144,9 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus:
-                          OrderStatusTypes.CANCELLED.apiToAppTitles,
-                    );
+                        clickedOrderStatus:
+                            OrderStatusTypes.CANCELLED.apiToAppTitles,
+                        count: viewModel.orderInfo.cancelled);
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.CANCELLED.apiToAppTitles
@@ -167,8 +170,8 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderDerRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                      clickedOrderStatus: 'ALL',
-                    );
+                        clickedOrderStatus: 'ALL',
+                        count: viewModel.orderInfo.all);
                   },
                   child: OrderInfoTile.dashboard(
                     title: 'Total Orders',
@@ -214,77 +217,80 @@ class OrderInfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: Dimens().getCardShape(),
-      elevation: Dimens().getDefaultElevation,
-      color: AppColors().white,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          16,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: titleTextStyle,
-                  ),
-                  const Spacer(),
-                  Text(
-                    value,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: AppColors().black,
-                          fontWeight: FontWeight.bold,
+    return SizedBox(
+      height: 100,
+      child: Card(
+        shape: Dimens().getCardShape(),
+        elevation: Dimens().getDefaultElevation,
+        color: AppColors().white,
+        child: Padding(
+          padding: const EdgeInsets.all(
+            16,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: titleTextStyle,
+                    ),
+                    const Spacer(),
+                    Text(
+                      value,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.headline6!.copyWith(
+                            color: AppColors().black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const Spacer(),
+
+              CircleAvatar(
+                radius: 30,
+                backgroundColor:
+                    Theme.of(context).colorScheme.background.withAlpha(
+                          50,
                         ),
-                  ),
-                ],
+                child: Image.asset(
+                  icon,
+                  height: 30,
+                  width: 30,
+                  color: iconColor,
+                ),
               ),
-            ),
 
-            const Spacer(),
-
-            CircleAvatar(
-              radius: 30,
-              backgroundColor:
-                  Theme.of(context).colorScheme.background.withAlpha(
-                        50,
-                      ),
-              child: Image.asset(
-                icon,
-                height: 30,
-                width: 30,
-                color: iconColor,
-              ),
-            ),
-
-            // Expanded(
-            //   flex: 1,
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: AppColors().dashboardOrderInfoTileTitleBg,
-            //       borderRadius: BorderRadius.circular(
-            //         100,
-            //       ),
-            //     ),
-            //     child: Image.asset(
-            //       icon,
-            //       height: 40,
-            //       width: 40,
-            //     ),
-            //   ),
-            // ),
-          ],
+              // Expanded(
+              //   flex: 1,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: AppColors().dashboardOrderInfoTileTitleBg,
+              //       borderRadius: BorderRadius.circular(
+              //         100,
+              //       ),
+              //     ),
+              //     child: Image.asset(
+              //       icon,
+              //       height: 40,
+              //       width: 40,
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
     );

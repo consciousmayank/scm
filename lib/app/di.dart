@@ -19,6 +19,7 @@ import 'package:scm/services/app_api_service_classes/supplier_catalog_apis.dart'
 import 'package:scm/services/app_api_service_classes/suppliers_list_api.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
+import 'package:scm/services/network/dio_interceptor.dart';
 import 'package:scm/services/network/image_dio_client.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/services/streams/catalog_stream.dart';
@@ -48,6 +49,7 @@ void declareDependencies() {
       baseUrl: EnvironmentConfig.BASE_URL.replaceAll('/scm', ''),
     ),
   );
+  di.registerLazySingleton(() => AppDioInterceptor());
   di.registerLazySingleton(() => LoginApi());
   di.registerLazySingleton(() => ProductApis());
   di.registerLazySingleton(() => BrandsApi());

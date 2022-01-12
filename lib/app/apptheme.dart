@@ -203,6 +203,40 @@ class ApplicationTheme {
 
   List<ThemeData> getThemes() {
     return [
+      // ThemeData.from(
+      //   colorScheme: ColorScheme(
+      //     primary: Colors.green.shade200,
+      //     primaryVariant: Colors.red.shade100,
+      //     secondary: Colors.amber.shade200,
+      //     secondaryVariant: Colors.yellowAccent.shade400,
+      //     surface: Colors.blue.shade300,
+      //     background: Colors.tealAccent.shade400,
+      //     error: Colors.red,
+      //     onPrimary: Colors.cyanAccent.shade200,
+      //     onSecondary: Colors.brown.shade500,
+      //     onSurface: Colors.deepPurple.shade400,
+      //     onBackground: Colors.deepOrange.shade400,
+      //     onError: Colors.lightGreen.shade700,
+      //     brightness: Brightness.light,
+      //   ),
+      // ),
+      // ThemeData.from(
+      //   colorScheme: ColorScheme(
+      //     primary: Colors.green.shade200,
+      //     primaryVariant: Colors.red.shade100,
+      //     secondary: Colors.amber.shade200,
+      //     secondaryVariant: Colors.yellowAccent.shade400,
+      //     surface: Colors.blue.shade300,
+      //     background: Colors.tealAccent.shade400,
+      //     error: Colors.red,
+      //     onPrimary: Colors.cyanAccent.shade200,
+      //     onSecondary: Colors.brown.shade500,
+      //     onSurface: Colors.deepPurple.shade400,
+      //     onBackground: Colors.deepOrange.shade400,
+      //     onError: Colors.lightGreen.shade700,
+      //     brightness: Brightness.light,
+      //   ),
+      // ),
       getDefaultTheme(),
       getDemandTheme(),
       getSupplyTheme(),

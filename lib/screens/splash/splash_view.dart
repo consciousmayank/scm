@@ -9,6 +9,7 @@ import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -17,7 +18,12 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({
+    Key? key,
+    this.reasons,
+  }) : super(key: key);
+
+  final LoginReasons? reasons;
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -53,7 +59,10 @@ class _SplashScreenState extends State<SplashScreen>
       getThemeManager(context).selectThemeAtIndex(1);
       di<NavigationService>().replaceWith(demandLandingScreenRoute);
     } else {
-      di<NavigationService>().replaceWith(logInPageRoute);
+      di<NavigationService>().replaceWith(
+        logInPageRoute,
+        arguments: widget.reasons,
+      );
     }
   }
 

@@ -17,11 +17,13 @@ import 'package:stacked/stacked.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 
 class ProductListItem2View extends StatefulWidget {
-  final ProductListItem2ViewArguments arguments;
   const ProductListItem2View({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final ProductListItem2ViewArguments arguments;
+
   @override
   _ProductListItem2ViewState createState() => _ProductListItem2ViewState();
 }
@@ -68,7 +70,8 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                             child: NullableTextWidget(
                               stringValue: widget.arguments.product?.title,
                               maxLines: 2,
-                              textStyle: Theme.of(context).textTheme.headline6,
+                              textStyle: Theme.of(context).textTheme.subtitle1,
+                              textAlign: TextAlign.left,
                             ),
                           ),
                           hSizedBox(height: 8),
@@ -117,7 +120,7 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                                     ),
                                     textAlign: TextAlign.center,
                                     textStyle:
-                                        Theme.of(context).textTheme.headline6,
+                                        Theme.of(context).textTheme.subtitle2,
                                   ),
                                 ),
                               ),
@@ -162,12 +165,6 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
 }
 
 class ProductListItem2ViewArguments {
-  final Product? product;
-  final bool isForCatalog;
-  final int? supplierId;
-  final Function onProductOperationCompleted;
-  final Function onProductClick;
-
   ProductListItem2ViewArguments({
     required this.product,
     required this.onProductOperationCompleted,
@@ -181,6 +178,12 @@ class ProductListItem2ViewArguments {
     required this.onProductClick,
   })  : isForCatalog = true,
         supplierId = null;
+
+  final bool isForCatalog;
+  final Function onProductClick;
+  final Function onProductOperationCompleted;
+  final Product? product;
+  final int? supplierId;
 }
 
 class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
@@ -196,7 +199,10 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
         context: context,
       ).textButtonStyleForProductListItem,
       onPressed: viewModel.onAddButtonClick,
-      child: const Text('Add'),
+      child: Text(
+        'Add',
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
     );
   }
 }
@@ -214,7 +220,10 @@ class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
         context: context,
       ).textButtonStyleForProductListItem,
       onPressed: viewModel.onUpdateButtonClick,
-      child: const Text('Update'),
+      child: Text(
+        'Update',
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
     );
   }
 }
@@ -238,7 +247,10 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
               context: context,
             ).textButtonStyleForProductListItem,
       onPressed: viewModel.onRemoveButtonClick,
-      child: const Text('Remove'),
+      child: Text(
+        'Remove',
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
     );
   }
 }
