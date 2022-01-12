@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/model_classes/app_notifications_helper.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
@@ -13,7 +13,8 @@ class NotificationsListViewModel
   late NotificationsScreenArguments arguments;
   AppNotificationsHelper? clickedNotification;
 
-  final NotificationsStream _notificationsStream = di<NotificationsStream>();
+  final NotificationsStream _notificationsStream =
+      locator<NotificationsStream>();
 
   init({required NotificationsScreenArguments args}) {
     arguments = args;
@@ -60,5 +61,5 @@ class NotificationsListViewModel
   @override
   // TODO: implement stream
   Stream<RemoteNotificationParams> get stream =>
-      di<NotificationsStream>().onNewData;
+      locator<NotificationsStream>().onNewData;
 }

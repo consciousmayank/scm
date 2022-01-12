@@ -1,20 +1,22 @@
 import 'package:flutter/services.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class GeneralisedBaseViewModel extends BaseViewModel {
   // ApiService apiService = locator<ApiService>();
-  DialogService dialogService = di<DialogService>();
+  DialogService dialogService = locator<DialogService>();
 
   bool isFloatingActionButtonVisible = true;
   bool isLocationServiceEnabled = false;
-  NavigationService navigationService = di<NavigationService>();
-  final preferences = di<AppPreferences>();
-  SnackbarService snackBarService = di<SnackbarService>();
+  NavigationService navigationService = locator<NavigationService>();
+  final preferences = locator<SharedPreferencesService>();
+  SnackbarService snackBarService = locator<SnackbarService>();
 
   ///This will help in showing error snackbar
   ///If [onSnackBarOkButton] is not there then a normal error snackbar will be shown, otherwise snackbar will have an 'OK' button.

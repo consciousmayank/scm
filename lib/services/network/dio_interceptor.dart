@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/network/dio_client.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked_services/stacked_services.dart' as stacked_service;
@@ -17,7 +18,8 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
   ApiStatus refreshTokenApiStatus = ApiStatus.LOADING;
   late final Function({required RequestOptions requestOptions})
       onFetchRefreshToken;
-  final AppPreferences _appPreferences = di<AppPreferences>();
+  final SharedPreferencesService _appPreferences =
+      locator<SharedPreferencesService>();
 
   void setRefreshTokenListner(
       Function({required RequestOptions requestOptions}) onFetchRefreshToken) {
@@ -75,7 +77,7 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
           // refreshToken().then((value) => null);
           // _retry(err.requestOptions);
           // _appPreferences.clearPreferences();
-          // di<stacked_service.NavigationService>().clearStackAndShow(
+          // locator<stacked_service.NavigationService>().clearStackAndShow(
           //   mainViewRoute,
           //   arguments: LoginReasons(
           //     title: invalidTokenTitle,
@@ -161,7 +163,7 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
 
   void takeToLoginPage({required String description}) {
     _appPreferences.clearPreferences();
-    di<stacked_service.NavigationService>().clearStackAndShow(
+    locator<stacked_service.NavigationService>().clearStackAndShow(
       mainViewRoute,
       arguments: LoginReasons(
         title: invalidTokenTitle,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';

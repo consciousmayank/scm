@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';
@@ -19,7 +19,7 @@ abstract class LoginApiAbstractClass {
 }
 
 class LoginApi extends BaseApi implements LoginApiAbstractClass {
-  final ApiService _apiService = di<ApiService>();
+  final ApiService _apiService = locator<ApiService>();
 
   @override
   Future<UserAuthenticateResponse> changePassword({

@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/image_response.dart';
 import 'package:scm/services/app_api_service_classes/image_api.dart';
@@ -7,7 +7,7 @@ import 'package:scm/utils/utils.dart';
 class AppImageViewModel extends GeneralisedBaseViewModel {
   late String? image;
 
-  final ImageApi _imageApi = di<ImageApi>();
+  final ImageApi _imageApi = locator<ImageApi>();
 
   init({String? imageUrlString, String? imageDownloadString}) {
     if (imageUrlString != null) {

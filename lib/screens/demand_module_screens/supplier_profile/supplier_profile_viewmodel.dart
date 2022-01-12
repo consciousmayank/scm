@@ -1,4 +1,5 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -36,11 +37,11 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   List<String?> subCategoryFilterList = [];
   late final int? supplierId;
 
-  final HomePageApis _homePageApis = di<HomePageApisImpl>();
+  final HomePageApis _homePageApis = locator<HomePageApisImpl>();
   final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
+      locator<ProductCategoriesApiImpl>();
 
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
+  final ProductListApis _productListApis = locator<ProductListApiImpl>();
 
   getCategories() async {
     productCategoriesResponse =

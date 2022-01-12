@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/address_api_type.dart';
@@ -25,10 +25,11 @@ import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/network/dio_client.dart';
 import 'package:scm/services/network/image_dio_client.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 
 class ApiService {
-  final dioClient = di<DioConfig>();
-  final preferences = di<AppPreferences>();
+  final dioClient = locator<DioConfig>();
+  final preferences = locator<SharedPreferencesService>();
 
   Future<ParentApiResponse> login({
     required String base64string,

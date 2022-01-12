@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -18,7 +18,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
 
   int pageIndex = 0;
 
-  final HomePageApis _homePageApis = di<HomePageApisImpl>();
+  final HomePageApis _homePageApis = locator<HomePageApisImpl>();
 
   getAllBrands() async {
     setBusy(true);

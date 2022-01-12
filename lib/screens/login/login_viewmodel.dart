@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';
@@ -18,7 +18,7 @@ class LoginViewModel extends GeneralisedBaseViewModel {
   TextEditingController userNameController = TextEditingController();
   FocusNode userNameFocusNode = FocusNode();
 
-  final LoginApi _loginApi = di<LoginApi>();
+  final LoginApi _loginApi = locator<LoginApi>();
 
   void login() async {
     if (userNameController.text.trim().isEmpty) {

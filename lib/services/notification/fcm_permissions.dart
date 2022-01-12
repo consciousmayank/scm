@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 
 class FirebasePushNotificationsPermissions {
@@ -26,11 +26,11 @@ class FirebasePushNotificationsPermissions {
           vapidKey: EnvironmentConfig.VAPID_KEY,
         )
             .then((value) {
-          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
+          locator<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
         });
       } else {
         FirebaseMessaging.instance.getToken().then((value) {
-          di<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
+          locator<ProfileApisImpl>().updateWebFcmId(fcmId: value ?? '');
         });
       }
     }

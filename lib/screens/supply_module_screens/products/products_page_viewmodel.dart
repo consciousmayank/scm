@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -54,16 +54,16 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
 
   ProductCategoriesResponse? _categoriesResponse;
 
-  final HomePageApis _homePageApis = di<HomePageApisImpl>();
+  final HomePageApis _homePageApis = locator<HomePageApisImpl>();
   int? _lengthOfCategoriesListView;
   int? _lengthOfListView;
   List<Brand>? _listOfBrands;
   final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
+      locator<ProductCategoriesApiImpl>();
 
   List<String>? _productCategoriesList;
   List<Product>? _productList;
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
+  final ProductListApis _productListApis = locator<ProductListApiImpl>();
   ProductListResponse? _productsResponse;
 
   List<Brand>? get listOfBrands => _listOfBrands;

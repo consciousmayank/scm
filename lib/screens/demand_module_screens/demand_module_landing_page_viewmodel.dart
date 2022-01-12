@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -23,7 +24,7 @@ class DemandModuleLandingPageViewModel
   Order? selectedOrder;
   bool showProductList = false;
 
-  final DemandCartApi _demandCartApi = di<DemandCartApi>();
+  final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
   initScreen() {
     // setIndex(2);

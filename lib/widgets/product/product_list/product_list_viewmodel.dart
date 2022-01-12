@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -26,7 +26,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   List<String?> subCategoryFilterList = [];
   late final int? supplierId;
 
-  final ProductListApis _productListApis = di<ProductListApiImpl>();
+  final ProductListApis _productListApis = locator<ProductListApiImpl>();
 
   getProductList() async {
     setBusy(true);

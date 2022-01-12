@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:scm/enums/product_statuses.dart';
@@ -18,7 +18,7 @@ class BarChartBasedOnProductStatusesViewModel extends GeneralisedBaseViewModel {
   List<String> uniqueDates = [];
 
   final PimSupervisorDashboardStatisticsApi _dashboardStatisticsApi =
-      di<PimSupervisorDashboardStatisticsApi>();
+      locator<PimSupervisorDashboardStatisticsApi>();
 
   init(
       {required BarChartBasedOnProductStatusesViewArguments arguments,

@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/model_classes/cart.dart';
@@ -28,7 +28,7 @@ abstract class DemandCartApiAbstractClass {
 }
 
 class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
-  final CartStream cartService = di<CartStream>();
+  final CartStream cartService = locator<CartStream>();
 
   @override
   Future<Cart> addToCart({

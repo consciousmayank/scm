@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/product_categories_response.dart';
 import 'package:scm/routes/routes_constants.dart';
@@ -13,7 +13,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
   int pageIndex = 0;
 
   final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
+      locator<ProductCategoriesApiImpl>();
 
   getAllCategories() async {
     setBusy(true);

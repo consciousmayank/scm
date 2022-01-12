@@ -26,6 +26,7 @@ import 'package:scm/services/app_api_service_classes/suppliers_list_api.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/network/dio_client.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/services/streams/catalog_stream.dart';
 import 'package:scm/services/streams/notifications_stream.dart';
@@ -33,6 +34,7 @@ import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 @StackedApp(
@@ -57,10 +59,17 @@ import 'package:stacked_themes/stacked_themes.dart';
   ],
   logger: StackedLogger(),
   dependencies: [
+    Presolve(
+      classType: SharedPreferencesService,
+      presolveUsing: SharedPreferencesService.getInstance,
+    ),
     LazySingleton(
         classType: ThemeService, resolveUsing: ThemeService.getInstance),
     // abstracted class type support
     LazySingleton(classType: ApiService),
+    LazySingleton(classType: DialogService),
+    LazySingleton(classType: NavigationService),
+    LazySingleton(classType: SnackbarService),
     LazySingleton(classType: LoginApi),
     LazySingleton(classType: ProductApis),
     LazySingleton(classType: BrandsApi),
@@ -81,11 +90,6 @@ import 'package:stacked_themes/stacked_themes.dart';
     LazySingleton(classType: SupplierCatalogApis),
     LazySingleton(classType: ProfileApisImpl),
     Singleton(classType: DioConfig),
-
-    Presolve(
-      classType: AppPreferences,
-      presolveUsing: AppPreferences.getInstance,
-    ),
   ],
 )
 class App {

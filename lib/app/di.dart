@@ -30,11 +30,11 @@
 // final di = GetIt.instance;
 
 // void declareDependencies() {
-//   di.registerSingletonAsync<AppPreferences>(() async {
-//     final prefs = AppPreferences();
-//     await prefs.init();
-//     return prefs;
-//   });
+  // di.registerSingletonAsync<AppPreferences>(() async {
+  //   final prefs = AppPreferences();
+  //   await prefs.init();
+  //   return prefs;
+  // });
 //   di.registerLazySingleton(() => DialogService());
 //   di.registerLazySingleton(() => NavigationService());
 //   di.registerLazySingleton(() => SnackbarService());

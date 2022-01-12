@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/user_roles.dart';
@@ -35,7 +35,8 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   int pageNumber = 0;
   int pageSize = 5;
 
-  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
+  final CommonDashBoardApis _commonDashBoardApis =
+      locator<CommonDashBoardApis>();
 
   init({
     required CommonDashboardViewArguments args,

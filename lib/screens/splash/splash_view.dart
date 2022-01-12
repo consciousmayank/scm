@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/shared_preferences.dart';
@@ -13,6 +13,7 @@ import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/login/login_view.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked/stacked.dart';
@@ -33,7 +34,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  final preferences = di<AppPreferences>();
+  final preferences = locator<SharedPreferencesService>();
 
   late AnimationController _controller;
 
@@ -53,15 +54,15 @@ class _SplashScreenState extends State<SplashScreen>
     String userSelectedRole = preferences.getSelectedUserRole();
     if (loadProductEntryModule(userSelectedRole)) {
       getThemeManager(context).selectThemeAtIndex(0);
-      di<NavigationService>().replaceWith(pimHomeScreenRoute);
+      locator<NavigationService>().replaceWith(pimHomeScreenRoute);
     } else if (loadSupplyModule(userSelectedRole)) {
       getThemeManager(context).selectThemeAtIndex(2);
-      di<NavigationService>().replaceWith(supplyLandingScreenRoute);
+      locator<NavigationService>().replaceWith(supplyLandingScreenRoute);
     } else if (loadDemandModule(userSelectedRole)) {
       getThemeManager(context).selectThemeAtIndex(1);
-      di<NavigationService>().replaceWith(demandLandingScreenRoute);
+      locator<NavigationService>().replaceWith(demandLandingScreenRoute);
     } else {
-      di<NavigationService>().replaceWith(
+      locator<NavigationService>().replaceWith(
         logInPageRoute,
         arguments: LoginViewArguments(
           arguments: LoginViewArgs(

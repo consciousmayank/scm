@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/notification_type.dart';
 import 'package:scm/enums/snackbar_types.dart';
@@ -18,11 +18,12 @@ class OnNotificationClick {
   OnNotificationClick({required this.notificationParams});
 
   final RemoteNotificationParams notificationParams;
-  final NotificationsStream notificationsStream = di<NotificationsStream>();
+  final NotificationsStream notificationsStream =
+      locator<NotificationsStream>();
 
-  final NavigationService _navigationService = di<NavigationService>();
-  // final DialogService _dialogService = di<DialogService>();
-  final SnackbarService _snackbarService = di<SnackbarService>();
+  final NavigationService _navigationService = locator<NavigationService>();
+  // final DialogService _dialogService = locator<DialogService>();
+  final SnackbarService _snackbarService = locator<SnackbarService>();
 
   void handle() {
     String message = '';

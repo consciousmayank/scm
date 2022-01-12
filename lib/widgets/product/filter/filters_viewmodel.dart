@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_for_filter.dart';
 import 'package:scm/model_classes/categories_for_filter.dart';
@@ -14,6 +14,7 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
+
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';
@@ -33,7 +34,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   int? totalItemsForSubCategoriesApi = 0;
 
   String? _brandTitle;
-  final ProductBrandsApis _brandsApis = di<ProductBrandsApiImpl>();
+  final ProductBrandsApis _brandsApis = locator<ProductBrandsApiImpl>();
   List<BrandsForFilter>? _brandsForFilterList = [];
   List<String>? _brandsList;
   ProductBrandsResponse? _brandsResponse;
@@ -44,11 +45,11 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<String?>? _checkedCategoriesList = [];
   List<String?>? _checkedSubCategoriesList = [];
   final ProductCategoriesApis _productCategoriesApis =
-      di<ProductCategoriesApiImpl>();
+      locator<ProductCategoriesApiImpl>();
 
   List<String>? _productCategoriesList;
   final ProductSubCategoriesApis _subCategoriesApis =
-      di<ProductSubCategoriesApisImpl>();
+      locator<ProductSubCategoriesApisImpl>();
 
   List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
   List<String>? _subCategoriesList;

@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -33,7 +34,8 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   Order selectedOrder = Order().empty();
   String selectedOrderStatus = 'ALL';
 
-  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
+  final CommonDashBoardApis _commonDashBoardApis =
+      locator<CommonDashBoardApis>();
 
   void initializeEditexts() {
     orderDetails.orderItems?.forEach((element) {

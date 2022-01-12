@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/cart.dart';
@@ -15,7 +15,7 @@ class AddToCart extends GeneralisedBaseViewModel {
 
   final int supplierId;
 
-  final DemandCartApi _cartApi = di<DemandCartApi>();
+  final DemandCartApi _cartApi = locator<DemandCartApi>();
 
   void openProductQuantityDialogBox({
     required Product product,

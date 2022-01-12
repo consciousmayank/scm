@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/app/shared_preferences.dart';
@@ -24,7 +24,7 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
 
   void logout() {
     preferences.clearPreferences();
-    di<NavigationService>().pushNamedAndRemoveUntil(logInPageRoute);
+    locator<NavigationService>().pushNamedAndRemoveUntil(logInPageRoute);
   }
 
   getSelectedView() {

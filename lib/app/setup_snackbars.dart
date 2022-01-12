@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/apptheme.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void setupSnackbarUi() {
-  final service = di<SnackbarService>();
+  final service = locator<SnackbarService>();
 
   SnackbarConfig config = SnackbarConfig(
     messageTextAlign: TextAlign.center,

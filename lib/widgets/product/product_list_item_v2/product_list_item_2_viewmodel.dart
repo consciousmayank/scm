@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/model_classes/api_response.dart';
@@ -23,11 +23,11 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
   late Cart cartData;
   late CartItem cartItem;
   late CatalogItems catalogItem;
-  SnackbarService snackBarService = di<SnackbarService>();
+  SnackbarService snackBarService = locator<SnackbarService>();
 
-  final SupplierCatalogApis _catalogApis = di<SupplierCatalogApis>();
-  // final AppPreferences _preferences = di<AppPreferences>();
-  final CatalogStream _catalogStream = di<CatalogStream>();
+  final SupplierCatalogApis _catalogApis = locator<SupplierCatalogApis>();
+  // final AppPreferences _preferences = locator<AppPreferences>();
+  final CatalogStream _catalogStream = locator<CatalogStream>();
 
   @override
   void onData(String key, data) {
@@ -76,7 +76,7 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
 
   init({required ProductListItem2ViewArguments args}) {
     this.args = args;
-    cartData = di<CartStream>().appCart;
+    cartData = locator<CartStream>().appCart;
     if (args.supplierId == null) {
       //this user is a supply user. He can only do Add to catalog.
       // addToCataloghelper = AddToCatalog();
@@ -89,9 +89,9 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     }
   }
 
-  Stream<Cart> cartStream() => di<CartStream>().onNewData;
+  Stream<Cart> cartStream() => locator<CartStream>().onNewData;
 
-  Stream<CatalogItems> catalogStream() => di<CatalogStream>().onNewData;
+  Stream<CatalogItems> catalogStream() => locator<CatalogStream>().onNewData;
 
   bool isProductInCart({required int? productId}) {
     if (productId == null) {

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -11,6 +11,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/product/product_details/product_detail_view.dart';
@@ -48,7 +49,7 @@ class _ProductAddToCartDialogBoxViewState
             productId: productId,
             quantity: int.parse(quantityController.text),
             cartItem: productCount > 0
-                ? di<AppPreferences>()
+                ? locator<SharedPreferencesService>()
                     .getDemandersCart()
                     .cartItems!
                     .firstWhere(
@@ -67,7 +68,7 @@ class _ProductAddToCartDialogBoxViewState
         widget.request.data as ProductAddToCartDialogBoxViewArguments;
 
     int productCount = arguments.quantity ??
-        di<AppPreferences>()
+        locator<SharedPreferencesService>()
             .getDemandersCart()
             .cartItems!
             .firstWhere(
@@ -126,7 +127,7 @@ class _ProductAddToCartDialogBoxViewState
                             isConfirmed: true,
                           );
                         } else {
-                          di<SnackbarService>().showCustomSnackBar(
+                          locator<SnackbarService>().showCustomSnackBar(
                             message: 'Please enter a valid quantity',
                             variant: SnackbarType.ERROR,
                           );
@@ -149,7 +150,7 @@ class _ProductAddToCartDialogBoxViewState
                               isConfirmed: true,
                             );
                           } else {
-                            di<SnackbarService>().showCustomSnackBar(
+                            locator<SnackbarService>().showCustomSnackBar(
                               message: 'Please enter a valid quantity',
                               variant: SnackbarType.ERROR,
                             );

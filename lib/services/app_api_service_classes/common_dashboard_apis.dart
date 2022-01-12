@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
@@ -56,7 +56,7 @@ abstract class CommonDashBoardApisAbstractClass {
 
 class CommonDashBoardApis extends BaseApi
     implements CommonDashBoardApisAbstractClass {
-  final CartStream cartService = di<CartStream>();
+  final CartStream cartService = locator<CartStream>();
 
   @override
   Future<OrderSummaryResponse> acceptOrder({required String? orderId}) async {

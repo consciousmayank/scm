@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
@@ -16,7 +16,7 @@ class ProductsListViewModel extends GeneralisedBaseViewModel {
   ProductListResponse productListResponse = ProductListResponse().empty();
   bool shouldCallGetProductsApi = true;
 
-  final ProductApis _productApis = di<ProductApis>();
+  final ProductApis _productApis = locator<ProductApis>();
 
   getProductList({
     bool showLoader = false,

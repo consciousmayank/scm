@@ -8,6 +8,7 @@
 
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
 import '../services/app_api_service_classes/address_apis.dart';
@@ -27,10 +28,11 @@ import '../services/app_api_service_classes/profile_apis.dart';
 import '../services/app_api_service_classes/supplier_catalog_apis.dart';
 import '../services/app_api_service_classes/suppliers_list_api.dart';
 import '../services/network/api_service.dart';
+import '../services/network/dio_client.dart';
+import '../services/sharepreferences_service.dart';
 import '../services/streams/cart_stream.dart';
 import '../services/streams/catalog_stream.dart';
 import '../services/streams/notifications_stream.dart';
-import 'shared_preferences.dart';
 
 final locator = StackedLocator.instance;
 
@@ -41,8 +43,14 @@ Future setupLocator(
       environment: environment, environmentFilter: environmentFilter);
 
 // Register dependencies
+  final sharedPreferencesService = await SharedPreferencesService.getInstance();
+  locator.registerSingleton(sharedPreferencesService);
+
   locator.registerLazySingleton(() => ThemeService.getInstance());
   locator.registerLazySingleton(() => ApiService());
+  locator.registerLazySingleton(() => DialogService());
+  locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => SnackbarService());
   locator.registerLazySingleton(() => LoginApi());
   locator.registerLazySingleton(() => ProductApis());
   locator.registerLazySingleton(() => BrandsApi());
@@ -62,6 +70,5 @@ Future setupLocator(
   locator.registerLazySingleton(() => AddressApis());
   locator.registerLazySingleton(() => SupplierCatalogApis());
   locator.registerLazySingleton(() => ProfileApisImpl());
-  final appPreferences = await AppPreferences.getInstance();
-  locator.registerSingleton(appPreferences);
+  locator.registerSingleton(DioConfig());
 }

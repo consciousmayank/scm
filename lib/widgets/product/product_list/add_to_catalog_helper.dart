@@ -1,4 +1,4 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/model_classes/api_response.dart';
@@ -8,7 +8,7 @@ import 'package:scm/utils/strings.dart';
 class AddToCatalog extends GeneralisedBaseViewModel {
   AddToCatalog();
 
-  final SupplierCatalogApis _catalogApis = di<SupplierCatalogApis>();
+  final SupplierCatalogApis _catalogApis = locator<SupplierCatalogApis>();
 
   void addProductToCatalog({
     required int productId,

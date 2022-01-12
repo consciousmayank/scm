@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/network/api_endpoints.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
@@ -17,7 +18,7 @@ class ImageDioConfig {
     configureDio();
   }
 
-  final appPreferences = di<AppPreferences>();
+  final appPreferences = locator<SharedPreferencesService>();
   final String baseUrl;
 
   final _dio = Dio();
@@ -88,9 +89,9 @@ class ImageDioConfig {
               List? tokenStatusList = headersMap['tokenstatus'];
               if (tokenStatusList?.first == 'EXPIRED') {
                 appPreferences.clearPreferences();
-                di<stacked_service.NavigationService>()
+                locator<stacked_service.NavigationService>()
                     .clearStackAndShow(logInPageRoute);
-                di<stacked_service.SnackbarService>()
+                locator<stacked_service.SnackbarService>()
                     .showSnackbar(message: 'Login again as token expired');
 
                 // log('path lock');

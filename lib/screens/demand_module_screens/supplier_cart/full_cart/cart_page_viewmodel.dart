@@ -1,4 +1,5 @@
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -30,9 +31,10 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   demanders_address.Address? selectedAddress;
   String? supplierName;
 
-  final AddressApis _addressApis = di<AddressApis>();
-  final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
-  final DemandCartApi _demandCartApi = di<DemandCartApi>();
+  final AddressApis _addressApis = locator<AddressApis>();
+  final CommonDashBoardApis _commonDashBoardApis =
+      locator<CommonDashBoardApis>();
+  final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
   init({required CartPageViewArgs args}) {
     this.args = args;

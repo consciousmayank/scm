@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/apptheme.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/app/setup_snackbars.dart';
-import 'package:scm/routes/routes.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
@@ -40,7 +40,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  declareDependencies();
+  await setupLocator();
   setupDialogUi();
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
@@ -113,39 +113,24 @@ class _MyAppState extends State<MyApp> {
           currentFocus.focusedChild?.unfocus();
         }
       },
-      child: FutureBuilder(
-          future: di.allReady(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return ThemeBuilder(
-                themes: ApplicationTheme().getThemes(),
-                builder: (context, regularTheme, darkTheme, themeMode) {
-                  return AnimatedTheme(
-                      duration: const Duration(seconds: 5),
-                      curve: Curves.easeOutCubic,
-                      data: regularTheme!,
-                      child: MaterialApp(
-                        title: appName,
-                        theme: regularTheme,
-                        debugShowCheckedModeBanner: false,
-                        navigatorKey: StackedService.navigatorKey,
-                        onGenerateRoute: StackedRouter().onGenerateRoute,
+      child: ThemeBuilder(
+        themes: ApplicationTheme().getThemes(),
+        builder: (context, regularTheme, darkTheme, themeMode) {
+          return AnimatedTheme(
+              duration: const Duration(seconds: 5),
+              curve: Curves.easeOutCubic,
+              data: regularTheme!,
+              child: MaterialApp(
+                title: appName,
+                theme: regularTheme,
+                debugShowCheckedModeBanner: false,
+                navigatorKey: StackedService.navigatorKey,
+                onGenerateRoute: StackedRouter().onGenerateRoute,
 
-                        // initialRoute: dashBoardPageRoute,
-                      ));
-                },
-              );
-            } else {
-              return const CircularProgressIndicator();
-
-              // return LottieStopAnimation(
-              //   args: LottieStopAnimationArgs(
-              //     repeatAnimation: true,
-              //     animation: splashAnimation,
-              //   ),
-              // );
-            }
-          }),
+                // initialRoute: dashBoardPageRoute,
+              ));
+        },
+      ),
     );
   }
 }

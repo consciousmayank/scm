@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -21,7 +22,7 @@ import 'package:scm/widgets/product/product_details/product_detail_dialog_box_vi
 import 'package:stacked_services/stacked_services.dart';
 
 void setupDialogUi() {
-  var dialogService = di<DialogService>();
+  var dialogService = locator<DialogService>();
   final builders = {
     DialogType.BASIC: (context, sheetRequest, completer) =>
         _BasicDialog(request: sheetRequest, completer: completer),

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/di.dart';
+import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
