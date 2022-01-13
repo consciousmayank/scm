@@ -1,5 +1,4 @@
 import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/parent_api_response.dart';

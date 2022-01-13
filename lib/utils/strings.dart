@@ -225,3 +225,8 @@ const String invalidTokenDescription =
 noOrderInState({required String state}) => 'No $state Orders.';
 const String expiredTokenDescription =
     'Your session has expired. Please login again.';
+const supplyModuleLandingPageHomeTitle = 'Dashboard';
+const supplyModuleLandingPageProductsTitle = 'All Products';
+const supplyModuleLandingPageCatalogTitle = 'My Catalog';
+const supplyModuleLandingPageOrdersTitle = 'My Orders';
+const supplyModuleLandingPageMoreTitle = 'Supply Module';

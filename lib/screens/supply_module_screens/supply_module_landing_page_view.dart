@@ -144,29 +144,32 @@ class SupplyModuleLandingPageWebView
     SupplyModuleLandingPageViewModel viewModel,
   ) {
     return Scaffold(
-      appBar: appbarWidget(context: context, title: 'Supply Module', options: [
-        wSizedBox(width: 30),
-        // if (model.currentIndex != 0)
-        AnimatedSearchWidget(
-          hintText: labelSearchAllProducts,
-          onSearch: ({required String searchTerm}) {
-            viewModel.searchProducts(searchTerm: searchTerm);
-          },
-          onCrossButtonClicked: () {
-            viewModel.clearSearch();
-          },
-        ),
-        wSizedBox(width: 10),
-        Center(child: Text('Hi, ${viewModel.authenticatedUserName}')),
-        wSizedBox(width: 30),
-        AppPopUpMenuWidget(
-          onOptionsSelected: ({value}) =>
-              viewModel.actionPopUpItemSelected(selectedValue: value),
-          options: profileOptions,
-          toolTipLabel: popUpMenuLabelToolTip,
-        ),
-        wSizedBox(width: 10),
-      ]),
+      appBar: appbarWidget(
+          context: context,
+          title: viewModel.selectedOptionTitle(),
+          options: [
+            wSizedBox(width: 30),
+            // if (model.currentIndex != 0)
+            AnimatedSearchWidget(
+              hintText: labelSearchAllProducts,
+              onSearch: ({required String searchTerm}) {
+                viewModel.searchProducts(searchTerm: searchTerm);
+              },
+              onCrossButtonClicked: () {
+                viewModel.clearSearch();
+              },
+            ),
+            wSizedBox(width: 10),
+            Center(child: Text('Hi, ${viewModel.authenticatedUserName}')),
+            wSizedBox(width: 30),
+            AppPopUpMenuWidget(
+              onOptionsSelected: ({value}) =>
+                  viewModel.actionPopUpItemSelected(selectedValue: value),
+              options: profileOptions,
+              toolTipLabel: popUpMenuLabelToolTip,
+            ),
+            wSizedBox(width: 10),
+          ]),
       body: Row(
         children: [
           AppNavigationRailWidget(

@@ -16,10 +16,10 @@ import 'package:stacked_themes/stacked_themes.dart';
 class LoginView extends StatelessWidget {
   const LoginView({
     Key? key,
-    required this.arguments,
+    this.arguments,
   }) : super(key: key);
 
-  final LoginViewArgs arguments;
+  final LoginViewArgs? arguments;
 
   @override
   Widget build(BuildContext context) {

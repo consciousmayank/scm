@@ -81,7 +81,7 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                     ? Container()
                     : Text(
                         widget.title!,
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                 if (widget.subTitle != null) wSizedBox(width: 20),
                 widget.subTitle == null

@@ -1,5 +1,3 @@
-import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
@@ -63,8 +61,8 @@ import 'package:stacked_themes/stacked_themes.dart';
       classType: SharedPreferencesService,
       presolveUsing: SharedPreferencesService.getInstance,
     ),
-    LazySingleton(
-        classType: ThemeService, resolveUsing: ThemeService.getInstance),
+    // LazySingleton(
+    //     classType: ThemeService, resolveUsing: ThemeService.getInstance),
     // abstracted class type support
     LazySingleton(classType: ApiService),
     LazySingleton(classType: DialogService),

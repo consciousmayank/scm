@@ -47,12 +47,12 @@ dependencies:
   lottie: ^1.2.1
   pretty_dio_logger: ^1.2.0-beta-1
   responsive_builder: ^0.4.1
-  scrollable_positioned_list: ^0.2.3
   shared_preferences: ^2.0.7
   stacked: ^2.2.5
   stacked_services: ^0.8.13
-  url_launcher: ^6.0.10
   stacked_themes: ^0.3.8+1
+  scrollable_positioned_list: ^0.2.3
+  url_launcher: ^6.0.10
   dio_flutter_transformer2: ^4.0.1
   logger: 1.1.0 
 

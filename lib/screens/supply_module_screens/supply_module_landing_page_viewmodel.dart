@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
+import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/utils/strings.dart';
@@ -38,7 +40,12 @@ class SupplyModuleLandingPageViewModel
 
   void logout() {
     preferences.clearPreferences();
-    navigationService.pushNamedAndRemoveUntil(logInPageRoute);
+    navigationService.pushNamedAndRemoveUntil(
+      logInPageRoute,
+      arguments: LoginViewArguments(
+        arguments: LoginViewArgs(),
+      ),
+    );
   }
 
   void changePassword() async {
@@ -50,6 +57,30 @@ class SupplyModuleLandingPageViewModel
       ),
       barrierDismissible: true,
     );
+  }
+
+  String selectedOptionTitle() {
+    switch (currentIndex) {
+      case 0:
+        return supplyModuleLandingPageHomeTitle;
+
+      case 1:
+        // return const SupplyProductsOptionsPageView();
+        return supplyModuleLandingPageProductsTitle;
+
+      case 2:
+        // return ProductCategoriesListView();
+        return supplyModuleLandingPageCatalogTitle;
+
+      case 3:
+        // return OrderListView();
+        return supplyModuleLandingPageOrdersTitle;
+      case 4:
+        // return MenuItemsView();
+        return supplyModuleLandingPageMoreTitle;
+      default:
+        return '';
+    }
   }
 
   getSelectedView() {

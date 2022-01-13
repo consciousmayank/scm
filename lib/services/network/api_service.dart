@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/shared_preferences.dart';
+
 import 'package:scm/enums/address_api_type.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
@@ -24,7 +24,6 @@ import 'package:scm/model_classes/update_web_fcm_id_request.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/network/dio_client.dart';
-import 'package:scm/services/network/image_dio_client.dart';
 import 'package:scm/services/sharepreferences_service.dart';
 
 class ApiService {

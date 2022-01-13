@@ -1,5 +1,5 @@
 import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/shared_preferences.dart';
+
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/sharepreferences_service.dart';

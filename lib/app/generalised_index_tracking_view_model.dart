@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/shared_preferences.dart';
+
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/services/sharepreferences_service.dart';

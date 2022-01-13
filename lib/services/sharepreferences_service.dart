@@ -18,8 +18,8 @@ class SharedPreferencesService {
 
   static SharedPreferences? _preferences;
 
-  static const _ThemeIndexKey = 'user_key';
-  static const _UserThemeModeKey = 'user_theme_mode_key';
+  // static const _ThemeIndexKey = 'user_key';
+  // static const _UserThemeModeKey = 'user_theme_mode_key';
 
   final String apiToken = "api_token";
   final String authenticatedUserName = "authenticated_user_name";
@@ -131,31 +131,31 @@ class SharedPreferencesService {
     _preferences?.clear();
   }
 
-  int? get themeIndex => _getFromDisk(_ThemeIndexKey);
+  // int? get themeIndex => _getFromDisk(_ThemeIndexKey);
 
-  set themeIndex(int? value) => _saveToDisk(_ThemeIndexKey, value);
+  // set themeIndex(int? value) => _saveToDisk(_ThemeIndexKey, value);
 
-  ThemeMode? get userThemeMode {
-    var userThemeString = _getFromDisk(_UserThemeModeKey);
-    if (userThemeString == ThemeMode.dark.toString()) {
-      return ThemeMode.dark;
-    }
+  // ThemeMode? get userThemeMode {
+  //   var userThemeString = _getFromDisk(_UserThemeModeKey);
+  //   if (userThemeString == ThemeMode.dark.toString()) {
+  //     return ThemeMode.dark;
+  //   }
 
-    if (userThemeString == ThemeMode.light.toString()) {
-      return ThemeMode.light;
-    }
+  //   if (userThemeString == ThemeMode.light.toString()) {
+  //     return ThemeMode.light;
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
-  set userThemeMode(ThemeMode? value) {
-    if (value == null) {
-      _saveToDisk(_UserThemeModeKey, value);
-    } else {
-      var userTheme = value.toString();
-      _saveToDisk(_UserThemeModeKey, userTheme);
-    }
-  }
+  // set userThemeMode(ThemeMode? value) {
+  //   if (value == null) {
+  //     _saveToDisk(_UserThemeModeKey, value);
+  //   } else {
+  //     var userTheme = value.toString();
+  //     _saveToDisk(_UserThemeModeKey, userTheme);
+  //   }
+  // }
 
   dynamic _getFromDisk(String key) {
     var value = _preferences?.get(key);

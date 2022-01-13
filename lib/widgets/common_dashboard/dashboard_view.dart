@@ -7,7 +7,6 @@ import 'package:scm/widgets/common_dashboard/dashboard_viewmodel.dart';
 import 'package:scm/widgets/common_dashboard/order_info_widget.dart';
 import 'package:scm/widgets/common_dashboard/ordered_brands_widget.dart';
 import 'package:scm/widgets/common_dashboard/ordered_types.dart';
-import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class CommonDashboardView extends StatefulWidget {
@@ -32,9 +31,6 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
       builder: (context, model, child) => Scaffold(
         body: CustomScrollView(
           slivers: [
-            const SliverToBoxAdapter(
-              child: PageBarWidget(title: 'DashBoard'),
-            ),
             OrderInfoWidget(
               onClickOfOrderTile: (
                   {required String clickedOrderStatus, int? count}) {

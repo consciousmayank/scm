@@ -6,7 +6,7 @@ import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
-import 'package:scm/app/shared_preferences.dart';
+
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/cart.dart';
