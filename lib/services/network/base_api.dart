@@ -1,15 +1,13 @@
-import 'package:scm/app/app.locator.dart';
-
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
+import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/api_service.dart';
 import 'package:scm/services/sharepreferences_service.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:scm/model_classes/parent_api_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 
 abstract class BaseApi {
   ApiService apiService = locator<ApiService>();
-  SharedPreferencesService preferences = locator<SharedPreferencesService>();
+  AppPreferencesService preferences = locator<AppPreferencesService>();
   SnackbarService snackBarService = locator<SnackbarService>();
 
   ParentApiResponse? filterResponse(ParentApiResponse apiResponse,

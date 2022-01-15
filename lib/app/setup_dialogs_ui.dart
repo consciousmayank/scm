@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -10,9 +9,7 @@ import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialo
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
 import 'package:scm/services/notification/notification_dialog_box.dart';
-import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/address/address_dialog_box.dart';
-import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
@@ -97,81 +94,6 @@ class _BasicDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(child: Container() /* Build your dialog UI here */
         );
-  }
-}
-
-class _NewGpsRequestDialog extends StatelessWidget {
-  const _NewGpsRequestDialog({
-    required this.request,
-    required this.completer,
-  });
-
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
-  @override
-  Widget build(BuildContext context) {
-    NewGpsRequestDialogInputArguments arguments = request.data;
-
-    return CenteredBaseDialog(
-      arguments: CenteredBaseDialogArguments(
-        request: request,
-        completer: completer,
-        title: 'New Gps Request',
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Center(
-                child: Text(
-                  '${arguments.vendorName} has raised a new GPS Request.',
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: Dimens().buttonHeight,
-                    child: AppButton(
-                        onTap: () {
-                          completer(
-                            DialogResponse(
-                              confirmed: false,
-                            ),
-                          );
-                        },
-                        buttonText: 'Later'),
-                  ),
-                  flex: 1,
-                ),
-                wSizedBox(
-                  width: 4,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: SizedBox(
-                    height: Dimens().buttonHeight,
-                    child: AppButton(
-                        onTap: () {
-                          completer(
-                            DialogResponse(
-                              confirmed: true,
-                            ),
-                          );
-                        },
-                        buttonText: 'Process'),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
   }
 }
 

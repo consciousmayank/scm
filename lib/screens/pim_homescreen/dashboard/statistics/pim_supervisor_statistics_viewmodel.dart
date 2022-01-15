@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/di.dart';
 
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/pim_supervisor_dashboard_statistics_response.dart';
 import 'package:scm/services/app_api_service_classes/pim_supervisor_dashboard_statistics_api.dart';

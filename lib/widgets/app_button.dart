@@ -1,96 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/styles.dart';
+import 'package:scm/app/dimens.dart';
+import 'package:scm/app/image_config.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 
-class AppButton extends StatelessWidget {
-  const AppButton({
+class AppButton extends StatefulWidget {
+  final String title;
+  final bool disabled;
+  final void Function()? onTap;
+  final bool outline;
+  final Widget? leading;
+  final Widget? suffix;
+
+  const AppButton(
+      {Key? key,
+      required this.title,
+      this.disabled = false,
+      this.onTap,
+      this.leading,
+      this.suffix})
+      : outline = false,
+        super(key: key);
+
+  const AppButton.outline({
     Key? key,
-    required this.onTap,
-    required this.buttonText,
-    this.appButtonTypes = AppButtonTypes.LARGE,
-    this.enabled = true,
-  }) : super(key: key);
+    required this.title,
+    this.onTap,
+    this.leading,
+    this.suffix,
+  })  : disabled = false,
+        outline = true;
 
-  const AppButton.small({
-    Key? key,
-    required this.onTap,
-    required this.buttonText,
-    this.appButtonTypes = AppButtonTypes.SMALL,
-    this.enabled = true,
-  }) : super(key: key);
+  @override
+  State<AppButton> createState() => _AppButtonState();
+}
 
-  final AppButtonTypes appButtonTypes;
-  final String buttonText;
-  final bool enabled;
-  final GestureTapCallback onTap;
-
-  // double getButtonWidth() {
-  //   switch (appButtonTypes) {
-  //     case AppButtonTypes.SMALL:
-  //       return 110;
-  //     case AppButtonTypes.MEDIUM:
-  //       return 100;
-  //     case AppButtonTypes.LARGE:
-  //       return double.infinity;
-  //     default:
-  //       return double.infinity;
-  //   }
-  // }
-
-  // double getButtonHeight() {
-  //   switch (appButtonTypes) {
-  //     case AppButtonTypes.SMALL:
-  //       return buttonHeight * 0.50;
-  //     case AppButtonTypes.MEDIUM:
-  //       return buttonHeight * 0.75;
-  //     case AppButtonTypes.LARGE:
-  //       return buttonHeight;
-  //     default:
-  //       return buttonHeight;
-  //   }
-  // }
-
-  TextStyle getButtonTextStyle({
-    required BuildContext context,
-  }) {
-    switch (appButtonTypes) {
-      case AppButtonTypes.SMALL:
-        return Theme.of(context).textTheme.caption!;
-      case AppButtonTypes.MEDIUM:
-        return Theme.of(context).textTheme.button!;
-      case AppButtonTypes.LARGE:
-        return Theme.of(context).textTheme.bodyText1!;
-      default:
-        return Theme.of(context).textTheme.caption!;
-    }
-  }
+class _AppButtonState extends State<AppButton> {
+  bool hover = false;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: AppTextButtonsStyles(context: context).elevatedTextButtonStyle,
-      onPressed: enabled
-          ? () {
-              onTap.call();
-            }
-          : null,
-      child: Text(
-        buttonText,
-        style: getButtonTextStyle(
-          context: context,
-        ).copyWith(
-          // fontSize: 8,
-          color: AppColors().white,
-        ),
-        maxLines: 2,
-        textAlign: TextAlign.center,
+    return AppInkwell.withBorder(
+      borderderRadius: BorderRadius.circular(8),
+      onHover: (value) {
+        if (value) {
+          setState(() {
+            hover = true;
+          });
+        } else {
+          setState(() {
+            hover = false;
+          });
+        }
+      },
+      onTap: widget.onTap,
+      child: Material(
+        elevation: hover ? 5 : 0,
+        borderRadius: BorderRadius.circular(8),
+        color: widget.outline
+            ? Colors.white
+            : Theme.of(context).colorScheme.secondary,
+        child: Container(
+            padding: widget.outline
+                ? const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  )
+                : const EdgeInsets.all(0),
+            height: Dimens().buttonHeight + 4,
+            alignment: Alignment.center,
+            decoration: !widget.outline
+                ? BoxDecoration(
+                    color: !widget.disabled
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey.shade600,
+                    borderRadius: BorderRadius.circular(8),
+                  )
+                : BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 1,
+                    ),
+                  ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (widget.leading != null) widget.leading!,
+                if (widget.leading != null) SizedBox(width: 5),
+                Text(
+                  widget.title,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        fontWeight: hover ? FontWeight.w800 : FontWeight.normal,
+                        color: !widget.outline ? Colors.black : Colors.black,
+                      ),
+                ),
+                if (widget.suffix != null) SizedBox(width: 5),
+                if (widget.suffix != null) widget.suffix!,
+              ],
+            )),
       ),
     );
   }
-}
-
-enum AppButtonTypes {
-  SMALL,
-  MEDIUM,
-  LARGE,
 }

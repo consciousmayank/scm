@@ -1,24 +1,33 @@
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:flutter/material.dart';
+import 'package:scm/app/app.logger.dart';
+import 'package:scm/app/di.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
+import 'package:scm/utils/date_time_converter.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
+  final log = getLogger('OrderListPageViewModel');
+
   late final OrderListPageViewArguments args;
+  // late final TextEditingController toDateController;
+  // late final TextEditingController fromDateController;
   OrderSummaryResponse orderDetails = OrderSummaryResponse().empty();
   ApiStatus orderDetailsApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
@@ -33,6 +42,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
   String selectedOrderStatus = 'ALL';
+  late DateTimeRange dateTimeRange;
 
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
@@ -57,6 +67,16 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   }
 
   init(OrderListPageViewArguments arguments) {
+    dateTimeRange = DateTimeRange(
+      end: DateTime.now(),
+      start: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    );
+    // updateTextControllers();
+
     args = arguments;
 
     if (!args.hideOrdersList) {
@@ -75,6 +95,13 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       pageSize: pageSize,
       pageNumber: pageNumber,
       status: selectedOrderStatus,
+      selectedDuration: selectedOrderDuration,
+      selectedDurationFromDate: DateTimeToStringConverter.yyyymmdd(
+        date: dateTimeRange.start,
+      ).convert(),
+      selectedDurationToDate: DateTimeToStringConverter.yyyymmdd(
+        date: dateTimeRange.end,
+      ).convert(),
     );
 
     if (args.selectedOrder == null) {
@@ -340,4 +367,68 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     return order;
   }
+
+  OrderFiltersDurationType selectedOrderDuration =
+      OrderFiltersDurationType.LAST_30_DAYS;
+  int indexForList = 0;
+
+  void openOrderListFilters() async {
+    indexForList = 1;
+
+    notifyListeners();
+
+    // DialogResponse? filtersDialogResponse;
+
+    // filtersDialogResponse = await dialogService.showCustomDialog(
+    //   variant: DialogType.ORDER_LIST_FILTERS,
+    //   data: OrderFiltersDialogBoxViewArguments(
+    //     title: orderFiltersDialogBoxTitle,
+    //   ),
+    // );
+
+    // if (filtersDialogResponse != null && filtersDialogResponse.confirmed) {
+    //   OrderFiltersDialogBoxViewOutArguments
+    //       orderFiltersDialogBoxViewOutArguments = filtersDialogResponse.data;
+
+    //   selectedOrderStatus =
+    //       orderFiltersDialogBoxViewOutArguments.selectedOrderStatus;
+    //   switch (orderFiltersDialogBoxViewOutArguments.orderFiltersDurationType) {
+    //     case OrderFiltersDurationType.PAST_MONTHS:
+    //       selectedOrderDurationMonths =
+    //           orderFiltersDialogBoxViewOutArguments.selectedOrderDuration;
+    //       break;
+    //     case OrderFiltersDurationType.CUSTOM:
+    //       selectedToDate = orderFiltersDialogBoxViewOutArguments.toDate;
+    //       selectedFromDate = orderFiltersDialogBoxViewOutArguments.fromDate;
+
+    //       break;
+    //   }
+
+    //   pageNumber = 0;
+    //   getOrderList();
+    // }
+  }
+
+  void updateDateRange(DateTimeRange? newDateTimeRange) {
+    if (newDateTimeRange == null) {
+      return;
+    }
+
+    dateTimeRange = newDateTimeRange;
+    // updateTextControllers();
+    notifyListeners();
+  }
+
+  // void updateTextControllers() {
+  //   toDateController = TextEditingController(
+  //     text: DateTimeToStringConverter.ddMMMMyy(
+  //       date: dateTimeRange.end,
+  //     ).convert(),
+  //   );
+  //   fromDateController = TextEditingController(
+  //     text: DateTimeToStringConverter.ddMMMMyy(
+  //       date: dateTimeRange.start,
+  //     ).convert(),
+  //   );
+  // }
 }

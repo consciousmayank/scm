@@ -10,10 +10,10 @@ import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_i
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
-import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
 import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:stacked/stacked.dart';
@@ -79,17 +79,12 @@ class ProductListView extends StatelessWidget {
             wSizedBox(
               width: 8,
             ),
-            TextButton.icon(
-              style: AppTextButtonsStyles(
-                context: context,
-              ).textButtonStyleForProductListItem,
-              onPressed: () => model.openFiltersDialogBox(),
-              icon: const Icon(Icons.filter),
-              label: Text(
-                model.getAppliedFiltersCount() == 0
-                    ? 'Filter'
-                    : 'Filter (${model.getAppliedFiltersCount()})',
-              ),
+            AppButton(
+              onTap: () => model.openFiltersDialogBox(),
+              leading: const Icon(Icons.filter),
+              title: model.getAppliedFiltersCount() == 0
+                  ? 'Filter'
+                  : 'Filter (${model.getAppliedFiltersCount()})',
             ),
             wSizedBox(width: 8),
             if (arguments.supplierName != null)
@@ -156,19 +151,14 @@ class ProductListView extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          TextButton.icon(
-                                            style: AppTextButtonsStyles(
-                                              context: context,
-                                            ).textButtonStyleForProductListItem,
-                                            onPressed: () =>
+                                          AppButton(
+                                            onTap: () =>
                                                 model.openFiltersDialogBox(),
-                                            icon: const Icon(Icons.filter),
-                                            label: Text(
-                                              model.getAppliedFiltersCount() ==
-                                                      0
-                                                  ? 'Filter'
-                                                  : 'Filter (${model.getAppliedFiltersCount()})',
-                                            ),
+                                            leading: const Icon(Icons.filter),
+                                            title: model.getAppliedFiltersCount() ==
+                                                    0
+                                                ? 'Filter'
+                                                : 'Filter (${model.getAppliedFiltersCount()})',
                                           ),
                                         ],
                                       ),
@@ -570,23 +560,19 @@ class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {
                 ? const LoadingWidgetWithText(
                     text: 'Loading More Products. Please wait')
                 : Center(
-                    child: TextButton(
-                        style: AppTextButtonsStyles(
-                          context: context,
-                        ).textButtonStyle,
-                        onPressed:
-                            viewModel.productListResponse!.totalPages! - 1 ==
-                                    viewModel.pageIndex
-                                ? null
-                                : () {
-                                    viewModel.pageIndex++;
-                                    viewModel.getProductList();
-                                  },
-                        child: Text(
-                            viewModel.productListResponse!.totalPages! - 1 ==
-                                    viewModel.pageIndex
-                                ? 'Thats all folks'
-                                : 'Load Next Set of Products')),
+                    child: AppButton(
+                      onTap: viewModel.productListResponse!.totalPages! - 1 ==
+                              viewModel.pageIndex
+                          ? null
+                          : () {
+                              viewModel.pageIndex++;
+                              viewModel.getProductList();
+                            },
+                      title: viewModel.productListResponse!.totalPages! - 1 ==
+                              viewModel.pageIndex
+                          ? 'Thats all folks'
+                          : 'Load Next Set of Products',
+                    ),
                   ),
           );
   }

@@ -1,21 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
-
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/cart.dart';
-import 'package:scm/model_classes/product_list_response.dart';
-import 'package:scm/services/sharepreferences_service.dart';
+import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/product/product_details/product_detail_view.dart';
-import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductAddToCartDialogBoxView extends StatefulWidget {
@@ -49,8 +44,8 @@ class _ProductAddToCartDialogBoxViewState
             productId: productId,
             quantity: int.parse(quantityController.text),
             cartItem: productCount > 0
-                ? locator<SharedPreferencesService>()
-                    .getDemandersCart()
+                ? locator<CartStream>()
+                    .appCart
                     .cartItems!
                     .firstWhere(
                       (element) => element.itemId == productId,
@@ -68,8 +63,8 @@ class _ProductAddToCartDialogBoxViewState
         widget.request.data as ProductAddToCartDialogBoxViewArguments;
 
     int productCount = arguments.quantity ??
-        locator<SharedPreferencesService>()
-            .getDemandersCart()
+        locator<CartStream>()
+            .appCart
             .cartItems!
             .firstWhere(
               (element) => element.itemId == arguments.productId,
@@ -140,8 +135,8 @@ class _ProductAddToCartDialogBoxViewState
                   Expanded(
                     child: SizedBox(
                       height: Dimens().buttonHeight,
-                      child: TextButton(
-                        onPressed: () {
+                      child: AppButton(
+                        onTap: () {
                           if (quantityController.text.trim().isNotEmpty &&
                               int.parse(quantityController.text.trim()) > 0) {
                             sendFeedBack(
@@ -156,12 +151,9 @@ class _ProductAddToCartDialogBoxViewState
                             );
                           }
                         },
-                        child: Text(productCount == 0
+                        title: productCount == 0
                             ? 'Add To Cart'
-                            : 'Update Quantity'),
-                        style: AppTextButtonsStyles(
-                          context: context,
-                        ).textButtonStyle,
+                            : 'Update Quantity',
                       ),
                     ),
                     flex: 1,

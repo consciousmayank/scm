@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
-import 'package:stacked_services/stacked_services.dart' as stackedService;
+import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
 class ParentApiResponse {
   ParentApiResponse({
@@ -27,7 +26,7 @@ class ParentApiResponse {
     if (headersMap != null) {
       /// if header does not contains the key ['tokenstatus']
       if (!headersMap.containsKey('tokenstatus')) {
-        locator<stackedService.SnackbarService>().showCustomSnackBar(
+        locator<stacked_service.SnackbarService>().showCustomSnackBar(
             message: error?.response?.data['message'],
             variant: SnackbarType.ERROR);
         return;

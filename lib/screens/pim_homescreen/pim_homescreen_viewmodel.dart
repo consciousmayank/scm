@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
@@ -19,6 +19,7 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:scm/app/di.dart';
 
 class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';

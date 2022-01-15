@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appconfigs.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/model_classes/refresh_token_response.dart';
@@ -20,8 +21,8 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
   ApiStatus refreshTokenApiStatus = ApiStatus.LOADING;
   // late final Function({required RequestOptions requestOptions})
   //     onFetchRefreshToken;
-  final SharedPreferencesService _appPreferences =
-      locator<SharedPreferencesService>();
+  final AppPreferencesService _appPreferences =
+      locator<AppPreferencesService>();
 
   // void setRefreshTokenListner(
   //     Function({required RequestOptions requestOptions}) onFetchRefreshToken) {
@@ -69,7 +70,7 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
                 //Refresh token success
                 RefreshTokenResponse refreshTokenResponse =
                     RefreshTokenResponse.fromJson(value.data);
-                locator<SharedPreferencesService>()
+                locator<AppPreferencesService>()
                     .saveApiToken(tokenString: refreshTokenResponse.token);
 
                 for (var requestOption in apisQueue) {

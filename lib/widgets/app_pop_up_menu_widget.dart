@@ -48,3 +48,54 @@ class AppPopUpMenuWidget extends StatelessWidget {
     );
   }
 }
+
+class AppPopUpMenuButtonWidget extends StatelessWidget {
+  const AppPopUpMenuButtonWidget({
+    Key? key,
+    required this.onOptionsSelected,
+    required this.options,
+    required this.toolTipLabel,
+    required this.title,
+    required this.subtitle,
+  }) : super(key: key);
+
+  final Function({String? value}) onOptionsSelected;
+  final List<String> options;
+  final String toolTipLabel, title, subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: PopupMenuButton<String>(
+        elevation: Dimens().getDefaultElevation,
+        color: Theme.of(context).colorScheme.secondaryVariant,
+        tooltip: toolTipLabel,
+        icon: Text(
+          title,
+          textAlign: TextAlign.end,
+        ),
+        // icon: Icon(
+        //   Icons.more_vert,
+        //   color: AppColors().white,
+        // ),
+        itemBuilder: (context) {
+          return options.map((String choice) {
+            return PopupMenuItem(
+              value: choice,
+              child: Text(
+                choice,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: AppColors().white,
+                    ),
+              ),
+            );
+          }).toList();
+        },
+        onSelected: (String value) {
+          onOptionsSelected(value: value);
+        },
+      ),
+    );
+  }
+}

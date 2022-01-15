@@ -6,6 +6,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/address/address_viewmodel.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:stacked/stacked.dart';
 import 'package:scm/model_classes/address.dart' as demanders_address;
@@ -285,16 +286,11 @@ class _AddressViewState extends State<AddressView> {
                     //Submite Button
                     SizedBox(
                       height: AppBar().preferredSize.height,
-                      child: TextButton(
-                        style: AppTextButtonsStyles(
-                          context: context,
-                        ).textButtonStyle,
-                        onPressed: () {
+                      child: AppButton(
+                        onTap: () {
                           model.submitAddress();
                         },
-                        child: const Text(
-                          labelSubmit,
-                        ),
+                        title: labelSubmit,
                       ),
                     ),
                   ],

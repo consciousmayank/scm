@@ -8,8 +8,10 @@ import 'package:scm/model_classes/address.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/processing_order_widget_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
+import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/loading_widget.dart';
+import 'package:scm/widgets/order_filters/order_filters_view.dart';
 import 'package:scm/widgets/order_list_widget.dart';
 import 'package:stacked/stacked.dart';
 
@@ -47,46 +49,61 @@ class OrderListPageView extends StatelessWidget {
                         child: model.orderListApi == ApiStatus.LOADING
                             ? const LoadingWidgetWithText(
                                 text: 'Fetching Orders. Please Wait...')
-                            : OrderListWidget.orderPage(
-                                key: UniqueKey(),
-                                selectedOrderId: arguments.selectedOrder != null
-                                    ? arguments.selectedOrder!.id ?? -1
-                                    : model.selectedOrder.id ?? -1,
-                                onOrderClick: ({
-                                  required Order selectedOrder,
-                                }) {
-                                  model.selectedOrder = selectedOrder;
-                                  model.getOrdersDetails();
-                                },
-                                label: labelOrders,
-                                isScrollable: true,
-                                isSupplyRole:
-                                    model.preferences.getSelectedUserRole() ==
+                            : IndexedStack(
+                                index: model.indexForList,
+                                children: [
+                                  OrderListWidget.orderPage(
+                                    selectedOrdersDurationType:
+                                        model.selectedOrderDuration,
+                                    key: UniqueKey(),
+                                    selectedOrderId:
+                                        arguments.selectedOrder != null
+                                            ? arguments.selectedOrder!.id ?? -1
+                                            : model.selectedOrder.id ?? -1,
+                                    onOrderClick: ({
+                                      required Order selectedOrder,
+                                    }) {
+                                      model.selectedOrder = selectedOrder;
+                                      model.getOrdersDetails();
+                                    },
+                                    label: labelOrders,
+                                    isScrollable: true,
+                                    isSupplyRole: model.preferences
+                                            .getSelectedUserRole() ==
                                         AuthenticatedUserRoles
                                             .ROLE_SUPPLY.getStatusString,
-                                orders: model.orderList.orders!,
-                                onNextPageClick: () {
-                                  model.pageNumber++;
-                                  model.getOrderList();
-                                },
-                                onPreviousPageClick: () {
-                                  model.pageNumber--;
-                                  model.getOrderList();
-                                },
-                                pageNumber: model.pageNumber,
-                                totalPages: model.orderList.totalPages! - 1,
-                                selectedOrderStatus:
-                                    arguments.preDefinedOrderStatus,
-                                onOrderStatusClick: (
-                                    {required String selectedOrderStatus}) {
-                                  model.selectedOrderStatus =
-                                      selectedOrderStatus;
-                                  model.notifyListeners();
-                                  model.pageNumber = 0;
-                                  model.getOrderList();
-                                },
-                                // orderStatuses: model.getInAppOrderStatusList(),
-                                orderStatuses: model.orderStatusList,
+                                    orders: model.orderList.orders!,
+                                    onNextPageClick: () {
+                                      model.pageNumber++;
+                                      model.getOrderList();
+                                    },
+                                    onPreviousPageClick: () {
+                                      model.pageNumber--;
+                                      model.getOrderList();
+                                    },
+                                    pageNumber: model.pageNumber,
+                                    totalPages: model.orderList.totalPages! - 1,
+                                    selectedOrderStatus:
+                                        arguments.selectedOrder != null
+                                            ? arguments.preDefinedOrderStatus
+                                            : model.selectedOrderStatus,
+                                    onOrderStatusClick: (
+                                        {required String selectedOrderStatus}) {
+                                      model.openOrderListFilters();
+                                    },
+                                    // orderStatuses: model.getInAppOrderStatusList(),
+                                    orderStatuses: model.orderStatusList,
+                                    fromDateString:
+                                        DateTimeToStringConverter.ddMMMMyy(
+                                      date: model.dateTimeRange.start,
+                                    ).convert(),
+                                    toDateString:
+                                        DateTimeToStringConverter.ddMMMMyy(
+                                      date: model.dateTimeRange.end,
+                                    ).convert(),
+                                  ),
+                                  const OrderFiltersView()
+                                ],
                               ),
                         flex: 1,
                       ),

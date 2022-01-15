@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
+import 'package:scm/app/di.dart';
 
 class GetProductByIdDialogBoxViewModel extends GeneralisedBaseViewModel {
   Product? product;

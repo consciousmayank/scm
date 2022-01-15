@@ -1,4 +1,4 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/user_authenticate_request.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';

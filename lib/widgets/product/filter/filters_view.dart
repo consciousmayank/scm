@@ -522,25 +522,23 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           Expanded(
             child: SizedBox(
               height: Dimens().buttonHeight,
-              child: TextButton(
-                  style: AppTextButtonsStyles(
-                    context: context,
-                  ).textButtonStyle,
-                  onPressed: () {
-                    viewModel?.unCheckAllFilters();
-                    viewModel?.tempCheckedBrandsList.clear();
-                    viewModel?.tempCheckedCategoriesList.clear();
-                    viewModel?.tempCheckedSubCategoriesList.clear();
-                  },
-                  child: const Text('Clear All')),
+              child: AppButton(
+                onTap: () {
+                  viewModel?.unCheckAllFilters();
+                  viewModel?.tempCheckedBrandsList.clear();
+                  viewModel?.tempCheckedCategoriesList.clear();
+                  viewModel?.tempCheckedSubCategoriesList.clear();
+                },
+                title: 'Clear All',
+              ),
             ),
           ),
           wSizedBox(width: 4),
           Expanded(
             child: SizedBox(
               height: Dimens().buttonHeight,
-              child: TextButton(
-                onPressed: () {
+              child: AppButton(
+                onTap: () {
                   widget.arguments
                       .onApplyFilterButtonClicked(
                         outArgs: ProductsFilterViewOutputArguments(
@@ -553,12 +551,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                       )
                       .call();
                 },
-                child: const Text(
-                  'Apply',
-                ),
-                style: AppTextButtonsStyles(
-                  context: context,
-                ).textButtonStyle,
+                title: 'Apply',
               ),
             ),
           ),

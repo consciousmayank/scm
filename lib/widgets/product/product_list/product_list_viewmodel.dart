@@ -1,4 +1,5 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.router.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -119,11 +120,13 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   takeToProductListFullScreen() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArgs.fullScreen(
-        brandsFilterList: [],
-        categoryFilterList: [],
-        subCategoryFilterList: [],
-        productTitle: '',
+      arguments: ProductListViewArguments(
+        arguments: ProductListViewArgs.fullScreen(
+          brandsFilterList: [],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+        ),
       ),
     );
   }

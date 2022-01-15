@@ -1,15 +1,13 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
-import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/supplier_catalog_apis.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/services/streams/catalog_stream.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
-import 'package:scm/widgets/product/product_list/add_to_catalog_helper.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';

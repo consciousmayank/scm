@@ -1,18 +1,15 @@
-import 'dart:developer';
 import 'dart:ui';
 
-import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
-import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   late final CommonDashboardViewArguments arguments;

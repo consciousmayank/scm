@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+
 // import 'package:image_picker_web/image_picker_web.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';

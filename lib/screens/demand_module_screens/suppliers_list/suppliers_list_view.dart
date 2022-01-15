@@ -140,7 +140,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                               viewModel.notifyListeners();
                             }
                           },
-                          borderDerRadius: BorderRadius.all(
+                          borderderRadius: BorderRadius.all(
                             Radius.circular(
                               Dimens().suppliersListItemImageCircularRaduis,
                             ),

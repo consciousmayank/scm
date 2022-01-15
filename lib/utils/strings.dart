@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 const String appName = 'Supply Chain Management';
 //UI Labels
 const String labelLogin = 'Login';
@@ -230,3 +228,14 @@ const supplyModuleLandingPageProductsTitle = 'All Products';
 const supplyModuleLandingPageCatalogTitle = 'My Catalog';
 const supplyModuleLandingPageOrdersTitle = 'My Orders';
 const supplyModuleLandingPageMoreTitle = 'Supply Module';
+const String orderFiltersTitle = 'Select Filter';
+const String orderFiltersStatusOptionLabel = 'Order Status';
+const String orderFiltersDurationOptionLabel = 'Duration';
+const String orderFiltersDurationDateLabel = 'Select Date Range';
+orderListSubtitleLabel({required String duration, required String status}) =>
+    'For $duration : Order Status $status';
+orderListSubtitleLabelWithDates(
+        {required String fromDate,
+        required String toDate,
+        required String status}) =>
+    'From $fromDate to $toDate : Order Status $status';

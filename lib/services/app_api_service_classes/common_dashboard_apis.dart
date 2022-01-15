@@ -1,4 +1,5 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
@@ -26,6 +27,9 @@ abstract class CommonDashBoardApisAbstractClass {
     required int pageSize,
     required int pageNumber,
     required String status,
+    OrderFiltersDurationType selectedDuration,
+    String? selectedDurationFromDate,
+    String? selectedDurationToDate,
   });
 
   Future<OrderSummaryResponse> getOrderDetails({
@@ -193,6 +197,10 @@ class CommonDashBoardApis extends BaseApi
     required int pageSize,
     required int pageNumber,
     required String status,
+    OrderFiltersDurationType selectedDuration =
+        OrderFiltersDurationType.LAST_30_DAYS,
+    String? selectedDurationFromDate,
+    String? selectedDurationToDate,
   }) async {
     OrderListResponse returingResponse = OrderListResponse().empty();
 
@@ -201,6 +209,9 @@ class CommonDashBoardApis extends BaseApi
       pageNumber: pageNumber,
       pageSize: pageSize,
       status: getAppToApiOrderStatus(status: status),
+      selectedDuration: selectedDuration,
+      selectedDurationFromDate: selectedDurationFromDate,
+      selectedDurationToDate: selectedDurationToDate,
     );
 
     if (filterResponse(apiResponse) != null) {

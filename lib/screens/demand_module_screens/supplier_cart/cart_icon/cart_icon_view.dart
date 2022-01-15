@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/snackbar_types.dart';

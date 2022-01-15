@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_view.dart';

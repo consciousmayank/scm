@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 
 class PimHomeScreenView extends StatelessWidget {
   const PimHomeScreenView({

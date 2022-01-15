@@ -3,11 +3,13 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+
 import 'package:scm/app/dimens.dart';
 
 import 'package:scm/enums/address_api_type.dart';
 import 'package:scm/enums/cart_api_types.dart';
+import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_operations.dart';
 import 'package:scm/enums/product_statuses.dart';
@@ -28,7 +30,7 @@ import 'package:scm/services/sharepreferences_service.dart';
 
 class ApiService {
   final dioClient = locator<DioConfig>();
-  final preferences = locator<SharedPreferencesService>();
+  final preferences = locator<AppPreferencesService>();
 
   Future<ParentApiResponse> login({
     required String base64string,
@@ -1224,6 +1226,10 @@ class ApiService {
     String? status,
     OrderSummaryResponse? orderDetials,
     PostOrderRequest? postOrderRequest,
+    String? selectedDurationFromDate,
+    String? selectedDurationToDate,
+    OrderFiltersDurationType selectedDuration =
+        OrderFiltersDurationType.LAST_30_DAYS,
   }) async {
     Response? response;
     DioError? error;
@@ -1231,17 +1237,39 @@ class ApiService {
     try {
       switch (orderApiType) {
         case OrderApiType.ORDER_LIST:
+          Map<String, dynamic> queryParamenters = {};
+          if (pageSize != null) {
+            queryParamenters['size'] = pageSize;
+          }
+          if (pageNumber != null) {
+            queryParamenters['page'] = pageNumber;
+          }
+          if (status != 'ALL') {
+            queryParamenters['orderStatus'] = status;
+          }
+
+          switch (selectedDuration) {
+            case OrderFiltersDurationType.LAST_30_DAYS:
+            case OrderFiltersDurationType.LAST_2_MONTHS:
+            case OrderFiltersDurationType.LAST_3_MONTHS:
+            case OrderFiltersDurationType.LAST_4_MONTHS:
+            case OrderFiltersDurationType.LAST_5_MONTHS:
+            case OrderFiltersDurationType.LAST_6_MONTHS:
+              queryParamenters['pastMonths'] = selectedDuration.getValue;
+              break;
+            case OrderFiltersDurationType.CUSTOM:
+              queryParamenters['dateFrom'] = selectedDurationFromDate;
+              queryParamenters['dateTo'] = selectedDurationToDate;
+              break;
+          }
+
           response = await dioClient.getDio().get(
                 ORDER(
                   role: getLoggedInRole(),
                   urlParamOrderId: orderId,
                   orderApiType: orderApiType,
                 ),
-                queryParameters: {
-                  'size': pageSize,
-                  'page': pageNumber,
-                  'orderStatus': status?.replaceAll('ALL', ''),
-                },
+                queryParameters: queryParamenters,
                 cancelToken: dioClient.apiCancelToken,
               );
           break;

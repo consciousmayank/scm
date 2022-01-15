@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
-import 'package:scm/services/streams/catalog_stream.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_image/profile_image_widget.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
-import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2_viewmodel.dart';
 import 'package:stacked/stacked.dart';
-import 'package:flutter/src/widgets/image.dart' as image_widget;
 
 class ProductListItem2View extends StatefulWidget {
   const ProductListItem2View({
@@ -35,11 +32,12 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
     return ViewModelBuilder<ProductListItem2ViewModel>.reactive(
       onModelReady: (model) => model.init(args: widget.arguments),
       builder: (context, model, child) => Scaffold(
+        backgroundColor: Colors.white,
         body: model.isBusy
             ? const Center(child: LoadingWidget())
             : AppInkwell.withBorder(
                 onTap: () => widget.arguments.onProductClick(),
-                borderDerRadius: BorderRadius.circular(
+                borderderRadius: BorderRadius.circular(
                   Dimens().suppliersListItemImageCircularRaduis,
                 ),
                 child: Row(
@@ -193,16 +191,9 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return TextButton(
-      clipBehavior: Clip.antiAlias,
-      style: AppTextButtonsStyles(
-        context: context,
-      ).textButtonStyleForProductListItem,
-      onPressed: viewModel.onAddButtonClick,
-      child: Text(
-        'Add',
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
+    return AppButton(
+      onTap: viewModel.onAddButtonClick,
+      title: 'Add',
     );
   }
 }
@@ -214,16 +205,9 @@ class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return TextButton(
-      clipBehavior: Clip.antiAlias,
-      style: AppTextButtonsStyles(
-        context: context,
-      ).textButtonStyleForProductListItem,
-      onPressed: viewModel.onUpdateButtonClick,
-      child: Text(
-        'Update',
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
+    return AppButton(
+      onTap: viewModel.onUpdateButtonClick,
+      title: "Update",
     );
   }
 }
@@ -238,19 +222,9 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return TextButton(
-      clipBehavior: Clip.antiAlias,
-      style: reverseStyle
-          ? AppTextButtonsStyles(context: context)
-              .textButtonStyleForProductListItemReversed
-          : AppTextButtonsStyles(
-              context: context,
-            ).textButtonStyleForProductListItem,
-      onPressed: viewModel.onRemoveButtonClick,
-      child: Text(
-        'Remove',
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
+    return AppButton(
+      onTap: viewModel.onRemoveButtonClick,
+      title: 'Remove',
     );
   }
 }

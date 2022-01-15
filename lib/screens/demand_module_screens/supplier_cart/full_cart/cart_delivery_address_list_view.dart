@@ -6,6 +6,7 @@ import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_
 import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -36,14 +37,12 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
                                 fontWeight: FontWeight.bold,
                               ),
                     ),
-                    TextButton.icon(
-                      icon: const Icon(Icons.add),
-                      label: const Text(labelAddNewAddress),
-                      onPressed: () {
+                    AppButton(
+                      leading: const Icon(Icons.add),
+                      title: labelAddNewAddress,
+                      onTap: () {
                         viewModel.addAddress();
                       },
-                      style: AppTextButtonsStyles(context: context)
-                          .textButtonStyle,
                     ),
                   ],
                 ),
@@ -64,48 +63,35 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
                                 );
                               }
                             },
-                            // secondary: TextButton.icon(
-                            //   onPressed: () {
-                            //     viewModel.addAddress(
-                            //         selectedAddress: viewModel.addressList
-                            //             .elementAt(index));
-                            //   },
-                            //   icon: const Icon(
-                            //     Icons.edit,
-                            //     size: 20,
-                            //   ),
-                            //   label: const Text(''),
-                            // )
-
                             secondary: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                TextButton.icon(
-                                  onPressed: () {
+                                AppButton(
+                                  onTap: () {
                                     viewModel.addAddress(
                                         selectedAddress: viewModel.addressList
                                             .elementAt(index));
                                   },
-                                  icon: const Icon(
+                                  leading: const Icon(
                                     Icons.edit,
                                     size: 20,
                                   ),
-                                  label: const Text(''),
+                                  title: '',
                                 ),
                                 wSizedBox(width: 8),
-                                TextButton.icon(
-                                  onPressed: () {
+                                AppButton(
+                                  onTap: () {
                                     viewModel.deleteAddress(
                                         selectedAddress: viewModel.addressList
                                             .elementAt(index));
                                   },
-                                  icon: const Icon(
+                                  leading: const Icon(
                                     Icons.delete,
                                     size: 20,
                                   ),
-                                  label: const Text(''),
+                                  title: '',
                                 ),
                               ],
                             ),

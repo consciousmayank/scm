@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/add_images_widget/add_images_viewmodel.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:stacked/stacked.dart';
 
 class AddImagesView extends StatelessWidget {
@@ -31,12 +33,9 @@ class AddImagesView extends StatelessWidget {
                     Dimens().buttonHeight * 4,
                     Dimens().buttonHeight,
                   ),
-                  child: TextButton(
-                    child: const Text('Add Images'),
-                    style: AppTextButtonsStyles(
-                      context: context,
-                    ).textButtonStyle,
-                    onPressed: () {
+                  child: AppButton(
+                    title: labelAddImage,
+                    onTap: () {
                       model.pickImages();
                     },
                   ),

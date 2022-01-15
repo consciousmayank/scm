@@ -17,7 +17,7 @@ class SingleCategoryItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppInkwell.withBorder(
-      borderDerRadius: BorderRadius.circular(
+      borderderRadius: BorderRadius.circular(
         Dimens().suppliersListItemImageCircularRaduis,
       ),
       onTap: () => onItemClicked(selectedItem: item),

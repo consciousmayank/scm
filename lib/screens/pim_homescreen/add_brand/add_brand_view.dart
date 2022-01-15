@@ -5,6 +5,7 @@ import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/screens/pim_homescreen/add_brand/add_brand_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/brands_dialog_box/brand_list_view.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -35,93 +36,6 @@ class AddBrandView extends StatelessWidget {
                     subTitle:
                         'Search before adding new brand, so check if the brand already exists.',
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Row(
-                  //     mainAxisSize: MainAxisSize.max,
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     crossAxisAlignment: model.selectedFiles.isEmpty
-                  //         ? CrossAxisAlignment.end
-                  //         : CrossAxisAlignment.start,
-                  //     children: [
-                  //       Expanded(
-                  //         flex: 1,
-                  //         child: Column(
-                  //           mainAxisSize: MainAxisSize.max,
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             AppTextField(
-                  //               hintText: brandTitleHintText,
-                  //               controller: model.brandTitleController,
-                  //               onTextChange: (value) => model.brandToAdd =
-                  //                   model.brandToAdd.copyWith(
-                  //                 title: value,
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //       Expanded(
-                  //           flex: 1,
-                  //           child: model.selectedFiles.isEmpty
-                  //               ? Row(
-                  //                   mainAxisAlignment: MainAxisAlignment.center,
-                  //                   crossAxisAlignment:
-                  //                       CrossAxisAlignment.center,
-                  //                   children: [
-                  //                     SizedBox(
-                  //                       height: Dimens().buttonHeight,
-                  //                       width: Dimens().buttonHeight * 5,
-                  //                       child: TextButton.icon(
-                  //                         style: AppTextButtonsStyles()
-                  //                             .textButtonStyle,
-                  //                         onPressed: () {
-                  //                           model.pickImages();
-                  //                         },
-                  //                         icon: const Icon(Icons.add_a_photo),
-                  //                         label: const Text(
-                  //                           labelAddImage,
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 )
-                  //               : Stack(
-                  //                   alignment: Alignment.topRight,
-                  //                   children: [
-                  //                     Image.memory(
-                  //                       model.selectedFiles.elementAt(0),
-                  //                     ),
-                  //                     InkWell(
-                  //                       onTap: () {
-                  //                         model.selectedFiles.removeAt(0);
-                  //                         model.notifyListeners();
-                  //                       },
-                  //                       child: Container(
-                  //                         padding: const EdgeInsets.all(
-                  //                           10,
-                  //                         ),
-                  //                         decoration: BoxDecoration(
-                  //                           color:
-                  //                               Colors.black.withOpacity(0.5),
-                  //                           borderRadius:
-                  //                               const BorderRadius.only(
-                  //                             bottomLeft: Radius.circular(20),
-                  //                           ),
-                  //                         ),
-                  //                         child: const Icon(
-                  //                           Icons.delete,
-                  //                           color: Colors.white,
-                  //                           size: 25,
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ))
-                  //     ],
-                  //   ),
-                  // ),
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -159,17 +73,13 @@ class AddBrandView extends StatelessWidget {
                                         child: SizedBox(
                                           height: Dimens().buttonHeight,
                                           width: Dimens().buttonHeight * 5,
-                                          child: TextButton.icon(
-                                            style: AppTextButtonsStyles(
-                                                    context: context)
-                                                .textButtonStyle,
-                                            onPressed: () {
+                                          child: AppButton(
+                                            onTap: () {
                                               model.pickImages();
                                             },
-                                            icon: const Icon(Icons.add_a_photo),
-                                            label: const Text(
-                                              labelAddImage,
-                                            ),
+                                            leading:
+                                                const Icon(Icons.add_a_photo),
+                                            title: labelAddImage,
                                           ),
                                         ),
                                       )
@@ -216,9 +126,8 @@ class AddBrandView extends StatelessWidget {
                                   child: SizedBox(
                                     width: double.infinity,
                                     height: Dimens().buttonHeight,
-                                    child: TextButton(
-                                      clipBehavior: Clip.antiAlias,
-                                      onPressed: () {
+                                    child: AppButton(
+                                      onTap: () {
                                         if (model.brandToAdd.title!.isEmpty) {
                                           //check if brand title is empty
                                           model.showErrorSnackBar(
@@ -231,10 +140,7 @@ class AddBrandView extends StatelessWidget {
                                           model.addBrand();
                                         }
                                       },
-                                      child: const Text(labelAddBrand),
-                                      style:
-                                          AppTextButtonsStyles(context: context)
-                                              .textButtonStyle,
+                                      title: labelAddBrand,
                                     ),
                                   ),
                                 ),

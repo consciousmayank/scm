@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:scm/app/appconfigs.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 
 class FirebasePushNotificationsPermissions {

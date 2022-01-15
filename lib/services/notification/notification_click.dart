@@ -1,6 +1,4 @@
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/enums/dialog_type.dart';
-import 'package:scm/enums/notification_type.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/app_notifications_helper.dart';
 import 'package:scm/routes/routes_constants.dart';
@@ -9,8 +7,6 @@ import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/services/streams/notifications_stream.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
-
-import 'notification_dialog_box.dart';
 
 const String orderNotificationType = 'ORDER';
 

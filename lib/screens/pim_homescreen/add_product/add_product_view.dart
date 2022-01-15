@@ -8,6 +8,7 @@ import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -408,17 +409,12 @@ class AddProductView extends StatelessWidget {
                                     ],
                                   )
                                 : Center(
-                                    child: TextButton.icon(
-                                      style:
-                                          AppTextButtonsStyles(context: context)
-                                              .textButtonStyle,
-                                      onPressed: () {
+                                    child: AppButton(
+                                      onTap: () {
                                         model.pickImages();
                                       },
-                                      icon: const Icon(Icons.add_a_photo),
-                                      label: const Text(
-                                        labelAddImage,
-                                      ),
+                                      leading: const Icon(Icons.add_a_photo),
+                                      title: labelAddImage,
                                     ),
                                   ),
                             flex: 1,
@@ -437,22 +433,17 @@ class AddProductView extends StatelessWidget {
                                   child: SizedBox(
                                     width: double.infinity,
                                     height: Dimens().buttonHeight,
-                                    child: TextButton(
-                                      clipBehavior: Clip.antiAlias,
-                                      onPressed: () {
+                                    child: AppButton(
+                                      onTap: () {
                                         if (model.isDeoGd()) {
                                           performCheckOnImage(model: model);
                                         } else {
                                           performChecksOnData(model: model);
                                         }
                                       },
-                                      child: Text(
-                                          arguments.productToEdit == null
-                                              ? buttonLabelAddProduct
-                                              : buttonLabelUpdateProduct),
-                                      style:
-                                          AppTextButtonsStyles(context: context)
-                                              .textButtonStyle,
+                                      title: arguments.productToEdit == null
+                                          ? buttonLabelAddProduct
+                                          : buttonLabelUpdateProduct,
                                     ),
                                   ),
                                   flex: 2,
@@ -466,16 +457,11 @@ class AddProductView extends StatelessWidget {
                                     child: SizedBox(
                                       width: double.infinity,
                                       height: Dimens().buttonHeight,
-                                      child: TextButton(
-                                        clipBehavior: Clip.antiAlias,
-                                        onPressed: () {
+                                      child: AppButton(
+                                        onTap: () {
                                           model.discardProduct();
                                         },
-                                        child: const Text(
-                                            buttonLabelDiscardProduct),
-                                        style: AppTextButtonsStyles(
-                                                context: context)
-                                            .textButtonStyle,
+                                        title: buttonLabelDiscardProduct,
                                       ),
                                     ),
                                     flex: 1,

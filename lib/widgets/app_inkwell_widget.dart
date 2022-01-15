@@ -5,35 +5,39 @@ class AppInkwell extends StatelessWidget {
   const AppInkwell({
     Key? key,
     required this.child,
+    this.onHover,
     required this.onTap,
   })  : isCustomBorder = false,
-        borderDerRadius = null,
+        borderderRadius = null,
         super(key: key);
 
   const AppInkwell.withBorder({
     Key? key,
     required this.child,
     required this.onTap,
-    this.borderDerRadius,
+    this.onHover,
+    this.borderderRadius,
   })  : isCustomBorder = true,
         super(key: key);
 
   final Function()? onTap;
-  final BorderRadiusGeometry? borderDerRadius;
+  final ValueChanged<bool>? onHover;
+  final BorderRadiusGeometry? borderderRadius;
   final Widget child;
   final bool isCustomBorder;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onHover: onHover,
       customBorder: isCustomBorder
           ? RoundedRectangleBorder(
-              borderRadius: borderDerRadius ?? BorderRadius.circular(50),
+              borderRadius: borderderRadius ?? BorderRadius.circular(50),
             )
           : null,
-      highlightColor: AppColors().white,
-      hoverColor: Theme.of(context).colorScheme.background,
-      splashColor: Theme.of(context).colorScheme.primaryVariant,
+      highlightColor: Theme.of(context).highlightColor,
+      hoverColor: Theme.of(context).colorScheme.secondaryVariant,
+      splashColor: Theme.of(context).splashColor,
       child: child,
       onTap: onTap,
     );

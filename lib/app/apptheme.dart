@@ -1,14 +1,16 @@
 // ignore_for_file: unnecessary_const
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 
 AppBarTheme getAppBarTheme() {
   return AppBarTheme(
     centerTitle: true,
-    titleTextStyle: getAppTextTheme().headline1,
+    titleTextStyle: getAppTextTheme(
+      textColor: Colors.black,
+    ).headline1,
     iconTheme: const IconThemeData(
       color: Colors.white,
       opacity: 1,
@@ -17,856 +19,499 @@ AppBarTheme getAppBarTheme() {
   );
 }
 
-getButtonStyle() {
-  return TextButton.styleFrom(
-    // primary: AppColors().primaryColor,
-    // backgroundColor: AppColors().primaryColor[700],
-    shape: RoundedRectangleBorder(
+InputDecorationTheme getInputDecorationTheme() {
+  return InputDecorationTheme(
+    contentPadding: const EdgeInsets.all(
+      16,
+    ),
+    labelStyle: getAppTextTheme(textColor: Colors.black).overline,
+    helperStyle: getAppTextTheme(textColor: Colors.black).overline,
+    hintStyle: getAppTextTheme(textColor: Colors.black).overline,
+    errorStyle: getAppTextTheme(textColor: Colors.black).caption,
+    errorMaxLines: 1,
+    isDense: true,
+    isCollapsed: false,
+    prefixStyle: getAppTextTheme(textColor: Colors.black).headline3,
+    suffixStyle: getAppTextTheme(textColor: Colors.black).bodyText1,
+    counterStyle: getAppTextTheme(textColor: Colors.black).overline,
+    filled: true,
+    floatingLabelBehavior: FloatingLabelBehavior.always,
+    errorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        width: 1,
+        style: BorderStyle.solid,
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(
           Dimens().getDefaultRadius,
         ),
       ),
     ),
-    // shadowColor: AppColors().primaryColor[900],
-    textStyle: getAppTextTheme().caption,
-  );
-}
-
-getOutlinedButtonStyle() {
-  return TextButton.styleFrom(
-    padding: const EdgeInsets.all(5),
-    primary: Colors.black,
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
+    focusedBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        width: 1,
+        style: BorderStyle.solid,
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(
           Dimens().getDefaultRadius,
         ),
       ),
     ),
-    textStyle: getAppTextTheme().bodyText2!.copyWith(
-          color: Colors.black,
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Colors.red,
+        width: 1,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          Dimens().getDefaultRadius,
         ),
+      ),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        width: 1,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          Dimens().getDefaultRadius,
+        ),
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: const BorderSide(
+        // color: AppColors().primaryColor[800]!,
+        width: 1,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          Dimens().getDefaultRadius,
+        ),
+      ),
+    ),
+    border: OutlineInputBorder(
+      borderSide: const BorderSide(
+        // color: AppColors().primaryColor[900]!,
+        width: 1,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(
+          Dimens().getDefaultRadius,
+        ),
+      ),
+    ),
   );
 }
 
-getTextButtonStyle() {
-  return TextButton.styleFrom(
-    primary: Colors.black,
-    backgroundColor: Colors.transparent,
-    // shape: RoundedRectangleBorder(
-    //   borderRadius: BorderRadius.all(
-    //     Radius.circular(
-    //       defaultBorder,
-    //     ),
-    //   ),
-    // ),
-    // shadowColor: AppColors().primaryColor[900],
-    textStyle: getAppTextTheme().bodyText2,
-  );
-}
-
-TextTheme getAppTextTheme() {
+TextTheme getAppTextTheme({
+  required Color textColor,
+}) {
   return TextTheme(
     headline1: GoogleFonts.openSans(
       fontSize: 36,
       fontWeight: FontWeight.w300,
-      color: Colors.black,
+      color: textColor,
       // letterSpacing: -1.5,
     ),
     headline2: GoogleFonts.openSans(
       fontSize: 32,
       fontWeight: FontWeight.w300,
-      color: Colors.black,
+      color: textColor,
       // letterSpacing: -0.5,
     ),
     headline3: GoogleFonts.openSans(
       fontSize: 30,
       fontWeight: FontWeight.w400,
-      color: Colors.black,
+      color: textColor,
     ),
     headline4: GoogleFonts.openSans(
       fontSize: 28,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
-      color: Colors.black,
+      color: textColor,
     ),
     headline5: GoogleFonts.openSans(
       fontSize: 24,
       fontWeight: FontWeight.w400,
-      color: Colors.black,
+      color: textColor,
     ),
     headline6: GoogleFonts.openSans(
       fontSize: 22,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.15,
-      color: Colors.black,
+      color: textColor,
     ),
     subtitle1: GoogleFonts.openSans(
       fontSize: 20,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
-      color: Colors.black,
+      color: textColor,
     ),
     subtitle2: GoogleFonts.openSans(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.1,
-      color: Colors.black,
+      color: textColor,
     ),
     bodyText1: GoogleFonts.openSans(
       fontSize: 17,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.5,
-      color: Colors.black,
+      color: textColor,
     ),
     bodyText2: GoogleFonts.openSans(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
-      color: Colors.black,
+      color: textColor,
     ),
     button: GoogleFonts.openSans(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       letterSpacing: 1.25,
-      color: Colors.black,
+      color: textColor,
     ),
     caption: GoogleFonts.openSans(
       fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.4,
-      color: Colors.black,
+      color: textColor,
     ),
     overline: GoogleFonts.openSans(
       fontSize: 10,
       fontWeight: FontWeight.w400,
       letterSpacing: 1.5,
-      color: Colors.black,
+      color: textColor,
     ),
   );
 }
 
 class ApplicationTheme {
-  final MaterialColor demandPrimaryColor = const MaterialColor(0xFF2D2F42, {
-    50: Color(0xFFefedfc),
-    100: const Color(0xFFd2d6e9),
-    200: const Color(0xFFb8bad2),
-    300: const Color(0xFF9c9fbb),
-    400: const Color(0xFF888ba9),
-    500: const Color(0xFF737798),
-    600: const Color(0xFF646987),
-    700: const Color(0xFF525570),
-    800: const Color(0xFF41435a),
-    900: const Color(0xFF2D2F42),
-  });
+  final Color _darkPrimaryColor = const Color(0xFF512DA8);
+  final Color _lightPrimaryColor = const Color(0xFFD1C4E9);
 
-  final MaterialColor primaryColor = const MaterialColor(0xFF2d4235, {
-    50: Color(0xFF92c4b0),
-    100: Color(0xFF92c4b0),
-    200: Color(0xFF92c4b0),
-    300: Color(0xFF6fac94),
-    400: Color(0xFF5b9b80),
-    500: Color(0xFF4f8a6f),
-    600: Color(0xFF497d64),
-    700: Color(0xFF416e57),
-    800: Color(0xFF3a5e4b),
-    900: Color(0xFF2d4235),
-  });
+  ///background color of major parts of the app like toolbars, tab bars, appbar,
+  final Color _primaryColor = const Color(0xFF673AB7);
 
-  final MaterialColor shadesOfBlack = const MaterialColor(0xFF000000, {
-    50: const Color(0xffff5f5f5),
-    100: const Color(0xFFe9e9e9),
-    200: const Color(0xFFd9d9d9),
-    300: const Color(0xFFc4c4c4),
-    400: const Color(0xFF9d9d9d),
-    500: const Color(0xFF7b7b7b),
-    600: const Color(0xFF555555),
-    700: const Color(0xFF434343),
-    800: const Color(0xFF262626),
-    900: const Color(0xFF000000),
-  });
+  ///This is default color of MaterialType.canvas (Rectangle using default theme canvas color)
+  final Color _canvasColor = const Color(0xffE09E45);
 
-  final MaterialColor supplyPrimaryColor = const MaterialColor(0xff003f63, {
-    50: const Color(0xFFe2eff3),
-    100: const Color(0xFFb8d8e4),
-    200: const Color(0xFF8fc0d2),
-    300: const Color(0xFF69a7c1),
-    400: const Color(0xFF4e96b7),
-    500: const Color(0xFF3486ad),
-    600: const Color(0xFF287aa2),
-    700: const Color(0xFF1a6a92),
-    800: const Color(0xFF0f5a81),
-    900: const Color(0xFF003f63),
-  });
+  /// background color of the Scaffold widget
+  final Color _scaffoldColor = Colors.white;
 
-  List<ThemeData> getThemes() {
-    return [
-      // ThemeData.from(
-      //   colorScheme: ColorScheme(
-      //     primary: Colors.green.shade200,
-      //     primaryVariant: Colors.red.shade100,
-      //     secondary: Colors.amber.shade200,
-      //     secondaryVariant: Colors.yellowAccent.shade400,
-      //     surface: Colors.blue.shade300,
-      //     background: Colors.tealAccent.shade400,
-      //     error: Colors.red,
-      //     onPrimary: Colors.cyanAccent.shade200,
-      //     onSecondary: Colors.brown.shade500,
-      //     onSurface: Colors.deepPurple.shade400,
-      //     onBackground: Colors.deepOrange.shade400,
-      //     onError: Colors.lightGreen.shade700,
-      //     brightness: Brightness.light,
+  ///color of Material when used as a Card i.e. default color for Card widget.
+  final Color _cardColor = Colors.white;
+
+  ///
+  final Color _bottomAppBarColor = const Color(0xff6D42CE);
+
+  //color of Dividers and PopMenuDividers also used between ListTiles, between rows in DataTables and so forth
+  final Color _dividerColor = const Color(0x1f6D42CE);
+
+  /// focus color used to indicate that a component has input focus.
+  final Color _focusColor = const Color(0x1aF5E0C3);
+
+  ///The hover color is used to indicate when a pointer is hovering over a component or widget.
+  final Color _hoverColor = const Color(0x1aF5E0C3);
+
+  ///The highlight color is used to show if something is selected.
+  ///The highlight color is used during ink splash animations or to indicate an item in a menu is selected.
+  final Color _hightlightColorColor = const Color(0x1aF5E0C3);
+
+  /// The splash color is visible when we tap on ink. It is the color of ink splashes
+  final Color _splashColor = const Color(0x1aF5E0C3);
+
+  final Color _darkSecondaryColor = const Color(0xFF0097A7);
+  final Color _lightSecondaryColor = const Color(0xFFB2EBF2);
+  final Color _secondaryColor = const Color(0xFF00BCD4);
+  final Color _buttonColor = Colors.blue.shade900;
+  final Color _buttonHoverColor = Colors.orange.shade900;
+
+  final Color _tabLabelColor = Colors.black;
+  final Color _tabUnselectedLabelColor = Colors.grey.shade700;
+  final TextStyle _tabUnselectedLabelStyle =
+      getAppTextTheme(textColor: Colors.grey.shade700).button!;
+  final TextStyle _tabSelectedLabelStyle =
+      getAppTextTheme(textColor: Colors.black)
+          .button!
+          .copyWith(fontWeight: FontWeight.bold);
+
+  getAppTheme() {
+    return ThemeData(
+      brightness: Brightness.light,
+      visualDensity: const VisualDensity(vertical: 0.5, horizontal: 0.5),
+
+      ///background color of major parts of the app like toolbars, tab bars, appbar,
+      primaryColor: _primaryColor,
+      primaryColorBrightness: Brightness.light,
+      primaryColorLight: _lightPrimaryColor,
+      primaryColorDark: _darkPrimaryColor,
+
+      ///This is default color of MaterialType.canvas (Rectangle using default theme canvas color)
+      canvasColor: _canvasColor,
+
+      /// background color of the Scaffold widget
+      scaffoldBackgroundColor: _scaffoldColor,
+
+      /// Color of Bottom App Bar
+      bottomAppBarColor: _bottomAppBarColor,
+
+      ///color of Material when used as a Card i.e. default color for Card widget.
+      cardColor: _cardColor,
+      //color of Dividers and PopMenuDividers also used between ListTiles, between rows in DataTables and so forth
+      dividerColor: _dividerColor,
+
+      /// focus color used to indicate that a component has input focus.
+      focusColor: _focusColor,
+
+      ///The hover color is used to indicate when a pointer is hovering over a component or widget.
+      hoverColor: _secondaryColor,
+
+      ///The highlight color is used to show if something is selected.
+      ///The highlight color is used during ink splash animations or to indicate an item in a menu is selected.
+      highlightColor: const Color(0xff936F3E),
+
+      /// The splash color is visible when we tap on ink. It is the color of ink splashes
+      splashColor: const Color(0xff457BE0),
+      // splashFactory: # override create method from  InteractiveInkFeatureFactory
+      ///The selectedRowColor is used to highlight selected rows.
+      selectedRowColor: Colors.grey,
+
+      ///The color used for widgets that are inactive (but enabled) state. For example, an unchecked checkbox.
+      unselectedWidgetColor: Colors.grey.shade400,
+
+      ///The color used for widgets that are inoperative and the user can’t interact with it regardless of its state
+      ///For eg. it is the color of the disabled checkbox which may be checked or unchecked.
+      disabledColor: Colors.grey.shade200,
+
+      ///This provides default configurations of button widgets, like RaisedButton, FlatButton.
+      ///We can provide a theme to all buttons through buttonTheme.
+      // buttonTheme: ButtonThemeData(
+      //   ///Default background color used by RaisedButtons. If not provided, the primarySwatch[600] is used
+      //   buttonColor: _buttonColor,
+      //   focusColor: _buttonFocusColor,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(
+      //       Radius.circular(
+      //         Dimens().getDefaultRadius,
+      //       ),
+      //     ),
+      //   ),
+
+      //   ///Color when the mouse passes over it
+      //   hoverColor: _buttonHoverColor,
+
+      //   ///Color to start filling the Buttons when pressed. Used in FlatButton, OutlineButton or RaisedButton.
+      //   splashColor: _splashColor,
+      //   disabledColor: _disabledButtonColor,
+
+      //   /// Color used to fill the background when splash has ended.
+      //   highlightColor: _buttonHighlightColor,
+
+      //   /// Default minimum width.
+      //   minWidth: Dimens().buttonHeight * 1.5,
+
+      //   /// Default height.
+      //   height: Dimens().buttonHeight,
+      //   padding: EdgeInsets.all(
+      //     Dimens().defaultButtonPadding,
       //   ),
       // ),
-      // ThemeData.from(
-      //   colorScheme: ColorScheme(
-      //     primary: Colors.green.shade200,
-      //     primaryVariant: Colors.red.shade100,
-      //     secondary: Colors.amber.shade200,
-      //     secondaryVariant: Colors.yellowAccent.shade400,
-      //     surface: Colors.blue.shade300,
-      //     background: Colors.tealAccent.shade400,
-      //     error: Colors.red,
-      //     onPrimary: Colors.cyanAccent.shade200,
-      //     onSecondary: Colors.brown.shade500,
-      //     onSurface: Colors.deepPurple.shade400,
-      //     onBackground: Colors.deepOrange.shade400,
-      //     onError: Colors.lightGreen.shade700,
-      //     brightness: Brightness.light,
-      //   ),
-      // ),
-      getDefaultTheme(),
-      getDemandTheme(),
-      getSupplyTheme(),
-    ];
-  }
 
-  getDefaultTheme() {
-    return ThemeData(
-      appBarTheme: getAppBarTheme(),
-      primarySwatch: primaryColor,
-      brightness: Brightness.light,
-      // primaryColor: AppColors().primaryColor[400],
-      primaryColorBrightness: Brightness.light,
-      // primaryColorLight: AppColors().primaryColor[100],
-      // primaryColorDark: AppColors().primaryColor[800],
-      // canvasColor: AppColors().primaryColor[50],
-      // scaffoldBackgroundColor: AppColors().appScaffoldBgColor,
-      bottomAppBarColor: Colors.white,
-      cardTheme: CardTheme(
-          // color: AppColors().primaryColor[50],
-          shape: Dimens().getCardShape(),
-          elevation: 2,
-          margin: const EdgeInsets.all(4)),
-      // dividerColor: AppColors().primaryColor[800],
-      // highlightColor: AppColors().primaryColor[200],
-      // the splash color in tabs of bottombar items.
-      // splashColor: AppColors().primaryColor[900],
-      // selectedRowColor: AppColors().primaryColor[400],
-      // unselectedWidgetColor: AppColors().primaryColor[100],
-      disabledColor: Colors.grey[400],
-      // toggleableActiveColor: AppColors().primaryColor[700],
-      // secondaryHeaderColor: AppColors().primaryColor[300],
-      // backgroundColor: AppColors().primaryColor[300],
-      // dialogBackgroundColor: AppColors().primaryColor[100],
-      // indicatorColor: AppColors().primaryColor[900],
-      hintColor: const Color(0x8a000000),
-      errorColor: const Color(0xffd32f2f),
-      textTheme: getAppTextTheme(),
-      primaryTextTheme: getAppTextTheme(),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.all(
-          16,
-        ),
-        labelStyle: getAppTextTheme().overline,
-        helperStyle: getAppTextTheme().overline,
-        hintStyle: getAppTextTheme().overline,
-        errorStyle: getAppTextTheme().caption,
-        errorMaxLines: 1,
-        isDense: true,
-        isCollapsed: false,
-        prefixStyle: getAppTextTheme().headline3,
-        suffixStyle: getAppTextTheme().bodyText1,
-        counterStyle: getAppTextTheme().overline,
-        filled: true,
-        // fillColor: AppColors().primaryColor[50]!,
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            // color: AppColors().primaryColor[500]!,
-            width: 1,
-            style: BorderStyle.solid,
+      ///This provides default configurations of ToggleButton widgets.
+      ///We can provide a theme to all types of toggle buttons with toggleButtonsTheme
+      toggleButtonsTheme: ToggleButtonsThemeData(
+          color: _buttonColor,
+          selectedColor: _buttonHoverColor,
+          borderColor: Colors.black
+          //toggle button theme
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            // color: AppColors().primaryColor[900]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            // color: AppColors().primaryColor[700]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            // color: AppColors().primaryColor[800]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-        border: OutlineInputBorder(
-          borderSide: const BorderSide(
-            // color: AppColors().primaryColor[900]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-      ),
-      iconTheme: const IconThemeData(
-        // color: AppColors().primaryColor[800],
-        opacity: 1,
-        size: 24,
-      ),
-      primaryIconTheme: const IconThemeData(
-        // color: AppColors().primaryColor[700],
-        opacity: 1,
-        size: 24,
-      ),
-      sliderTheme: SliderThemeData(
-        // activeTrackColor: AppColors().primaryColor[600],
-        // inactiveTrackColor: AppColors().primaryColor[300],
-        disabledActiveTrackColor: Colors.grey[400],
-        disabledInactiveTrackColor: Colors.grey[400],
-        // activeTickMarkColor: AppColors().primaryColor[600],
-        // inactiveTickMarkColor: AppColors().primaryColor[300],
-        disabledActiveTickMarkColor: Colors.grey[400],
-        disabledInactiveTickMarkColor: Colors.grey[400],
-        // thumbColor: AppColors().primaryColor[600],
-        disabledThumbColor: Colors.grey[400],
-        thumbShape: SliderComponentShape.noOverlay,
-        // overlayColor: AppColors().primaryColor[300],
-        valueIndicatorColor: null,
-        valueIndicatorShape: null,
-        showValueIndicator: ShowValueIndicator.always,
-        valueIndicatorTextStyle: getAppTextTheme().bodyText1,
-      ),
-      tabBarTheme: TabBarTheme(
-        labelStyle: getAppTextTheme().bodyText2,
-        unselectedLabelStyle: getAppTextTheme().overline,
-        labelColor: AppColors().white,
-        unselectedLabelColor: AppColors().white,
-        indicator: const BoxDecoration(
-          color: Colors.transparent,
-          border: Border(
-            top: BorderSide(
-              width: 2.0,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
-      // chipTheme: ChipThemeData(
-      //   backgroundColor: ColorScheme.,
-      //   brightness: Brightness.dark,
-      //   // deleteIconColor: AppColors().primaryColor[900],
-      //   disabledColor: Colors.grey[400]!,
-      //   labelPadding:
-      //       const EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
-      //   labelStyle: getAppTextTheme().bodyText1!,
-      //   padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
-      //   secondaryLabelStyle: getAppTextTheme().bodyText2!,
-      //   // secondarySelectedColor: AppColors().primaryColor[400]!,
-      //   // selectedColor: AppColors().primaryColor[900]!,
-      //   shape: StadiumBorder(
-      //       side: BorderSide(
-      //     // color: AppColors().primaryColor[400]!,
-      //     width: 1,
-      //     style: BorderStyle.solid,
-      //   )),
-      // ),
-      dialogTheme: DialogTheme(
-        contentTextStyle: getAppTextTheme().subtitle2,
-        backgroundColor: Colors.white,
-        titleTextStyle: getAppTextTheme().headline6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().getDefaultRadius,
-            ),
-          ),
-        ),
-      ),
-      textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: Colors.black,
-        selectionColor: Color(0xff90caf9),
-        selectionHandleColor: Color(0xff64b5f6),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: getButtonStyle(),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: getTextButtonStyle(),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: getOutlinedButtonStyle(),
-      ),
-      colorScheme: ColorScheme.fromSwatch(
-        primarySwatch: primaryColor,
-        brightness: Brightness.light,
-      ),
-    );
-  }
 
-  getSupplyTheme() {
-    return ThemeData(
-      appBarTheme: getAppBarTheme(),
-      primarySwatch: supplyPrimaryColor,
-      brightness: Brightness.light,
-      primaryColor: supplyPrimaryColor[400],
-      primaryColorBrightness: Brightness.light,
-      primaryColorLight: supplyPrimaryColor[100],
-      primaryColorDark: supplyPrimaryColor[800],
-      canvasColor: supplyPrimaryColor[50],
-      scaffoldBackgroundColor: Colors.white,
-      bottomAppBarColor: Colors.white,
-      cardTheme: CardTheme(
-          color: AppColors().white,
-          shape: Dimens().getCardShape(),
-          elevation: 2,
-          margin: const EdgeInsets.all(4)),
-      dividerColor: supplyPrimaryColor[800],
-      highlightColor: supplyPrimaryColor[200],
-      // the splash color in tabs of bottombar items.
-      splashColor: supplyPrimaryColor[900],
-      selectedRowColor: supplyPrimaryColor[400],
-      unselectedWidgetColor: supplyPrimaryColor[100],
-      disabledColor: Colors.grey[400],
-      toggleableActiveColor: supplyPrimaryColor[700],
-      secondaryHeaderColor: supplyPrimaryColor[300],
-      backgroundColor: supplyPrimaryColor[300],
-      dialogBackgroundColor: supplyPrimaryColor[100],
-      indicatorColor: supplyPrimaryColor[900],
-      hintColor: const Color(0x8a000000),
-      errorColor: const Color(0xffd32f2f),
-      textTheme: getAppTextTheme(),
-      primaryTextTheme: getAppTextTheme(),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 4,
-          bottom: 4,
-        ),
-        labelStyle: getAppTextTheme().subtitle1,
-        helperStyle: getAppTextTheme().subtitle1,
-        hintStyle: getAppTextTheme().subtitle2,
-        errorStyle: getAppTextTheme().caption,
-        errorMaxLines: 2,
-        isDense: false,
-        isCollapsed: false,
-        prefixStyle: getAppTextTheme().headline3,
-        suffixStyle: getAppTextTheme().bodyText1,
-        counterStyle: getAppTextTheme().subtitle1,
-        filled: true,
-        fillColor: Colors.white,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        errorBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: supplyPrimaryColor[400]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: supplyPrimaryColor[900]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
-        focusedErrorBorder: UnderlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
-        disabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.grey[400]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: supplyPrimaryColor[800]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: supplyPrimaryColor[900]!,
-            width: 1,
-            style: BorderStyle.solid,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
-          ),
-        ),
+      ///This is the color of the header of a PaginatedDataTable when there are any selected rows
+      secondaryHeaderColor: Colors.grey,
+
+      ///This is a color that contrasts with the primary color. It is used to show the remaining parts of a progress bar.
+      backgroundColor: const Color(0xff457BE0),
+
+      ///This is the background color of dialog elements.
+      dialogBackgroundColor: _lightPrimaryColor,
+
+      ///This is an indicator color of a selected tab in the tab bar.
+      indicatorColor: const Color(0xff457BE0),
+
+      ///This is the color of hint texts or placeholder text color in TextFields.
+      hintColor: Colors.grey,
+
+      ///The color to use for input validation errors e.g. in TextField fields
+      errorColor: Colors.red,
+
+      ///This color is used to highlight the active states of toggleable widgets like Switch, Radio, and Checkbox.
+      toggleableActiveColor: _lightSecondaryColor,
+
+      ///Text with color that contrasts with the card and canvas colors.
+      textTheme: getAppTextTheme(
+        textColor: Colors.black,
       ),
-      iconTheme: IconThemeData(
-        color: supplyPrimaryColor[800],
-        opacity: 1,
-        size: 24,
+
+      ///This is a text theme that contrasts with the primary color.
+      primaryTextTheme: getAppTextTheme(
+        textColor: _lightSecondaryColor,
       ),
-      primaryIconTheme: IconThemeData(
-        color: supplyPrimaryColor[700],
-        opacity: 1,
-        size: 24,
-      ),
-      sliderTheme: SliderThemeData(
-        activeTrackColor: supplyPrimaryColor[600],
-        inactiveTrackColor: supplyPrimaryColor[300],
-        disabledActiveTrackColor: Colors.grey[400],
-        disabledInactiveTrackColor: Colors.grey[400],
-        activeTickMarkColor: supplyPrimaryColor[600],
-        inactiveTickMarkColor: supplyPrimaryColor[300],
-        disabledActiveTickMarkColor: Colors.grey[400],
-        disabledInactiveTickMarkColor: Colors.grey[400],
-        thumbColor: supplyPrimaryColor[600],
-        disabledThumbColor: Colors.grey[400],
-        thumbShape: SliderComponentShape.noOverlay,
-        overlayColor: supplyPrimaryColor[300],
-        valueIndicatorColor: null,
-        valueIndicatorShape: null,
-        showValueIndicator: ShowValueIndicator.always,
-        valueIndicatorTextStyle: getAppTextTheme().bodyText1,
-      ),
+      inputDecorationTheme: getInputDecorationTheme(),
+
+      ///This is an icon theme that contrasts with the card and canvas colors.
+      iconTheme: IconThemeData(color: _darkSecondaryColor),
+
+      ///This is an icon theme that contrasts with the primary Color.
+      primaryIconTheme: IconThemeData(color: _darkPrimaryColor),
+
+      ///The colors and shapes used to render Slider. This value can be obtained by SliderTheme.of
+      sliderTheme: const SliderThemeData(
+          // slider themes
+          ),
+
+      ///A theme for customizing the size, shape and color of tab bar indicator
       tabBarTheme: TabBarTheme(
-        labelStyle: getAppTextTheme().bodyText2,
-        unselectedLabelStyle: getAppTextTheme().overline,
-        labelColor: AppColors().white,
-        unselectedLabelColor: AppColors().white,
-        indicator: const BoxDecoration(
-          color: Colors.transparent,
-          border: Border(
-            top: BorderSide(
-              width: 2.0,
-              color: Colors.white,
-            ),
+          labelColor: _tabLabelColor,
+          unselectedLabelColor: _tabUnselectedLabelColor,
+          labelPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          labelStyle: _tabSelectedLabelStyle,
+          unselectedLabelStyle: _tabUnselectedLabelStyle,
+          indicatorSize: TabBarIndicatorSize.tab),
+
+      ///A theme for customizing the visual properties of Tooltips. This value can be obtained by TooltipTheme.of .
+      tooltipTheme: const TooltipThemeData(
+          // tool tip theme
           ),
-        ),
-      ),
+
+      ///The colors and styles used to render Card. This value can be obtained by CardTheme.of
+      cardTheme: const CardTheme(
+          // card theme
+          ),
+
+      ///The colors and styles used to render Chips. This value can be obtained by ChipTheme.of .
       chipTheme: ChipThemeData(
-        backgroundColor: supplyPrimaryColor[600]!,
-        brightness: Brightness.light,
-        deleteIconColor: supplyPrimaryColor[900],
-        disabledColor: Colors.grey[400]!,
-        labelPadding:
-            const EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
-        labelStyle: getAppTextTheme().bodyText1!,
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
-        secondaryLabelStyle: getAppTextTheme().bodyText2!,
-        secondarySelectedColor: supplyPrimaryColor[400]!,
-        selectedColor: supplyPrimaryColor[900]!,
-        shape: StadiumBorder(
-            side: BorderSide(
-          color: supplyPrimaryColor[400]!,
-          width: 1,
-          style: BorderStyle.solid,
-        )),
-      ),
-      dialogTheme: DialogTheme(
-        contentTextStyle: getAppTextTheme().subtitle2,
-        backgroundColor: Colors.white,
-        titleTextStyle: getAppTextTheme().headline6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(
-              Dimens().defaultBorder,
-            ),
+          backgroundColor: _secondaryColor,
+          disabledColor: _secondaryColor.withAlpha(
+            20,
           ),
-        ),
-      ),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: AppColors().black,
-        selectionColor: const Color(0xff90caf9),
-        selectionHandleColor: const Color(0xff64b5f6),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: getButtonStyle(),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: getTextButtonStyle(),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: getOutlinedButtonStyle(),
-      ),
-    );
-  }
+          shape: const StadiumBorder(),
+          brightness: Brightness.light,
+          labelPadding: const EdgeInsets.all(8),
+          labelStyle: getAppTextTheme(textColor: Colors.black).bodyText2!,
+          padding: const EdgeInsets.all(8),
+          secondaryLabelStyle:
+              getAppTextTheme(textColor: Colors.black).caption!,
+          secondarySelectedColor: Colors.white38,
+          selectedColor: Colors.white
+          // chip theme
+          ),
 
-  getDemandTheme() {
-    return ThemeData(
-      appBarTheme: getAppBarTheme(),
-      primarySwatch: demandPrimaryColor,
-      brightness: Brightness.light,
-      primaryColor: demandPrimaryColor[400],
-      primaryColorBrightness: Brightness.light,
-      primaryColorLight: demandPrimaryColor[100],
-      primaryColorDark: demandPrimaryColor[800],
-      canvasColor: demandPrimaryColor[50],
-      scaffoldBackgroundColor: Colors.white,
-      bottomAppBarColor: Colors.white,
-      cardTheme: CardTheme(
-          color: AppColors().white,
-          shape: Dimens().getCardShape(),
-          elevation: 2,
-          margin: const EdgeInsets.all(4)),
-      dividerColor: demandPrimaryColor[800],
-      highlightColor: demandPrimaryColor[200],
-      // the splash color in tabs of bottombar items.
-      splashColor: demandPrimaryColor[900],
-      selectedRowColor: demandPrimaryColor[400],
-      unselectedWidgetColor: demandPrimaryColor[100],
-      disabledColor: Colors.grey[400],
-      toggleableActiveColor: demandPrimaryColor[700],
-      secondaryHeaderColor: demandPrimaryColor[300],
-      backgroundColor: demandPrimaryColor[300],
-      dialogBackgroundColor: demandPrimaryColor[100],
-      indicatorColor: demandPrimaryColor[900],
-      hintColor: const Color(0x8a000000),
-      errorColor: const Color(0xffd32f2f),
-      textTheme: getAppTextTheme(),
-      primaryTextTheme: getAppTextTheme(),
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.only(
-          left: 16,
-          right: 16,
-          top: 4,
-          bottom: 4,
-        ),
-        labelStyle: getAppTextTheme().subtitle1,
-        helperStyle: getAppTextTheme().subtitle1,
-        hintStyle: getAppTextTheme().subtitle1,
-        errorStyle: getAppTextTheme().headline6?.copyWith(color: Colors.red),
-        errorMaxLines: 2,
-        isDense: false,
-        isCollapsed: false,
-        prefixStyle: getAppTextTheme().headline3,
-        suffixStyle: getAppTextTheme().bodyText1,
-        counterStyle: getAppTextTheme().subtitle1,
-        filled: true,
-        fillColor: Colors.white,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1.5,
-            // color: Colors.blue,
-            // width: 2.0,
+      ///The platform the material widgets should adapt to target.
+      ///This should be used in order to style UI elements according to platform conventions.
+      platform: TargetPlatform.iOS,
+
+      ///This is used to configure hit test size of certain Material widgets
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+
+      ///This is toggle for semi-transparent overlay color on Material surfaces that is used to indicate elevation for dark themes.
+      ///If true then a semi-transaparent version of colorScheme.onSurface will be applied on top of color of Material widgets when their Material.color is colorScheme.surface.
+      ///If false then the surface color will be used unmodified.
+      applyElevationOverlayColor: true,
+
+      ///Default MaterialPageRoute transition per TargetPlatform.
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: const ZoomPageTransitionsBuilder(),
+        TargetPlatform.windows: const FadeUpwardsPageTransitionsBuilder(),
+        TargetPlatform.macOS: const ZoomPageTransitionsBuilder(),
+      }),
+
+      ///This is a theme for customizing the color, elevation, brightness, iconTheme, and textTheme of AppBar.
+      appBarTheme: getAppBarTheme().copyWith(
+        backgroundColor: _primaryColor,
+      ),
+
+      ///A theme for customizing the shape, elevation, and color of a BottomAppBar.
+      bottomAppBarTheme: const BottomAppBarTheme(
+          // bottom app bar theme
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          // gapPadding: 12,
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: BorderSide(
-            width: 1.5,
-            color: demandPrimaryColor[500]!,
-            // color: Colors.yellow,
+      colorScheme: ColorScheme(
+          primary: _primaryColor,
+          primaryVariant: _darkPrimaryColor,
+          secondary: _secondaryColor,
+          secondaryVariant: _darkSecondaryColor,
+          brightness: Brightness.light,
+          background: Color(0xffB5BFD3),
+          error: Colors.red,
+          onBackground: const Color(0xffB5BFD3),
+          onError: Colors.red,
+          onPrimary: _lightSecondaryColor,
+          onSecondary: _lightPrimaryColor,
+          onSurface: Color(0xff457BE0),
+          surface: Color(0xff457BE0)),
+      dialogTheme: const DialogTheme(
+          // dialog theme
           ),
+
+      ///A theme for customizing the shape, elevation, and color of FloatingActionButton.
+      // floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      //     // floating action button theme
+      //     ),
+
+      ///A theme for customizing the background color, elevation, textStyles, and iconThemes of a NavigationRail.
+      navigationRailTheme: NavigationRailThemeData(
+        selectedIconTheme: const IconThemeData(
+          color: Colors.yellow,
+          size: 25,
         ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1.5,
+        unselectedIconTheme: IconThemeData(
+          color: Colors.grey.shade200,
+          size: 20,
+        ),
+        backgroundColor: _primaryColor,
+        unselectedLabelTextStyle:
+            getAppTextTheme(textColor: Colors.black).bodyText1?.copyWith(
+                  fontSize: 12,
+                ),
+        selectedLabelTextStyle:
+            getAppTextTheme(textColor: Colors.yellow).bodyText1?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  decorationColor: Colors.yellow,
+                  decoration: TextDecoration.overline,
+                  decorationStyle: TextDecorationStyle.wavy,
+                ),
+        labelType: NavigationRailLabelType.all,
+      ),
+
+      ///The color and geometry TextTheme values used to configure textTheme, primaryTextTheme and accentTextTheme.
+      typography: Typography.material2018(),
+      cupertinoOverrideTheme: const CupertinoThemeData(
+          //cupertino theme
           ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: BorderSide(
-            color: shadesOfBlack[500]!,
-            // color: Colors.green,
-            width: 1.50,
+      bottomSheetTheme: const BottomSheetThemeData(
+          //bottom sheet theme
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: BorderSide(
-            color: shadesOfBlack[500]!,
-            // color: Colors.green,
-            width: 1.50,
+      popupMenuTheme: const PopupMenuThemeData(
+          //pop menu theme
           ),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens().defaultBorder),
-          borderSide: BorderSide(
-            color: shadesOfBlack[500]!,
-            // color: Colors.green,
-            width: 1.50,
+      bannerTheme: const MaterialBannerThemeData(
+          // material banner theme
           ),
-        ),
-      ),
-      iconTheme: IconThemeData(
-        color: demandPrimaryColor[800],
-        opacity: 1,
-        size: 24,
-      ),
-      primaryIconTheme: IconThemeData(
-        color: demandPrimaryColor[700],
-        opacity: 1,
-        size: 24,
-      ),
-      sliderTheme: SliderThemeData(
-        activeTrackColor: demandPrimaryColor[600],
-        inactiveTrackColor: demandPrimaryColor[300],
-        disabledActiveTrackColor: Colors.grey[400],
-        disabledInactiveTrackColor: Colors.grey[400],
-        activeTickMarkColor: demandPrimaryColor[600],
-        inactiveTickMarkColor: demandPrimaryColor[300],
-        disabledActiveTickMarkColor: Colors.grey[400],
-        disabledInactiveTickMarkColor: Colors.grey[400],
-        thumbColor: demandPrimaryColor[600],
-        disabledThumbColor: Colors.grey[400],
-        thumbShape: SliderComponentShape.noOverlay,
-        overlayColor: demandPrimaryColor[300],
-        valueIndicatorColor: null,
-        valueIndicatorShape: null,
-        showValueIndicator: ShowValueIndicator.always,
-        valueIndicatorTextStyle: getAppTextTheme().bodyText1,
-      ),
-      tabBarTheme: TabBarTheme(
-        labelStyle: getAppTextTheme().bodyText2,
-        unselectedLabelStyle: getAppTextTheme().overline,
-        labelColor: AppColors().white,
-        unselectedLabelColor: AppColors().white,
-        indicator: const BoxDecoration(
-          color: Colors.transparent,
-          border: Border(
-            top: BorderSide(
-              width: 2.0,
-              color: Colors.white,
-            ),
+      dividerTheme: const DividerThemeData(
+          //divider, vertical divider theme
           ),
-        ),
-      ),
-      chipTheme: ChipThemeData(
-        backgroundColor: demandPrimaryColor[600]!,
-        brightness: Brightness.light,
-        deleteIconColor: demandPrimaryColor[900],
-        disabledColor: Colors.grey[400]!,
-        labelPadding:
-            const EdgeInsets.only(top: 0, bottom: 0, left: 8, right: 8),
-        labelStyle: getAppTextTheme().bodyText1!,
-        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 4, right: 4),
-        secondaryLabelStyle: getAppTextTheme().bodyText2!,
-        secondarySelectedColor: demandPrimaryColor[400]!,
-        selectedColor: demandPrimaryColor[900]!,
-        shape: StadiumBorder(
-            side: BorderSide(
-          color: demandPrimaryColor[400]!,
-          width: 1,
-          style: BorderStyle.solid,
-        )),
-      ),
-      dialogTheme: DialogTheme(
-        contentTextStyle: getAppTextTheme().subtitle2,
-        backgroundColor: Colors.white,
-        titleTextStyle: getAppTextTheme().headline6,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(Dimens().defaultBorder),
+      buttonBarTheme: const ButtonBarThemeData(
+          // button bar theme
           ),
-        ),
-      ),
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: AppColors().black,
-        selectionColor: const Color(0xff90caf9),
-        selectionHandleColor: const Color(0xff64b5f6),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: getButtonStyle(),
-      ),
-      textButtonTheme: TextButtonThemeData(
-        style: getTextButtonStyle(),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: getOutlinedButtonStyle(),
-      ),
+      // fontFamily: 'ROBOTO',
+      splashFactory: InkSplash.splashFactory,
     );
   }
 }

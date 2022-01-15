@@ -1,5 +1,4 @@
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -24,7 +23,6 @@ import 'package:scm/model_classes/address.dart' as demanders_address;
 class CartPageViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
   List<demanders_address.Address> addressList = [];
-  late final CartPageViewArgs args;
   Cart cart = Cart().empty();
   ApiStatus cartApiStatus = ApiStatus.LOADING;
   ApiStatus getAddressListApiStatus = ApiStatus.LOADING;
@@ -36,8 +34,7 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
       locator<CommonDashBoardApis>();
   final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
-  init({required CartPageViewArgs args}) {
-    this.args = args;
+  init() {
     getCartItems();
     getDemadersAddressList();
   }
@@ -73,7 +70,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
 
     cartApiStatus = ApiStatus.FETCHED;
     notifyListeners();
-    preferences.setDemandersCart(cart: cart);
   }
 
   void editCartItemAt({required int index, required CartItem cartItem}) async {
@@ -102,7 +98,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
         if (value != null) {
           cart = value;
           notifyListeners();
-          preferences.setDemandersCart(cart: cart);
         }
       });
     }
@@ -133,7 +128,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
         if (value != null) {
           cart = value;
           notifyListeners();
-          preferences.setDemandersCart(cart: cart);
         }
       });
     }
@@ -259,7 +253,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
 
     if (apiResponse.isSuccessful()) {
       showInfoSnackBar(message: apiResponse.message);
-      preferences.setDemandersCart(cart: null);
       navigationService.back();
     } else {
       showErrorSnackBar(message: apiResponse.message);

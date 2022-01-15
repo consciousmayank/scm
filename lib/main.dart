@@ -3,10 +3,8 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/apptheme.dart';
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/app/setup_snackbars.dart';
 import 'package:scm/routes/routes_constants.dart';
@@ -14,7 +12,7 @@ import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:stacked_themes/stacked_themes.dart';
+import 'app/di.dart';
 import 'firebase_options.dart';
 
 import 'services/notification/local_notification_service.dart';
@@ -40,11 +38,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await setupLocator();
+  declareDependencies();
   setupDialogUi();
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  await ThemeManager.initialise();
   runApp(const MyApp());
 }
 
@@ -113,22 +110,22 @@ class _MyAppState extends State<MyApp> {
           currentFocus.focusedChild?.unfocus();
         }
       },
-      child: ThemeBuilder(
-        themes: ApplicationTheme().getThemes(),
-        builder: (context, regularTheme, darkTheme, themeMode) {
-          return AnimatedTheme(
-              duration: const Duration(seconds: 5),
-              curve: Curves.easeOutCubic,
-              data: regularTheme!,
-              child: MaterialApp(
-                title: appName,
-                theme: regularTheme,
-                debugShowCheckedModeBanner: false,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: StackedRouter().onGenerateRoute,
+      child: FutureBuilder(
+        future: locator.allReady(),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return MaterialApp(
+              title: appName,
+              theme: ApplicationTheme().getAppTheme(),
+              debugShowCheckedModeBanner: false,
+              navigatorKey: StackedService.navigatorKey,
+              onGenerateRoute: StackedRouter().onGenerateRoute,
 
-                // initialRoute: dashBoardPageRoute,
-              ));
+              // initialRoute: dashBoardPageRoute,
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
         },
       ),
     );

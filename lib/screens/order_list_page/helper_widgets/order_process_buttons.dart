@@ -23,7 +23,7 @@ class OrderPorcessButtonsWidget
         height: AppBar().preferredSize.height,
         child: AppButton(
           onTap: onTap,
-          buttonText: buttonText,
+          title: buttonText,
         ),
       ),
     );

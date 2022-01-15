@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/app/image_config.dart';
+import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/login/login_view.dart';
@@ -16,7 +17,7 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:stacked_themes/stacked_themes.dart';
+import 'package:scm/app/di.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -32,7 +33,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  final preferences = locator<SharedPreferencesService>();
+  final preferences = locator<AppPreferencesService>();
 
   late AnimationController _controller;
 
@@ -51,13 +52,17 @@ class _SplashScreenState extends State<SplashScreen>
   loadNextPage({required BuildContext context}) {
     String userSelectedRole = preferences.getSelectedUserRole();
     if (loadProductEntryModule(userSelectedRole)) {
-      getThemeManager(context).selectThemeAtIndex(0);
+      // getThemeManager(context).selectThemeAtIndex(AppThemesType.PRIMARY_THEME.getValueIndex,);
       locator<NavigationService>().replaceWith(pimHomeScreenRoute);
     } else if (loadSupplyModule(userSelectedRole)) {
-      getThemeManager(context).selectThemeAtIndex(2);
+      // getThemeManager(context).selectThemeAtIndex(
+      //   AppThemesType.SUPPLY_THEME.getValueIndex,
+      // );
       locator<NavigationService>().replaceWith(supplyLandingScreenRoute);
     } else if (loadDemandModule(userSelectedRole)) {
-      getThemeManager(context).selectThemeAtIndex(1);
+      // getThemeManager(context).selectThemeAtIndex(
+      //   AppThemesType.DEMAND_THEME.getValueIndex,
+      // );
       locator<NavigationService>().replaceWith(demandLandingScreenRoute);
     } else {
       locator<NavigationService>().replaceWith(

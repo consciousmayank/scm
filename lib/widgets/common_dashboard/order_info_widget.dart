@@ -45,7 +45,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
             delegate: SliverChildListDelegate.fixed(
               [
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus:
@@ -65,7 +65,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                 ),
 
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus:
@@ -91,7 +91,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                 // ),
 
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus:
@@ -116,7 +116,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                 //   icon: scmLogo,
                 // ),
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus:
@@ -141,7 +141,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                 // ),
 
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus:
@@ -167,7 +167,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                 // ),
 
                 AppInkwell.withBorder(
-                  borderDerRadius: BorderRadius.circular(8),
+                  borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
                         clickedOrderStatus: 'ALL',

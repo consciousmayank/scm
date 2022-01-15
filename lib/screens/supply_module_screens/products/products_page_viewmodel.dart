@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -12,6 +12,7 @@ import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:scm/app/di.dart';
 
 class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
   AllBrandsResponse? _allBrandsResponse;

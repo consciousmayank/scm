@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/enums/order_status_types.dart';
+import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/order_status_widget.dart';
 import 'package:scm/utils/date_time_converter.dart';
+import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_footer_widget.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/list_footer.dart';
@@ -31,6 +32,9 @@ class OrderListWidget extends StatelessWidget {
     this.selectedOrderStatus = '',
   })  : orderStatuses = const [],
         showCompactView = false,
+        selectedOrdersDurationType = null,
+        fromDateString = null,
+        toDateString = null,
         super(key: key);
 
   const OrderListWidget.orderPage({
@@ -49,6 +53,9 @@ class OrderListWidget extends StatelessWidget {
     required this.selectedOrderId,
     required this.onOrderStatusClick,
     required this.selectedOrderStatus,
+    required this.selectedOrdersDurationType,
+    required this.fromDateString,
+    required this.toDateString,
   }) : super(key: key);
 
   final Function({required Order selectedOrder})? onOrderClick;
@@ -61,6 +68,8 @@ class OrderListWidget extends StatelessWidget {
   final int pageNumber, totalPages, selectedOrderId;
   final String selectedOrderStatus;
   final bool showCompactView;
+  final OrderFiltersDurationType? selectedOrdersDurationType;
+  final String? fromDateString, toDateString;
 
   _buildFullView(BuildContext context) {
     return [
@@ -261,63 +270,52 @@ class OrderListWidget extends StatelessWidget {
                   : const EdgeInsets.all(
                       8.0,
                     ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    label,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  selectedOrderStatus.isNotEmpty
-                      ? SizedBox(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
+              child: showCompactView
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: ListTile(
+                            isThreeLine: false,
+                            title: Text(
+                              label,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
-                            decoration: BoxDecoration(
-                                color: AppColors().white,
-                                borderRadius: BorderRadius.circular(6)),
-                            child: DropdownButton<String>(
-                              hint: const Text('Select'),
-                              value: selectedOrderStatus,
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              iconSize: 30,
-                              underline: Container(),
-                              onChanged: (String? value) {
-                                onOrderStatusClick!(
-                                        selectedOrderStatus: value ?? '')
-                                    .call();
-                              },
-                              items:
-                                  orderStatuses.map<DropdownMenuItem<String>>(
-                                (String location) {
-                                  return DropdownMenuItem<String>(
-                                    child: Text(
-                                      location,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                            color: location == 'ALL'
-                                                ? AppColors().black
-                                                : getBorderColor(
-                                                    status: location,
-                                                  ),
-                                          ),
+                            subtitle: Text(
+                              selectedOrdersDurationType ==
+                                      OrderFiltersDurationType.CUSTOM
+                                  ? orderListSubtitleLabelWithDates(
+                                      fromDate: fromDateString ?? '',
+                                      toDate: toDateString ?? '',
+                                      status: selectedOrderStatus)
+                                  : orderListSubtitleLabel(
+                                      duration:
+                                          selectedOrdersDurationType!.getNames,
+                                      status: selectedOrderStatus,
                                     ),
-                                    value: location,
-                                  );
-                                },
-                              ).toList(),
+                              style: Theme.of(context).textTheme.caption,
                             ),
                           ),
-                        )
-                      : Container(),
-                ],
-              ),
+                          flex: 1,
+                        ),
+                        SizedBox(
+                          child: AppButton.outline(
+                            onTap: () {
+                              onOrderStatusClick!(
+                                selectedOrderStatus: '',
+                              );
+                            },
+                            title: 'Filters',
+                            leading: Icon(Icons.filter),
+                          ),
+                          height: Dimens().buttonHeight,
+                        ),
+                      ],
+                    )
+                  : Text(
+                      label,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
             ),
             hSizedBox(
               height: 8,
@@ -381,8 +379,9 @@ class OrderListTableWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           Dimens().suppliersListItemImageCircularRaduis,
         ),
-        color:
-            isHeader ? Theme.of(context).colorScheme.background : Colors.white,
+        color: isHeader
+            ? Theme.of(context).colorScheme.background
+            : Colors.transparent,
       ),
       child: Row(
         children: titles

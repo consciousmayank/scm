@@ -99,7 +99,7 @@ class _DeliveryDetilasDialogBoxViewState
                         );
                       }
                     },
-                    buttonText: 'SAVE',
+                    title: 'SAVE',
                   ),
                 )
               ],

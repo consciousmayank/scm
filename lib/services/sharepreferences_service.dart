@@ -1,37 +1,42 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:scm/model_classes/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesService {
-  static Future<SharedPreferencesService> getInstance() async {
-    if (_instance == null) {
-      // Initialise the asynchronous shared preferences
-      _preferences = await SharedPreferences.getInstance();
-      _instance = SharedPreferencesService();
-    }
+abstract class InterFaceAppPreferences {
+  void saveSupplierBusinessName({required String? name});
 
-    return Future.value(_instance);
-  }
+  void saveCredentials(String value);
 
-  static SharedPreferencesService? _instance;
+  String? getSupplierBusinessName();
 
-  static SharedPreferences? _preferences;
+  void saveApiToken({String? tokenString});
 
-  // static const _ThemeIndexKey = 'user_key';
-  // static const _UserThemeModeKey = 'user_theme_mode_key';
+  void setAuthenticatedUserRoles({List<String>? userRoles});
 
+  void setSelectedUserRole({required String userRole});
+
+  List<String> getAuthenticatedUserRoles();
+
+  String getSelectedUserRole();
+
+  String? getApiToken();
+
+  String getAuthenticatedUserName();
+
+  void setAuthenticatedUserName({required String user});
+}
+
+class AppPreferencesService implements InterFaceAppPreferences {
   final String apiToken = "api_token";
   final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
-  final String demandersCart = "demanders_cart";
   final String loggedInUserCredentials = "logged_in_user_credentials";
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
 
+  late SharedPreferences _sharedPrefs;
+
+  @override
   String? getApiToken() {
-    // return "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NjExODg2MzM5IiwiaXNTdXBwbHkiOnRydWUsImlzcyI6ImdlZWt0ZWNobm90b25pYyIsImV4cCI6MTY0MTkzMjgzNSwiaWF0IjoxNjQxOTA0MDM1fQ.iGrsNsM8Bs6wE9kg0IGKLiglwuhjrIrK6GgRWVeJ2E6SK1NUoH7Oa9-jE-BZvTFyvr-QOwMPMPR5H1E8NfAh2A";
-    String? savedToken = _preferences?.getString(apiToken);
+    String? savedToken = _sharedPrefs.getString(apiToken);
     if (savedToken != null) {
       return savedToken;
     } else {
@@ -39,35 +44,29 @@ class SharedPreferencesService {
     }
   }
 
+  @override
   String getAuthenticatedUserName() {
-    return _preferences?.getString(
+    return _sharedPrefs.getString(
           authenticatedUserName,
         ) ??
         '';
   }
 
+  @override
   List<String> getAuthenticatedUserRoles() {
-    return _preferences?.getString(authenticatedUserRoles) == null
+    return _sharedPrefs.getString(authenticatedUserRoles) == null
         ? []
-        : _preferences!.getString(authenticatedUserRoles)!.split(',');
+        : _sharedPrefs.getString(authenticatedUserRoles)!.split(',');
   }
 
-  Cart getDemandersCart() {
-    Cart cart = Cart().empty();
-
-    String? cartJson = _preferences?.getString(demandersCart);
-    if (cartJson != null) {
-      cart = Cart.fromJson(cartJson);
-    }
-    return cart;
-  }
-
+  @override
   String getSelectedUserRole() {
-    return _preferences?.getString(selectedUserRole) ?? '';
+    return _sharedPrefs.getString(selectedUserRole) ?? '';
   }
 
+  @override
   String? getSupplierBusinessName() {
-    String? savedBusinessName = _preferences?.getString(supplierBusinessName);
+    String? savedBusinessName = _sharedPrefs.getString(supplierBusinessName);
     if (savedBusinessName != null) {
       return savedBusinessName;
     } else {
@@ -75,108 +74,60 @@ class SharedPreferencesService {
     }
   }
 
+  @override
   void saveApiToken({String? tokenString}) {
     if (tokenString == null) {
-      _preferences?.remove(apiToken);
+      _sharedPrefs.remove(apiToken);
     } else {
-      _preferences?.setString(apiToken, tokenString);
+      _sharedPrefs.setString(apiToken, tokenString);
     }
   }
 
+  @override
   void saveCredentials(String value) {
-    _preferences?.setString(loggedInUserCredentials, value);
+    _sharedPrefs.setString(loggedInUserCredentials, value);
   }
 
+  @override
   void saveSupplierBusinessName({required String? name}) {
     if (name == null) {
-      _preferences?.remove(supplierBusinessName);
+      _sharedPrefs.remove(supplierBusinessName);
     } else {
-      _preferences?.setString(supplierBusinessName, name);
+      _sharedPrefs.setString(supplierBusinessName, name);
     }
   }
 
+  @override
   void setAuthenticatedUserName({String? user}) {
     if (user == null) {
-      _preferences?.remove(authenticatedUserName);
+      _sharedPrefs.remove(authenticatedUserName);
     } else {
-      _preferences?.setString(
+      _sharedPrefs.setString(
         authenticatedUserName,
         user,
       );
     }
   }
 
+  @override
   void setAuthenticatedUserRoles({List<String>? userRoles}) {
     if (userRoles == null) {
-      _preferences?.remove(authenticatedUserRoles);
+      _sharedPrefs.remove(authenticatedUserRoles);
     } else {
-      _preferences?.setString(authenticatedUserRoles, userRoles.join(","));
+      _sharedPrefs.setString(authenticatedUserRoles, userRoles.join(","));
     }
   }
 
-  void setDemandersCart({required Cart? cart}) {
-    if (cart == null) {
-      _preferences?.remove(demandersCart);
-    } else {
-      _preferences?.setString(demandersCart, cart.toJson());
-    }
-  }
-
+  @override
   void setSelectedUserRole({required String userRole}) {
-    _preferences?.setString(selectedUserRole, userRole);
+    _sharedPrefs.setString(selectedUserRole, userRole);
   }
 
-  void clearPreferences() async {
-    await FirebaseMessaging.instance.deleteToken();
-    _preferences?.clear();
+  Future<void> init() async {
+    _sharedPrefs = await SharedPreferences.getInstance();
   }
 
-  // int? get themeIndex => _getFromDisk(_ThemeIndexKey);
-
-  // set themeIndex(int? value) => _saveToDisk(_ThemeIndexKey, value);
-
-  // ThemeMode? get userThemeMode {
-  //   var userThemeString = _getFromDisk(_UserThemeModeKey);
-  //   if (userThemeString == ThemeMode.dark.toString()) {
-  //     return ThemeMode.dark;
-  //   }
-
-  //   if (userThemeString == ThemeMode.light.toString()) {
-  //     return ThemeMode.light;
-  //   }
-
-  //   return null;
-  // }
-
-  // set userThemeMode(ThemeMode? value) {
-  //   if (value == null) {
-  //     _saveToDisk(_UserThemeModeKey, value);
-  //   } else {
-  //     var userTheme = value.toString();
-  //     _saveToDisk(_UserThemeModeKey, userTheme);
-  //   }
-  // }
-
-  dynamic _getFromDisk(String key) {
-    var value = _preferences?.get(key);
-    return value;
-  }
-
-  void _saveToDisk(String key, dynamic content) {
-    if (content is String) {
-      _preferences?.setString(key, content);
-    }
-    if (content is bool) {
-      _preferences?.setBool(key, content);
-    }
-    if (content is int) {
-      _preferences?.setInt(key, content);
-    }
-    if (content is double) {
-      _preferences?.setDouble(key, content);
-    }
-    if (content is List<String>) {
-      _preferences?.setStringList(key, content);
-    }
+  void clearPreferences() {
+    _sharedPrefs.clear();
   }
 }

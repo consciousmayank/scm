@@ -1,4 +1,3 @@
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
@@ -6,6 +5,7 @@ import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialo
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/src/models/overlay_response.dart';
+import 'package:scm/app/di.dart';
 
 class DiscardProductReasonDialogBoxViewModel extends GeneralisedBaseViewModel {
   late Function(DialogResponse p1) completer;

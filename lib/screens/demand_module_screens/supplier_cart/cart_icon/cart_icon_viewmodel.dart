@@ -1,16 +1,10 @@
 import 'dart:developer';
 
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/generalised_base_view_model.dart';
-
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
-import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
-import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
-import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -20,7 +14,6 @@ class CartIconViewModel extends StreamViewModel<Cart> {
   Cart cart = Cart().empty();
   ApiStatus getCartApiStatus = ApiStatus.LOADING;
 
-  final DemandCartApi _demandCartApi = locator<DemandCartApi>();
   final NavigationService _navigationService = locator<NavigationService>();
 
   @override
@@ -58,7 +51,7 @@ class CartIconViewModel extends StreamViewModel<Cart> {
 
   void getCart() async {
     // cart = await _demandCartApi.getCart();
-    cart = cart = locator<SharedPreferencesService>().getDemandersCart();
+    cart = locator<CartStream>().appCart;
     getCartApiStatus = ApiStatus.FETCHED;
     notifyListeners();
   }
@@ -66,7 +59,6 @@ class CartIconViewModel extends StreamViewModel<Cart> {
   takeToCart() {
     _navigationService.navigateTo(
       cartViewPageRoute,
-      arguments: CartPageViewArgs(),
     );
   }
 }

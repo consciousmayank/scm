@@ -1,4 +1,3 @@
-import 'package:scm/app/app.locator.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
@@ -9,6 +8,7 @@ import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:scm/app/di.dart';
 
 class ProductsListViewModel extends GeneralisedBaseViewModel {
   late final ProductsListViewArguments arguments;

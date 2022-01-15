@@ -27,24 +27,10 @@ class _AppNavigationRailWidgetState extends State<AppNavigationRailWidget> {
       leading: widget.leading,
       extended: false,
       groupAlignment: 1.0,
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      selectedLabelTextStyle:
-          AppTextStyles(context: context).navigationRailSelectedLabelTextStyle,
-      unselectedLabelTextStyle: AppTextStyles(context: context)
-          .navigationRailUnSelectedLabelTextStyle,
-      selectedIconTheme: const IconThemeData(
-        color: Colors.yellow,
-        size: 25,
-      ),
-      unselectedIconTheme: IconThemeData(
-        color: Colors.grey.shade200,
-        size: 20,
-      ),
       selectedIndex: widget.currentIndex,
       onDestinationSelected: (int index) {
         widget.onNavigationIndexChanged(index);
       },
-      labelType: NavigationRailLabelType.all,
       destinations: widget.destinations,
     );
   }

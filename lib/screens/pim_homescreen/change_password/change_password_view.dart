@@ -4,6 +4,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -132,11 +133,8 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                             ),
                       ),
                       hSizedBox(height: 16),
-                      TextButton(
-                        style: AppTextButtonsStyles(
-                          context: context,
-                        ).textButtonStyle,
-                        onPressed: model.isPasswordsMatch &&
+                      AppButton(
+                        onTap: model.isPasswordsMatch &&
                                 model.newPasswordController.text
                                     .trim()
                                     .isNotEmpty &&
@@ -145,9 +143,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                                 model.changePassword();
                               }
                             : null,
-                        child: const Text(
-                          labelChangePassword,
-                        ),
+                        title: labelChangePassword,
                       ),
                     ],
                   ),

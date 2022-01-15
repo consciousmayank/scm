@@ -39,7 +39,7 @@ class _AppBottomNavigationBarWidgetState
         color: Colors.grey.shade200,
         size: 20,
       ),
-      unselectedItemColor: ApplicationTheme().shadesOfBlack[900],
+      unselectedItemColor: Colors.grey.shade400,
       unselectedLabelStyle: AppTextStyles(context: context)
           .mobileBottomNavigationUnSelectedLAbelStyle,
       currentIndex: widget.selectedIndex,

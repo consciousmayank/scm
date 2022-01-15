@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
+
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/services/notification/notification_icon/notification_icon_viewmodel.dart';

@@ -7,6 +7,7 @@ import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/list_footer.dart';
@@ -277,7 +278,7 @@ class SinglePopularBrandItem extends StatelessWidget {
     // );
 
     return AppInkwell.withBorder(
-      borderDerRadius: BorderRadius.circular(
+      borderderRadius: BorderRadius.circular(
         Dimens().suppliersListItemImageCircularRaduis,
       ),
       onTap: () => onItemClicked(selectedItem: item),
@@ -345,23 +346,19 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
                 ? const LoadingWidgetWithText(
                     text: 'Loading More Brands. Please wait')
                 : Center(
-                    child: TextButton(
-                        style: AppTextButtonsStyles(
-                          context: context,
-                        ).textButtonStyle,
-                        onPressed:
-                            viewModel.allBrandsResponse!.totalPages! - 1 ==
-                                    viewModel.pageIndex
-                                ? null
-                                : () {
-                                    viewModel.pageIndex++;
-                                    viewModel.getAllBrands();
-                                  },
-                        child: Text(
-                            viewModel.allBrandsResponse!.totalPages! - 1 ==
-                                    viewModel.pageIndex
-                                ? 'Thats all folks'
-                                : 'Load Next Set of Brands')),
+                    child: AppButton(
+                      onTap: viewModel.allBrandsResponse!.totalPages! - 1 ==
+                              viewModel.pageIndex
+                          ? null
+                          : () {
+                              viewModel.pageIndex++;
+                              viewModel.getAllBrands();
+                            },
+                      title: viewModel.allBrandsResponse!.totalPages! - 1 ==
+                              viewModel.pageIndex
+                          ? 'Thats all folks'
+                          : 'Load Next Set of Brands',
+                    ),
                   ),
           );
   }

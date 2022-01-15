@@ -1,5 +1,5 @@
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.router.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -92,22 +92,24 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({Brand? selectedBrand, String? selectedCategory}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArgs.asSupplierProductList(
-        brandsFilterList: selectedBrand == null
-            ? []
-            : [
-                selectedBrand.title,
-              ],
-        categoryFilterList: selectedCategory == null
-            ? []
-            : [
-                selectedCategory,
-              ],
-        subCategoryFilterList: [],
-        productTitle: '',
-        supplierId: arguments.selectedSupplier?.id,
-        supplierName: arguments.selectedSupplier?.businessName,
-        isSupplierCatalog: arguments.isSupplierCatalog,
+      arguments: ProductListViewArguments(
+        arguments: ProductListViewArgs.asSupplierProductList(
+          brandsFilterList: selectedBrand == null
+              ? []
+              : [
+                  selectedBrand.title,
+                ],
+          categoryFilterList: selectedCategory == null
+              ? []
+              : [
+                  selectedCategory,
+                ],
+          subCategoryFilterList: [],
+          productTitle: '',
+          supplierId: arguments.selectedSupplier?.id,
+          supplierName: arguments.selectedSupplier?.businessName,
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
       ),
     );
   }
@@ -181,12 +183,14 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForSupplier() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArgs.fullScreen(
-        isSupplierCatalog: arguments.isSupplierCatalog,
-        brandsFilterList: [],
-        categoryFilterList: [],
-        subCategoryFilterList: [],
-        productTitle: '',
+      arguments: ProductListViewArguments(
+        arguments: ProductListViewArgs.fullScreen(
+          isSupplierCatalog: arguments.isSupplierCatalog,
+          brandsFilterList: [],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+        ),
       ),
     );
   }
@@ -194,13 +198,15 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForDemander() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArgs.asSupplierProductList(
-        brandsFilterList: [],
-        categoryFilterList: [],
-        subCategoryFilterList: [],
-        productTitle: '',
-        supplierId: arguments.selectedSupplier?.id,
-        supplierName: arguments.selectedSupplier?.businessName,
+      arguments: ProductListViewArguments(
+        arguments: ProductListViewArgs.asSupplierProductList(
+          brandsFilterList: [],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+          supplierId: arguments.selectedSupplier?.id,
+          supplierName: arguments.selectedSupplier?.businessName,
+        ),
       ),
     );
   }

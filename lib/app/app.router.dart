@@ -80,7 +80,9 @@ class StackedRouter extends RouterBase {
       );
     },
     LoginView: (data) {
-      var args = data.getArgs<LoginViewArguments>(nullOk: false);
+      var args = data.getArgs<LoginViewArguments>(
+        orElse: () => LoginViewArguments(),
+      );
       return MaterialPageRoute<dynamic>(
         builder: (context) => LoginView(
           key: args.key,
@@ -138,12 +140,8 @@ class StackedRouter extends RouterBase {
       );
     },
     CartPageView: (data) {
-      var args = data.getArgs<CartPageViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => CartPageView(
-          key: args.key,
-          arguments: args.arguments,
-        ),
+        builder: (context) => const CartPageView(),
         settings: data,
       );
     },
@@ -174,8 +172,8 @@ class SplashScreenArguments {
 /// LoginView arguments holder class
 class LoginViewArguments {
   final Key? key;
-  final LoginViewArgs arguments;
-  LoginViewArguments({this.key, required this.arguments});
+  final LoginViewArgs? arguments;
+  LoginViewArguments({this.key, this.arguments});
 }
 
 /// ProductListView arguments holder class
@@ -197,13 +195,6 @@ class PopularBrandsViewArguments {
   final Key? key;
   final PopularBrandsViewArgs arguments;
   PopularBrandsViewArguments({this.key, required this.arguments});
-}
-
-/// CartPageView arguments holder class
-class CartPageViewArguments {
-  final Key? key;
-  final CartPageViewArgs arguments;
-  CartPageViewArguments({this.key, required this.arguments});
 }
 
 /// NotificationsScreenView arguments holder class

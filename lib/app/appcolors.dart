@@ -12,12 +12,6 @@ class AppColors {
 
   get appScaffoldBgColor => Colors.white;
 
-  // get appOutlinedTextButtonBackgroundColor => primaryColor.shade200;
-
-  // get appTextButtonForegroundColor => primaryColor.shade50;
-
-  // get appTextButtonBackgroundColor => primaryColor.shade200;
-
   // get tabIndicatorColor => primaryColor.shade900;
 
   // get tabDividerColor => primaryColor.shade900;

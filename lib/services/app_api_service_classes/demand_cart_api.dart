@@ -1,4 +1,4 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
@@ -36,7 +36,7 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
     required String productTitle,
     required int supplierId,
   }) async {
-    Cart returningCart = preferences.getDemandersCart();
+    Cart returningCart = cartService.appCart;
     String? userName = preferences.getApiToken();
 
     if (returningCart.id == null) {
@@ -72,7 +72,6 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       returningCart = Cart.fromMap(
         cartResponse.response!.data,
       );
-      saveCartToPreferences(cart: returningCart);
     }
     cartService.addToStream(returningCart);
     return returningCart;
@@ -93,7 +92,6 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       cart = Cart.fromMap(
         cartResponse.response!.data,
       );
-      saveCartToPreferences(cart: cart);
     }
 
     cartService.addToStream(cart);
@@ -106,7 +104,7 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
     required CartItem cartItem,
     required int supplierId,
   }) async {
-    Cart returningCart = preferences.getDemandersCart();
+    Cart returningCart = cartService.appCart;
 
     if (returningCart.id == null) {
       addToCart(
@@ -150,7 +148,6 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       returningCart = Cart.fromMap(
         cartResponse.response!.data,
       );
-      saveCartToPreferences(cart: returningCart);
     }
     cartService.addToStream(returningCart);
     return returningCart;
@@ -161,9 +158,5 @@ class DemandCartApi extends BaseApi implements DemandCartApiAbstractClass {
       {required CartItem cartItem, required int supplierId}) {
     // TODO: implement updateCartItem
     throw UnimplementedError();
-  }
-
-  saveCartToPreferences({required Cart cart}) {
-    preferences.setDemandersCart(cart: cart);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/appconfigs.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/services/network/dio_interceptor.dart';
 import 'package:scm/services/sharepreferences_service.dart';
 
@@ -10,7 +11,7 @@ class DioConfig {
     configureDio();
   }
 
-  final appPreferences = locator<SharedPreferencesService>();
+  final appPreferences = locator<AppPreferencesService>();
   late String baseUrl;
   final apiCancelToken = CancelToken();
   final ApiServiceAppDioInterceptor apiServiceAppDioInterceptor =

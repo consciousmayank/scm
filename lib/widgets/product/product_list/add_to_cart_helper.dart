@@ -1,9 +1,10 @@
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
+import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -16,14 +17,15 @@ class AddToCart extends GeneralisedBaseViewModel {
   final int supplierId;
 
   final DemandCartApi _cartApi = locator<DemandCartApi>();
+  final CartStream _cartStream = locator<CartStream>();
 
   void openProductQuantityDialogBox({
     required Product product,
     int? quantity,
   }) async {
     DialogResponse? resetCartResponse;
-    if (preferences.getDemandersCart().supplyId != null &&
-        preferences.getDemandersCart().supplyId != supplierId) {
+    if (_cartStream.appCart.supplyId != null &&
+        _cartStream.appCart.supplyId != supplierId) {
       resetCartResponse = await dialogService.showConfirmationDialog(
         title: labelResetOrder,
         description: labelResetOrderDescription,
@@ -34,7 +36,7 @@ class AddToCart extends GeneralisedBaseViewModel {
       );
 
       if (resetCartResponse != null && resetCartResponse.confirmed) {
-        preferences.setDemandersCart(cart: null);
+        _cartStream.addToStream(Cart().empty());
 
         await dialogService
             .showCustomDialog(

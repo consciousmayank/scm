@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/app.router.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
@@ -36,7 +36,6 @@ class DemandModuleLandingPageViewModel
 
   void getCart() async {
     Cart cart = await _demandCartApi.getCart();
-    preferences.setDemandersCart(cart: cart);
   }
 
   actionPopUpItemSelected({String? selectedValue}) {

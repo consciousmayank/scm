@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_delivery_address_list_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_list_view_widget.dart';
@@ -10,17 +9,14 @@ import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_
 import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/loading_widget.dart';
-import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class CartPageView extends StatefulWidget {
   const CartPageView({
     Key? key,
-    required this.arguments,
   }) : super(key: key);
-
-  final CartPageViewArgs arguments;
 
   @override
   _CartPageViewState createState() => _CartPageViewState();
@@ -30,7 +26,7 @@ class _CartPageViewState extends State<CartPageView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CartPageViewModel>.reactive(
-      onModelReady: (model) => model.init(args: widget.arguments),
+      onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
         appBar: appbarWidget(
           context: context,
@@ -40,7 +36,9 @@ class _CartPageViewState extends State<CartPageView> {
         body: model.cartApiStatus == ApiStatus.LOADING
             ? const Center(
                 child: LoadingWidgetWithText(
-                    text: 'Fetching Cart. Please Wait...'))
+                  text: 'Fetching Cart. Please Wait...',
+                ),
+              )
             : Row(
                 children: [
                   const Expanded(
@@ -104,16 +102,13 @@ class _CartPageViewState extends State<CartPageView> {
                                   SizedBox(
                                     height: Dimens().buttonHeight,
                                     width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: model.selectedAddress == null
+                                    child: AppButton(
+                                      onTap: model.selectedAddress == null
                                           ? null
                                           : () {
                                               model.placeOrder();
                                             },
-                                      child: const Text(labelPlaceOrder),
-                                      style:
-                                          AppTextButtonsStyles(context: context)
-                                              .textButtonStyle,
+                                      title: labelPlaceOrder,
                                     ),
                                   ),
                                 ],
@@ -129,5 +124,3 @@ class _CartPageViewState extends State<CartPageView> {
     );
   }
 }
-
-class CartPageViewArgs {}

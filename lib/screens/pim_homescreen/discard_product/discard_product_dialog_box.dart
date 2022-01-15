@@ -5,6 +5,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/discard_product/diascard_product_dialog_box_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -64,14 +65,11 @@ class _DiscardProductReasonDialogBoxViewState
                 ),
                 SizedBox(
                   height: Dimens().buttonHeight,
-                  child: TextButton(
-                    onPressed: () {
+                  child: AppButton(
+                    onTap: () {
                       model.discardProduct();
                     },
-                    child: const Text(labelSubmit),
-                    style: AppTextButtonsStyles(
-                      context: context,
-                    ).textButtonStyle,
+                    title: labelSubmit,
                   ),
                 ),
               ],

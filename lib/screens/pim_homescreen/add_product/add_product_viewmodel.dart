@@ -3,8 +3,9 @@ import 'dart:typed_data';
 
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:scm/app/di.dart';
 // import 'package:image_picker_web/image_picker_web.dart';
-import 'package:scm/app/app.locator.dart';
+
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/api_response.dart';

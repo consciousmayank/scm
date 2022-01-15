@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:scm/app/app.locator.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/di.dart';
 
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/user_roles.dart';
@@ -15,7 +14,7 @@ class GeneralisedIndexTrackingViewModel extends IndexTrackingViewModel {
   bool isFloatingActionButtonVisible = true;
   bool isLocationServiceEnabled = false;
   NavigationService navigationService = locator<NavigationService>();
-  final preferences = locator<SharedPreferencesService>();
+  final preferences = locator<AppPreferencesService>();
   SnackbarService snackBarService = locator<SnackbarService>();
 
   ///This will help in showing error snackbar

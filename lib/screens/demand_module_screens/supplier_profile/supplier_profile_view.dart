@@ -13,7 +13,6 @@ import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
-import 'package:scm/widgets/product/product_list/product_list_item/product_list_item.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:scm/widgets/showing_data_widgets.dart';
 import 'package:scm/widgets/single_brand_item.dart';
@@ -453,7 +452,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                     : 2,
                             crossAxisSpacing: 2.0,
                             mainAxisSpacing: 2.0,
-                            mainAxisExtent: 200,
+                            mainAxisExtent: 250,
                             // childAspectRatio: 3,
                           ),
                         ),

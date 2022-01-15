@@ -9,6 +9,7 @@ class Dimens {
   double get orderInfoTilesHeight => 110;
 
   double get buttonHeight => 50;
+  double get buttonWidth => 100;
 
   double get getDefaultRadius => 8;
 
@@ -19,10 +20,6 @@ class Dimens {
   int get maxTagsLength => 120;
 
   double get getColumnWithTitleHeaderPadding => 16;
-
-  double get appTextButtonDefaultFontSize => 18.00;
-
-  EdgeInsets get appTextButtonPadding => const EdgeInsets.all(16.00);
 
   double get getDefaultElevation => 8;
 
@@ -37,8 +34,6 @@ class Dimens {
         fontWeight: FontWeight.bold,
         color: AppColors().black,
       );
-
-  double get appTextButtonBorderRadius => getDefaultRadius;
 
   double get getDecoratedContainerDefaultPadding => 8;
 
@@ -67,6 +62,8 @@ class Dimens {
   get dashboardOrderListCardHeight => 500;
 
   double get suppliersListItemImageCircularRaduis => 8;
+
+  double get defaultButtonPadding => 6;
 
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(

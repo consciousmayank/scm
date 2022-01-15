@@ -6,6 +6,7 @@ import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_p
 import 'package:scm/screens/order_list_page/helper_widgets/processing_items_list_table.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -105,8 +106,8 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        TextButton.icon(
-                                          onPressed: () {
+                                        AppButton(
+                                          onTap: () {
                                             viewModel.editCartItemAt(
                                               index: index,
                                               cartItem: viewModel
@@ -116,15 +117,15 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                               ),
                                             );
                                           },
-                                          icon: const Icon(
+                                          leading: const Icon(
                                             Icons.edit,
                                             size: 20,
                                           ),
-                                          label: const Text(''),
+                                          title: '',
                                         ),
                                         wSizedBox(width: 8),
-                                        TextButton.icon(
-                                          onPressed: () {
+                                        AppButton(
+                                          onTap: () {
                                             viewModel.deleteCartItemAt(
                                               cartItem: viewModel
                                                   .cart.cartItems!
@@ -133,11 +134,11 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                               ),
                                             );
                                           },
-                                          icon: const Icon(
+                                          leading: const Icon(
                                             Icons.delete,
                                             size: 20,
                                           ),
-                                          label: const Text(''),
+                                          title: '',
                                         ),
                                       ],
                                     )

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:scm/app/app.locator.dart';
+import 'package:scm/app/app.router.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -55,12 +55,14 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({required Brand selectedItem}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArgs.fullScreen(
-        brandsFilterList: [selectedItem.title],
-        categoryFilterList: [],
-        subCategoryFilterList: [],
-        productTitle: '',
-        isSupplierCatalog: arguments.isSupplierCatalog,
+      arguments: ProductListViewArguments(
+        arguments: ProductListViewArgs.fullScreen(
+          brandsFilterList: [selectedItem.title],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
       ),
     );
   }
