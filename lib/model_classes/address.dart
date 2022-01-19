@@ -40,6 +40,11 @@ class Address {
   String? state;
   String? type;
 
+  @override
+  String toString() {
+    return '$addressLine1, $addressLine2, $locality, $nearby, $city, $pincode, $state, $country';
+  }
+
   Address copyWith({
     int? id,
     String? type,
@@ -53,7 +58,7 @@ class Address {
     String? pincode,
   }) =>
       Address(
-        id: id ?? this.id,
+        id: id,
         type: type ?? this.type,
         addressLine1: addressLine1 ?? this.addressLine1,
         addressLine2: addressLine2 ?? this.addressLine2,
@@ -82,7 +87,7 @@ class Address {
 
   empty() {
     return Address(
-      id: -1,
+      id: null,
       type: '',
       addressLine1: '',
       addressLine2: '',

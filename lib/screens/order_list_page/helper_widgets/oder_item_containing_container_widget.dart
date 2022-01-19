@@ -38,7 +38,7 @@ class OrderItemContainerWidget extends StatelessWidget {
         ),
         color: AppColors().white,
         border: Border.all(
-          color: AppColors().orderDetailsContainerBg,
+          color: Theme.of(context).colorScheme.secondaryVariant,
           width: 1,
         ),
       ),

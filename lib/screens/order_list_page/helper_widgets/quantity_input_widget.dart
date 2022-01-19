@@ -43,7 +43,7 @@ class _QuantityWidgetState extends State<QuantityWidget> {
       controller: widget.controller,
       focusNode: widget.focusNode,
       formatter: <TextInputFormatter>[
-        Dimens().getNumericTextInputFormatter,
+        Dimens().numericTextInputFormatter,
       ],
       innerHintText: widget.hint,
 
@@ -96,7 +96,7 @@ class _PriceWidgetState extends State<PriceWidget> {
   Widget build(BuildContext context) {
     return AppTextField(
       formatter: <TextInputFormatter>[
-        Dimens().getNumericTextInputFormatter,
+        Dimens().numericTextInputFormatter,
       ],
       innerHintText: widget.hint,
       controller: widget.controller,

@@ -8,12 +8,15 @@ import 'package:scm/screens/pim_homescreen/change_password/change_password_dialo
 import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
 import 'package:scm/screens/pim_homescreen/get_product_by_id_dialog_box/get_product_by_id_dialog_box_view.dart';
 import 'package:scm/screens/pim_homescreen/update_product_dialog/update_product_dialog_view.dart';
+import 'package:scm/services/notification/notification_dialog_box.dart';
 import 'package:scm/utils/utils.dart';
+import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
+import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -22,8 +25,8 @@ void setupDialogUi() {
   final builders = {
     DialogType.BASIC: (context, sheetRequest, completer) =>
         _BasicDialog(request: sheetRequest, completer: completer),
-    DialogType.NEW_GPS_REQUEST: (context, sheetRequest, completer) =>
-        _NewGpsRequestDialog(
+    DialogType.NOTIFICATION: (context, sheetRequest, completer) =>
+        NotificationDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
@@ -64,6 +67,16 @@ void setupDialogUi() {
         ),
     DialogType.DISCARD_PRODUCT: (context, sheetRequest, completer) =>
         DiscardProductReasonDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ADD_PRODUCT_TO_CART: (context, sheetRequest, completer) =>
+        ProductAddToCartDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ADD_ADDRESS: (context, sheetRequest, completer) =>
+        AddressDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
@@ -197,7 +210,7 @@ class RightSidedBaseDialog extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: AppColors().getColumnWithTitleHeaderColor,
+              color: Theme.of(context).secondaryHeaderColor,
             ),
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,

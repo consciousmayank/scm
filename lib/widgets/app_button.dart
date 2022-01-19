@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/app/styles.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
@@ -67,6 +68,7 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      style: AppTextButtonsStyles(context: context).elevatedTextButtonStyle,
       onPressed: enabled
           ? () {
               onTap.call();

@@ -31,7 +31,10 @@ class _BarChartBasedOnProductStatusesViewState
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BarChartBasedOnProductStatusesViewModel>.reactive(
-      onModelReady: (model) => model.init(arguments: widget.arguments),
+      onModelReady: (model) => model.init(
+        arguments: widget.arguments,
+        barColor: Theme.of(context).colorScheme.background,
+      ),
       builder: (context, model, child) => Scaffold(
         body: model.isBusy
             ? const LoadingWidget()

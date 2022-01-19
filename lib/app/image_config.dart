@@ -31,6 +31,7 @@ final String otpScreenImage = _imagePath + 'otp_screen_image.png';
 final String orderStatsIcon = _imagePath + 'order_stats_icon.png';
 final String successAnimation = _animationPath + 'success.json';
 final String splashAnimation = _animationPath + 'splash_animation.json';
+const String notificationsAnimation = 'notification_bell_animation.json';
 final String profileIconBlue = _imagePath + 'profile_icon_blue.png';
 
 final String scmLogo = _imagePath + 'scm_logo.png';
@@ -97,3 +98,6 @@ final String seventeen = _imagePath + '17.jpg';
 final String eighteen = _imagePath + '18.jpg';
 final String nineteen = _imagePath + '19.jpg';
 final String twenty = _imagePath + '20.jpg';
+final String cartIcon = _imagePath + 'cart_icon.png';
+final String catalogIcon = _imagePath + 'catalog.png';
+final String defaultProductImage = _imagePath + 'default_product_image.jpg';

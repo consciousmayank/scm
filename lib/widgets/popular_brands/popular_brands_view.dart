@@ -12,7 +12,7 @@ import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_viewmodel.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PopularBrandsView extends StatelessWidget {
@@ -31,7 +31,11 @@ class PopularBrandsView extends StatelessWidget {
         appBar: arguments.isFullScreen
             ? appbarWidget(
                 context: context,
-                title: labelBrands,
+                title: arguments.supplierId == null
+                    ? labelBrands
+                    : suppliersBrandListPageTitle(
+                        suppliersName: arguments.supplierName!,
+                      ),
                 automaticallyImplyLeading: true,
                 options: [
                   AnimatedSearchWidget(
@@ -108,6 +112,7 @@ class PopularBrandsView extends StatelessWidget {
                                   ),
                                   crossAxisSpacing: 8.0,
                                   mainAxisSpacing: 8.0,
+                                  childAspectRatio: 2.0,
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
@@ -227,15 +232,29 @@ class PopularBrandsViewArguments {
   PopularBrandsViewArguments({
     this.isFullScreen = false,
     required this.onSeeAllBrandsClicked,
-  });
+  })  : supplierId = null,
+        isSupplierCatalog = false,
+        supplierName = null;
+
+  PopularBrandsViewArguments.demanderPopularBrands({
+    this.isFullScreen = true,
+    required this.supplierId,
+    required this.supplierName,
+  })  : onSeeAllBrandsClicked = null,
+        isSupplierCatalog = false;
 
   PopularBrandsViewArguments.fullScreen({
     this.isFullScreen = true,
     this.onSeeAllBrandsClicked,
-  });
+    this.isSupplierCatalog = false,
+  })  : supplierId = null,
+        supplierName = null;
 
   final bool isFullScreen;
+  final bool isSupplierCatalog;
   final Function? onSeeAllBrandsClicked;
+  final int? supplierId;
+  final String? supplierName;
 }
 
 class SinglePopularBrandItem extends StatelessWidget {
@@ -250,46 +269,47 @@ class SinglePopularBrandItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = getValueForScreenType(
-      context: context,
-      mobile: 100,
-      tablet: 200,
-      desktop: 300,
-    );
+    // double width = getValueForScreenType(
+    //   context: context,
+    //   mobile: 100,
+    //   tablet: 200,
+    //   desktop: 300,
+    // );
 
-    return SizedBox(
-      width: width,
-      child: AppInkwell.withBorder(
-        onTap: () => onItemClicked(selectedItem: item),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ProfileImageWidget.withNoElevation(
-              profileImageSize: width / 2,
-              imageUrlString: item.image,
+    return AppInkwell.withBorder(
+      borderDerRadius: BorderRadius.circular(
+        Dimens().suppliersListItemImageCircularRaduis,
+      ),
+      onTap: () => onItemClicked(selectedItem: item),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ProfileImageWidget.withNoElevation(
+            profileImageSize: 100,
+            imageUrlString: item.image,
+          ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.all(4),
+            child: Text(
+              item.title ?? '',
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.all(4),
-              child: Text(
-                item.title ?? '',
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.headline6,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(
-                    20,
-                  ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  Dimens().suppliersListItemImageCircularRaduis,
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -326,7 +346,9 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
                     text: 'Loading More Brands. Please wait')
                 : Center(
                     child: TextButton(
-                        style: AppTextButtonsStyles().textButtonStyle,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
                         onPressed:
                             viewModel.allBrandsResponse!.totalPages! - 1 ==
                                     viewModel.pageIndex

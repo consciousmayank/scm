@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/order_status_types.dart';
@@ -16,8 +17,6 @@ import 'package:scm/widgets/list_footer.dart';
 class OrderListWidget extends StatelessWidget {
   const OrderListWidget.dashboard({
     Key? key,
-    this.orderStatuses = const [],
-    this.showCompactView = false,
     required this.orders,
     required this.isScrollable,
     required this.isSupplyRole,
@@ -30,7 +29,9 @@ class OrderListWidget extends StatelessWidget {
     required this.label,
     this.onOrderStatusClick,
     this.selectedOrderStatus = '',
-  }) : super(key: key);
+  })  : orderStatuses = const [],
+        showCompactView = false,
+        super(key: key);
 
   const OrderListWidget.orderPage({
     Key? key,
@@ -121,6 +122,13 @@ class OrderListWidget extends StatelessWidget {
                     ],
                     isSelected: selectedOrderId > 0 &&
                         selectedOrderId == orders.elementAt(index).id,
+                    onOrderClick: () {
+                      onOrderClick!(
+                        selectedOrder: orders.elementAt(
+                          index,
+                        ),
+                      );
+                    },
                   );
                 },
                 separatorBuilder: (context, index) =>
@@ -148,15 +156,13 @@ class OrderListWidget extends StatelessWidget {
                     : const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return AppInkwell(
-                    onTap: showCompactView
-                        ? () {
-                            onOrderClick!(
-                              selectedOrder: orders.elementAt(
-                                index,
-                              ),
-                            );
-                          }
-                        : null,
+                    onTap: () {
+                      onOrderClick!(
+                        selectedOrder: orders.elementAt(
+                          index,
+                        ),
+                      );
+                    },
                     child: Stack(
                       alignment: Alignment.topRight,
                       children: [
@@ -192,6 +198,13 @@ class OrderListWidget extends StatelessWidget {
                           ],
                           isSelected: selectedOrderId > 0 &&
                               selectedOrderId == orders.elementAt(index).id,
+                          onOrderClick: () {
+                            // onOrderClick!(
+                            //   selectedOrder: orders.elementAt(
+                            //     index,
+                            //   ),
+                            // );
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -226,6 +239,7 @@ class OrderListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(selectedOrderId.toString());
     return Card(
       shape: Dimens().getCardShape(),
       elevation: Dimens().getDefaultElevation,
@@ -268,7 +282,7 @@ class OrderListWidget extends StatelessWidget {
                               value: selectedOrderStatus,
                               icon: Icon(
                                 Icons.arrow_drop_down,
-                                color: AppColors().primaryColor.shade900,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                               iconSize: 30,
                               underline: Container(),
@@ -342,16 +356,19 @@ class OrderListTableWidget extends StatelessWidget {
     this.isHeader = true,
     required this.titles,
     this.isSelected = false,
-  }) : super(key: key);
+  })  : onOrderClick = null,
+        super(key: key);
 
   const OrderListTableWidget.values({
     Key? key,
     this.isHeader = false,
     required this.titles,
     required this.isSelected,
+    required this.onOrderClick,
   }) : super(key: key);
 
   final bool isHeader, isSelected;
+  final Function? onOrderClick;
   final List<Value> titles;
 
   @override
@@ -360,11 +377,13 @@ class OrderListTableWidget extends StatelessWidget {
       padding: const EdgeInsets.all(
         8,
       ),
-      color: isHeader
-          ? AppColors().dashboardTableHeaderBg
-          : isSelected
-              ? AppColors().primaryColor.shade100
-              : Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          Dimens().suppliersListItemImageCircularRaduis,
+        ),
+        color:
+            isHeader ? Theme.of(context).colorScheme.background : Colors.white,
+      ),
       child: Row(
         children: titles
             .map((title) => Expanded(
@@ -372,29 +391,34 @@ class OrderListTableWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: title.widgetType == WidgetType.OUTLINED_CONTAINER
-                        ? Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: getBorderColor(status: title.value),
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(
-                                Dimens().defaultBorder,
+                        ? AppInkwell.withBorder(
+                            onTap: onOrderClick != null
+                                ? () => onOrderClick!()
+                                : null,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: getBorderColor(status: title.value),
+                                    width: 1),
+                                borderRadius: BorderRadius.circular(
+                                  Dimens().defaultBorder,
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                title.value,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                      color: getBorderColor(
-                                        status: title.value,
+                              child: Center(
+                                child: Text(
+                                  title.value,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        color: getBorderColor(
+                                          status: title.value,
+                                        ),
                                       ),
-                                    ),
+                                ),
                               ),
                             ),
                           )
@@ -406,6 +430,14 @@ class OrderListTableWidget extends StatelessWidget {
                                 titles.indexOf(title) == titles.length - 1
                                     ? TextAlign.center
                                     : TextAlign.left,
+                            style: Theme.of(context).textTheme.button!.copyWith(
+                                  fontWeight: isSelected
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                  decoration: isSelected
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
                           ),
                   ),
                 ))

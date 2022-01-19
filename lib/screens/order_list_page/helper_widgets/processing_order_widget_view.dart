@@ -382,7 +382,9 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
               ),
             ),
           ),
-          const OrderPorcessButtonsWidget()
+          viewModel.isSupplier()
+              ? const OrderPorcessButtonsWidget()
+              : Container(),
         ],
       ),
     );

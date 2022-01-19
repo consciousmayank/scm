@@ -1,15 +1,20 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
+import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
+import 'package:scm/services/notification/fcm_permissions.dart';
+import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/animated_search_widget.dart';
+import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
-import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 class DemandModuleLandingPageView extends StatefulWidget {
   const DemandModuleLandingPageView({
@@ -27,7 +32,15 @@ class DemandModuleLandingPageView extends StatefulWidget {
 class _DemandModuleLandingPageViewState
     extends State<DemandModuleLandingPageView> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebasePushNotificationsPermissions().getPermission();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getThemeManager(context).selectThemeAtIndex(1);
     return ViewModelBuilder<DemandModuleLandingPageViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
       builder: (context, model, child) => ScreenTypeLayout.builder(
@@ -86,10 +99,6 @@ class SupplyModuleLandingPageMobileView
                 ),
                 label: labelDemandLandingPageCatalog,
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.api),
-                label: labelDemandLandingPageCategories,
-              ),
               BottomNavigationBarItem(
                 icon: ImageIcon(
                   AssetImage(categoryIcon),
@@ -112,16 +121,16 @@ class SupplyModuleLandingPageMobileView
             type: BottomNavigationBarType.fixed,
 
             selectedIconTheme: IconThemeData(
-              color: AppColors().primaryColor[500],
+              color: Theme.of(context).colorScheme.background,
             ),
-            selectedItemColor: AppColors().primaryColor[500],
+            selectedItemColor: Theme.of(context).colorScheme.background,
             selectedLabelStyle: AppTextStyles(context: context)
                 .mobileBottomNavigationSelectedLAbelStyle,
             unselectedIconTheme: IconThemeData(
-              color: AppColors.shadesOfBlack[600],
+              color: Colors.grey.shade500,
               // size: 45,
             ),
-            unselectedItemColor: AppColors.shadesOfBlack[900],
+            unselectedItemColor: Colors.grey.shade900,
             unselectedLabelStyle: AppTextStyles(context: context)
                 .mobileBottomNavigationUnSelectedLAbelStyle,
             currentIndex: viewModel.currentIndex,
@@ -144,27 +153,20 @@ class SupplyModuleLandingPageWebView
   @override
   Widget build(
     BuildContext context,
-    DemandModuleLandingPageViewModel model,
+    DemandModuleLandingPageViewModel viewModel,
   ) {
     return Scaffold(
       appBar: appbarWidget(context: context, title: 'Demand', options: [
         wSizedBox(width: 30),
-        // if (model.currentIndex != 0)
-        // AnimatedSearchWidget(
-        //   hintText: labelSearchAllProducts,
-        //   onSearch: ({required String searchTerm}) {
-        //     model.searchProducts(searchTerm: searchTerm);
-        //   },
-        //   onCrossButtonClicked: () {
-        //     model.clearSearch();
-        //   },
-        // ),
-        // wSizedBox(width: 10),
-        Center(child: Text('Hi, ${model.authenticatedUserName}')),
+        Center(child: Text('Hi, ${viewModel.authenticatedUserName}')),
+        wSizedBox(width: 30),
+        CartIconView(
+          arguments: CartIconViewArguments(),
+        ),
         wSizedBox(width: 30),
         AppPopUpMenuWidget(
           onOptionsSelected: ({value}) =>
-              model.actionPopUpItemSelected(selectedValue: value),
+              viewModel.actionPopUpItemSelected(selectedValue: value),
           options: profileOptions,
           toolTipLabel: popUpMenuLabelToolTip,
         ),
@@ -172,38 +174,10 @@ class SupplyModuleLandingPageWebView
       ]),
       body: Row(
         children: [
-          NavigationRail(
-            extended: false,
-            groupAlignment: 1.0,
-            backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-            selectedLabelTextStyle:
-                Theme.of(context).textTheme.button!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: Colors.yellow,
-                      decorationColor: Colors.yellow,
-                      decoration: TextDecoration.overline,
-                      decorationStyle: TextDecorationStyle.wavy,
-                    ),
-            unselectedLabelTextStyle:
-                Theme.of(context).textTheme.overline!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      color: AppColors().primaryColor.shade50,
-                    ),
-            selectedIconTheme: const IconThemeData(
-              color: Colors.yellow,
-              size: 25,
+          AppNavigationRailWidget(
+            leading: NotificationIconView(
+              arguments: NotificationIconViewArguments(),
             ),
-            unselectedIconTheme: IconThemeData(
-              color: AppColors().primaryColor.shade50,
-              size: 20,
-            ),
-            selectedIndex: model.currentIndex,
-            onDestinationSelected: (int index) {
-              model.setIndex(index);
-            },
-            labelType: NavigationRailLabelType.all,
             destinations: [
               buildRotatedTextRailDestinationWithIcon(
                 text: labelDemandLandingPageCatalog,
@@ -211,11 +185,6 @@ class SupplyModuleLandingPageWebView
                 icon: ImageIcon(
                   AssetImage(latestHomeIcon),
                 ),
-              ),
-              buildRotatedTextRailDestinationWithIcon(
-                text: labelDemandLandingPageCategories,
-                isTurned: true,
-                icon: const Icon(Icons.api),
               ),
               buildRotatedTextRailDestinationWithIcon(
                 isTurned: true,
@@ -237,24 +206,16 @@ class SupplyModuleLandingPageWebView
                 text: labelDemandLandingPageMore,
               ),
             ],
+            currentIndex: viewModel.currentIndex,
+            onNavigationIndexChanged: (int index) {
+              viewModel.clickedOrderStatus = orderStatusAll;
+              viewModel.setIndex(index);
+            },
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
             child: Center(
-              child:
-                  // model.showProductList && model.searchTerm.length > 2
-                  // ? ProductListView(
-                  //     key: UniqueKey(),
-                  //     arguments: ProductListViewArguments.appbar(
-                  //       brandsFilterList: [],
-                  //       categoryFilterList: [],
-                  //       subCategoryFilterList: [],
-                  //       productTitle: model.searchTerm,
-                  //       supplierId: -1,
-                  //     ),
-                  //   )
-                  // :
-                  model.getSelectedView(),
+              child: viewModel.getSelectedView(),
             ),
           ),
         ],

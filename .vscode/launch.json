@@ -34,6 +34,7 @@
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL=http://192.168.0.193:8080/scm",
+                "VAPID_KEY=BIMrjbnsSE5DJMVg7poE9gyyDt6IccuuMm3FuaX1YYRZcVkJWaNNeP2Rr7KzeYU8bxmTKxNJLzIxZhvtTW2o3Sc",
                 "--dart-define",
                 "SHOW_LOGS=true"
             ]
@@ -45,6 +46,7 @@
             "toolArgs": [
                 "--dart-define",
                 "BASE_URL=http://geekscms.com",
+                "VAPID_KEY=BIMrjbnsSE5DJMVg7poE9gyyDt6IccuuMm3FuaX1YYRZcVkJWaNNeP2Rr7KzeYU8bxmTKxNJLzIxZhvtTW2o3Sc",
                 "--dart-define",
                 "SHOW_LOGS=true"
             ]

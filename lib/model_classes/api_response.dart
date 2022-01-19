@@ -11,9 +11,9 @@ class ApiResponse {
       ApiResponse.fromMap(json.decode(str));
 
   factory ApiResponse.fromMap(Map<String, dynamic> json) => ApiResponse(
-        status: json["status"],
-        statusCode: json["statusCode"],
-        message: json["message"],
+        status: json["status"] ?? '',
+        statusCode: json["statusCode"] ?? 0,
+        message: json["message"] ?? '',
       );
 
   final String message;

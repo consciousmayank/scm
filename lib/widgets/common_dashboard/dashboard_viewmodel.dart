@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
@@ -15,6 +16,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   late final CommonDashboardViewArguments arguments;
+  late final Color barChartsBarColor;
   CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
   ApiStatus orderInfoApi = ApiStatus.LOADING,
       orderedBrandsApi = ApiStatus.LOADING,
@@ -35,9 +37,12 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
 
   final CommonDashBoardApis _commonDashBoardApis = di<CommonDashBoardApis>();
 
-  init({required CommonDashboardViewArguments args}) {
+  init({
+    required CommonDashboardViewArguments args,
+    required Color barColor,
+  }) {
     arguments = args;
-
+    barChartsBarColor = barColor;
     getOrderInfo();
     getOrderedBrands();
     getOrderedTypes();
@@ -66,7 +71,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
         domainFn: (CommonDashboardOrderedBrands series, _) => series.brand!,
         measureFn: (CommonDashboardOrderedBrands series, _) => series.count,
         colorFn: (CommonDashboardOrderedBrands series, _) =>
-            charts.ColorUtil.fromDartColor(AppColors().primaryColor.shade200),
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
         labelAccessorFn: (CommonDashboardOrderedBrands series, _) =>
             series.count.toString(),
       ),
@@ -90,7 +95,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
         domainFn: (CommonDashboardOrderedTypes series, _) => series.type!,
         measureFn: (CommonDashboardOrderedTypes series, _) => series.count,
         colorFn: (CommonDashboardOrderedTypes series, _) =>
-            charts.ColorUtil.fromDartColor(AppColors().primaryColor.shade200),
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
         labelAccessorFn: (CommonDashboardOrderedTypes series, _) =>
             series.count.toString(),
       ),

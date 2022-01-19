@@ -1,3 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:scm/model_classes/cart.dart';
+import 'package:scm/model_classes/login_reasons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class InterFaceAppPreferences {
@@ -22,12 +25,19 @@ abstract class InterFaceAppPreferences {
   String getAuthenticatedUserName();
 
   void setAuthenticatedUserName({required String user});
+
+  void setDemandersCart({
+    required Cart cart,
+  });
+
+  Cart getDemandersCart();
 }
 
 class AppPreferences implements InterFaceAppPreferences {
   final String apiToken = "api_token";
   final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
+  final String demandersCart = "demanders_cart";
   final String loggedInUserCredentials = "logged_in_user_credentials";
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
@@ -36,6 +46,7 @@ class AppPreferences implements InterFaceAppPreferences {
 
   @override
   String? getApiToken() {
+    // return "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5NjExODg2MzM5IiwiaXNTdXBwbHkiOnRydWUsImlzcyI6ImdlZWt0ZWNobm90b25pYyIsImV4cCI6MTY0MTkzMjgzNSwiaWF0IjoxNjQxOTA0MDM1fQ.iGrsNsM8Bs6wE9kg0IGKLiglwuhjrIrK6GgRWVeJ2E6SK1NUoH7Oa9-jE-BZvTFyvr-QOwMPMPR5H1E8NfAh2A";
     String? savedToken = _sharedPrefs.getString(apiToken);
     if (savedToken != null) {
       return savedToken;
@@ -57,6 +68,17 @@ class AppPreferences implements InterFaceAppPreferences {
     return _sharedPrefs.getString(authenticatedUserRoles) == null
         ? []
         : _sharedPrefs.getString(authenticatedUserRoles)!.split(',');
+  }
+
+  @override
+  Cart getDemandersCart() {
+    Cart cart = Cart().empty();
+
+    String? cartJson = _sharedPrefs.getString(demandersCart);
+    if (cartJson != null) {
+      cart = Cart.fromJson(cartJson);
+    }
+    return cart;
   }
 
   @override
@@ -119,6 +141,15 @@ class AppPreferences implements InterFaceAppPreferences {
   }
 
   @override
+  void setDemandersCart({required Cart? cart}) {
+    if (cart == null) {
+      _sharedPrefs.remove(demandersCart);
+    } else {
+      _sharedPrefs.setString(demandersCart, cart.toJson());
+    }
+  }
+
+  @override
   void setSelectedUserRole({required String userRole}) {
     _sharedPrefs.setString(selectedUserRole, userRole);
   }
@@ -127,7 +158,8 @@ class AppPreferences implements InterFaceAppPreferences {
     _sharedPrefs = await SharedPreferences.getInstance();
   }
 
-  void clearPreferences() {
+  void clearPreferences() async {
+    await FirebaseMessaging.instance.deleteToken();
     _sharedPrefs.clear();
   }
 }

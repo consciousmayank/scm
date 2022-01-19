@@ -10,7 +10,7 @@ import 'package:scm/widgets/brands_dialog_box/brand_list_view.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/page_bar_widget.dart';
-import 'package:scm/widgets/profile_image_widget.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class AddBrandView extends StatelessWidget {
@@ -160,7 +160,8 @@ class AddBrandView extends StatelessWidget {
                                           height: Dimens().buttonHeight,
                                           width: Dimens().buttonHeight * 5,
                                           child: TextButton.icon(
-                                            style: AppTextButtonsStyles()
+                                            style: AppTextButtonsStyles(
+                                                    context: context)
                                                 .textButtonStyle,
                                             onPressed: () {
                                               model.pickImages();
@@ -231,8 +232,9 @@ class AddBrandView extends StatelessWidget {
                                         }
                                       },
                                       child: const Text(labelAddBrand),
-                                      style: AppTextButtonsStyles()
-                                          .textButtonStyle,
+                                      style:
+                                          AppTextButtonsStyles(context: context)
+                                              .textButtonStyle,
                                     ),
                                   ),
                                 ),
@@ -245,7 +247,7 @@ class AddBrandView extends StatelessWidget {
                                         vertical: 10,
                                       ),
                                       title: NullableTextWidget(
-                                        text: model.addedProductList
+                                        stringValue: model.addedProductList
                                             .elementAt(index)
                                             .title,
                                       ),

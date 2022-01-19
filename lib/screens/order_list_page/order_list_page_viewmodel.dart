@@ -17,6 +17,7 @@ import 'package:scm/widgets/product/product_details/product_detail_dialog_box_vi
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
+  late final OrderListPageViewArguments args;
   OrderSummaryResponse orderDetails = OrderSummaryResponse().empty();
   ApiStatus orderDetailsApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
@@ -54,9 +55,16 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   }
 
   init(OrderListPageViewArguments arguments) {
-    selectedOrder = Order().empty();
-    getOrderStatusList();
-    getOrderList();
+    args = arguments;
+
+    if (!args.hideOrdersList) {
+      selectedOrderStatus = arguments.preDefinedOrderStatus;
+      selectedOrder = arguments.selectedOrder ?? Order().empty();
+      getOrderStatusList();
+      getOrderList();
+    } else {
+      getOrdersDetails(orderId: arguments.orderId.toString());
+    }
   }
 
   getOrderList() async {
@@ -67,11 +75,15 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       status: selectedOrderStatus,
     );
 
-    if (selectedOrder.id == Order().empty().id) {
-      selectedOrder = orderList.orders!.first;
-    } else {
-      selectedOrder = getSelectedOrder(ordersListResponse: orderList);
+    if (args.selectedOrder == null) {
+      //if selected order is null then we need to set the selected order to the first order
+      if (selectedOrder.id == Order().empty().id) {
+        selectedOrder = orderList.orders!.first;
+      } else {
+        selectedOrder = getSelectedOrder(ordersListResponse: orderList);
+      }
     }
+
     if (orderList.orders!.isNotEmpty) {
       getOrdersDetails();
     } else {
@@ -82,11 +94,13 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  getOrdersDetails() async {
+  getOrdersDetails({
+    String? orderId,
+  }) async {
     orderDetailsApi = ApiStatus.LOADING;
     notifyListeners();
     orderDetails = await _commonDashBoardApis.getOrderDetails(
-      orderId: selectedOrder.id.toString(),
+      orderId: orderId ?? selectedOrder.id.toString(),
     );
 
     if (orderDetails.status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
@@ -110,6 +124,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       turnSelectedOrderItemsEditable();
       initializeEditexts();
     }
+    getOrderList();
     notifyListeners();
   }
 

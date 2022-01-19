@@ -14,6 +14,7 @@ abstract class ProductListApis {
     int? pageIndex,
     int? supplierId,
     int size,
+    bool isSupplierCatalog = false,
   });
 
   Future<Product> getProductById({int? productId});
@@ -46,6 +47,7 @@ class ProductListApiImpl extends BaseApi implements ProductListApis {
     int? pageIndex,
     int? supplierId,
     int size = Dimens.defaultProductListPageSize,
+    bool isSupplierCatalog = false,
   }) async {
     ProductListResponse? productList;
 
@@ -57,6 +59,7 @@ class ProductListApiImpl extends BaseApi implements ProductListApis {
       pageIndex: pageIndex,
       supplierId: supplierId,
       size: size,
+      isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
       productList = ProductListResponse.fromMap(apiResponse.response!.data);

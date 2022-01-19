@@ -6,6 +6,8 @@ class Dimens {
   static const int defaultProductListPageSize = 25;
   static const int defaultProductListPageSizeWhenInHome = 14;
 
+  double get orderInfoTilesHeight => 110;
+
   double get buttonHeight => 50;
 
   double get getDefaultRadius => 8;
@@ -38,9 +40,6 @@ class Dimens {
 
   double get appTextButtonBorderRadius => getDefaultRadius;
 
-  Color get getDecoratedContainerDefaultColor =>
-      AppColors().primaryColor.shade200;
-
   double get getDecoratedContainerDefaultPadding => 8;
 
   double get defaultBorder => 16;
@@ -67,6 +66,8 @@ class Dimens {
 
   get dashboardOrderListCardHeight => 500;
 
+  double get suppliersListItemImageCircularRaduis => 8;
+
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(
       radius ?? getDefaultRadius,
@@ -81,12 +82,12 @@ class Dimens {
     );
   }
 
-  TextInputFormatter get getNumericTextInputFormatter =>
+  TextInputFormatter get numericTextInputFormatter =>
       FilteringTextInputFormatter.allow(
         RegExp(r'[0-9]'),
       );
 
-  TextInputFormatter get getNumericWithDecimalsTextInputFormatter =>
+  TextInputFormatter get numericWithDecimalsTextInputFormatter =>
       FilteringTextInputFormatter.allow(
         RegExp(r'^\d+\.?\d{0,2}'),
       );

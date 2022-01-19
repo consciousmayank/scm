@@ -15,8 +15,8 @@ class ProductDetailViewModel extends GeneralisedBaseViewModel {
   final ProductListApis _productListApis = di<ProductListApiImpl>();
 
   init({required ProductDetailViewArguments arguments}) {
+    this.arguments = arguments;
     if (arguments.product == null) {
-      this.arguments = arguments;
       getProductById(productId: arguments.productId);
     } else {
       product = arguments.product;

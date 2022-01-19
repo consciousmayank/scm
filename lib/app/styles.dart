@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 
@@ -68,13 +67,13 @@ class AppTextStyles {
   TextStyle get mobileBottomNavigationSelectedLAbelStyle => TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w500,
-        color: AppColors().primaryColor,
+        color: Theme.of(context).colorScheme.background,
       );
 
   TextStyle get mobileBottomNavigationUnSelectedLAbelStyle => TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColors().primaryColor,
+        color: Theme.of(context).colorScheme.background,
       );
 
   TextStyle get popularBrandsTitleStyle => const TextStyle(
@@ -88,6 +87,29 @@ class AppTextStyles {
         fontWeight: FontWeight.normal,
         color: Colors.black,
       );
+
+  TextStyle get appTextButtonStyle => TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: AppColors().white,
+      );
+
+  get navigationRailUnSelectedLabelTextStyle =>
+      Theme.of(context).textTheme.overline!.copyWith(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+            color: Theme.of(context).colorScheme.background,
+          );
+
+  get navigationRailSelectedLabelTextStyle =>
+      Theme.of(context).textTheme.button!.copyWith(
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            color: Colors.yellow,
+            decorationColor: Colors.yellow,
+            decoration: TextDecoration.overline,
+            decorationStyle: TextDecorationStyle.wavy,
+          );
 }
 
 class AppTextButtonsStyles {
@@ -96,9 +118,11 @@ class AppTextButtonsStyles {
     this.backgroundColor,
     this.padding,
     this.fontSize,
+    required this.context,
   });
 
   final Color? foregroundColor, backgroundColor;
+  BuildContext context;
   final double? fontSize;
   final EdgeInsets? padding;
 
@@ -119,7 +143,7 @@ class AppTextButtonsStyles {
           } else {
             return RoundedRectangleBorder(
               side: BorderSide(
-                color: AppColors().primaryColor,
+                color: Theme.of(context).colorScheme.background,
                 width: Dimens().defaultBorder / 2,
               ),
               borderRadius: BorderRadius.only(
@@ -138,46 +162,87 @@ class AppTextButtonsStyles {
         if (states.contains(MaterialState.disabled)) {
           return BorderSide(
             width: 0.0,
-            color: AppColors().primaryColor.shade100,
+            color: Theme.of(context).colorScheme.background,
           );
         }
         return BorderSide(
           width: 0,
-          color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
+          color: foregroundColor ?? Theme.of(context).colorScheme.secondary,
         ); // Defer to the widget's default.
       }), textStyle: MaterialStateProperty.resolveWith((states) {
         if (states.contains(MaterialState.disabled)) {
           return const TextStyle(
-            fontSize: 24,
+            fontSize: 16,
           );
         }
-        return const TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
+        return const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+      }));
+
+  ButtonStyle get textButtonStyleForProductListItemReversed =>
+      textButtonStyle.copyWith(shape: MaterialStateProperty.resolveWith(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                topRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          } else {
+            return RoundedRectangleBorder(
+              side: BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+                width: Dimens().defaultBorder / 2,
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+                bottomRight: Radius.circular(
+                  Dimens().defaultBorder / 2,
+                ),
+              ),
+            );
+          }
+        },
+      ), side: MaterialStateProperty.resolveWith<BorderSide>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return BorderSide(
+            width: 0.0,
+            color: Theme.of(context).colorScheme.background,
+          );
+        }
+        return BorderSide(
+          width: 0,
+          color: foregroundColor ?? Theme.of(context).colorScheme.secondary,
+        ); // Defer to the widget's default.
+      }), textStyle: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.disabled)) {
+          return const TextStyle(
+            fontSize: 16,
+          );
+        }
+        return const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
       }));
 
   ButtonStyle get textButtonStyle => ButtonStyle(
         side: MaterialStateProperty.resolveWith<BorderSide>(
             (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
-            return BorderSide(
+            return const BorderSide(
               width: 0.5,
-              color: AppColors().primaryColor.shade100,
+              color: Colors.transparent,
             );
           }
           return BorderSide(
             width: 0,
-            color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
+            color: foregroundColor ?? Theme.of(context).colorScheme.secondary,
           ); // Defer to the widget's default.
-        }),
-        foregroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return foregroundColor == null
-                ? Colors.grey
-                : foregroundColor!.withAlpha(100);
-          }
-          return foregroundColor ??
-              AppColors()
-                  .appTextButtonForegroundColor; // Defer to the widget's default.
         }),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
@@ -185,27 +250,13 @@ class AppTextButtonsStyles {
             return Colors.transparent;
           }
           return backgroundColor ??
-              AppColors()
-                  .appTextButtonBackgroundColor; // Defer to the widget's default.
+              Theme.of(context)
+                  .colorScheme
+                  .secondary
+                  .withAlpha(100); // Defer to the widget's default.
         }),
         padding: MaterialStateProperty.all(
           padding ?? Dimens().appTextButtonPadding,
-        ),
-        textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return TextStyle(
-                fontSize:
-                    (fontSize ?? Dimens().appTextButtonDefaultFontSize) - 2,
-                color: AppColors().white,
-              );
-            } else {
-              return TextStyle(
-                fontSize: fontSize ?? Dimens().appTextButtonDefaultFontSize,
-                color: AppColors().white,
-              );
-            }
-          },
         ),
         shape: MaterialStateProperty.resolveWith(
           (Set<MaterialState> states) {
@@ -230,12 +281,12 @@ class AppTextButtonsStyles {
           if (states.contains(MaterialState.disabled)) {
             return BorderSide(
               width: 0.5,
-              color: AppColors().primaryColor.shade100,
+              color: Theme.of(context).colorScheme.secondary,
             );
           }
           return BorderSide(
             width: 2,
-            color: foregroundColor ?? AppColors().appTextButtonForegroundColor,
+            color: foregroundColor ?? Theme.of(context).colorScheme.secondary,
           ); // Defer to the widget's default.
         }),
         overlayColor: MaterialStateProperty.resolveWith<Color>(
@@ -244,8 +295,9 @@ class AppTextButtonsStyles {
             return Colors.transparent;
           }
           return backgroundColor ??
-              AppColors()
-                  .appTextButtonBackgroundColor; // Defer to the widget's default.
+              Theme.of(context)
+                  .colorScheme
+                  .secondaryVariant; // Defer to the widget's default.
         }),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
@@ -253,8 +305,9 @@ class AppTextButtonsStyles {
             return Colors.transparent;
           }
           return backgroundColor ??
-              AppColors()
-                  .appOutlinedTextButtonBackgroundColor; // Defer to the widget's default.
+              Theme.of(context)
+                  .colorScheme
+                  .primary; // Defer to the widget's default.
         }),
         padding: MaterialStateProperty.all(
           padding ?? Dimens().appTextButtonPadding,
@@ -283,43 +336,30 @@ class AppTextButtonsStyles {
           }
           return 4; // Defer to the widget's default.
         }),
-        foregroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return backgroundColor ??
-                AppColors().appOutlinedTextButtonBackgroundColor;
-          }
-          return backgroundColor ??
-              AppColors()
-                  .appOutlinedTextButtonBackgroundColor; // Defer to the widget's default.
-        }),
+        // foregroundColor: MaterialStateProperty.resolveWith<Color>(
+        //     (Set<MaterialState> states) {
+        //   if (states.contains(MaterialState.disabled)) {
+        //     return backgroundColor ??
+        //         Theme.of(context).colorScheme.secondary.withAlpha(150);
+        //   }
+        //   return backgroundColor ??
+        //       Theme.of(context)
+        //           .colorScheme
+        //           .secondary; // Defer to the widget's default.
+        // }),
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
           if (states.contains(MaterialState.disabled)) {
             return backgroundColor ??
-                AppColors().appOutlinedTextButtonBackgroundColor;
+                Theme.of(context).colorScheme.secondaryVariant.withAlpha(150);
           }
           return backgroundColor ??
-              AppColors()
-                  .appOutlinedTextButtonBackgroundColor; // Defer to the widget's default.
+              Theme.of(context)
+                  .colorScheme
+                  .secondary; // Defer to the widget's default.
         }),
         padding: MaterialStateProperty.all(
           padding ?? Dimens().appTextButtonPadding,
-        ),
-        textStyle: MaterialStateProperty.resolveWith<TextStyle>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return TextStyle(
-                fontSize:
-                    (fontSize ?? Dimens().appTextButtonDefaultFontSize) - 2,
-                color: Colors.black,
-              );
-            } else {
-              return TextStyle(
-                  fontSize: fontSize ?? Dimens().appTextButtonDefaultFontSize,
-                  fontWeight: FontWeight.bold);
-            }
-          },
         ),
       );
 }

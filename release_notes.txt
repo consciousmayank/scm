@@ -1,5 +1,37 @@
 In this build following was done.
 
+Monday, 10 January, 2022
+    - When logged in as a 
+        - Demander => 
+                        1. After adding a product to cart, will break "Add" button to "remove" and "update" buttons. 
+                        2. Clicking on Remove will remove product from cart.
+                        3. Clicking on Update will update the quantity of product in cart.
+
+        - Supplier => 
+                        1. After adding a product to cart, it will be "Add" button only.
+                        2. In catalog all products will be showing "remove" button. Clicking on which will remove product from catalog and reload the page.
+
+                   
+
+Saturday, 8 January, 2022
+    - Handled notifications properly, while app is in foreground
+    
+
+Friday, 7 January, 2022
+    - Now taking to orderlist on click on homepage ordertiles and order status.
+    - Now getting notification in web. Need to take care of showing them to user.
+
+
+Thursday, 6 January, 2022
+    - Completed, add to catalog, remove from catalog, and catalog view of the supply module.
+    - Completed the Add to cart, update cart, place order, add address, update address for demand module.
+    - Now the Graphics Designer also can enter-page-to-jump to a particular products page.
+    - Not resetting the page number on successful updation of product.
+
+Wednessday 29 December 2021
+    -Add/update cart implemented for demander
+    -reseting cart on adding item from another supplier also done.
+
 Tuesday 28 December 2021
     - Added jump to page for deo, deoGraphicsDesigner, and deoSuperVisor.
     - Added deiscard product for deoSuperVisor.

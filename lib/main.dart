@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -15,12 +13,26 @@ import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 import 'firebase_options.dart';
 
 import 'services/notification/local_notification_service.dart';
 
 ///Receive message when app is in background solution for on message
-Future<void> backgroundHandler(RemoteMessage message) async {}
+Future<void> backgroundHandler(RemoteMessage message) async {
+  RemoteNotificationParams notificationParams = RemoteNotificationParams(
+    id: message.data['id'],
+    screen: message.data['screen'],
+    type: message.data['type'],
+    title: message.notification?.title as String,
+    body: message.notification?.body as String,
+  );
+
+  OnNotificationClick notificationClick = OnNotificationClick(
+    notificationParams: notificationParams,
+  );
+  notificationClick.handle();
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +43,7 @@ void main() async {
   setupDialogUi();
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  await ThemeManager.initialise();
   runApp(const MyApp());
 }
 
@@ -49,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    getPermission();
+    // getPermission();
     LocalNotificationService.initialize(context);
 
     ///gives you the message on which user taps
@@ -78,39 +91,17 @@ class _MyAppState extends State<MyApp> {
 
   void handleRemoteMessage({RemoteMessage? message}) {
     RemoteNotificationParams notificationParams = RemoteNotificationParams(
+      id: message?.data['id'],
       screen: message?.data['screen'],
       type: message?.data['type'],
-      title: message?.notification?.title,
-      body: message?.notification?.body,
+      title: message?.notification?.title as String,
+      body: message?.notification?.body as String,
     );
 
     OnNotificationClick notificationClick = OnNotificationClick(
       notificationParams: notificationParams,
     );
     notificationClick.handle();
-  }
-
-  Future<void> getPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional) {
-      FirebaseMessaging.instance.getToken().then((value) {
-        log("Token :: $value");
-      });
-    }
-
-    log('User granted permission: ${settings.authorizationStatus}');
   }
 
   @override
@@ -127,14 +118,23 @@ class _MyAppState extends State<MyApp> {
           future: di.allReady(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return MaterialApp(
-                title: appName,
-                theme: ThemeConfiguration().myTheme,
-                debugShowCheckedModeBanner: false,
-                navigatorKey: StackedService.navigatorKey,
-                onGenerateRoute: _router.generateRoute,
-                initialRoute: mainViewRoute,
-                // initialRoute: dashBoardPageRoute,
+              return ThemeBuilder(
+                themes: ApplicationTheme().getThemes(),
+                builder: (context, regularTheme, darkTheme, themeMode) {
+                  return AnimatedTheme(
+                      duration: const Duration(seconds: 5),
+                      curve: Curves.easeOutCubic,
+                      data: regularTheme!,
+                      child: MaterialApp(
+                        title: appName,
+                        theme: regularTheme,
+                        debugShowCheckedModeBanner: false,
+                        navigatorKey: StackedService.navigatorKey,
+                        onGenerateRoute: _router.generateRoute,
+                        initialRoute: mainViewRoute,
+                        // initialRoute: dashBoardPageRoute,
+                      ));
+                },
               );
             } else {
               return const CircularProgressIndicator();

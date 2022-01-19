@@ -5,17 +5,17 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
+import 'package:scm/utils/strings.dart';
 
 Uint8List? getImageFromBase64String({required String? base64String}) {
-  return base64String == null || base64String.length == 0
+  return base64String == null || base64String.isEmpty
       ? null
-      : Base64Codec()
+      : const Base64Codec()
           .decode((base64String.split(',')[1]).replaceAll("\\n", "").trim());
 }
 
@@ -110,7 +110,9 @@ NavigationRailDestination buildRotatedTextRailDestination({
       padding: EdgeInsets.symmetric(vertical: padding),
       child: RotatedBox(
         quarterTurns: isTurned ? 0 : turn,
-        child: Text(text),
+        child: Text(
+          text,
+        ),
       ),
     ),
   );
@@ -265,23 +267,22 @@ Color getBorderColor({required String? status}) {
   }
 }
 
+String? checkImageUrl({String? imageUrl}) {
+  if (imageUrl == null || imageUrl.isEmpty) {
+    return null;
+  } else {
+    if (!imageUrl.contains(base64ImagePrefix)) {
+      imageUrl = base64ImagePrefix + imageUrl;
+    }
+  }
+  return imageUrl;
+}
 
-// OrderStatusTypes getOrderStatusBeforeOrderList({
-//   String? status,
-// }) {
-//   if (status == null) {
-//     return OrderStatusTypes.NONE;
-//   } else if (status == OrderStatusTypes.NEW_ORDER.title) {
-//     return OrderStatusTypes.CREATED;
-//   } else if (status == OrderStatusTypes.SHIPPED.title) {
-//     return OrderStatusTypes.INTRANSIT;
-//   } else if (status == OrderStatusTypes.UNDER_PROCESS.title) {
-//     return OrderStatusTypes.PROCESSING;
-//   } else if (status == OrderStatusTypes.DELIVERED.title) {
-//     return OrderStatusTypes.DELIVERED;
-//   } else if (status == OrderStatusTypes.CANCELLED.title) {
-//     return OrderStatusTypes.CANCELLED;
-//   } else {
-//     return OrderStatusTypes.NONE;
-//   }
-// }
+void fieldFocusChange({
+  required BuildContext context,
+  required FocusNode currentFocus,
+  required FocusNode nextFocus,
+}) {
+  currentFocus.unfocus();
+  FocusScope.of(context).requestFocus(nextFocus);
+}

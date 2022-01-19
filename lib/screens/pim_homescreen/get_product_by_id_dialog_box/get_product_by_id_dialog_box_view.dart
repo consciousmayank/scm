@@ -49,7 +49,7 @@ class _GetProductByIdDialogBoxViewState
             children: [
               AppTextField(
                 formatter: <TextInputFormatter>[
-                  Dimens().getNumericTextInputFormatter,
+                  Dimens().numericTextInputFormatter,
                 ],
                 controller: model.productIdController,
                 autoFocus: true,

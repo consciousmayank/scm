@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:image_picker_web/image_picker_web.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
-import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/services/app_api_service_classes/brand_apis.dart';
 import 'package:scm/utils/strings.dart';

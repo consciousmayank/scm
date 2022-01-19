@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/shared_preferences.dart';
 import 'package:scm/enums/snackbar_types.dart';
@@ -24,12 +22,13 @@ class GeneralisedBaseViewModel extends BaseViewModel {
   void showErrorSnackBar({
     required String message,
     Function? onSnackBarOkButton,
+    int secondsToShowSnackBar = 4,
   }) {
     if (onSnackBarOkButton != null) {
       snackBarService.showCustomSnackBar(
         variant: SnackbarType.ERROR,
-        duration: const Duration(
-          seconds: 4,
+        duration: Duration(
+          seconds: secondsToShowSnackBar,
         ),
         mainButtonTitle: 'Ok',
         onMainButtonTapped: () {
@@ -41,8 +40,8 @@ class GeneralisedBaseViewModel extends BaseViewModel {
     } else {
       snackBarService.showCustomSnackBar(
         variant: SnackbarType.ERROR,
-        duration: const Duration(
-          seconds: 4,
+        duration: Duration(
+          seconds: secondsToShowSnackBar,
         ),
         message: message,
         title: "Error",
@@ -54,11 +53,12 @@ class GeneralisedBaseViewModel extends BaseViewModel {
   ///
   void showInfoSnackBar({
     required String message,
+    int secondsToShowSnackBar = 4,
   }) {
     snackBarService.showCustomSnackBar(
       variant: SnackbarType.NORMAL,
-      duration: const Duration(
-        seconds: 4,
+      duration: Duration(
+        seconds: secondsToShowSnackBar,
       ),
       message: message,
     );

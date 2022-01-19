@@ -24,10 +24,11 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  isHeader ? AppColors().dashboardTableHeaderBg : Colors.white,
+              color: isHeader
+                  ? Theme.of(context).colorScheme.background
+                  : Colors.white,
               border: Border.all(
-                color: AppColors().dashboardTableHeaderBg,
+                color: Theme.of(context).colorScheme.background,
                 width: 0.5,
               ),
             ),
@@ -45,10 +46,11 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  isHeader ? AppColors().dashboardTableHeaderBg : Colors.white,
+              color: isHeader
+                  ? Theme.of(context).colorScheme.background
+                  : Colors.white,
               border: Border.all(
-                color: AppColors().dashboardTableHeaderBg,
+                color: Theme.of(context).colorScheme.background,
                 width: 0.5,
               ),
             ),
@@ -66,10 +68,11 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color:
-                  isHeader ? AppColors().dashboardTableHeaderBg : Colors.white,
+              color: isHeader
+                  ? Theme.of(context).colorScheme.background
+                  : Colors.white,
               border: Border.all(
-                color: AppColors().dashboardTableHeaderBg,
+                color: Theme.of(context).colorScheme.background,
                 width: 0.5,
               ),
             ),

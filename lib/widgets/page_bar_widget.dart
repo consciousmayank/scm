@@ -10,7 +10,8 @@ class PageBarWidget extends StatefulWidget {
     this.subTitle,
     this.showBackButton,
     this.options,
-  }) : super(key: key);
+  })  : filledColor = Colors.white,
+        super(key: key);
 
   const PageBarWidget.withBackArrowAndText({
     Key? key,
@@ -18,7 +19,8 @@ class PageBarWidget extends StatefulWidget {
     required this.showBackButton,
     this.subTitle,
     this.options,
-  }) : super(key: key);
+  })  : filledColor = Colors.white,
+        super(key: key);
 
   const PageBarWidget.withBackArrowOnly({
     Key? key,
@@ -26,8 +28,19 @@ class PageBarWidget extends StatefulWidget {
     this.options,
     this.subTitle,
     required this.showBackButton,
+  })  : filledColor = Colors.white,
+        super(key: key);
+
+  const PageBarWidget.withCustomFiledColor({
+    Key? key,
+    required this.title,
+    required this.filledColor,
+    this.subTitle,
+    this.showBackButton,
+    this.options,
   }) : super(key: key);
 
+  final Color filledColor;
   final List<Widget>? options;
   final bool? showBackButton;
   final String? title, subTitle;
@@ -41,8 +54,8 @@ class _PageBarWidgetState extends State<PageBarWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16.0),
-      color: AppColors().white,
+      padding: const EdgeInsets.all(8.0),
+      color: widget.filledColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,18 +81,20 @@ class _PageBarWidgetState extends State<PageBarWidget> {
                     ? Container()
                     : Text(
                         widget.title!,
-                        style: Dimens().pageTitleHeadingStyle,
+                        style: Theme.of(context).textTheme.headline4,
                       ),
                 if (widget.subTitle != null) wSizedBox(width: 20),
                 widget.subTitle == null
                     ? Container()
                     : Chip(
-                        backgroundColor: AppColors().primaryColor.shade100,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondaryVariant,
                         label: Text(
                           widget.subTitle!,
-                          style: Dimens().pageSubTitleHeadingStyle.copyWith(
-                                color: Colors.white,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Colors.white,
+                                  ),
                         ),
                       ),
               ],

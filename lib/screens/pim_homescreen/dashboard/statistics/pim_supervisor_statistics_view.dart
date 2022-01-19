@@ -104,7 +104,7 @@ class StatsCard extends StatelessWidget {
               ],
             )
           : const NullableTextWidget(
-              text: 'No Data',
+              stringValue: 'No Data',
             ),
     );
   }

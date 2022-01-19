@@ -57,7 +57,7 @@ class OrderItemRowWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           NullableTextWidget(
-            text: label,
+            stringValue: label,
             maxLines: 2,
             textStyle: labelStyle ??
                 Theme.of(context).textTheme.bodyText1!.copyWith(
@@ -67,7 +67,7 @@ class OrderItemRowWidget extends StatelessWidget {
           noValue
               ? Container()
               : NullableTextWidget(
-                  text: value,
+                  stringValue: value,
                   textStyle: valueStyle ??
                       Theme.of(context).textTheme.bodyText1!.copyWith(
                             fontWeight: FontWeight.bold,

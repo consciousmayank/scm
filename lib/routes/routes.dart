@@ -2,13 +2,17 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
+import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
 import 'package:scm/screens/splash/splash_view.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
+import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
+import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 import '../routes/routes_constants.dart';
@@ -18,18 +22,30 @@ class AppRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case mainViewRoute:
+        LoginReasons? reasons;
+        if (settings.arguments != null) {
+          reasons = settings.arguments as LoginReasons;
+        }
         return MaterialPageRoute(
-          builder: (_) => const SplashScreen(),
+          builder: (_) => SplashScreen(
+            reasons: reasons,
+          ),
           // builder: (_) => PimHomeScreenView(
           //   arguments: PimHomeScreenViewArguments(),
           // ),
         );
 
       case logInPageRoute:
+        LoginReasons? reasons;
+        if (settings.arguments != null) {
+          reasons = settings.arguments as LoginReasons;
+        }
         return FadeRoute(
           page: BaseView(
             child: LoginView(
-              arguments: LoginViewArguments(),
+              arguments: LoginViewArguments(
+                reasons: reasons,
+              ),
             ),
           ),
         );
@@ -71,6 +87,31 @@ class AppRouter {
             settings.arguments as PopularBrandsViewArguments;
         return FadeRoute(
           page: PopularBrandsView(
+            arguments: arguments,
+          ),
+        );
+      case categoriesListViewPageRoute:
+        PopularCategoriesViewArguments arguments =
+            settings.arguments as PopularCategoriesViewArguments;
+        return FadeRoute(
+          page: PopularCategoriesView(
+            arguments: arguments,
+          ),
+        );
+      case cartViewPageRoute:
+        CartPageViewArguments arguments =
+            settings.arguments as CartPageViewArguments;
+        return FadeRoute(
+          page: CartPageView(
+            arguments: arguments,
+          ),
+        );
+
+      case notificationScreenPageRoute:
+        NotificationsScreenArguments arguments =
+            settings.arguments as NotificationsScreenArguments;
+        return FadeRoute(
+          page: NotificationsScreenView(
             arguments: arguments,
           ),
         );

@@ -28,6 +28,8 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
       size: Dimens.defaultProductListPageSize,
       pageIndex: pageIndex,
       searchTerm: brandTitle,
+      supplierId: arguments.supplierId,
+      isSupplierCatalog: arguments.isSupplierCatalog,
     );
     // AllBrandsResponse? tempObj = await _homePageApis.getAllBrands(
     //   size: Dimens.defaultProductListPageSize,
@@ -58,7 +60,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
         categoryFilterList: [],
         subCategoryFilterList: [],
         productTitle: '',
-        supplierId: -1,
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }

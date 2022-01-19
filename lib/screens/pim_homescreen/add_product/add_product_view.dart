@@ -409,8 +409,9 @@ class AddProductView extends StatelessWidget {
                                   )
                                 : Center(
                                     child: TextButton.icon(
-                                      style: AppTextButtonsStyles()
-                                          .textButtonStyle,
+                                      style:
+                                          AppTextButtonsStyles(context: context)
+                                              .textButtonStyle,
                                       onPressed: () {
                                         model.pickImages();
                                       },
@@ -449,8 +450,9 @@ class AddProductView extends StatelessWidget {
                                           arguments.productToEdit == null
                                               ? buttonLabelAddProduct
                                               : buttonLabelUpdateProduct),
-                                      style: AppTextButtonsStyles()
-                                          .textButtonStyle,
+                                      style:
+                                          AppTextButtonsStyles(context: context)
+                                              .textButtonStyle,
                                     ),
                                   ),
                                   flex: 2,
@@ -471,7 +473,8 @@ class AddProductView extends StatelessWidget {
                                         },
                                         child: const Text(
                                             buttonLabelDiscardProduct),
-                                        style: AppTextButtonsStyles()
+                                        style: AppTextButtonsStyles(
+                                                context: context)
                                             .textButtonStyle,
                                       ),
                                     ),

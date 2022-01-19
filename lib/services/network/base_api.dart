@@ -53,11 +53,11 @@ abstract class BaseApi {
           duration: const Duration(seconds: 5),
         );
       } else {
-        if (showSnackBar) {
-          snackBarService.showSnackbar(
-            message: apiResponse.getErrorReason() ?? "",
-          );
-        }
+        // if (showSnackBar) {
+        //   snackBarService.showSnackbar(
+        //     message: apiResponse.getErrorReason() ?? "",
+        //   );
+        // }
       }
 
       return null;

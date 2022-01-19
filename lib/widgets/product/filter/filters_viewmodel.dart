@@ -186,6 +186,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedCategoryFilterList: tempCheckedCategoriesList,
         checkedSubCategoryFilterList: tempCheckedSubCategoriesList,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForBrandsApi = brandsResponse?.totalItems;
@@ -414,6 +415,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedSubCategoriesList: tempCheckedSubCategoriesList,
         categoryTitle: categoryTitle,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForCategoriesApi = categoriesResponse?.totalItems;
@@ -543,6 +545,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedCategoryList: tempCheckedCategoriesList,
         checkedBrandList: tempCheckedBrandsList,
         productTitle: args.searchProductTitle,
+        supplierId: args.supplierId,
       );
 
       totalItemsForSubCategoriesApi = subCategoriesResponse.totalItems;

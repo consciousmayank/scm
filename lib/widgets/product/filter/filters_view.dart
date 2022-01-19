@@ -406,11 +406,11 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       value: value,
       onChanged: onChanged,
       title: NullableTextWidget(
-        text: text,
+        stringValue: text,
         // text!.toLowerCase(),
         textStyle: Theme.of(context).textTheme.headline6!.copyWith(
               color: value == true
-                  ? AppColors().productFilterBg
+                  ? Theme.of(context).colorScheme.secondaryVariant
                   : AppColors().black,
             ),
       ),
@@ -443,7 +443,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       decoration: BoxDecoration(
         color: viewModel!.clickedFilter != filterTypeTitle
             ? AppColors().white
-            : AppColors().productFilterBg,
+            : Theme.of(context).colorScheme.secondaryVariant,
         borderRadius: BorderRadius.circular(Dimens().defaultBorder),
         // border: Border(
         //   bottom: BorderSide(
@@ -511,7 +511,10 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     );
   }
 
-  Widget buildClearAndApplyButtons({ProductsFilterViewModel? viewModel}) {
+  Widget buildClearAndApplyButtons({
+    ProductsFilterViewModel? viewModel,
+    required BuildContext context,
+  }) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Row(
@@ -520,7 +523,9 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
             child: SizedBox(
               height: Dimens().buttonHeight,
               child: TextButton(
-                  style: AppTextButtonsStyles().textButtonStyle,
+                  style: AppTextButtonsStyles(
+                    context: context,
+                  ).textButtonStyle,
                   onPressed: () {
                     viewModel?.unCheckAllFilters();
                     viewModel?.tempCheckedBrandsList.clear();
@@ -551,7 +556,9 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                 child: const Text(
                   'Apply',
                 ),
-                style: AppTextButtonsStyles().textButtonStyle,
+                style: AppTextButtonsStyles(
+                  context: context,
+                ).textButtonStyle,
               ),
             ),
           ),
@@ -597,6 +604,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
               context: context,
             ),
             buildClearAndApplyButtons(
+              context: context,
               viewModel: model,
             ),
           ],
@@ -615,6 +623,7 @@ class ProductsFilterViewArguments {
     required this.searchProductTitle,
     required this.onApplyFilterButtonClicked,
     required this.onCancelButtonClicked,
+    required this.supplierId,
   });
 
   final Function({
@@ -626,6 +635,7 @@ class ProductsFilterViewArguments {
   final List<String?>? selectedBrand;
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
+  final int? supplierId;
 }
 
 class ProductsFilterViewOutputArguments {

@@ -42,9 +42,9 @@ class OrderPorcessButtonsWidget
             // color: Colors.red,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: AppColors.shadesOfBlack[400]!,
+                  color: Colors.grey.shade200,
                   blurRadius: 3,
-                  offset: Offset(0.0, 0.75))
+                  offset: const Offset(0.0, 0.75))
             ],
             // color: Colors.red,
           ),
@@ -84,16 +84,16 @@ class OrderPorcessButtonsWidget
             // color: Colors.red,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: AppColors.shadesOfBlack[400]!,
+                  color: Colors.grey.shade200,
                   blurRadius: 3,
-                  offset: Offset(0.0, 0.75))
+                  offset: const Offset(0.0, 0.75))
             ],
             // color: Colors.red,
           ),
           child: buildOrderButtons(
             buttonText: 'Continue',
             onTap: () {
-              viewModel.orderDetails.orderItems!.forEach((element) {
+              for (var element in viewModel.orderDetails.orderItems!) {
                 int index = viewModel.orderDetails.orderItems!.indexOf(element);
                 if (element.itemQuantity == 0) {
                   viewModel.showErrorSnackBar(
@@ -114,7 +114,7 @@ class OrderPorcessButtonsWidget
                 } else {
                   viewModel.updateOrder();
                 }
-              });
+              }
             },
           ),
         );
@@ -128,9 +128,9 @@ class OrderPorcessButtonsWidget
             // color: Colors.red,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: AppColors.shadesOfBlack[400]!,
+                  color: Colors.grey.shade200,
                   blurRadius: 3,
-                  offset: Offset(0.0, 0.75))
+                  offset: const Offset(0.0, 0.75))
             ],
             // color: Colors.red,
           ),

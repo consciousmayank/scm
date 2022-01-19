@@ -22,7 +22,7 @@ class ParentApiResponse {
   final Response? response;
 
   void handleExpiredToken() {
-    Map<String, dynamic>? headersMap = this.error?.response?.headers.map;
+    Map<String, dynamic>? headersMap = error?.response?.headers.map;
     if (headersMap != null) {
       /// if header does not contains the key ['tokenstatus']
       if (!headersMap.containsKey('tokenstatus')) {
@@ -67,31 +67,26 @@ class ParentApiResponse {
   }
 
   String? getErrorReason() {
-    if (this.error?.response == null) {
-      return this.error?.message ?? '';
+    if (error?.response == null) {
+      return error?.message ?? '';
     } else {
-      switch (this.error?.response?.statusCode) {
+      switch (error?.response?.statusCode) {
         case 100:
           return noInternet;
         case 101:
           return allPuccExpired;
-          break;
         case 401:
           return badCredentials;
-          break;
         case 403:
           return accessDenied;
-          break;
         // case 400:
         //   ApiResponse response =
         //       ApiResponse.fromMap(this.error?.response?.data);
         //   return response.message;
         case 204:
           return emptyResult;
-          break;
         case 404:
           return noResource;
-          break;
         default:
           return defaultError;
       }

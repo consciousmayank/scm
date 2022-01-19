@@ -69,7 +69,9 @@ class _DiscardProductReasonDialogBoxViewState
                       model.discardProduct();
                     },
                     child: const Text(labelSubmit),
-                    style: AppTextButtonsStyles().textButtonStyle,
+                    style: AppTextButtonsStyles(
+                      context: context,
+                    ).textButtonStyle,
                   ),
                 ),
               ],

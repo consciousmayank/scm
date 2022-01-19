@@ -17,12 +17,24 @@ const String supervisorHomePageTitle = 'Dashboard';
 const String dailyEntriesTitle = 'Daily Work Summary';
 const String addProductPageSubTitle = 'Use Enter to move to next field';
 const String productsListPageTitle = 'Product List';
+const String supplierProductsListPageTitle = 'Products List';
+suppliersProductsListPageTitle({required String suppliersName}) =>
+    '$suppliersName Products List';
+
+const String suppliersCategoryPageTitle = 'Categories List';
+suppliersCategoryListPageTitle({required String suppliersName}) =>
+    '$suppliersName Categories List';
+
+const String suppliersBrandPageTitle = 'Brands List';
+suppliersBrandListPageTitle({required String suppliersName}) =>
+    '$suppliersName Brands List';
 const String todoProductsListPageTitle = 'Todo';
 const String publishedProductsListPageTitle = 'Published';
 const String discardedProductsListPageTitle = 'Discarded';
 const String addBrandPageTitle = 'Add Brand';
 const String brandTitleHintText = 'Add Brand Title';
 const String labelBrands = 'Brand';
+const String labelCategories = 'Categories';
 const String labelAddBrand = 'Add Brand';
 const String labelViewProducts = 'View Products';
 const String labelDashboard = 'Home';
@@ -99,6 +111,7 @@ const List<String> profileOptions = [
 const String labelSupplyLandingPageCatalog = 'Home';
 const String labelSupplyLandingPageProduct = 'Products';
 const String labelSupplyLandingPageCategories = 'Categories';
+const String labelSupplyLandingPageMyCatalog = 'Catalog';
 const String labelSupplyLandingPageOrder = 'Order';
 const String labelSupplyLandingPageMore = 'More';
 const String labelSubmit = 'Submit';
@@ -110,6 +123,7 @@ const String labelDemandLandingPageOrder = 'Order';
 const String labelDemandLandingPageMore = 'More';
 
 const String labelPopularBrands = 'Popular Brands';
+const String labelPopularProducts = 'Popular Products';
 const String lableproductdetails = 'Product Details';
 const String labelSearchBrands = 'Search Brands';
 const String labelSearchCategory = 'Search Categories';
@@ -141,3 +155,73 @@ const String errorReasonRequired =
     'Reason for discarding the product is required';
 const String errorReasonLength =
     'Reason should be more then 8 characters. Please enter a valid reason';
+const String suppliersListTitle = 'Suppliers';
+const String suppliersListSearchTitle = 'Search for a Supplier';
+const String suppliersListNoSupplierFoundError = 'No Supplier Found';
+const String productListNoProductsFoundError = 'No Products Found';
+const String labelSeeMore = 'See More';
+const String labelCartPageTitle = 'Cart Items';
+const String labelCart = 'Cart';
+const String labelCancel = 'Cancel';
+const String labelYes = 'Yes';
+const String labelPlaceOrder = 'PLACE ORDER';
+const String labelAddNewAddress = 'Address';
+const String labelDeleteAddress = 'Delete Address';
+const String labelDeleteAddressDescription =
+    'Are you sure you want to delete this address?';
+const String labelErrorAddressTypeRequired = 'Address Type is required';
+const String labelErrorAddressLine1Required = 'Address is required';
+const String labelErrorAddressLocalityRequired = 'Locality is required';
+const String labelErrorAddressPincodeRequired = 'Pincode is required';
+const String labelErrorAddressCountryRequired = 'Country is required';
+const String labelErrorAddressCityRequired = 'City is required';
+const String labelErrorAddressStateRequired = 'State is required';
+const String labelErrorAddressPincodeInvalid = 'Pincode is invalid';
+const List<String> addressTypes = [
+  'Head Office',
+  'Branch Office',
+  // 'Other',
+];
+const String labelResetOrder = 'Reset Cart ?';
+const String orderStatusAll = 'ALL';
+const String labelResetOrderDescription =
+    'You already have a cart populated with another suppleir\'s products. Adding this product will reset your old cart. Do you want to reset the cart ?';
+addedProductTocart({required String productTitle}) =>
+    '$productTitle added to cart';
+addedProductToCatalog({required String productTitle}) =>
+    '$productTitle added to Catalog';
+addedProductTocartError({required String productTitle}) =>
+    '$productTitle not added to cart';
+
+removeProductToCatalog({required String productTitle}) =>
+    '$productTitle removed from Catalog';
+removeProductTocartError({required String productTitle}) =>
+    '$productTitle not removed to cart';
+
+addedProductToCatalogError({required String productTitle}) =>
+    '$productTitle not added to Catalog';
+removedFromCart({required String productTitle}) =>
+    '$productTitle removed from cart';
+updatedInCart({required String productTitle, required int quantity}) =>
+    '$productTitle\'s quantity updated to $quantity';
+notUpdatedInCart({required String productTitle, required int quantity}) =>
+    '$productTitle\'s quantity not updated to $quantity';
+const String labelNoBrandsFound = 'No Brands Found';
+const String labelNoProductsFound = 'No Products Found';
+const String labelNoCategoriesFound = 'No Categories Found';
+const String labelFetchingBrands = 'Fetching Brands. Please Wait...';
+const String labelFetchingProducts = 'Fetching Products. Please Wait...';
+const String labelFetchingCategories = 'Fetching Categories. Please Wait...';
+const String ordersNotificationDescription = 'You have new a order';
+const String changePasswordDisclaimer =
+    'Changing your password will log you out. You will have to login again.';
+const addedProductToCatalogServerMEssage = 'Cannot Add Product, Already Added.';
+const String TOKEN_STATUS = 'tokenStatus';
+const String EXPIRED = 'EXPIRED';
+const String INVALID_TOKEN = 'INVALID';
+const String invalidTokenTitle = 'Please Login again';
+const String invalidTokenDescription =
+    'It seems you logged from some other device. Please login again.';
+noOrderInState({required String state}) => 'No $state Orders.';
+const String expiredTokenDescription =
+    'Your session has expired. Please login again.';

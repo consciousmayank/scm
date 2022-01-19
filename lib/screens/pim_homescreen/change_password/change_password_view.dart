@@ -40,9 +40,16 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Text(
+                        changePasswordDisclaimer,
+                        style: Theme.of(context).textTheme.headline4,
+                        textAlign: TextAlign.center,
+                      ),
+
                       hSizedBox(
                         height: 16,
                       ),
+
                       //Current password input
                       AppTextField(
                         obscureText: !model.isCurrentPasswordVisible,
@@ -126,7 +133,9 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                       ),
                       hSizedBox(height: 16),
                       TextButton(
-                        style: AppTextButtonsStyles().textButtonStyle,
+                        style: AppTextButtonsStyles(
+                          context: context,
+                        ).textButtonStyle,
                         onPressed: model.isPasswordsMatch &&
                                 model.newPasswordController.text
                                     .trim()

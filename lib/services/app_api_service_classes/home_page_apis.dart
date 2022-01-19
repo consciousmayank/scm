@@ -1,6 +1,10 @@
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/brands_response_for_dashboard.dart'
+    as supplierModuleBrandsResponse;
 import 'package:scm/model_classes/image_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+import 'package:scm/model_classes/supplier_demander_brands.dart';
 import 'package:scm/services/network/base_api.dart';
 
 abstract class HomePageApis {
@@ -8,6 +12,8 @@ abstract class HomePageApis {
     required int size,
     required int pageIndex,
     String searchTerm,
+    int? supplierId,
+    bool isSupplierCatalog = false,
   });
 
   Future<ImageResponse?> getProductImage({required imageName});
@@ -19,6 +25,8 @@ class HomePageApisImpl extends BaseApi implements HomePageApis {
     required int size,
     required int pageIndex,
     String? searchTerm,
+    int? supplierId,
+    bool isSupplierCatalog = false,
   }) async {
     AllBrandsResponse? allBrandsResponse;
 
@@ -26,15 +34,51 @@ class HomePageApisImpl extends BaseApi implements HomePageApis {
       brandToSearch: searchTerm,
       pageNumber: pageIndex,
       pageSize: size,
+      supplierId: supplierId,
+      isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      allBrandsResponse = AllBrandsResponse.fromMap(apiResponse.response?.data);
-    }
+      if (supplierId == null && !isSupplierCatalog) {
+        // return AllBrandsResponse.fromMap(apiResponse.response?.data);
 
-    if (allBrandsResponse != null) {
-      return allBrandsResponse;
-    } else {
-      return null;
+        BrandsStringListResponse brandsStringListResponse =
+            BrandsStringListResponse.fromMap(apiResponse.response?.data);
+
+        return AllBrandsResponse(
+          brands: brandsStringListResponse.brands!
+              .map(
+                (element) => supplierModuleBrandsResponse.Brand(
+                  title: element,
+                  image: null,
+                  id: null,
+                ),
+              )
+              .toList(),
+          currentPage: brandsStringListResponse.currentPage,
+          totalItems: brandsStringListResponse.totalItems,
+          totalPages: brandsStringListResponse.totalPages,
+        );
+      } else {
+        SuppliersBrandsListResponse suppliersBrandsListResponse =
+            SuppliersBrandsListResponse().empty();
+        suppliersBrandsListResponse =
+            SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
+
+        return AllBrandsResponse(
+          brands: suppliersBrandsListResponse.brands!
+              .map(
+                (element) => supplierModuleBrandsResponse.Brand(
+                  title: element.brand,
+                  image: null,
+                  id: null,
+                ),
+              )
+              .toList(),
+          currentPage: suppliersBrandsListResponse.currentPage,
+          totalItems: suppliersBrandsListResponse.totalItems,
+          totalPages: suppliersBrandsListResponse.totalPages,
+        );
+      }
     }
   }
 

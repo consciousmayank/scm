@@ -33,7 +33,9 @@ class AddImagesView extends StatelessWidget {
                   ),
                   child: TextButton(
                     child: const Text('Add Images'),
-                    style: AppTextButtonsStyles().textButtonStyle,
+                    style: AppTextButtonsStyles(
+                      context: context,
+                    ).textButtonStyle,
                     onPressed: () {
                       model.pickImages();
                     },
