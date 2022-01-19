@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/model_classes/supply_profile_response.dart';
 
 class AppPopUpMenuWidget extends StatelessWidget {
   const AppPopUpMenuWidget({
@@ -8,12 +9,21 @@ class AppPopUpMenuWidget extends StatelessWidget {
     required this.onOptionsSelected,
     required this.options,
     required this.toolTipLabel,
+  })  : profileResponse = null,
+        super(key: key);
+
+  const AppPopUpMenuWidget.withCircleAvatar({
+    Key? key,
+    required this.onOptionsSelected,
+    required this.options,
+    required this.toolTipLabel,
+    required this.profileResponse,
   }) : super(key: key);
 
   final Function({String? value}) onOptionsSelected;
   final List<String> options;
   final String toolTipLabel;
-
+  final SupplyProfileResponse? profileResponse;
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(

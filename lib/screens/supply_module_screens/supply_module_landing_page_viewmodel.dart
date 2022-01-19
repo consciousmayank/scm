@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/app.router.dart';
+import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/model_classes/supply_profile_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
+import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -23,6 +26,19 @@ class SupplyModuleLandingPageViewModel
 
   initScreen() {
     authenticatedUserName = preferences.getAuthenticatedUserName();
+    getProfile();
+  }
+
+  final ProfileApis _profileApis = locator<ProfileApisImpl>();
+  void getProfile() async {
+    SupplyProfileResponse? supplyProfileResponse =
+        await _profileApis.getSupplierProfile();
+    if (supplyProfileResponse != null &&
+        supplyProfileResponse.businessName != null &&
+        supplyProfileResponse.businessName!.isNotEmpty) {
+      authenticatedUserName = supplyProfileResponse.businessName!;
+      notifyListeners();
+    }
   }
 
   actionPopUpItemSelected({String? selectedValue}) {

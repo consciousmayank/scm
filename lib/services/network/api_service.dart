@@ -887,13 +887,13 @@ class ApiService {
       switch (apiType) {
         case ProfileApiType.GET_PROFILE:
           response = await dioClient.getDio().get(
-                SUPPLY_PROFILE,
+                PROFILE(role: getLoggedInRole()),
                 cancelToken: dioClient.apiCancelToken,
               );
           break;
         case ProfileApiType.UPDATE_PROFILE:
           response = await dioClient.getDio().put(
-                SUPPLY_PROFILE,
+                PROFILE(role: getLoggedInRole()),
                 data: profileJsonBody,
                 cancelToken: dioClient.apiCancelToken,
               );

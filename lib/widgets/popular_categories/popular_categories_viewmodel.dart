@@ -1,3 +1,4 @@
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/product_categories_response.dart';
@@ -38,26 +39,28 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
     if (args.supplierId == null) {
       navigationService.navigateTo(
         productListViewPageRoute,
-        arguments: ProductListViewArgs.fullScreen(
-          brandsFilterList: [],
-          categoryFilterList: [selectedCategory],
-          subCategoryFilterList: [],
-          productTitle: '',
-          isSupplierCatalog: args.isSupplierCatalog,
+        arguments: ProductListViewArguments(
+          arguments: ProductListViewArgs.fullScreen(
+            brandsFilterList: [],
+            categoryFilterList: [selectedCategory],
+            subCategoryFilterList: [],
+            productTitle: '',
+            isSupplierCatalog: args.isSupplierCatalog,
+          ),
         ),
       );
     } else {
-      navigationService.navigateTo(
-        productListViewPageRoute,
-        arguments: ProductListViewArgs.asSupplierProductList(
-          brandsFilterList: [],
-          categoryFilterList: [selectedCategory],
-          subCategoryFilterList: [],
-          productTitle: '',
-          supplierId: args.supplierId,
-          supplierName: args.supplierName,
-        ),
-      );
+      navigationService.navigateTo(productListViewPageRoute,
+          arguments: ProductListViewArguments(
+            arguments: ProductListViewArgs.asSupplierProductList(
+              brandsFilterList: [],
+              categoryFilterList: [selectedCategory],
+              subCategoryFilterList: [],
+              productTitle: '',
+              supplierId: args.supplierId,
+              supplierName: args.supplierName,
+            ),
+          ));
     }
   }
 }

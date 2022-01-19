@@ -146,8 +146,10 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForSupplier() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArgs.fullScreen(
-        isSupplierCatalog: arguments.isSupplierCatalog,
+      arguments: PopularBrandsViewArguments(
+        arguments: PopularBrandsViewArgs.fullScreen(
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
       ),
     );
   }
@@ -155,9 +157,11 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForDemander() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArgs.demanderPopularBrands(
-        supplierId: arguments.selectedSupplier?.id,
-        supplierName: arguments.selectedSupplier?.businessName,
+      arguments: PopularBrandsViewArguments(
+        arguments: PopularBrandsViewArgs.demanderPopularBrands(
+          supplierId: arguments.selectedSupplier?.id,
+          supplierName: arguments.selectedSupplier?.businessName,
+        ),
       ),
     );
   }
@@ -165,17 +169,21 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToCategoriesFullScreenForSupplier() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArgs(
-          isSupplierCatalog: arguments.isSupplierCatalog),
+      arguments: PopularCategoriesViewArguments(
+        arguments: PopularCategoriesViewArgs(
+            isSupplierCatalog: arguments.isSupplierCatalog),
+      ),
     );
   }
 
   navigateToCategoriesFullScreenForDemander() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArgs.demanderPopularBrands(
-        supplierId: arguments.selectedSupplier?.id,
-        supplierName: arguments.selectedSupplier?.businessName,
+      arguments: PopularCategoriesViewArguments(
+        arguments: PopularCategoriesViewArgs.demanderPopularBrands(
+          supplierId: arguments.selectedSupplier?.id,
+          supplierName: arguments.selectedSupplier?.businessName,
+        ),
       ),
     );
   }

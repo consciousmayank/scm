@@ -19,7 +19,7 @@ class Dimens {
 
   int get maxTagsLength => 120;
 
-  double get getColumnWithTitleHeaderPadding => 16;
+  double get getColumnWithTitleHeaderPadding => 8;
 
   double get getDefaultElevation => 8;
 

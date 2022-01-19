@@ -5,6 +5,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
@@ -160,12 +161,15 @@ class SupplyModuleLandingPageWebView
           arguments: CartIconViewArguments(),
         ),
         wSizedBox(width: 30),
-        AppPopUpMenuWidget(
-          onOptionsSelected: ({value}) =>
-              viewModel.actionPopUpItemSelected(selectedValue: value),
-          options: profileOptions,
-          toolTipLabel: popUpMenuLabelToolTip,
-        ),
+        viewModel.profileApiStatus == ApiStatus.FETCHED
+            ? AppPopUpMenuWidget.withCircleAvatar(
+                profileResponse: viewModel.supplyProfileResponse,
+                onOptionsSelected: ({value}) =>
+                    viewModel.actionPopUpItemSelected(selectedValue: value),
+                options: profileOptions,
+                toolTipLabel: popUpMenuLabelToolTip,
+              )
+            : Container(),
         wSizedBox(width: 10),
       ]),
       body: Row(
