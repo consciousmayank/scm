@@ -1,3 +1,4 @@
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/model_classes/app_notifications_helper.dart';
@@ -32,10 +33,12 @@ class OnNotificationClick {
         onButtonClicked = () {
           _navigationService.navigateTo(
             notificationScreenPageRoute,
-            arguments: NotificationsScreenArguments.fromNotificationClick(
-              clickedNotification: AppNotificationsHelper(
-                isNotificationRead: false,
-                notification: notificationParams,
+            arguments: NotificationsScreenViewArguments(
+              arguments: NotificationsScreenArgs.fromNotificationClick(
+                clickedNotification: AppNotificationsHelper(
+                  isNotificationRead: false,
+                  notification: notificationParams,
+                ),
               ),
             ),
           );

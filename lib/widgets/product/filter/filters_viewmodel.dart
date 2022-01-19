@@ -36,6 +36,11 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
   String? _brandTitle;
   final ProductBrandsApis _brandsApis = locator<ProductBrandsApiImpl>();
+  final ProductCategoriesApis _productCategoriesApis =
+      locator<ProductCategoriesApiImpl>();
+  final ProductSubCategoriesApis _subCategoriesApis =
+      locator<ProductSubCategoriesApisImpl>();
+
   List<BrandsForFilter>? _brandsForFilterList = [];
   List<String>? _brandsList;
   ProductBrandsResponse? _brandsResponse;
@@ -45,12 +50,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<String?>? _checkedBrandsList = [];
   List<String?>? _checkedCategoriesList = [];
   List<String?>? _checkedSubCategoriesList = [];
-  final ProductCategoriesApis _productCategoriesApis =
-      locator<ProductCategoriesApiImpl>();
 
   List<String>? _productCategoriesList;
-  final ProductSubCategoriesApis _subCategoriesApis =
-      locator<ProductSubCategoriesApisImpl>();
 
   List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
   List<String>? _subCategoriesList;
@@ -189,6 +190,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedSubCategoryFilterList: tempCheckedSubCategoriesList,
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
+        isSupplierCatalog: args.isSupplierCatalog,
       );
 
       totalItemsForBrandsApi = brandsResponse?.totalItems;
@@ -418,6 +420,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         categoryTitle: categoryTitle,
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
+        isSupplierCatalog: args.isSupplierCatalog,
       );
 
       totalItemsForCategoriesApi = categoriesResponse?.totalItems;
@@ -548,6 +551,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         checkedBrandList: tempCheckedBrandsList,
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
+        isSupplierCatalog: args.isSupplierCatalog,
       );
 
       totalItemsForSubCategoriesApi = subCategoriesResponse.totalItems;

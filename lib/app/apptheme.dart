@@ -333,7 +333,7 @@ class ApplicationTheme {
           ),
 
       ///This is the color of the header of a PaginatedDataTable when there are any selected rows
-      secondaryHeaderColor: Colors.grey,
+      secondaryHeaderColor: _primaryColor.withAlpha(180),
 
       ///This is a color that contrasts with the primary color. It is used to show the remaining parts of a progress bar.
       backgroundColor: const Color(0xff457BE0),
@@ -402,9 +402,13 @@ class ApplicationTheme {
           ),
           shape: const StadiumBorder(),
           brightness: Brightness.light,
-          labelPadding: const EdgeInsets.all(8),
+          labelPadding: const EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
           labelStyle: getAppTextTheme(textColor: Colors.black).bodyText2!,
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+          ),
           secondaryLabelStyle:
               getAppTextTheme(textColor: Colors.black).caption!,
           secondarySelectedColor: Colors.white38,

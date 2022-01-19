@@ -14,7 +14,7 @@ class NotificationsScreenView extends StatefulWidget {
     required this.arguments,
   }) : super(key: key);
 
-  final NotificationsScreenArguments arguments;
+  final NotificationsScreenArgs arguments;
 
   @override
   _NotificationsScreenViewState createState() =>
@@ -36,12 +36,12 @@ class _NotificationsScreenViewState extends State<NotificationsScreenView> {
   }
 }
 
-class NotificationsScreenArguments {
-  NotificationsScreenArguments.fromNotificationClick({
+class NotificationsScreenArgs {
+  NotificationsScreenArgs.fromNotificationClick({
     required this.clickedNotification,
   }) : appNotificationsList = const [];
 
-  NotificationsScreenArguments.fromNotificationIcon({
+  NotificationsScreenArgs.fromNotificationIcon({
     required this.appNotificationsList,
   }) : clickedNotification = null;
 

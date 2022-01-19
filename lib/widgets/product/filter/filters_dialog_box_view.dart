@@ -34,6 +34,7 @@ class _ProductFilterDialogBoxState extends State<ProductFilterDialogBoxView> {
             selectedCategory: arguments.selectedCategory,
             selectedSuCategory: arguments.selectedSuCategory,
             searchProductTitle: arguments.searchProductTitle,
+            isSupplierCatalog: arguments.isSupplierCatalog,
             onApplyFilterButtonClicked: (
                 {required ProductsFilterViewOutputArguments outArgs}) {
               widget.completer(
@@ -69,6 +70,7 @@ class ProductFilterDialogBoxViewArguments {
     required this.selectedSuCategory,
     required this.searchProductTitle,
     required this.supplierId,
+    this.isSupplierCatalog = false,
   });
 
   final String? searchProductTitle;
@@ -77,6 +79,7 @@ class ProductFilterDialogBoxViewArguments {
   final List<String?>? selectedSuCategory;
   final int? supplierId;
   final String title;
+  final bool isSupplierCatalog;
 }
 
 class ProductFilterDialogBoxViewOutputArgs {

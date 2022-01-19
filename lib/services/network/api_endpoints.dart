@@ -21,9 +21,12 @@ final GET_PRODUCT_LIST_BY_BRAND_AND_CATEGORY = (brand, category, pageIndex) =>
     "/api/product/list?brand=$brand&type=$category&page=$pageIndex";
 
 const String GET_PRODUCT_SUB_CATEGORIES_LIST = "/api/product/subtypes";
+const String GET_SUPPLY_PRODUCT_SUB_CATEGORIES_LIST =
+    "/api/supply/product/subtypes";
 
 const String GET_PRODUCT_LIST = "/api/product/list";
 const String GET_BRAND_LIST = "/api/product/brands";
+const String GET_SUPPLY_BRAND_LIST = "/api/supply/product/brand";
 const String GET_CATEGORIES_LIST = "/api/product/types";
 
 const String GET_BRANDS_FOR_PIM = "/api/brands";

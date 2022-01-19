@@ -1,3 +1,4 @@
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/products_brands_response.dart';
 import 'package:scm/model_classes/products_brands_response.dart'
@@ -13,6 +14,7 @@ abstract class ProductBrandsApis {
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
     int? supplierId,
+    bool isSupplierCatalog = false,
   });
 }
 
@@ -25,6 +27,7 @@ class ProductBrandsApiImpl extends BaseApi implements ProductBrandsApis {
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
     int? supplierId,
+    bool isSupplierCatalog = false,
   }) async {
     ParentApiResponse apiResponse = await apiService.getBrandsList(
       productTitle: productTitle,
@@ -33,27 +36,33 @@ class ProductBrandsApiImpl extends BaseApi implements ProductBrandsApis {
       checkedCategoryFilterList: checkedCategoryFilterList,
       checkedSubCategoryFilterList: checkedSubCategoryFilterList,
       supplierId: supplierId,
+      isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      if (supplierId == null) {
+      if (supplierId == null && !isSupplierCatalog) {
         return ProductBrandsResponse.fromMap(apiResponse.response!.data);
       } else {
-        SuppliersBrandsListResponse suppliersBrandsListResponse =
-            SuppliersBrandsListResponse().empty();
-        suppliersBrandsListResponse =
-            SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
-
-        return ProductBrandsResponse(
-          brands: suppliersBrandsListResponse.brands!
-              .map(
-                (element) => element.brand!,
-              )
-              .toList(),
-          currentPage: suppliersBrandsListResponse.currentPage,
-          totalItems: suppliersBrandsListResponse.totalItems,
-          totalPages: suppliersBrandsListResponse.totalPages,
-        );
+        return getBrands(apiResponse.response?.data);
       }
     }
+  }
+
+  ProductBrandsResponse getBrands(data) {
+    SuppliersBrandsListResponse suppliersBrandsListResponse =
+        SuppliersBrandsListResponse().empty();
+    suppliersBrandsListResponse = SuppliersBrandsListResponse.fromMap(
+      data,
+    );
+
+    return ProductBrandsResponse(
+      brands: suppliersBrandsListResponse.brands!
+          .map(
+            (element) => element.brand!,
+          )
+          .toList(),
+      currentPage: suppliersBrandsListResponse.currentPage,
+      totalItems: suppliersBrandsListResponse.totalItems,
+      totalPages: suppliersBrandsListResponse.totalPages,
+    );
   }
 }

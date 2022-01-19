@@ -72,6 +72,7 @@ class ApiService {
     List<String?>? checkedCategoryFilterList,
     List<String?>? checkedSubCategoryFilterList,
     int? supplierId,
+    bool isSupplierCatalog = false,
   }) async {
     Response? response;
     DioError? error;
@@ -137,7 +138,9 @@ class ApiService {
     try {
       response = await dioClient.getDio().get(
           supplierId == null
-              ? GET_BRAND_LIST
+              ? isSupplierCatalog
+                  ? GET_SUPPLY_BRAND_LIST
+                  : GET_BRAND_LIST
               : GET_BRANDS_LIST_FOR_SELECTED_SUPPLIER(supplierId: supplierId),
           queryParameters: params,
           cancelToken: dioClient.apiCancelToken);
@@ -154,6 +157,7 @@ class ApiService {
     String? subCategoryTitle,
     String? productTitle,
     int? supplierId,
+    bool isSupplierCatalog = false,
   }) async {
     Response? response;
     DioError? error;
@@ -214,7 +218,9 @@ class ApiService {
     try {
       response = await dioClient.getDio().get(
           supplierId == null
-              ? GET_PRODUCT_SUB_CATEGORIES_LIST
+              ? isSupplierCatalog
+                  ? GET_SUPPLY_PRODUCT_SUB_CATEGORIES_LIST
+                  : GET_PRODUCT_SUB_CATEGORIES_LIST
               : GET_CATEGORY_SUB_TYPES_LIST_FOR_SELECTED_SUPPLIER(
                   supplierId: supplierId,
                 ),

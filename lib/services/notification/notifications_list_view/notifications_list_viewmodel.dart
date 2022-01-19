@@ -11,13 +11,13 @@ import 'package:stacked/stacked.dart';
 class NotificationsListViewModel
     extends StreamViewModel<RemoteNotificationParams> {
   late List<AppNotificationsHelper> appNotificationsList;
-  late NotificationsScreenArguments arguments;
+  late NotificationsScreenArgs arguments;
   AppNotificationsHelper? clickedNotification;
 
   final NotificationsStream _notificationsStream =
       locator<NotificationsStream>();
 
-  init({required NotificationsScreenArguments args}) {
+  init({required NotificationsScreenArgs args}) {
     arguments = args;
     if (args.appNotificationsList.isEmpty) {
       appNotificationsList = _notificationsStream.appNotificationsList;

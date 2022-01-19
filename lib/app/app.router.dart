@@ -200,6 +200,6 @@ class PopularBrandsViewArguments {
 /// NotificationsScreenView arguments holder class
 class NotificationsScreenViewArguments {
   final Key? key;
-  final NotificationsScreenArguments arguments;
+  final NotificationsScreenArgs arguments;
   NotificationsScreenViewArguments({this.key, required this.arguments});
 }

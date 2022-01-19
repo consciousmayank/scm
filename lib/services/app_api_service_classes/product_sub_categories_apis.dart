@@ -13,6 +13,7 @@ abstract class ProductSubCategoriesApis {
     String? subCategoryTitle,
     String? productTitle,
     int? supplierId,
+    bool isSupplierCatalog,
   });
 }
 
@@ -26,6 +27,7 @@ class ProductSubCategoriesApisImpl extends BaseApi
     String? subCategoryTitle,
     String? productTitle,
     int? supplierId,
+    bool isSupplierCatalog = false,
   }) async {
     ProductSubCategoriesResponse subCategoriesResponse =
         ProductSubCategoriesResponse().empty();
@@ -38,9 +40,10 @@ class ProductSubCategoriesApisImpl extends BaseApi
       subCategoryTitle: subCategoryTitle,
       productTitle: productTitle,
       supplierId: supplierId,
+      isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      if (supplierId == null) {
+      if (supplierId == null && !isSupplierCatalog) {
         subCategoriesResponse =
             ProductSubCategoriesResponse.fromMap(apiResponse.response!.data);
       } else {

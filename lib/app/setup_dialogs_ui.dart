@@ -154,6 +154,7 @@ class RightSidedBaseDialog extends StatelessWidget {
                   icon: Icon(
                     Icons.close,
                     color: AppColors().white,
+                    size: 10,
                   ),
                   onPressed: () {
                     arguments.completer(DialogResponse(

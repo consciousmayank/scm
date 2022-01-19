@@ -617,6 +617,7 @@ class ProductsFilterViewArguments {
     required this.onApplyFilterButtonClicked,
     required this.onCancelButtonClicked,
     required this.supplierId,
+    this.isSupplierCatalog = false,
   });
 
   final Function({
@@ -629,6 +630,7 @@ class ProductsFilterViewArguments {
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
   final int? supplierId;
+  final bool isSupplierCatalog;
 }
 
 class ProductsFilterViewOutputArguments {

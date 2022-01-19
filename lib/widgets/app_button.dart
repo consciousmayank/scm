@@ -60,11 +60,9 @@ class _AppButtonState extends State<AppButton> {
             ? Colors.white
             : Theme.of(context).colorScheme.secondary,
         child: Container(
-            padding: widget.outline
-                ? const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  )
-                : const EdgeInsets.all(0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+            ),
             height: Dimens().buttonHeight + 4,
             alignment: Alignment.center,
             decoration: !widget.outline

@@ -82,6 +82,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
         selectedSuCategory: subCategoryFilterList,
         searchProductTitle: productTitle,
         supplierId: supplierId,
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
 
