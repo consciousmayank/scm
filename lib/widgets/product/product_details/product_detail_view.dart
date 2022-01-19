@@ -63,6 +63,10 @@ class ProductDetailView extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               ProductDetialItem(
+                                label: 'Product Code         ',
+                                value: model.product!.id.toString(),
+                              ),
+                              ProductDetialItem(
                                 label: 'Brand         ',
                                 value: model.product!.brand,
                               ),
@@ -82,6 +86,10 @@ class ProductDetailView extends StatelessWidget {
                                   measurementUnit:
                                       model.product!.measurementUnit,
                                 ),
+                              ),
+                              ProductDetialItem(
+                                label: 'Summary         ',
+                                value: model.product!.summary,
                               ),
                             ],
                           ))
