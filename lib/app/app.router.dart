@@ -6,6 +6,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -15,6 +16,7 @@ import '../screens/demand_module_screens/demand_module_landing_page_view.dart';
 import '../screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
 import '../screens/login/login_view.dart';
 import '../screens/pim_homescreen/pim_homescreen_view.dart';
+import '../screens/reports/orders_report/order_report_view.dart';
 import '../screens/splash/splash_view.dart';
 import '../screens/supply_module_screens/supply_module_landing_page_view.dart';
 import '../services/notification/notifications_list_view/notifications_list_view.dart';
@@ -24,15 +26,16 @@ import '../widgets/product/product_list/product_list_view.dart';
 
 class Routes {
   static const String splashScreen = '/';
-  static const String loginView = '/logInPage';
-  static const String pimHomeScreenView = '/pimHomeScreenRoute';
-  static const String productListView = '/productListViewPageRoute';
-  static const String supplyModuleLandingPageView = '/supplyLandingScreenRoute';
-  static const String demandModuleLandingPageView = '/demandLandingScreenRoute';
-  static const String popularCategoriesView = '/categoriesListViewPageRoute';
-  static const String popularBrandsView = '/brandsListViewPageRoute';
-  static const String cartPageView = '/cartViewPageRoute';
-  static const String notificationsScreenView = '/notificationScreenPageRoute';
+  static const String loginView = '/login';
+  static const String pimHomeScreenView = '/pimHome';
+  static const String productListView = '/productList';
+  static const String supplyModuleLandingPageView = '/supply';
+  static const String demandModuleLandingPageView = '/demand';
+  static const String popularCategoriesView = '/categoriesList';
+  static const String popularBrandsView = '/brandsList';
+  static const String cartPageView = '/cartView';
+  static const String orderReportsView = '/orderReports';
+  static const String notificationsScreenView = '/notifications';
   static const all = <String>{
     splashScreen,
     loginView,
@@ -43,6 +46,7 @@ class Routes {
     popularCategoriesView,
     popularBrandsView,
     cartPageView,
+    orderReportsView,
     notificationsScreenView,
   };
 }
@@ -62,6 +66,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.popularCategoriesView, page: PopularCategoriesView),
     RouteDef(Routes.popularBrandsView, page: PopularBrandsView),
     RouteDef(Routes.cartPageView, page: CartPageView),
+    RouteDef(Routes.orderReportsView, page: OrderReportsView),
     RouteDef(Routes.notificationsScreenView, page: NotificationsScreenView),
   ];
   @override
@@ -145,6 +150,16 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
+    OrderReportsView: (data) {
+      var args = data.getArgs<OrderReportsViewArguments>(nullOk: false);
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => OrderReportsView(
+          key: args.key,
+          arguments: args.arguments,
+        ),
+        settings: data,
+      );
+    },
     NotificationsScreenView: (data) {
       var args = data.getArgs<NotificationsScreenViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
@@ -195,6 +210,13 @@ class PopularBrandsViewArguments {
   final Key? key;
   final PopularBrandsViewArgs arguments;
   PopularBrandsViewArguments({this.key, required this.arguments});
+}
+
+/// OrderReportsView arguments holder class
+class OrderReportsViewArguments {
+  final Key? key;
+  final OrderReportsViewArgs arguments;
+  OrderReportsViewArguments({this.key, required this.arguments});
 }
 
 /// NotificationsScreenView arguments holder class

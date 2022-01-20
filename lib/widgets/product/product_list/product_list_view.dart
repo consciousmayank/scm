@@ -79,7 +79,7 @@ class ProductListView extends StatelessWidget {
             wSizedBox(
               width: 8,
             ),
-            AppButton(
+            AppButton.appbar(
               onTap: () => model.openFiltersDialogBox(),
               leading: const Icon(Icons.filter),
               title: model.getAppliedFiltersCount() == 0
@@ -151,7 +151,7 @@ class ProductListView extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          AppButton(
+                                          AppButton.appbar(
                                             onTap: () =>
                                                 model.openFiltersDialogBox(),
                                             leading: const Icon(Icons.filter),

@@ -1,7 +1,7 @@
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/model_classes/app_notifications_helper.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/services/streams/notifications_stream.dart';

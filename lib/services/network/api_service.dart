@@ -1578,6 +1578,49 @@ class ApiService {
 
     return ParentApiResponse(error: error, response: response);
   }
+
+  Future<ParentApiResponse> getOrdersReport({
+    required int pageNumber,
+    required int pageSize,
+    required String dateFrom,
+    required String dateTo,
+    required String selectedOrderStatus,
+    String? paramGroupBy,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    Map<String, dynamic> queryParams = paramGroupBy != null
+        ? {
+            'page': pageNumber,
+            'size': pageSize,
+            'dateFrom': dateFrom,
+            'dateTo': dateTo,
+            'orderStatus': selectedOrderStatus,
+            'groupBy': paramGroupBy,
+          }
+        : {
+            'page': pageNumber,
+            'size': pageSize,
+            'dateFrom': dateFrom,
+            'dateTo': dateTo,
+            'orderStatus': selectedOrderStatus,
+          };
+
+    try {
+      response = await dioClient.getDio().get(
+            ORDERS_REPORT(
+              role: getLoggedInRole(),
+            ),
+            queryParameters: queryParams,
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
 }
 
 enum AuthApiType { CHECK_USER_EXISTENCE, AUTHENTICATE_USER }

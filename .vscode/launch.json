@@ -22,7 +22,7 @@
             "type": "dart",
             "toolArgs": [
                 "--dart-define",
-                "BASE_URL=http://192.168.0.151:8080/scm",
+                "BASE_URL=http://192.168.0.149:8080/scm",
                 "--dart-define",
                 "SHOW_LOGS=true"
             ]

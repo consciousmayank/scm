@@ -239,3 +239,11 @@ orderListSubtitleLabelWithDates(
         required String toDate,
         required String status}) =>
     'From $fromDate to $toDate : Order Status $status';
+const String optionOrderReportTitle = 'Order Report';
+const String optionOrderReportSubTitle =
+    'A Consolidated Report of all your orders';
+const String ordersReportsPageTitle = 'Order Reports';
+const String ordersReportsGroupByBrandsWidgetTitle = 'Orders By Brand';
+const String ordersReportsGroupByTypeWidgetTitle = 'Orders By Type';
+const String ordersReportsGroupBySubTypeWidgetTitle = 'Orders By SubType';
+const String consolidatedOrdersReportsWidgetTitle = 'Consolidated Orders';

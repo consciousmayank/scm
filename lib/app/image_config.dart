@@ -101,3 +101,4 @@ final String twenty = _imagePath + '20.jpg';
 final String cartIcon = _imagePath + 'cart_icon.png';
 final String catalogIcon = _imagePath + 'catalog.png';
 final String defaultProductImage = _imagePath + 'default_product_image.jpg';
+final String orderReportImage = _imagePath + 'order_report.png';

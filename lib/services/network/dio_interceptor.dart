@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:scm/routes/routes_constants.dart';
 
 import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/app.router.dart';
@@ -7,7 +8,6 @@ import 'package:scm/app/di.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/model_classes/refresh_token_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/network/api_endpoints.dart';
 import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/utils/strings.dart';

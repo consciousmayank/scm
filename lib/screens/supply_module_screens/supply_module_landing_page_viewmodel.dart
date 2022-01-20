@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
@@ -9,6 +11,7 @@ import 'package:scm/model_classes/supply_profile_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/login/login_view.dart';
+import 'package:scm/screens/more_options/more_options_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
@@ -30,13 +33,15 @@ class SupplyModuleLandingPageViewModel
   }
 
   final ProfileApis _profileApis = locator<ProfileApisImpl>();
+  SupplyProfileResponse? supplyProfileResponse;
+  ApiStatus profileApiStatus = ApiStatus.LOADING;
   void getProfile() async {
-    SupplyProfileResponse? supplyProfileResponse =
-        await _profileApis.getSupplierProfile();
+    supplyProfileResponse = await _profileApis.getSupplierProfile();
     if (supplyProfileResponse != null &&
-        supplyProfileResponse.businessName != null &&
-        supplyProfileResponse.businessName!.isNotEmpty) {
-      authenticatedUserName = supplyProfileResponse.businessName!;
+        supplyProfileResponse!.businessName != null &&
+        supplyProfileResponse!.businessName!.isNotEmpty) {
+      authenticatedUserName = supplyProfileResponse!.businessName!;
+      profileApiStatus = ApiStatus.FETCHED;
       notifyListeners();
     }
   }
@@ -138,10 +143,8 @@ class SupplyModuleLandingPageViewModel
         );
       case 4:
         // return MenuItemsView();
-        return const Center(
-          child: Text(
-            'Supplier\'s More options Page',
-          ),
+        return MoreOptionsView(
+          arguments: MoreOptionsViewArguments(),
         );
     }
   }

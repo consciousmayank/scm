@@ -113,3 +113,4 @@ const String UPDATE_CONTACT_PERSON = "/api/supply/profile/contactPerson";
 final UPDATE_FCM_ID =
     ({required String role}) => "/api/$role/profile/fcmid/web";
 final PROFILE = ({required String role}) => "/api/$role/profile";
+final ORDERS_REPORT = ({required String role}) => "/api/$role/order/report";

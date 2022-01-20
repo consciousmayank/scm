@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/di.dart';
 
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/services/app_api_service_classes/login_apis.dart';
 import 'package:scm/utils/strings.dart';

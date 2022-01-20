@@ -1,9 +1,9 @@
 import 'dart:developer';
 
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/cart.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:stacked/stacked.dart';

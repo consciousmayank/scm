@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/routes/routes_constants.dart';
 
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
@@ -8,9 +9,9 @@ import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/supply_profile_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/suppliers_list/suppliers_list_view.dart';
 import 'package:scm/screens/login/login_view.dart';
+import 'package:scm/screens/more_options/more_options_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
@@ -108,10 +109,8 @@ class DemandModuleLandingPageViewModel
         );
       case 3:
         // return MenuItemsView();
-        return const Center(
-          child: Text(
-            'Demander\'s More options Page',
-          ),
+        return MoreOptionsView(
+          arguments: MoreOptionsViewArguments(),
         );
     }
   }

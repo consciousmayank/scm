@@ -1,9 +1,9 @@
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';

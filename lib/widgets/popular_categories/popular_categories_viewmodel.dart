@@ -1,8 +1,8 @@
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/product_categories_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/widgets/popular_categories/popular_categories_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';

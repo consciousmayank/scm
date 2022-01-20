@@ -3,6 +3,7 @@ import 'package:scm/screens/demand_module_screens/demand_module_landing_page_vie
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
+import 'package:scm/screens/reports/orders_report/order_report_view.dart';
 import 'package:scm/screens/splash/splash_view.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
@@ -25,6 +26,7 @@ import 'package:stacked/stacked_annotations.dart';
         path: categoriesListViewPageRoute, page: PopularCategoriesView),
     MaterialRoute(path: brandsListViewPageRoute, page: PopularBrandsView),
     MaterialRoute(path: cartViewPageRoute, page: CartPageView),
+    MaterialRoute(path: orderReportsScreenPageRoute, page: OrderReportsView),
     MaterialRoute(
         path: notificationScreenPageRoute, page: NotificationsScreenView),
   ],

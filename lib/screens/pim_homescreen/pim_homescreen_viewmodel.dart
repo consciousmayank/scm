@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/routes/routes_constants.dart';
 
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
@@ -7,7 +8,6 @@ import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/enums/user_roles.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/pim_homescreen/add_brand/add_brand_view.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';

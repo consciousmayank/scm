@@ -21,8 +21,9 @@ AppBarTheme getAppBarTheme() {
 
 InputDecorationTheme getInputDecorationTheme() {
   return InputDecorationTheme(
-    contentPadding: const EdgeInsets.all(
-      16,
+    contentPadding: const EdgeInsets.symmetric(
+      vertical: 12,
+      horizontal: 16,
     ),
     labelStyle: getAppTextTheme(textColor: Colors.black).overline,
     helperStyle: getAppTextTheme(textColor: Colors.black).overline,
@@ -31,8 +32,8 @@ InputDecorationTheme getInputDecorationTheme() {
     errorMaxLines: 1,
     isDense: true,
     isCollapsed: false,
-    prefixStyle: getAppTextTheme(textColor: Colors.black).headline3,
-    suffixStyle: getAppTextTheme(textColor: Colors.black).bodyText1,
+    prefixStyle: getAppTextTheme(textColor: Colors.black).bodyText1,
+    suffixStyle: getAppTextTheme(textColor: Colors.black).bodyText2,
     counterStyle: getAppTextTheme(textColor: Colors.black).overline,
     filled: true,
     floatingLabelBehavior: FloatingLabelBehavior.always,

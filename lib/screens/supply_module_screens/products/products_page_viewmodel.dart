@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:scm/routes/routes_constants.dart';
 
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/product_categories_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
-import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
@@ -147,10 +147,6 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
     navigationService.navigateTo(brandsListViewPageRoute);
   }
 
-  void takeToProductCategories() {
-    navigationService.navigateTo(allProductCategoriesViewPageRoute);
-  }
-
   Future<void> openAddProductDialogBox() async {
     // DialogResponse? dialogResponse = await dialogService.showCustomDialog(
     //   variant: DialogType.ADD_PRODUCT_QUANTITY,
@@ -165,16 +161,6 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
     //     print(args.productQuantity);
     //   }
     // }
-  }
-
-  void takeToCustomSearchView() {
-    navigationService.navigateTo(showSearchDemo);
-  }
-
-  void takeToSearchProductsView() {
-    navigationService.navigateTo(
-      searchProductsViewPageRoute,
-    );
   }
 
   void takeToSearchProductsViewForAllProducts() {

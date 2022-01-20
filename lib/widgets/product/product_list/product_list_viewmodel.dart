@@ -1,11 +1,10 @@
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/product_list_response.dart';
-import 'package:scm/routes/routes_constants.dart';
-import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
