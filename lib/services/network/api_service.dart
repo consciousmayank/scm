@@ -1586,26 +1586,41 @@ class ApiService {
     required String dateTo,
     required String selectedOrderStatus,
     String? paramGroupBy,
+    String? selectedBrand,
+    String? selectedType,
   }) async {
     Response? response;
     DioError? error;
 
-    Map<String, dynamic> queryParams = paramGroupBy != null
-        ? {
-            'page': pageNumber,
-            'size': pageSize,
-            'dateFrom': dateFrom,
-            'dateTo': dateTo,
-            'orderStatus': selectedOrderStatus,
-            'groupBy': paramGroupBy,
-          }
-        : {
-            'page': pageNumber,
-            'size': pageSize,
-            'dateFrom': dateFrom,
-            'dateTo': dateTo,
-            'orderStatus': selectedOrderStatus,
-          };
+    Map<String, dynamic> queryParams = {};
+
+    if (paramGroupBy != null) {
+      //this is groupBy Api, means showing orders as per brand/type/subtype
+      queryParams = {
+        'page': pageNumber,
+        'size': pageSize,
+        'dateFrom': dateFrom,
+        'dateTo': dateTo,
+        'orderStatus': selectedOrderStatus,
+        'groupBy': paramGroupBy,
+      };
+    } else {
+      //this is consolidated Api, the big table one.
+      queryParams = {
+        'page': pageNumber,
+        'size': pageSize,
+        'dateFrom': dateFrom,
+        'dateTo': dateTo,
+        'orderStatus': selectedOrderStatus,
+      };
+    }
+
+    if (selectedBrand != null) {
+      queryParams['brand'] = selectedBrand;
+    }
+    if (selectedType != null) {
+      queryParams['type'] = selectedType;
+    }
 
     try {
       response = await dioClient.getDio().get(

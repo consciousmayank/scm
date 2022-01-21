@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/screens/reports/orders_report/order_reports_viewmodel.dart';
@@ -22,80 +23,134 @@ class OrdersConsilidatedReportWidget
         padding: const EdgeInsets.all(
           8,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                consolidatedOrdersReportsWidgetTitle,
-                style: Theme.of(context).textTheme.headline6,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+        child: getValueForScreenType(
+            context: context,
+            mobile: Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 2.5,
+                  child: mainUi(context, viewModel),
+                ),
               ),
             ),
-            const AppTableWidget.header(
-              values: [
-                AppTableSingleItem.string('Code'),
-                AppTableSingleItem.string('Name', flexValue: 3),
-                AppTableSingleItem.string(
-                  'Qty',
+            desktop: mainUi(context, viewModel),
+            tablet: Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 1.5,
+                  child: mainUi(context, viewModel),
                 ),
-                AppTableSingleItem.string(
-                  'Amnt',
-                ),
-              ],
+              ),
+            )),
+      ),
+    );
+  }
+
+  Column mainUi(BuildContext context, OrderReportsViewModel viewModel) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            consolidatedOrdersReportsWidgetTitle,
+            style: Theme.of(context).textTheme.headline6,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const AppTableWidget.header(
+          values: [
+            AppTableSingleItem.string(
+              '#',
+              flexValue: 1,
+              textAlignment: TextAlign.center,
             ),
-            if (viewModel.consolidatedOrdersReportResponse != null)
-              ...viewModel.consolidatedOrdersReportResponse!.reportResultSet!
-                  .map(
-                    (singleValue) => AppTableWidget.values(
-                      values: [
-                        AppTableSingleItem.int(singleValue.itemCode),
-                        AppTableSingleItem.string(
-                          singleValue.itemTitle,
-                          flexValue: 3,
-                        ),
-                        AppTableSingleItem.int(
-                          singleValue.itemQuantity,
-                        ),
-                        AppTableSingleItem.double(
-                          singleValue.itemAmount! / singleValue.itemQuantity!,
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            if (viewModel.consolidatedOrdersReportResponse != null)
-              AppTableWidget.values(
-                values: [
-                  AppTableSingleItem.string(
-                    'Grand Total',
-                    textAlignment: TextAlign.right,
-                    textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                    flexValue: 4,
-                  ),
-                  AppTableSingleItem.int(
-                      viewModel.getGrandTotalOfConsolidatedOrdersQty(),
-                      textStyle:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              )),
-                  AppTableSingleItem.double(
-                      viewModel.getGrandTotalOfConsolidatedOrdersAmount() /
-                          viewModel.getGrandTotalOfConsolidatedOrdersQty(),
-                      textStyle:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              )),
-                ],
-              )
+            AppTableSingleItem.string(
+              labelItemCode,
+              flexValue: 2,
+            ),
+            AppTableSingleItem.string('Item Name', flexValue: 7),
+            AppTableSingleItem.string(
+              labelQuantity,
+              textAlignment: TextAlign.end,
+              flexValue: 2,
+            ),
+            AppTableSingleItem.string(
+              labelAmount,
+              textAlignment: TextAlign.end,
+              flexValue: 2,
+            ),
           ],
         ),
-      ),
+        if (viewModel.consolidatedOrdersReportResponse != null)
+          ...viewModel.consolidatedOrdersReportResponse!.reportResultSet!
+              .map(
+                (singleValue) => AppTableWidget.values(
+                  values: [
+                    AppTableSingleItem.int(
+                        viewModel
+                            .consolidatedOrdersReportResponse!.reportResultSet!
+                            .indexOf(
+                          singleValue,
+                        ),
+                        flexValue: 1,
+                        textAlignment: TextAlign.center),
+                    AppTableSingleItem.int(
+                      singleValue.itemCode,
+                      flexValue: 2,
+                    ),
+                    AppTableSingleItem.string(
+                      singleValue.itemTitle,
+                      flexValue: 7,
+                    ),
+                    AppTableSingleItem.int(
+                      singleValue.itemQuantity,
+                      textAlignment: TextAlign.end,
+                      flexValue: 2,
+                    ),
+                    AppTableSingleItem.double(
+                      singleValue.itemAmount! / singleValue.itemQuantity!,
+                      textAlignment: TextAlign.end,
+                      flexValue: 2,
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        if (viewModel.consolidatedOrdersReportResponse != null)
+          AppTableWidget.values(
+            values: [
+              AppTableSingleItem.string(
+                'Grand Total',
+                textAlignment: TextAlign.right,
+                textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                flexValue: 5,
+              ),
+              AppTableSingleItem.int(
+                viewModel.getGrandTotalOfConsolidatedOrdersQty(),
+                textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                textAlignment: TextAlign.end,
+                formatNumber: true,
+              ),
+              AppTableSingleItem.double(
+                viewModel.getGrandTotalOfConsolidatedOrdersAmount(),
+                textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                textAlignment: TextAlign.end,
+                formatNumber: true,
+              ),
+            ],
+          )
+      ], //862
     );
   }
 }

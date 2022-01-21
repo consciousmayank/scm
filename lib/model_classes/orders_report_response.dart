@@ -109,7 +109,7 @@ class ReportResultSet {
   final int? itemCode;
   final String? itemTitle, itemType, itemBrand, itemSubType;
   final int? itemQuantity;
-  final int? itemAmount;
+  final double? itemAmount;
 
   ReportResultSet copyWith({
     int? itemCode,
@@ -118,7 +118,7 @@ class ReportResultSet {
     String? itemBrand,
     String? itemSubType,
     int? itemQuantity,
-    int? itemAmount,
+    double? itemAmount,
   }) =>
       ReportResultSet(
         itemCode: itemCode ?? this.itemCode,

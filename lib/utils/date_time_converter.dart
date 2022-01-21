@@ -55,6 +55,12 @@ class DateTimeToStringConverter {
     format = 'dd-MMMM-yy';
   }
 
+  DateTimeToStringConverter.ddMMMMyyyy({
+    required this.date,
+  }) {
+    format = 'dd-MMMM-yyyy';
+  }
+
   DateTimeToStringConverter.ddmmmyy({
     required this.date,
   }) {

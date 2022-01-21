@@ -13,86 +13,141 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
 
   @override
   Widget build(BuildContext context, OrderReportsViewModel viewModel) {
-    return Card(
-      elevation: Dimens().getDefaultElevation,
-      shape: Dimens().getCardShape(),
-      color: AppColors().white,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          8,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                ordersReportsGroupByBrandsWidgetTitle,
-                style: Theme.of(context).textTheme.headline6,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const AppTableWidget.header(
-              values: [
-                AppTableSingleItem.string(
-                  'Name',
-                  flexValue: 2,
-                ),
-                AppTableSingleItem.string(
-                  'Qty',
-                ),
-                AppTableSingleItem.string(
-                  'Amnt',
-                ),
-              ],
-            ),
-            if (viewModel.ordersReportGroupByBrandResponse != null)
-              ...viewModel.ordersReportGroupByBrandResponse!.reportResultSet!
-                  .map(
-                    (singleValue) => AppTableWidget.values(
-                      values: [
-                        AppTableSingleItem.string(
-                          singleValue.itemBrand,
-                          flexValue: 2,
-                        ),
-                        AppTableSingleItem.int(
-                          singleValue.itemQuantity,
-                        ),
-                        AppTableSingleItem.int(
-                          singleValue.itemAmount,
-                        ),
-                      ],
+    return SizedBox(
+      height: Dimens().brandReportWidgetHeight,
+      child: Card(
+        elevation: Dimens().getDefaultElevation,
+        shape: Dimens().getCardShape(),
+        color: AppColors().white,
+        child: Padding(
+          padding: const EdgeInsets.all(
+            8,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      ordersReportsGroupByBrandsWidgetTitle,
+                      style: Theme.of(context).textTheme.headline6,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                     ),
-                  )
-                  .toList(),
-            if (viewModel.ordersReportGroupByBrandResponse != null)
-              AppTableWidget.values(
+                    Text(
+                      'Count : ${viewModel.ordersReportGroupByBrandResponse?.reportResultSet?.length}',
+                      style: Theme.of(context).textTheme.button,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+              const AppTableWidget.header(
                 values: [
                   AppTableSingleItem.string(
-                    'Grand Total',
-                    textAlignment: TextAlign.right,
-                    textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    '#',
+                    flexValue: 2,
+                    textAlignment: TextAlign.center,
+                  ),
+                  AppTableSingleItem.string(
+                    'Name',
+                    flexValue: 5,
+                  ),
+                  AppTableSingleItem.string(
+                    'Qty',
+                    textAlignment: TextAlign.end,
                     flexValue: 2,
                   ),
-                  AppTableSingleItem.int(
+                  AppTableSingleItem.string(
+                    'Amnt',
+                    textAlignment: TextAlign.end,
+                    flexValue: 3,
+                  ),
+                ],
+              ),
+              if (viewModel.ordersReportGroupByBrandResponse != null)
+                Expanded(
+                  child: ListView(
+                    children: viewModel
+                        .ordersReportGroupByBrandResponse!.reportResultSet!
+                        .map(
+                          (singleValue) => AppTableWidget.values(
+                            values: [
+                              AppTableSingleItem.int(
+                                viewModel.ordersReportGroupByBrandResponse!
+                                    .reportResultSet!
+                                    .indexOf(
+                                  singleValue,
+                                ),
+                                flexValue: 2,
+                                textAlignment: TextAlign.center,
+                              ),
+                              AppTableSingleItem.string(
+                                singleValue.itemBrand,
+                                flexValue: 5,
+                                textAlignment: TextAlign.left,
+                              ),
+                              AppTableSingleItem.int(
+                                singleValue.itemQuantity,
+                                textAlignment: TextAlign.end,
+                                flexValue: 2,
+                                formatNumber: true,
+                              ),
+                              AppTableSingleItem.double(
+                                singleValue.itemAmount,
+                                textAlignment: TextAlign.end,
+                                flexValue: 3,
+                                formatNumber: true,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              if (viewModel.ordersReportGroupByBrandResponse != null)
+                AppTableWidget.values(
+                  values: [
+                    AppTableSingleItem.string(
+                      'Grand Total',
+                      textAlignment: TextAlign.right,
+                      textStyle:
+                          Theme.of(context).textTheme.bodyText1?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                      flexValue: 7,
+                    ),
+                    AppTableSingleItem.int(
                       viewModel.getGrandTotalOfOrdersQtyGroupByBrand(),
                       textStyle:
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
-                              )),
-                  AppTableSingleItem.double(
+                              ),
+                      formatNumber: true,
+                      textAlignment: TextAlign.end,
+                      flexValue: 2,
+                    ),
+                    AppTableSingleItem.double(
                       viewModel.getGrandTotalOfOrdersAmountGroupByBrand(),
+                      formatNumber: true,
                       textStyle:
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
-                              )),
-                ],
-              )
-          ],
+                              ),
+                      flexValue: 3,
+                      textAlignment: TextAlign.end,
+                    ),
+                  ],
+                )
+            ],
+          ),
         ),
       ),
     );

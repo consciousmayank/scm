@@ -6,6 +6,7 @@ import 'package:scm/enums/api_status.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/brand_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/orders_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/subtype_report_widget.dart';
+import 'package:scm/screens/reports/orders_report/helper_widgets/to_date_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/type_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/order_reports_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -45,118 +46,109 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                   elevation: Dimens().getDefaultElevation,
                   shape: Dimens().getCardShape(),
                   color: AppColors().white,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Wrap(
-                        direction: Axis.horizontal,
-                        children: [
-                          OptionsInput(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    model.getDateText(),
-                                  ),
-                                ),
-                                AppButton.outline(
-                                  title: 'Select Date/s',
-                                  leading: const Icon(Icons.calendar_today),
-                                  onTap: () async {
-                                    DateTimeRange? newDateTimeRange =
-                                        await showDateRangePicker(
-                                      saveText: orderFiltersDurationDateLabel,
-                                      context: context,
-                                      firstDate: DateTime.now().subtract(
-                                        const Duration(
-                                          days: 365,
-                                        ),
-                                      ),
-                                      lastDate: DateTime.now(),
-                                      initialDateRange: model.dateTimeRange,
-                                      builder: (context, child) {
-                                        return Column(
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 50.0),
-                                              child: SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    getValueForScreenType(
-                                                      context: context,
-                                                      mobile: 0.95,
-                                                      tablet: 0.85,
-                                                      desktop: 0.65,
-                                                    ),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    getValueForScreenType(
-                                                      context: context,
-                                                      mobile: 0.95,
-                                                      tablet: 0.65,
-                                                      desktop: 0.35,
-                                                    ),
-                                                child: child,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-
-                                    model.updateDateRange(newDateTimeRange);
-                                  },
-                                ),
-                              ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      12.0,
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.spaceBetween,
+                      direction: Axis.horizontal,
+                      children: [
+                        OptionsInput.noRightPadding(
+                          hintText: labelFromDate,
+                          child: OrderReportsDateWidget(
+                            initialDate: model.dateTimeRange.start,
+                            firstDate: model.dateTimeRange.start.subtract(
+                              const Duration(
+                                days: 180,
+                              ),
+                            ),
+                            dateText: model.getFromDateText(),
+                            onDateChanged: ({required DateTime date}) {
+                              model.updateStartDateInDateRange(date);
+                            },
+                          ),
+                        ),
+                        OptionsInput.noRightPadding(
+                          hintText: labelToDate,
+                          child: OrderReportsDateWidget(
+                            firstDate: model.dateTimeRange.start,
+                            // initialDate: model.dateTimeRange.end,
+                            dateText: model.getToDateText(),
+                            onDateChanged: ({required DateTime date}) {
+                              model.updateEndDateInDateRange(date);
+                            },
+                          ),
+                        ),
+                        OptionsInput(
+                          hintText: orderFiltersStatusOptionLabel,
+                          child: Center(
+                            child: AppDropDown<String>(
+                              selectedOption: getApiToAppOrderStatus(
+                                status: model.selectedOrderStatus,
+                              ),
+                              items: model.orderStatuses
+                                  .map(
+                                    (e) => getApiToAppOrderStatus(
+                                      status: e,
+                                    ),
+                                  )
+                                  .toList(),
+                              onItemSelected: ({required String item}) {
+                                model.selectedOrderStatus =
+                                    getAppToApiOrderStatus(
+                                  status: item,
+                                );
+                                model.getOrderReports();
+                                model.notifyListeners();
+                              },
+                              hintText: orderFiltersStatusOptionLabel,
                             ),
                           ),
-                          wSizedBox(width: 16),
-                          OptionsInput.small(
-                            child: Center(
-                              child: AppDropDown<String>(
-                                  selectedOption: model.selectedOrderStatus,
-                                  items: model.orderStatuses,
+                        ),
+                        if (model.getOrderReportsGroupByBrandApiStatus ==
+                                ApiStatus.FETCHED &&
+                            model.ordersReportGroupByBrandResponse != null &&
+                            model.ordersReportGroupByBrandResponse
+                                    ?.reportResultSet !=
+                                null &&
+                            model.ordersReportGroupByBrandResponse!
+                                .reportResultSet!.isNotEmpty)
+                          if (model.getOrderReportsGroupByBrandApiStatus ==
+                                  ApiStatus.FETCHED &&
+                              model.ordersReportGroupByBrandResponse != null &&
+                              model.ordersReportGroupByBrandResponse
+                                      ?.reportResultSet !=
+                                  null &&
+                              model.ordersReportGroupByBrandResponse!
+                                  .reportResultSet!.isNotEmpty)
+                            OptionsInput(
+                              hintText: labelSelectBrand,
+                              child: Center(
+                                child: AppDropDown<String>(
+                                  selectedOption: model.selectedBrand,
+                                  items: model.brandsList,
                                   onItemSelected: ({required String item}) {
-                                    model.selectedOrderStatus = item;
+                                    if (item == labelALL) {
+                                      model.selectedType = labelALL;
+                                    }
+                                    model.selectedBrand = item;
                                     model.getOrderReports();
                                     model.notifyListeners();
                                   },
-                                  hintText: 'Select Order Status'),
-                            ),
-                          ),
-                          if (model.getOrderReportsGroupByBrandApiStatus ==
-                                  ApiStatus.FETCHED &&
-                              model.ordersReportGroupByBrandResponse != null &&
-                              model.ordersReportGroupByBrandResponse
-                                      ?.reportResultSet !=
-                                  null &&
-                              model.ordersReportGroupByBrandResponse!
-                                  .reportResultSet!.isNotEmpty)
-                            wSizedBox(width: 16),
-                          if (model.getOrderReportsGroupByBrandApiStatus ==
-                                  ApiStatus.FETCHED &&
-                              model.ordersReportGroupByBrandResponse != null &&
-                              model.ordersReportGroupByBrandResponse
-                                      ?.reportResultSet !=
-                                  null &&
-                              model.ordersReportGroupByBrandResponse!
-                                  .reportResultSet!.isNotEmpty)
-                            OptionsInput.small(
-                              child: Center(
-                                child: AppDropDown<String>(
-                                    selectedOption: model.selectedBrand,
-                                    items: model.brandsList,
-                                    onItemSelected: ({required String item}) {
-                                      model.selectedBrand = item;
-                                      model.getOrderReports();
-                                      model.notifyListeners();
-                                    },
-                                    hintText: 'Select Brands'),
+                                  hintText: labelSelectBrand,
+                                ),
                               ),
                             ),
+                        if (model.getOrderReportsGroupByTypeApiStatus ==
+                                ApiStatus.FETCHED &&
+                            model.ordersReportGroupByTypeResponse != null &&
+                            model.ordersReportGroupByTypeResponse
+                                    ?.reportResultSet !=
+                                null &&
+                            model.ordersReportGroupByTypeResponse!
+                                .reportResultSet!.isNotEmpty)
                           if (model.getOrderReportsGroupByTypeApiStatus ==
                                   ApiStatus.FETCHED &&
                               model.ordersReportGroupByTypeResponse != null &&
@@ -165,30 +157,22 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                                   null &&
                               model.ordersReportGroupByTypeResponse!
                                   .reportResultSet!.isNotEmpty)
-                            wSizedBox(width: 16),
-                          if (model.getOrderReportsGroupByTypeApiStatus ==
-                                  ApiStatus.FETCHED &&
-                              model.ordersReportGroupByTypeResponse != null &&
-                              model.ordersReportGroupByTypeResponse
-                                      ?.reportResultSet !=
-                                  null &&
-                              model.ordersReportGroupByTypeResponse!
-                                  .reportResultSet!.isNotEmpty)
-                            OptionsInput.small(
+                            OptionsInput(
+                              hintText: labelSelectType,
                               child: Center(
                                 child: AppDropDown<String>(
-                                    selectedOption: model.selectedType,
-                                    items: model.typesList,
-                                    onItemSelected: ({required String item}) {
-                                      model.selectedType = item;
-                                      model.getOrderReports();
-                                      model.notifyListeners();
-                                    },
-                                    hintText: 'Select Type'),
+                                  selectedOption: model.selectedType,
+                                  items: model.typesList,
+                                  onItemSelected: ({required String item}) {
+                                    model.selectedType = item;
+                                    model.getOrderReports();
+                                    model.notifyListeners();
+                                  },
+                                  hintText: labelSelectType,
+                                ),
                               ),
                             ),
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),
@@ -199,15 +183,34 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                 ),
               ),
               SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Expanded(child: BrandReportWidget(), flex: 1),
-                    Expanded(child: TypeReportWidget(), flex: 1),
-                    Expanded(child: SubTypeReportWidget(), flex: 1),
-                  ],
-                ),
+                child: getValueForScreenType(
+                    context: context,
+                    mobile: getMobileViewOfbrandTypeSubtypeReport(
+                      context: context,
+                      model: model,
+                    ),
+                    tablet: getTabletViewOfbrandTypeSubtypeReport(
+                      context: context,
+                      model: model,
+                    ),
+                    desktop: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Expanded(
+                          child: BrandReportWidget(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: TypeReportWidget(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: SubTypeReportWidget(),
+                          flex: 1,
+                        ),
+                      ],
+                    )),
               ),
               SliverToBoxAdapter(
                 child: hSizedBox(
@@ -229,35 +232,113 @@ class _OrderReportsViewState extends State<OrderReportsView> {
       viewModelBuilder: () => OrderReportsViewModel(),
     );
   }
+
+  getMobileViewOfbrandTypeSubtypeReport({
+    required BuildContext context,
+    required OrderReportsViewModel model,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              child: const BrandReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(
+              child: const TypeReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(
+              child: const SubTypeReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  getTabletViewOfbrandTypeSubtypeReport({
+    required BuildContext context,
+    required OrderReportsViewModel model,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              child: const BrandReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            ),
+            SizedBox(
+              child: const TypeReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            ),
+            SizedBox(
+              child: const SubTypeReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class OrderReportsViewArgs {}
 
-const filterWidgetHeight = 60.0;
-
 class OptionsInput extends StatelessWidget {
+  final double filterWidgetHeight = 40.0;
+
   final Widget child;
   final double width;
+  final String hintText;
+  final EdgeInsets? padding;
   const OptionsInput({
     Key? key,
     required this.child,
-  })  : width = 500,
+    required this.hintText,
+  })  : width = 300,
+        padding = null,
         super(key: key);
 
-  const OptionsInput.small({
+  const OptionsInput.noRightPadding({
     Key? key,
     required this.child,
-  })  : width = 200,
+    required this.hintText,
+    this.padding = const EdgeInsets.only(
+      left: 16,
+      right: 2,
+      top: 2,
+      bottom: 2,
+    ),
+  })  : width = 300,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppContainerWidget(
-      child: SizedBox(
-        width: width,
-        height: filterWidgetHeight,
-        child: child,
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          hintText,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        AppContainerWidget(
+          padding: padding,
+          child: SizedBox(
+            width: width,
+            height: filterWidgetHeight,
+            child: child,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -9,6 +9,8 @@ abstract class ReportsApisAbstractClass {
     required String dateFrom,
     required String dateTo,
     required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
   });
 
   Future<OrdersReportResponse?> getOrdersReportGroupByBrands({
@@ -17,6 +19,8 @@ abstract class ReportsApisAbstractClass {
     required String dateFrom,
     required String dateTo,
     required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
   });
 
   Future<OrdersReportResponse?> getOrdersReportGroupByTypes({
@@ -25,6 +29,8 @@ abstract class ReportsApisAbstractClass {
     required String dateFrom,
     required String dateTo,
     required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
   });
 
   Future<OrdersReportResponse?> getOrdersReportGroupBySubTypes({
@@ -33,6 +39,8 @@ abstract class ReportsApisAbstractClass {
     required String dateFrom,
     required String dateTo,
     required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
   });
 }
 
@@ -45,6 +53,8 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
     required String dateTo,
     required String selectedOrderStatus,
     String? paramGroupBy,
+    String? selectedBrand,
+    String? selectedType,
   }) async {
     OrdersReportResponse? orderReportsApiResponse;
 
@@ -55,6 +65,8 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
       pageSize: pageSize,
       selectedOrderStatus: selectedOrderStatus,
       paramGroupBy: paramGroupBy,
+      selectedBrand: selectedBrand,
+      selectedType: selectedType,
     );
 
     if (filterResponse(apiResponse, showSnackBar: false) != null) {
@@ -67,12 +79,15 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupByBrands(
-      {required int pageNumber,
-      required int pageSize,
-      required String dateFrom,
-      required String dateTo,
-      required String selectedOrderStatus}) {
+  Future<OrdersReportResponse?> getOrdersReportGroupByBrands({
+    required int pageNumber,
+    required int pageSize,
+    required String dateFrom,
+    required String dateTo,
+    required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
+  }) {
     return getConsolidatedOrdersReport(
       pageNumber: pageNumber,
       pageSize: pageSize,
@@ -80,16 +95,21 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
       dateTo: dateTo,
       selectedOrderStatus: selectedOrderStatus,
       paramGroupBy: 'brand',
+      selectedBrand: selectedBrand,
+      selectedType: selectedType,
     );
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupBySubTypes(
-      {required int pageNumber,
-      required int pageSize,
-      required String dateFrom,
-      required String dateTo,
-      required String selectedOrderStatus}) {
+  Future<OrdersReportResponse?> getOrdersReportGroupBySubTypes({
+    required int pageNumber,
+    required int pageSize,
+    required String dateFrom,
+    required String dateTo,
+    required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
+  }) {
     return getConsolidatedOrdersReport(
       pageNumber: pageNumber,
       pageSize: pageSize,
@@ -97,16 +117,21 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
       dateTo: dateTo,
       selectedOrderStatus: selectedOrderStatus,
       paramGroupBy: 'subType',
+      selectedBrand: selectedBrand,
+      selectedType: selectedType,
     );
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupByTypes(
-      {required int pageNumber,
-      required int pageSize,
-      required String dateFrom,
-      required String dateTo,
-      required String selectedOrderStatus}) {
+  Future<OrdersReportResponse?> getOrdersReportGroupByTypes({
+    required int pageNumber,
+    required int pageSize,
+    required String dateFrom,
+    required String dateTo,
+    required String selectedOrderStatus,
+    String? selectedBrand,
+    String? selectedType,
+  }) {
     return getConsolidatedOrdersReport(
       pageNumber: pageNumber,
       pageSize: pageSize,
@@ -114,6 +139,8 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
       dateTo: dateTo,
       selectedOrderStatus: selectedOrderStatus,
       paramGroupBy: 'type',
+      selectedBrand: selectedBrand,
+      selectedType: selectedType,
     );
   }
 }

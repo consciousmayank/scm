@@ -13,86 +13,137 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
 
   @override
   Widget build(BuildContext context, OrderReportsViewModel viewModel) {
-    return Card(
-      elevation: Dimens().getDefaultElevation,
-      shape: Dimens().getCardShape(),
-      color: AppColors().white,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          8,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                ordersReportsGroupByTypeWidgetTitle,
-                style: Theme.of(context).textTheme.headline6,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const AppTableWidget.header(
-              values: [
-                AppTableSingleItem.string(
-                  'Name',
-                  flexValue: 2,
-                ),
-                AppTableSingleItem.string(
-                  'Qty',
-                ),
-                AppTableSingleItem.string(
-                  'Amnt',
-                ),
-              ],
-            ),
-            if (viewModel.ordersReportGroupByTypeResponse != null)
-              ...viewModel.ordersReportGroupByTypeResponse!.reportResultSet!
-                  .map(
-                    (singleValue) => AppTableWidget.values(
-                      values: [
-                        AppTableSingleItem.string(
-                          singleValue.itemType,
-                          flexValue: 2,
-                        ),
-                        AppTableSingleItem.int(
-                          singleValue.itemQuantity,
-                        ),
-                        AppTableSingleItem.int(
-                          singleValue.itemAmount,
-                        ),
-                      ],
+    return SizedBox(
+      height: Dimens().typeReportWidgetHeight,
+      child: Card(
+        elevation: Dimens().getDefaultElevation,
+        shape: Dimens().getCardShape(),
+        color: AppColors().white,
+        child: Padding(
+          padding: const EdgeInsets.all(
+            8,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      ordersReportsGroupByTypeWidgetTitle,
+                      style: Theme.of(context).textTheme.headline6,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
                     ),
-                  )
-                  .toList(),
-            if (viewModel.ordersReportGroupByTypeResponse != null)
-              AppTableWidget.values(
+                    Text(
+                      'Count : ${viewModel.ordersReportGroupByTypeResponse?.reportResultSet?.length}',
+                      style: Theme.of(context).textTheme.button,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+              const AppTableWidget.header(
                 values: [
                   AppTableSingleItem.string(
-                    'Grand Total',
-                    textAlignment: TextAlign.right,
-                    textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    '#',
+                    flexValue: 2,
+                    textAlignment: TextAlign.center,
+                  ),
+                  AppTableSingleItem.string(
+                    'Name',
+                    flexValue: 5,
+                  ),
+                  AppTableSingleItem.string(
+                    'Qty',
+                    textAlignment: TextAlign.end,
                     flexValue: 2,
                   ),
-                  AppTableSingleItem.int(
+                  AppTableSingleItem.string(
+                    'Amnt',
+                    textAlignment: TextAlign.end,
+                    flexValue: 3,
+                  ),
+                ],
+              ),
+              if (viewModel.ordersReportGroupByTypeResponse != null)
+                Expanded(
+                  child: ListView(
+                    children: viewModel
+                        .ordersReportGroupByTypeResponse!.reportResultSet!
+                        .map(
+                          (singleValue) => AppTableWidget.values(
+                            values: [
+                              AppTableSingleItem.int(
+                                  viewModel.ordersReportGroupByTypeResponse!
+                                      .reportResultSet!
+                                      .indexOf(singleValue),
+                                  flexValue: 2,
+                                  textAlignment: TextAlign.center),
+                              AppTableSingleItem.string(
+                                singleValue.itemType,
+                                flexValue: 5,
+                              ),
+                              AppTableSingleItem.int(
+                                singleValue.itemQuantity,
+                                textAlignment: TextAlign.end,
+                                flexValue: 2,
+                                formatNumber: true,
+                              ),
+                              AppTableSingleItem.double(
+                                singleValue.itemAmount,
+                                textAlignment: TextAlign.end,
+                                flexValue: 3,
+                                formatNumber: true,
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              if (viewModel.ordersReportGroupByTypeResponse != null)
+                AppTableWidget.values(
+                  values: [
+                    AppTableSingleItem.string(
+                      'Grand Total',
+                      textAlignment: TextAlign.right,
+                      textStyle:
+                          Theme.of(context).textTheme.bodyText1?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                      flexValue: 7,
+                    ),
+                    AppTableSingleItem.int(
                       viewModel.getGrandTotalOfOrdersQtyGroupByType(),
                       textStyle:
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
-                              )),
-                  AppTableSingleItem.double(
+                              ),
+                      textAlignment: TextAlign.end,
+                      formatNumber: true,
+                      flexValue: 2,
+                    ),
+                    AppTableSingleItem.double(
                       viewModel.getGrandTotalOfOrdersAmountGroupByType(),
                       textStyle:
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
-                              )),
-                ],
-              )
-          ],
+                              ),
+                      textAlignment: TextAlign.end,
+                      flexValue: 3,
+                      formatNumber: true,
+                    ),
+                  ],
+                )
+            ],
+          ),
         ),
       ),
     );

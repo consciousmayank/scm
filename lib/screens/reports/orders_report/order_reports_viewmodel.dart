@@ -7,6 +7,7 @@ import 'package:scm/model_classes/orders_report_response.dart';
 import 'package:scm/screens/reports/orders_report/order_report_view.dart';
 import 'package:scm/services/app_api_service_classes/reports_apis.dart';
 import 'package:scm/utils/date_time_converter.dart';
+import 'package:scm/utils/strings.dart';
 
 class OrderReportsViewModel extends GeneralisedBaseViewModel {
   late DateTimeRange dateTimeRange;
@@ -14,9 +15,9 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   int pageSize = 15;
   String? selectedOrderStatus, selectedBrand, selectedType;
   List<String> orderStatuses = [
-    OrderStatusTypes.CREATED.apiToAppTitles,
-    OrderStatusTypes.INTRANSIT.apiToAppTitles,
     OrderStatusTypes.DELIVERED.apiToAppTitles,
+    OrderStatusTypes.INTRANSIT.apiToAppTitles,
+    OrderStatusTypes.CREATED.apiToAppTitles,
   ];
   final ReportsApi _reportsApi = locator<ReportsApi>();
   ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
@@ -31,15 +32,25 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   List<String> typesList = [];
 
   init({required OrderReportsViewArgs args}) {
-    dateTimeRange = DateTimeRange(
-      end: DateTime.now(),
-      start: DateTime.now().subtract(
-        const Duration(
-          days: 30,
-        ),
-      ),
-    );
+    DateTime currentDate = DateTime.now();
+
+    if (currentDate.day == 1) {
+      //today is first of the month. so we need to get last month's first day as start date and last month's last day as end date
+      dateTimeRange = DateTimeRange(
+        start: DateTime(currentDate.year, currentDate.month - 1, 1),
+        end: DateTime(currentDate.year, currentDate.month, 0),
+      );
+    } else {
+      //today is not first of the month. so we need to get this month's first day as start date and today's date as end date
+      dateTimeRange = DateTimeRange(
+        start: DateTime(currentDate.year, currentDate.month, 1),
+        end: DateTime(currentDate.year, currentDate.month, currentDate.day),
+      );
+    }
+
     selectedOrderStatus = orderStatuses.first;
+    selectedBrand = labelALL;
+    selectedType = labelALL;
     getOrderReports();
   }
 
@@ -55,6 +66,8 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
         date: dateTimeRange.end,
       ).convert(),
       selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+      selectedType: selectedType == labelALL ? null : selectedType,
     );
 
     getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
@@ -70,6 +83,8 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
         date: dateTimeRange.end,
       ).convert(),
       selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+      selectedType: selectedType == labelALL ? null : selectedType,
     );
 
     ordersReportGroupByTypeResponse =
@@ -83,6 +98,8 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
         date: dateTimeRange.end,
       ).convert(),
       selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+      selectedType: selectedType == labelALL ? null : selectedType,
     );
 
     ordersReportGroupBySubTypeResponse =
@@ -96,6 +113,8 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
         date: dateTimeRange.end,
       ).convert(),
       selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+      selectedType: selectedType == labelALL ? null : selectedType,
     );
 
     getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
@@ -119,6 +138,36 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
     getOrderReports();
   }
 
+  void updateStartDateInDateRange(DateTime newDateTime) {
+    dateTimeRange = DateTimeRange(
+      end: dateTimeRange.end,
+      start: newDateTime,
+    );
+    notifyListeners();
+    getOrderReports();
+  }
+
+  void updateEndDateInDateRange(DateTime newDateTime) {
+    dateTimeRange = DateTimeRange(
+      end: newDateTime,
+      start: dateTimeRange.start,
+    );
+    notifyListeners();
+    getOrderReports();
+  }
+
+  String getToDateText() {
+    return DateTimeToStringConverter.ddMMMMyyyy(
+      date: dateTimeRange.end,
+    ).convert();
+  }
+
+  String getFromDateText() {
+    return DateTimeToStringConverter.ddMMMMyyyy(
+      date: dateTimeRange.start,
+    ).convert();
+  }
+
   String getDateText() {
     if (dateTimeRange.start == dateTimeRange.end) {
       return DateTimeToStringConverter.ddMMMMyy(
@@ -140,9 +189,12 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
     } else if (ordersReportGroupByBrandResponse!.reportResultSet!.isEmpty) {
       return [];
     } else {
-      return ordersReportGroupByBrandResponse!.reportResultSet!
+      List<String> brandList = [];
+      brandList = ordersReportGroupByBrandResponse!.reportResultSet!
           .map((e) => e.itemBrand ?? '-')
           .toList();
+      brandList.insert(0, labelALL);
+      return brandList;
     }
   }
 
@@ -153,9 +205,12 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
     } else if (ordersReportGroupByTypeResponse!.reportResultSet!.isEmpty) {
       return [];
     } else {
-      return ordersReportGroupByTypeResponse!.reportResultSet!
+      List<String> typeList = [];
+      typeList = ordersReportGroupByTypeResponse!.reportResultSet!
           .map((e) => e.itemType ?? '-')
           .toList();
+      typeList.insert(0, labelALL);
+      return typeList;
     }
   }
 

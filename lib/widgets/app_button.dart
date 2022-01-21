@@ -4,7 +4,7 @@ import 'package:scm/app/image_config.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class AppButton extends StatefulWidget {
-  final String title;
+  final String? title;
   final bool disabled;
   final void Function()? onTap;
   final bool outline;
@@ -38,7 +38,7 @@ class AppButton extends StatefulWidget {
 
   const AppButton.outline({
     Key? key,
-    required this.title,
+    this.title,
     this.onTap,
     this.leading,
     this.suffix,
@@ -103,14 +103,16 @@ class _AppButtonState extends State<AppButton> {
                 children: [
                   if (widget.leading != null) widget.leading!,
                   if (widget.leading != null) SizedBox(width: 5),
-                  Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight:
-                              hover ? FontWeight.w800 : FontWeight.normal,
-                          color: !widget.outline ? Colors.black : Colors.black,
-                        ),
-                  ),
+                  if (widget.title != null)
+                    Text(
+                      widget.title!,
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            fontWeight:
+                                hover ? FontWeight.w800 : FontWeight.normal,
+                            color:
+                                !widget.outline ? Colors.black : Colors.black,
+                          ),
+                    ),
                   if (widget.suffix != null) SizedBox(width: 5),
                   if (widget.suffix != null) widget.suffix!,
                 ],

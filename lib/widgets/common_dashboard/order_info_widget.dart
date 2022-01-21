@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
@@ -37,7 +38,8 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
           )
         : SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: getValueForScreenType(
+                  context: context, mobile: 1, tablet: 2, desktop: 3),
               crossAxisSpacing: 1.0,
               mainAxisSpacing: 1.0,
               mainAxisExtent: Dimens().orderInfoTilesHeight,
