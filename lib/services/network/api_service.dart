@@ -1363,6 +1363,22 @@ class ApiService {
     }
   }
 
+  Future<ParentApiResponse> getSupplierDetails(
+      {required int supplierId}) async {
+    Response? response;
+    DioError? error;
+    try {
+      response = await dioClient.getDio().get(
+            SUPPLIER_DETAILS(supplierId: supplierId),
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
   Future<ParentApiResponse> getSuppliersList({
     required int pageNumber,
     required int pageSize,

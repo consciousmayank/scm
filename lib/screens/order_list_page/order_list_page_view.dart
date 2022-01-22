@@ -32,7 +32,6 @@ class OrderListPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("SelectedOrderId :: ${arguments.selectedOrder?.id}");
     return ViewModelBuilder<OrderListPageViewModel>.reactive(
       onModelReady: (model) => model.init(arguments),
       builder: (context, model, child) => Scaffold(
@@ -53,6 +52,7 @@ class OrderListPageView extends StatelessWidget {
                                 index: model.indexForList,
                                 children: [
                                   OrderListWidget.orderPage(
+                                    numberOfOrders: model.orderList.totalItems,
                                     selectedOrdersDurationType:
                                         model.selectedOrderDuration,
                                     key: UniqueKey(),
@@ -84,11 +84,10 @@ class OrderListPageView extends StatelessWidget {
                                     pageNumber: model.pageNumber,
                                     totalPages: model.orderList.totalPages! - 1,
                                     selectedOrderStatus:
-                                        arguments.selectedOrder != null
-                                            ? arguments.preDefinedOrderStatus
-                                            : model.selectedOrderStatus,
-                                    onOrderStatusClick: (
-                                        {required String selectedOrderStatus}) {
+                                        model.selectedOrderStatus,
+                                    onOrderStatusClick: ({
+                                      required String selectedOrderStatus,
+                                    }) {
                                       model.openOrderListFilters();
                                     },
                                     // orderStatuses: model.getInAppOrderStatusList(),

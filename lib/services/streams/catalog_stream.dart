@@ -11,12 +11,15 @@ class CatalogStream {
   StreamController get controller => catalogController;
 
   void addToStream(CatalogItems data) {
-    loggedInSupplerCatalogItemsList.add(data);
-    controller.add(data);
+    if (!loggedInSupplerCatalogItemsList.contains(data)) {
+      loggedInSupplerCatalogItemsList.add(data);
+      controller.add(data);
+    }
   }
 
   void removeFromStream(CatalogItems data) {
-    loggedInSupplerCatalogItemsList.remove(data);
+    loggedInSupplerCatalogItemsList
+        .removeWhere((element) => element.productId == data.productId);
     controller.add(data);
   }
 

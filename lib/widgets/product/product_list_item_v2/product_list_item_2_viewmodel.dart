@@ -1,9 +1,11 @@
 import 'package:scm/app/di.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/update_product_api_type.dart';
+import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/services/app_api_service_classes/supplier_catalog_apis.dart';
+import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/services/streams/catalog_stream.dart';
 import 'package:scm/utils/strings.dart';
@@ -134,16 +136,16 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     setBusy(false);
 
     if (response.isSuccessful()) {
+      _catalogStream.addToStream(
+        CatalogItems(
+          productId: productId,
+          productTitle: productTitle,
+        ),
+      );
       if (response.message == addedProductToCatalogServerMEssage) {
         showInfoSnackBar(
             message: addedProductToCatalogServerMEssage,
             secondsToShowSnackBar: 1);
-        _catalogStream.addToStream(
-          CatalogItems(
-            productId: productId,
-            productTitle: productTitle,
-          ),
-        );
       } else {
         showInfoSnackBar(
             message: addedProductToCatalog(
@@ -158,6 +160,7 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
         ),
       );
     }
+    notifyListeners();
   }
 
   Future removeProductFromCatalog({
@@ -173,6 +176,12 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     setBusy(false);
 
     if (response.isSuccessful()) {
+      _catalogStream.removeFromStream(
+        CatalogItems(
+          productId: productId,
+          productTitle: productTitle,
+        ),
+      );
       showInfoSnackBar(
           message: removeProductToCatalog(
             productTitle: productTitle,
@@ -251,14 +260,20 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
 
     bool returningValue = false;
 
-    _catalogStream.loggedInSupplerCatalogItemsList.forEach((element) {
+    for (var element in _catalogStream.loggedInSupplerCatalogItemsList) {
       if (element.productId == productId) {
         returningValue = true;
         catalogItem = element;
         notifyListeners();
       }
-    });
+    }
 
     return returningValue;
+  }
+
+  final preferences = locator<AppPreferencesService>();
+  bool isSupplier() {
+    return preferences.getSelectedUserRole() ==
+        AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;
   }
 }

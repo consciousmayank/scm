@@ -34,7 +34,7 @@ class ProcessingItemsListTable extends StatelessWidget {
     return Form(
       child: Container(
         padding: const EdgeInsets.all(
-          8,
+          16,
         ),
         decoration: BoxDecoration(
           color: isHeader

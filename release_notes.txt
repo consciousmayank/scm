@@ -1,5 +1,22 @@
 In this build following was done.
 
+Saturday 22 January 2022
+    - Fixed following bugs.
+        - Remove button is inconsistent in product.
+        - Add to cart button is not working as expected. the update and remove button are not getting visible.
+        - when taking to order page, from order tiles, the applied orderstatus is getting updated/reset.
+        - order status is keeping on ALL, in ui.
+        - under process products if price is 0, the flow is going fwd, in orders having multiple items.
+        - DEMAND.
+        - Do not allow to update orders under processing for demanders.
+        - In cart page, supplier details are not showing, still the api is in place.
+        - show a message on successful change password.
+        - order count in order page, new ui from mobile.
+        - order count in order list, and ui as per whatsapp 
+        - show serial number in every table.
+        - make all the numbers right aligned.
+        - show confirmation dialog after successful password change.
+
 Monday, 10 January, 2022
     - When logged in as a 
         - Demander => 

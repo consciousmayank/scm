@@ -10,12 +10,17 @@ import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/model_classes/post_order_request.dart';
+import 'package:scm/model_classes/suppliers_list_response.dart';
 import 'package:scm/services/network/base_api.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/utils/utils.dart';
 
 abstract class CommonDashBoardApisAbstractClass {
   Future<CommonDashboardOrderInfo> getOrderInfo();
+
+  Future<Supplier> getSupplierDetails({
+    required int supplierId,
+  });
 
   Future<List<CommonDashboardOrderedBrands>> getOrderedBrands(
       {required int pageSize});
@@ -273,5 +278,20 @@ class CommonDashBoardApis extends BaseApi
           OrderSummaryResponse.fromMap(apiResponse.response?.data);
     }
     return updateOrderResponse;
+  }
+
+  @override
+  Future<Supplier> getSupplierDetails({required int supplierId}) async {
+    Supplier returningSupplierDetails = Supplier().empty();
+    ParentApiResponse apiResponse =
+        await apiService.getSupplierDetails(supplierId: supplierId);
+    if (filterResponse(
+          apiResponse,
+          showSnackBar: false,
+        ) !=
+        null) {
+      returningSupplierDetails = Supplier.fromMap(apiResponse.response?.data);
+    }
+    return returningSupplierDetails;
   }
 }

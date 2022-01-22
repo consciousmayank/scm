@@ -93,9 +93,11 @@ class OrderPorcessButtonsWidget
           child: buildOrderButtons(
             buttonText: 'Continue',
             onTap: () {
+              bool isValid = true;
+
               for (var element in viewModel.orderDetails.orderItems!) {
                 int index = viewModel.orderDetails.orderItems!.indexOf(element);
-                if (element.itemQuantity == 0) {
+                if (element.itemQuantity != null && element.itemQuantity! < 1) {
                   viewModel.showErrorSnackBar(
                       message: errorQuantityRequired,
                       onSnackBarOkButton: () {
@@ -103,7 +105,10 @@ class OrderPorcessButtonsWidget
                             .elementAt(index)
                             .requestFocus();
                       });
-                } else if (element.itemPrice == 0) {
+                  isValid = false;
+                  break;
+                } else if (element.itemPrice != null &&
+                    element.itemPrice! < 1) {
                   viewModel.showErrorSnackBar(
                       message: errorPriceRequired,
                       onSnackBarOkButton: () {
@@ -111,9 +116,15 @@ class OrderPorcessButtonsWidget
                             .elementAt(index)
                             .requestFocus();
                       });
+                  isValid = false;
+                  break;
                 } else {
-                  viewModel.updateOrder();
+                  isValid = true;
                 }
+              }
+
+              if (isValid) {
+                viewModel.updateOrder();
               }
             },
           ),

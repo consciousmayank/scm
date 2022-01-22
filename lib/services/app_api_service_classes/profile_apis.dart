@@ -1,12 +1,18 @@
+import 'package:scm/app/di.dart';
 import 'package:scm/enums/profile_api_operations_type.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/parent_api_response.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/supply_profile_response.dart';
 import 'package:scm/model_classes/user_authenticate_response.dart';
 import 'package:scm/services/network/base_api.dart';
+import 'package:scm/services/streams/catalog_stream.dart';
 
 abstract class ProfileApis {
   Future<SupplyProfileResponse?> getSupplierProfile();
+  Future<void> getCatalog({
+    required int supplierId,
+  });
 
   Future<ApiResponse?> updateBusinessName(
       {required String businessNameJsonBody});
@@ -28,6 +34,7 @@ abstract class ProfileApis {
 }
 
 class ProfileApisImpl extends BaseApi implements ProfileApis {
+  final CatalogStream _catalogStream = locator<CatalogStream>();
   @override
   Future<SupplyProfileResponse?> getSupplierProfile() async {
     SupplyProfileResponse? profileResponse;
@@ -148,18 +155,52 @@ class ProfileApisImpl extends BaseApi implements ProfileApis {
     return updateFcmIdResponse;
   }
 
-  // @override
-  // Future<ApiResponse?>? updateViewProfileImage({required XFile files}) async {
-  //   ApiResponse? updateProfile;
-  //   ParentApiResponse? apiResponse =
-  //       await apiService.updateViewProfileImage(files: files);
-  //   if (filterResponse(apiResponse, showSnackBar: false) != null) {
-  //     updateProfile = ApiResponse.fromMap(apiResponse.response?.data);
-  //   }
-  //   if (updateProfile != null) {
-  //     return updateProfile;
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  @override
+  Future<void> getCatalog({
+    required int supplierId,
+  }) async {
+    int pageNumber = 0;
+
+    ProductListResponse? productList = ProductListResponse().empty();
+
+    ParentApiResponse apiResponse = await getProducts(
+      pageNumber: pageNumber,
+      supplierId: supplierId,
+    );
+
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      productList = ProductListResponse.fromMap(apiResponse.response!.data);
+    }
+
+    for (var element in productList.products!) {
+      _catalogStream.addToStream(
+        CatalogItems(
+          productId: element.id!,
+          productTitle: element.title!,
+        ),
+      );
+    }
+
+    if (productList.totalItems! > _catalogStream.getCatalog.length) {
+      getCatalog(
+        supplierId: supplierId,
+      );
+    }
+  }
+
+  Future<ParentApiResponse> getProducts({
+    required int pageNumber,
+    required int supplierId,
+  }) async {
+    return await apiService.getProductList(
+      brandsFilterList: [],
+      categoryFilterList: [],
+      productTitle: '',
+      subCategoryFilterList: [],
+      pageIndex: pageNumber,
+      supplierId: supplierId,
+      size: 50,
+      isSupplierCatalog: true,
+    );
+  }
 }

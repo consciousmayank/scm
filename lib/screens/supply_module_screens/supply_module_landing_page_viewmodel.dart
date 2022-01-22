@@ -44,6 +44,8 @@ class SupplyModuleLandingPageViewModel
       profileApiStatus = ApiStatus.FETCHED;
       notifyListeners();
     }
+
+    getCatalogProducts();
   }
 
   actionPopUpItemSelected({String? selectedValue}) {
@@ -78,6 +80,16 @@ class SupplyModuleLandingPageViewModel
       ),
       barrierDismissible: true,
     );
+
+    if (changePasswordDialogResponse != null &&
+        changePasswordDialogResponse.confirmed) {
+      await dialogService.showDialog(
+        title: passwordChangedTitle,
+        description: passwordChangedDescription,
+        buttonTitle: labelOk,
+        dialogPlatform: DialogPlatform.Material,
+      );
+    }
   }
 
   String selectedOptionTitle() {
@@ -162,5 +174,13 @@ class SupplyModuleLandingPageViewModel
   void clearSearch() {
     showProductList = false;
     notifyListeners();
+  }
+
+  void getCatalogProducts() async {
+    if (supplyProfileResponse != null && supplyProfileResponse!.id != null) {
+      await _profileApis.getCatalog(
+        supplierId: supplyProfileResponse!.id!,
+      );
+    }
   }
 }

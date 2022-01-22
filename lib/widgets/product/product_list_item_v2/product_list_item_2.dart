@@ -125,27 +125,38 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                               Expanded(
                                 child: widget.arguments.isForCatalog
                                     ? const RemoveProductWidget()
-                                    : model.isProductInCart(
+                                    : model.isSupplier()
+                                        //check if product is in catalog
+
+                                        ? model.isProductInCatalog(
                                             productId:
-                                                widget.arguments.product?.id)
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const Flexible(
-                                                child: RemoveProductWidget(
-                                                  reverseStyle: true,
-                                                ),
-                                                flex: 1,
-                                              ),
-                                              wSizedBox(width: 4),
-                                              const Flexible(
-                                                child: UpdateProductWidget(),
-                                                flex: 1,
-                                              ),
-                                            ],
+                                                widget.arguments.product?.id,
                                           )
-                                        : const AddProductWidget(),
+                                            ? const RemoveProductWidget()
+                                            : const AddProductWidget()
+                                        : model.isProductInCart(
+                                                productId: widget
+                                                    .arguments.product?.id)
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  const Flexible(
+                                                    child: RemoveProductWidget(
+                                                      reverseStyle: true,
+                                                    ),
+                                                    flex: 1,
+                                                  ),
+                                                  wSizedBox(width: 4),
+                                                  const Flexible(
+                                                    child:
+                                                        UpdateProductWidget(),
+                                                    flex: 1,
+                                                  ),
+                                                ],
+                                              )
+                                            : const AddProductWidget(),
                                 flex: 1,
                               ),
                             ],
@@ -222,7 +233,7 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return AppButton(
+    return AppButton.outline(
       onTap: viewModel.onRemoveButtonClick,
       title: 'Remove',
     );

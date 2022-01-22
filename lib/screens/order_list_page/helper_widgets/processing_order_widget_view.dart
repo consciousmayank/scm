@@ -9,11 +9,11 @@ import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.
 import 'package:scm/screens/order_list_page/helper_widgets/processing_items_list_table.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/quantity_input_widget.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
+import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 
 class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
   const ProcessingOrderWidget({
@@ -77,6 +77,8 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
           ),
           OrderItemContainerWidget(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 OrderItemRowWidget.noValueWithLabelStyle(
                   label: 'Summary',
@@ -91,8 +93,19 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                 ),
                 OrderItemRowWidget.customPadding(
                   padding: const EdgeInsets.all(0),
-                  label: 'Total Amount',
-                  value: '${viewModel.orderDetails.totalAmount}',
+                  label: 'Ordered By',
+                  value: viewModel.isSupplier()
+                      ? '${viewModel.orderDetails.demandBusinessName}'
+                      : '${viewModel.orderDetails.supplyBusinessName}',
+                ),
+                OrderItemRowWidget.customPadding(
+                  padding: const EdgeInsets.all(0),
+                  label: 'Placed On',
+                  value: DateTimeToStringConverter.ddMMMMyyyyhhmmssaa(
+                    date: StringToDateTimeConverter.ddmmyyhhmmss24Hr(
+                            date: viewModel.orderDetails.createDateTime ?? '')
+                        .convert(),
+                  ).convert(),
                 ),
                 OrderItemRowWidget.customPadding(
                   padding: const EdgeInsets.all(0),
@@ -101,16 +114,9 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                 ),
                 OrderItemRowWidget.customPadding(
                   padding: const EdgeInsets.all(0),
-                  label: 'Placed On',
-                  value: '${viewModel.orderDetails.createDateTime}',
+                  label: 'Total Amount',
+                  value: '${viewModel.orderDetails.totalAmount}',
                 ),
-                OrderItemRowWidget.customPadding(
-                  padding: const EdgeInsets.all(0),
-                  label: 'Ordered By',
-                  value: viewModel.isSupplier()
-                      ? '${viewModel.orderDetails.demandBusinessName}'
-                      : '${viewModel.orderDetails.supplyBusinessName}',
-                )
               ],
             ),
           ),
@@ -166,7 +172,7 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                         return ProcessingItemsListTable.normal(
                           values: [
                             Text(
-                              '$index',
+                              '${index + 1}',
                               textAlign: TextAlign.center,
                             ),
                             Text(
@@ -195,8 +201,10 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(right: 4),
-                              child: viewModel.orderDetails.status ==
-                                      OrderStatusTypes.PROCESSING.apiToAppTitles
+                              child: viewModel.isSupplier() &&
+                                      viewModel.orderDetails.status ==
+                                          OrderStatusTypes
+                                              .PROCESSING.apiToAppTitles
                                   ? QuantityWidget(
                                       focusNode: viewModel
                                           .quantityEditingFocusnodes
@@ -226,8 +234,10 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 4),
-                              child: viewModel.orderDetails.status ==
-                                      OrderStatusTypes.PROCESSING.apiToAppTitles
+                              child: viewModel.isSupplier() &&
+                                      viewModel.orderDetails.status ==
+                                          OrderStatusTypes
+                                              .PROCESSING.apiToAppTitles
                                   ? PriceWidget(
                                       focusNode: viewModel
                                           .priceEditingFocusnodes
@@ -254,8 +264,10 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                                       textAlign: TextAlign.center,
                                     ),
                             ),
-                            viewModel.orderDetails.status ==
-                                    OrderStatusTypes.PROCESSING.apiToAppTitles
+                            viewModel.isSupplier() &&
+                                    viewModel.orderDetails.status ==
+                                        OrderStatusTypes
+                                            .PROCESSING.apiToAppTitles
                                 ? Padding(
                                     padding: const EdgeInsets.only(
                                       left: 4,

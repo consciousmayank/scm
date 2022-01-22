@@ -58,7 +58,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                   (singleBrand) =>
                                       TopOrderedBrandsCategoryTable.values(
                                     values: [
-                                      '${viewModel.orderedTypes.indexOf(singleBrand)}',
+                                      '${viewModel.orderedTypes.indexOf(singleBrand) + 1}',
                                       '${singleBrand.type}',
                                       '${singleBrand.count}',
                                     ],

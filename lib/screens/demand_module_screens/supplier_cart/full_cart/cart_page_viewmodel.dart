@@ -35,39 +35,30 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
   init() {
+    supplierName = '';
     getCartItems();
     getDemadersAddressList();
   }
 
-  // void getSupplierName({
-  //   required String supplierId,
-  // }) async {
-  //   setBusy(true);
-
-  //   // SuppliersListResponse suppliersListResponse =
-  //   //     await _suppliersListApi.getSuppliersList(
-  //   //   pageNumber: pageNumber,
-  //   //   pageSize: pageSize,
-  //   //   title: supplierTitle,
-  //   //   type: supplierType,
-  //   // );
-
-  //   // if (suppliersListResponse.suppliers!.isNotEmpty) {
-  //   //   selectedSupplier = suppliersListResponse.suppliers!.first;
-  //   // } else {
-  //   //   selectedSupplier = null;
-  //   // }
-
-  //   setBusy(false);
-  //   notifyListeners();
-  // }
+  void getSupplierDetails() async {
+    setBusy(true);
+    Supplier response = await _commonDashBoardApis.getSupplierDetails(
+      supplierId: cart.supplyId!,
+    );
+    setBusy(false);
+    supplierName = response.businessName;
+  }
 
   void getCartItems() async {
     cart = await _demandCartApi.getCart();
+    cart.supplyId;
     addToCartObject = AddToCart(
       supplierId: cart.supplyId!,
     );
 
+    if (cart.supplyId != null) {
+      getSupplierDetails();
+    }
     cartApiStatus = ApiStatus.FETCHED;
     notifyListeners();
   }

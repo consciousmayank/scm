@@ -232,13 +232,12 @@ const String orderFiltersTitle = 'Select Filter';
 const String orderFiltersStatusOptionLabel = 'Order Status';
 const String orderFiltersDurationOptionLabel = 'Duration';
 const String orderFiltersDurationDateLabel = 'Select Date Range';
-orderListSubtitleLabel({required String duration, required String status}) =>
-    'For $duration : Order Status $status';
-orderListSubtitleLabelWithDates(
-        {required String fromDate,
-        required String toDate,
-        required String status}) =>
-    'From $fromDate to $toDate : Order Status $status';
+orderListSubtitleLabel({required String duration}) => 'For $duration';
+orderListSubtitleLabelWithDates({
+  required String fromDate,
+  required String toDate,
+}) =>
+    'From $fromDate to $toDate';
 const String optionOrderReportTitle = 'Order Report';
 const String optionOrderReportSubTitle =
     'A Consolidated Report of all your orders';
@@ -255,3 +254,7 @@ const String labelALL = 'ALL';
 const String labelQuantity = 'Quantity';
 const String labelAmount = 'Amount';
 const String labelItemCode = 'Item Code';
+const String passwordChangedTitle = 'Password Changed';
+const String passwordChangedDescription =
+    'Your password has been changed successfully';
+const String labelOk = 'Ok';

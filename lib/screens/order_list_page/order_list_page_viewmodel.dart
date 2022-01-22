@@ -40,7 +40,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   List<TextEditingController> quantityEditingControllers = [];
   List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
-  String selectedOrderStatus = 'ALL';
+  late String selectedOrderStatus;
   late DateTimeRange dateTimeRange;
 
   final CommonDashBoardApis _commonDashBoardApis =
@@ -86,6 +86,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     } else {
       getOrdersDetails(orderId: arguments.orderId.toString());
     }
+    log.wtf(selectedOrderStatus);
   }
 
   getOrderList() async {
@@ -261,7 +262,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       );
     });
 
-    selectedOrderStatus = orderStatusList.first;
     setBusy(false);
   }
 

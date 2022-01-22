@@ -20,6 +20,12 @@ class StringToDateTimeConverter {
     format = 'dd-MM-yyyy hh:mm:ss';
   }
 
+  StringToDateTimeConverter.ddmmyyhhmmss24Hr({
+    required this.date,
+  }) {
+    format = 'dd-MM-yyyy H:m:ss';
+  }
+
   StringToDateTimeConverter.ddmmyyhhmmssaa({
     required this.date,
   }) {
@@ -59,6 +65,12 @@ class DateTimeToStringConverter {
     required this.date,
   }) {
     format = 'dd-MMMM-yyyy';
+  }
+
+  DateTimeToStringConverter.ddMMMMyyyyhhmmssaa({
+    required this.date,
+  }) {
+    format = 'dd-MMMM-yyyy, hh:mm aa';
   }
 
   DateTimeToStringConverter.ddmmmyy({

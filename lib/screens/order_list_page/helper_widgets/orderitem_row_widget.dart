@@ -6,9 +6,9 @@ class OrderItemRowWidget extends StatelessWidget {
     Key? key,
     required this.label,
     required this.value,
-  })  : labelStyle = labelTextStyle,
-        valueStyle = valueTextStyle,
-        noValue = false,
+    this.labelStyle,
+    this.valueStyle,
+  })  : noValue = false,
         padding = const EdgeInsets.all(8.0),
         super(key: key);
 
@@ -17,9 +17,9 @@ class OrderItemRowWidget extends StatelessWidget {
     required this.label,
     required this.value,
     required this.padding,
-  })  : labelStyle = labelTextStyle,
-        valueStyle = valueTextStyle,
-        noValue = false,
+    this.labelStyle,
+    this.valueStyle,
+  })  : noValue = false,
         super(key: key);
 
   const OrderItemRowWidget.noValueWithLabelStyle({
@@ -29,20 +29,20 @@ class OrderItemRowWidget extends StatelessWidget {
   })  : value = '',
         padding = const EdgeInsets.all(0.0),
         noValue = true,
-        valueStyle = valueTextStyle,
+        valueStyle = null,
         super(key: key);
 
-  static const TextStyle labelTextStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    color: Colors.black,
-  );
+  // static const TextStyle labelTextStyle = TextStyle(
+  //   fontSize: 16,
+  //   fontWeight: FontWeight.w500,
+  //   color: Colors.black,
+  // );
 
-  static const TextStyle valueTextStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-    color: Colors.black,
-  );
+  // static const TextStyle valueTextStyle = TextStyle(
+  //   fontSize: 14,
+  //   fontWeight: FontWeight.w600,
+  //   color: Colors.black,
+  // );
 
   final bool noValue;
   final EdgeInsets padding;
@@ -60,7 +60,7 @@ class OrderItemRowWidget extends StatelessWidget {
             stringValue: label,
             maxLines: 2,
             textStyle: labelStyle ??
-                Theme.of(context).textTheme.bodyText1!.copyWith(
+                Theme.of(context).textTheme.button!.copyWith(
                       fontWeight: FontWeight.normal,
                     ),
           ),
@@ -68,10 +68,8 @@ class OrderItemRowWidget extends StatelessWidget {
               ? Container()
               : NullableTextWidget(
                   stringValue: value,
-                  textStyle: valueStyle ??
-                      Theme.of(context).textTheme.bodyText1!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                  textStyle:
+                      valueStyle ?? Theme.of(context).textTheme.bodyText2,
                 ),
         ],
       ),

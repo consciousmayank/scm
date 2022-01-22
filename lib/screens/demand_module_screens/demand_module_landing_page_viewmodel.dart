@@ -74,6 +74,16 @@ class DemandModuleLandingPageViewModel
       ),
       barrierDismissible: true,
     );
+
+    if (changePasswordDialogResponse != null &&
+        changePasswordDialogResponse.confirmed) {
+      await dialogService.showDialog(
+        title: passwordChangedTitle,
+        description: passwordChangedDescription,
+        buttonTitle: labelOk,
+        dialogPlatform: DialogPlatform.Material,
+      );
+    }
   }
 
   getSelectedView() {
