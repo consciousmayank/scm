@@ -23,6 +23,7 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
   late Cart cartData;
   late CartItem cartItem;
   late CatalogItems catalogItem;
+  final preferences = locator<AppPreferencesService>();
   SnackbarService snackBarService = locator<SnackbarService>();
 
   final SupplierCatalogApis _catalogApis = locator<SupplierCatalogApis>();
@@ -271,7 +272,6 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     return returningValue;
   }
 
-  final preferences = locator<AppPreferencesService>();
   bool isSupplier() {
     return preferences.getSelectedUserRole() ==
         AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;

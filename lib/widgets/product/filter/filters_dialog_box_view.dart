@@ -73,13 +73,13 @@ class ProductFilterDialogBoxViewArguments {
     this.isSupplierCatalog = false,
   });
 
+  final bool isSupplierCatalog;
   final String? searchProductTitle;
   final List<String?>? selectedBrand;
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
   final int? supplierId;
   final String title;
-  final bool isSupplierCatalog;
 }
 
 class ProductFilterDialogBoxViewOutputArgs {

@@ -22,12 +22,14 @@ import 'package:scm/widgets/product/product_details/product_detail_dialog_box_vi
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
-  final log = getLogger('OrderListPageViewModel');
-
   late final OrderListPageViewArguments args;
+  late DateTimeRange dateTimeRange;
+  int indexForList = 0;
+  final log = getLogger('OrderListPageViewModel');
   // late final TextEditingController toDateController;
   // late final TextEditingController fromDateController;
   OrderSummaryResponse orderDetails = OrderSummaryResponse().empty();
+
   ApiStatus orderDetailsApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
   ApiStatus orderListApi = ApiStatus.LOADING;
@@ -40,8 +42,10 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   List<TextEditingController> quantityEditingControllers = [];
   List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
+  OrderFiltersDurationType selectedOrderDuration =
+      OrderFiltersDurationType.LAST_30_DAYS;
+
   late String selectedOrderStatus;
-  late DateTimeRange dateTimeRange;
 
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
@@ -366,10 +370,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     return order;
   }
-
-  OrderFiltersDurationType selectedOrderDuration =
-      OrderFiltersDurationType.LAST_30_DAYS;
-  int indexForList = 0;
 
   void openOrderListFilters() async {
     indexForList = 1;

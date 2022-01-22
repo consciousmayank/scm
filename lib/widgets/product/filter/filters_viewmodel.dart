@@ -15,7 +15,6 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
-
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';
@@ -36,11 +35,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
   String? _brandTitle;
   final ProductBrandsApis _brandsApis = locator<ProductBrandsApiImpl>();
-  final ProductCategoriesApis _productCategoriesApis =
-      locator<ProductCategoriesApiImpl>();
-  final ProductSubCategoriesApis _subCategoriesApis =
-      locator<ProductSubCategoriesApisImpl>();
-
   List<BrandsForFilter>? _brandsForFilterList = [];
   List<String>? _brandsList;
   ProductBrandsResponse? _brandsResponse;
@@ -50,8 +44,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<String?>? _checkedBrandsList = [];
   List<String?>? _checkedCategoriesList = [];
   List<String?>? _checkedSubCategoriesList = [];
+  final ProductCategoriesApis _productCategoriesApis =
+      locator<ProductCategoriesApiImpl>();
 
   List<String>? _productCategoriesList;
+  final ProductSubCategoriesApis _subCategoriesApis =
+      locator<ProductSubCategoriesApisImpl>();
 
   List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
   List<String>? _subCategoriesList;

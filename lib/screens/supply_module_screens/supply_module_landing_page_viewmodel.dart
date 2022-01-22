@@ -23,18 +23,19 @@ class SupplyModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';
   String clickedOrderStatus = orderStatusAll;
+  ApiStatus profileApiStatus = ApiStatus.LOADING;
   String searchTerm = '';
   Order? selectedOrder;
   bool showProductList = false;
+  SupplyProfileResponse? supplyProfileResponse;
+
+  final ProfileApis _profileApis = locator<ProfileApisImpl>();
 
   initScreen() {
     authenticatedUserName = preferences.getAuthenticatedUserName();
     getProfile();
   }
 
-  final ProfileApis _profileApis = locator<ProfileApisImpl>();
-  SupplyProfileResponse? supplyProfileResponse;
-  ApiStatus profileApiStatus = ApiStatus.LOADING;
   void getProfile() async {
     supplyProfileResponse = await _profileApis.getSupplierProfile();
     if (supplyProfileResponse != null &&

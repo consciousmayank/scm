@@ -10,8 +10,8 @@ class OrderReportsDateWidget extends StatelessWidget {
     this.initialDate,
   }) : super(key: key);
 
-  final String dateText;
   final Function({required DateTime date}) onDateChanged;
+  final String dateText;
   final DateTime? initialDate, firstDate;
 
   selectDate({

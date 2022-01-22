@@ -624,13 +624,13 @@ class ProductsFilterViewArguments {
     required ProductsFilterViewOutputArguments outArgs,
   }) onApplyFilterButtonClicked;
 
+  final bool isSupplierCatalog;
   final Function onCancelButtonClicked;
   final String? searchProductTitle;
   final List<String?>? selectedBrand;
   final List<String?>? selectedCategory;
   final List<String?>? selectedSuCategory;
   final int? supplierId;
-  final bool isSupplierCatalog;
 }
 
 class ProductsFilterViewOutputArguments {

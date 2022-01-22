@@ -25,11 +25,14 @@ class DemandModuleLandingPageViewModel
   String authenticatedUserName = '';
   String clickedOrderStatus = orderStatusAll;
   ApiStatus getCartApiStatus = ApiStatus.LOADING;
+  ApiStatus profileApiStatus = ApiStatus.LOADING;
   String searchTerm = '';
   Order? selectedOrder;
   bool showProductList = false;
+  SupplyProfileResponse? supplyProfileResponse;
 
   final DemandCartApi _demandCartApi = locator<DemandCartApi>();
+  final ProfileApis _profileApis = locator<ProfileApisImpl>();
 
   initScreen() {
     // setIndex(2);
@@ -140,9 +143,6 @@ class DemandModuleLandingPageViewModel
     notifyListeners();
   }
 
-  final ProfileApis _profileApis = locator<ProfileApisImpl>();
-  SupplyProfileResponse? supplyProfileResponse;
-  ApiStatus profileApiStatus = ApiStatus.LOADING;
   void getProfile() async {
     supplyProfileResponse = await _profileApis.getSupplierProfile();
     if (supplyProfileResponse != null &&

@@ -10,6 +10,16 @@ class OrdersReportResponse {
     this.reportResultSet,
   });
 
+  factory OrdersReportResponse.fromJson(String str) =>
+      OrdersReportResponse.fromMap(json.decode(str));
+
+  factory OrdersReportResponse.fromMap(Map<String, dynamic> json) =>
+      OrdersReportResponse(
+        filters: Filters.fromMap(json["filters"]),
+        reportResultSet: List<ReportResultSet>.from(
+            json["reportResultSet"].map((x) => ReportResultSet.fromMap(x))),
+      );
+
   final Filters? filters;
   final List<ReportResultSet>? reportResultSet;
 
@@ -29,17 +39,7 @@ class OrdersReportResponse {
         reportResultSet: reportResultSet ?? this.reportResultSet,
       );
 
-  factory OrdersReportResponse.fromJson(String str) =>
-      OrdersReportResponse.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory OrdersReportResponse.fromMap(Map<String, dynamic> json) =>
-      OrdersReportResponse(
-        filters: Filters.fromMap(json["filters"]),
-        reportResultSet: List<ReportResultSet>.from(
-            json["reportResultSet"].map((x) => ReportResultSet.fromMap(x))),
-      );
 
   Map<String, dynamic> toMap() => {
         "filters": filters!.toMap(),
@@ -55,9 +55,17 @@ class Filters {
     this.dateFrom,
   });
 
+  factory Filters.fromJson(String str) => Filters.fromMap(json.decode(str));
+
+  factory Filters.fromMap(Map<String, dynamic> json) => Filters(
+        dateTo: json["dateTo"],
+        orderStatus: json["orderStatus"],
+        dateFrom: json["dateFrom"],
+      );
+
+  final String? dateFrom;
   final String? dateTo;
   final String? orderStatus;
-  final String? dateFrom;
 
   Filters copyWith({
     String? dateTo,
@@ -70,15 +78,7 @@ class Filters {
         dateFrom: dateFrom ?? this.dateFrom,
       );
 
-  factory Filters.fromJson(String str) => Filters.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory Filters.fromMap(Map<String, dynamic> json) => Filters(
-        dateTo: json["dateTo"],
-        orderStatus: json["orderStatus"],
-        dateFrom: json["dateFrom"],
-      );
 
   Map<String, dynamic> toMap() => {
         "dateTo": dateTo,
@@ -106,10 +106,23 @@ class ReportResultSet {
     this.itemType,
   });
 
-  final int? itemCode;
-  final String? itemTitle, itemType, itemBrand, itemSubType;
-  final int? itemQuantity;
+  factory ReportResultSet.fromJson(String str) =>
+      ReportResultSet.fromMap(json.decode(str));
+
+  factory ReportResultSet.fromMap(Map<String, dynamic> json) => ReportResultSet(
+        itemCode: json["itemCode"],
+        itemTitle: json["itemTitle"],
+        itemQuantity: json["itemQuantity"],
+        itemAmount: json["itemAmount"],
+        itemType: json["itemType"],
+        itemBrand: json["itemBrand"],
+        itemSubType: json["itemSubType"],
+      );
+
   final double? itemAmount;
+  final int? itemCode;
+  final int? itemQuantity;
+  final String? itemTitle, itemType, itemBrand, itemSubType;
 
   ReportResultSet copyWith({
     int? itemCode,
@@ -130,20 +143,7 @@ class ReportResultSet {
         itemAmount: itemAmount ?? this.itemAmount,
       );
 
-  factory ReportResultSet.fromJson(String str) =>
-      ReportResultSet.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory ReportResultSet.fromMap(Map<String, dynamic> json) => ReportResultSet(
-        itemCode: json["itemCode"],
-        itemTitle: json["itemTitle"],
-        itemQuantity: json["itemQuantity"],
-        itemAmount: json["itemAmount"],
-        itemType: json["itemType"],
-        itemBrand: json["itemBrand"],
-        itemSubType: json["itemSubType"],
-      );
 
   Map<String, dynamic> toMap() => {
         "itemCode": itemCode,

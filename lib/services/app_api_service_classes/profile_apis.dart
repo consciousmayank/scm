@@ -10,6 +10,7 @@ import 'package:scm/services/streams/catalog_stream.dart';
 
 abstract class ProfileApis {
   Future<SupplyProfileResponse?> getSupplierProfile();
+
   Future<void> getCatalog({
     required int supplierId,
   });
@@ -35,6 +36,40 @@ abstract class ProfileApis {
 
 class ProfileApisImpl extends BaseApi implements ProfileApis {
   final CatalogStream _catalogStream = locator<CatalogStream>();
+
+  @override
+  Future<void> getCatalog({
+    required int supplierId,
+  }) async {
+    int pageNumber = 0;
+
+    ProductListResponse? productList = ProductListResponse().empty();
+
+    ParentApiResponse apiResponse = await getProducts(
+      pageNumber: pageNumber,
+      supplierId: supplierId,
+    );
+
+    if (filterResponse(apiResponse, showSnackBar: true) != null) {
+      productList = ProductListResponse.fromMap(apiResponse.response!.data);
+    }
+
+    for (var element in productList.products!) {
+      _catalogStream.addToStream(
+        CatalogItems(
+          productId: element.id!,
+          productTitle: element.title!,
+        ),
+      );
+    }
+
+    if (productList.totalItems! > _catalogStream.getCatalog.length) {
+      getCatalog(
+        supplierId: supplierId,
+      );
+    }
+  }
+
   @override
   Future<SupplyProfileResponse?> getSupplierProfile() async {
     SupplyProfileResponse? profileResponse;
@@ -153,39 +188,6 @@ class ProfileApisImpl extends BaseApi implements ProfileApis {
       updateFcmIdResponse = ApiResponse.fromMap(apiResponse.response?.data);
     }
     return updateFcmIdResponse;
-  }
-
-  @override
-  Future<void> getCatalog({
-    required int supplierId,
-  }) async {
-    int pageNumber = 0;
-
-    ProductListResponse? productList = ProductListResponse().empty();
-
-    ParentApiResponse apiResponse = await getProducts(
-      pageNumber: pageNumber,
-      supplierId: supplierId,
-    );
-
-    if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      productList = ProductListResponse.fromMap(apiResponse.response!.data);
-    }
-
-    for (var element in productList.products!) {
-      _catalogStream.addToStream(
-        CatalogItems(
-          productId: element.id!,
-          productTitle: element.title!,
-        ),
-      );
-    }
-
-    if (productList.totalItems! > _catalogStream.getCatalog.length) {
-      getCatalog(
-        supplierId: supplierId,
-      );
-    }
   }
 
   Future<ParentApiResponse> getProducts({

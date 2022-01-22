@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 
 class AppDropDown<T> extends StatelessWidget {
-  final List<T> items;
-  final Function({required T item}) onItemSelected;
-  final String hintText;
-  final T? selectedOption;
-
   const AppDropDown({
     Key? key,
     required this.items,
@@ -14,6 +9,11 @@ class AppDropDown<T> extends StatelessWidget {
     required this.hintText,
     required this.selectedOption,
   }) : super(key: key);
+
+  final Function({required T item}) onItemSelected;
+  final String hintText;
+  final List<T> items;
+  final T? selectedOption;
 
   @override
   Widget build(BuildContext context) {

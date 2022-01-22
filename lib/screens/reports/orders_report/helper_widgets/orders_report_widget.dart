@@ -13,41 +13,6 @@ class OrdersConsilidatedReportWidget
     Key? key,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, OrderReportsViewModel viewModel) {
-    return Card(
-      elevation: Dimens().getDefaultElevation,
-      shape: Dimens().getCardShape(),
-      color: AppColors().white,
-      child: Padding(
-        padding: const EdgeInsets.all(
-          8,
-        ),
-        child: getValueForScreenType(
-            context: context,
-            mobile: Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 2.5,
-                  child: mainUi(context, viewModel),
-                ),
-              ),
-            ),
-            desktop: mainUi(context, viewModel),
-            tablet: Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.5,
-                  child: mainUi(context, viewModel),
-                ),
-              ),
-            )),
-      ),
-    );
-  }
-
   Column mainUi(BuildContext context, OrderReportsViewModel viewModel) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -151,6 +116,41 @@ class OrdersConsilidatedReportWidget
             ],
           )
       ], //862
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, OrderReportsViewModel viewModel) {
+    return Card(
+      elevation: Dimens().getDefaultElevation,
+      shape: Dimens().getCardShape(),
+      color: AppColors().white,
+      child: Padding(
+        padding: const EdgeInsets.all(
+          8,
+        ),
+        child: getValueForScreenType(
+            context: context,
+            mobile: Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 2.5,
+                  child: mainUi(context, viewModel),
+                ),
+              ),
+            ),
+            desktop: mainUi(context, viewModel),
+            tablet: Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 1.5,
+                  child: mainUi(context, viewModel),
+                ),
+              ),
+            )),
+      ),
     );
   }
 }

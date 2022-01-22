@@ -17,16 +17,74 @@ import 'package:scm/widgets/app_dropdown_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class OrderReportsView extends StatefulWidget {
-  final OrderReportsViewArgs arguments;
   const OrderReportsView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final OrderReportsViewArgs arguments;
+
   @override
   _OrderReportsViewState createState() => _OrderReportsViewState();
 }
 
 class _OrderReportsViewState extends State<OrderReportsView> {
+  getMobileViewOfbrandTypeSubtypeReport({
+    required BuildContext context,
+    required OrderReportsViewModel model,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              child: const BrandReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(
+              child: const TypeReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            ),
+            SizedBox(
+              child: const SubTypeReportWidget(),
+              width: MediaQuery.of(context).size.width,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  getTabletViewOfbrandTypeSubtypeReport({
+    required BuildContext context,
+    required OrderReportsViewModel model,
+  }) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(
+              child: const BrandReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            ),
+            SizedBox(
+              child: const TypeReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            ),
+            SizedBox(
+              child: const SubTypeReportWidget(),
+              width: MediaQuery.of(context).size.width * 0.80,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OrderReportsViewModel>.reactive(
@@ -232,73 +290,11 @@ class _OrderReportsViewState extends State<OrderReportsView> {
       viewModelBuilder: () => OrderReportsViewModel(),
     );
   }
-
-  getMobileViewOfbrandTypeSubtypeReport({
-    required BuildContext context,
-    required OrderReportsViewModel model,
-  }) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(
-              child: const BrandReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            ),
-            SizedBox(
-              child: const TypeReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            ),
-            SizedBox(
-              child: const SubTypeReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  getTabletViewOfbrandTypeSubtypeReport({
-    required BuildContext context,
-    required OrderReportsViewModel model,
-  }) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(
-              child: const BrandReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            ),
-            SizedBox(
-              child: const TypeReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            ),
-            SizedBox(
-              child: const SubTypeReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class OrderReportsViewArgs {}
 
 class OptionsInput extends StatelessWidget {
-  final double filterWidgetHeight = 40.0;
-
-  final Widget child;
-  final double width;
-  final String hintText;
-  final EdgeInsets? padding;
   const OptionsInput({
     Key? key,
     required this.child,
@@ -319,6 +315,12 @@ class OptionsInput extends StatelessWidget {
     ),
   })  : width = 300,
         super(key: key);
+
+  final Widget child;
+  final double filterWidgetHeight = 40.0;
+  final String hintText;
+  final EdgeInsets? padding;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

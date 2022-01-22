@@ -11,11 +11,13 @@ class DioConfig {
     configureDio();
   }
 
-  final appPreferences = locator<AppPreferencesService>();
-  late String baseUrl;
   final apiCancelToken = CancelToken();
   final ApiServiceAppDioInterceptor apiServiceAppDioInterceptor =
       ApiServiceAppDioInterceptor();
+
+  List<RequestOptions> apisQueue = [];
+  final appPreferences = locator<AppPreferencesService>();
+  late String baseUrl;
 
   final _dio = Dio();
 
@@ -205,8 +207,6 @@ class DioConfig {
   Dio getDio() {
     return _dio;
   }
-
-  List<RequestOptions> apisQueue = [];
 
   void processApiQueue() {}
 }

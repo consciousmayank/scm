@@ -25,17 +25,6 @@ import '../widgets/popular_categories/popular_categories_view.dart';
 import '../widgets/product/product_list/product_list_view.dart';
 
 class Routes {
-  static const String splashScreen = '/';
-  static const String loginView = '/login';
-  static const String pimHomeScreenView = '/pimHome';
-  static const String productListView = '/productList';
-  static const String supplyModuleLandingPageView = '/supply';
-  static const String demandModuleLandingPageView = '/demand';
-  static const String popularCategoriesView = '/categoriesList';
-  static const String popularBrandsView = '/brandsList';
-  static const String cartPageView = '/cartView';
-  static const String orderReportsView = '/orderReports';
-  static const String notificationsScreenView = '/notifications';
   static const all = <String>{
     splashScreen,
     loginView,
@@ -49,28 +38,21 @@ class Routes {
     orderReportsView,
     notificationsScreenView,
   };
+
+  static const String cartPageView = '/cartView';
+  static const String demandModuleLandingPageView = '/demand';
+  static const String loginView = '/login';
+  static const String notificationsScreenView = '/notifications';
+  static const String orderReportsView = '/orderReports';
+  static const String pimHomeScreenView = '/pimHome';
+  static const String popularBrandsView = '/brandsList';
+  static const String popularCategoriesView = '/categoriesList';
+  static const String productListView = '/productList';
+  static const String splashScreen = '/';
+  static const String supplyModuleLandingPageView = '/supply';
 }
 
 class StackedRouter extends RouterBase {
-  @override
-  List<RouteDef> get routes => _routes;
-  final _routes = <RouteDef>[
-    RouteDef(Routes.splashScreen, page: SplashScreen),
-    RouteDef(Routes.loginView, page: LoginView),
-    RouteDef(Routes.pimHomeScreenView, page: PimHomeScreenView),
-    RouteDef(Routes.productListView, page: ProductListView),
-    RouteDef(Routes.supplyModuleLandingPageView,
-        page: SupplyModuleLandingPageView),
-    RouteDef(Routes.demandModuleLandingPageView,
-        page: DemandModuleLandingPageView),
-    RouteDef(Routes.popularCategoriesView, page: PopularCategoriesView),
-    RouteDef(Routes.popularBrandsView, page: PopularBrandsView),
-    RouteDef(Routes.cartPageView, page: CartPageView),
-    RouteDef(Routes.orderReportsView, page: OrderReportsView),
-    RouteDef(Routes.notificationsScreenView, page: NotificationsScreenView),
-  ];
-  @override
-  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
     SplashScreen: (data) {
       var args = data.getArgs<SplashScreenArguments>(
@@ -171,6 +153,28 @@ class StackedRouter extends RouterBase {
       );
     },
   };
+
+  final _routes = <RouteDef>[
+    RouteDef(Routes.splashScreen, page: SplashScreen),
+    RouteDef(Routes.loginView, page: LoginView),
+    RouteDef(Routes.pimHomeScreenView, page: PimHomeScreenView),
+    RouteDef(Routes.productListView, page: ProductListView),
+    RouteDef(Routes.supplyModuleLandingPageView,
+        page: SupplyModuleLandingPageView),
+    RouteDef(Routes.demandModuleLandingPageView,
+        page: DemandModuleLandingPageView),
+    RouteDef(Routes.popularCategoriesView, page: PopularCategoriesView),
+    RouteDef(Routes.popularBrandsView, page: PopularBrandsView),
+    RouteDef(Routes.cartPageView, page: CartPageView),
+    RouteDef(Routes.orderReportsView, page: OrderReportsView),
+    RouteDef(Routes.notificationsScreenView, page: NotificationsScreenView),
+  ];
+
+  @override
+  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
+
+  @override
+  List<RouteDef> get routes => _routes;
 }
 
 /// ************************************************************************
@@ -179,49 +183,56 @@ class StackedRouter extends RouterBase {
 
 /// SplashScreen arguments holder class
 class SplashScreenArguments {
+  SplashScreenArguments({this.key, this.reasons});
+
   final Key? key;
   final LoginReasons? reasons;
-  SplashScreenArguments({this.key, this.reasons});
 }
 
 /// LoginView arguments holder class
 class LoginViewArguments {
-  final Key? key;
-  final LoginViewArgs? arguments;
   LoginViewArguments({this.key, this.arguments});
+
+  final LoginViewArgs? arguments;
+  final Key? key;
 }
 
 /// ProductListView arguments holder class
 class ProductListViewArguments {
-  final Key? key;
-  final ProductListViewArgs arguments;
   ProductListViewArguments({this.key, required this.arguments});
+
+  final ProductListViewArgs arguments;
+  final Key? key;
 }
 
 /// PopularCategoriesView arguments holder class
 class PopularCategoriesViewArguments {
-  final Key? key;
-  final PopularCategoriesViewArgs arguments;
   PopularCategoriesViewArguments({this.key, required this.arguments});
+
+  final PopularCategoriesViewArgs arguments;
+  final Key? key;
 }
 
 /// PopularBrandsView arguments holder class
 class PopularBrandsViewArguments {
-  final Key? key;
-  final PopularBrandsViewArgs arguments;
   PopularBrandsViewArguments({this.key, required this.arguments});
+
+  final PopularBrandsViewArgs arguments;
+  final Key? key;
 }
 
 /// OrderReportsView arguments holder class
 class OrderReportsViewArguments {
-  final Key? key;
-  final OrderReportsViewArgs arguments;
   OrderReportsViewArguments({this.key, required this.arguments});
+
+  final OrderReportsViewArgs arguments;
+  final Key? key;
 }
 
 /// NotificationsScreenView arguments holder class
 class NotificationsScreenViewArguments {
-  final Key? key;
-  final NotificationsScreenArgs arguments;
   NotificationsScreenViewArguments({this.key, required this.arguments});
+
+  final NotificationsScreenArgs arguments;
+  final Key? key;
 }

@@ -123,13 +123,14 @@ class AppTableWidget extends StatelessWidget {
 }
 
 class AppTableSingleItem {
-  final double? doubleValue;
-  final int? intValue;
-  final String? stringValue;
-  final int flexValue;
-  final TextStyle? textStyle;
-  final TextAlign? textAlignment;
-  final bool formatNumber;
+  const AppTableSingleItem.double(
+    this.doubleValue, {
+    this.flexValue = 1,
+    this.textAlignment,
+    this.textStyle,
+    this.formatNumber = false,
+  })  : intValue = null,
+        stringValue = null;
 
   const AppTableSingleItem.int(
     this.intValue, {
@@ -139,14 +140,7 @@ class AppTableSingleItem {
     this.formatNumber = false,
   })  : doubleValue = null,
         stringValue = null;
-  const AppTableSingleItem.double(
-    this.doubleValue, {
-    this.flexValue = 1,
-    this.textAlignment,
-    this.textStyle,
-    this.formatNumber = false,
-  })  : intValue = null,
-        stringValue = null;
+
   const AppTableSingleItem.string(
     this.stringValue, {
     this.flexValue = 1,
@@ -155,6 +149,14 @@ class AppTableSingleItem {
   })  : doubleValue = null,
         formatNumber = false,
         intValue = null;
+
+  final double? doubleValue;
+  final int flexValue;
+  final bool formatNumber;
+  final int? intValue;
+  final String? stringValue;
+  final TextAlign? textAlignment;
+  final TextStyle? textStyle;
 
   getValue() {
     var format = NumberFormat.currency(locale: 'HI');

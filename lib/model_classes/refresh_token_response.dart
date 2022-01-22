@@ -12,10 +12,21 @@ class RefreshTokenResponse {
     required this.token,
   });
 
+  factory RefreshTokenResponse.fromJson(String str) =>
+      RefreshTokenResponse.fromMap(json.decode(str));
+
+  factory RefreshTokenResponse.fromMap(Map<String, dynamic> json) =>
+      RefreshTokenResponse(
+        expireOn: json["expireOn"],
+        type: json["type"],
+        username: json["username"],
+        token: json["token"],
+      );
+
   final String expireOn;
+  final String token;
   final String type;
   final String username;
-  final String token;
 
   RefreshTokenResponse copyWith({
     String? expireOn,
@@ -30,18 +41,7 @@ class RefreshTokenResponse {
         token: token ?? this.token,
       );
 
-  factory RefreshTokenResponse.fromJson(String str) =>
-      RefreshTokenResponse.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory RefreshTokenResponse.fromMap(Map<String, dynamic> json) =>
-      RefreshTokenResponse(
-        expireOn: json["expireOn"],
-        type: json["type"],
-        username: json["username"],
-        token: json["token"],
-      );
 
   Map<String, dynamic> toMap() => {
         "expireOn": expireOn,

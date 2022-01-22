@@ -31,6 +31,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   int pageIndex = 0;
   ProductCategoriesResponse? productCategoriesResponse =
       ProductCategoriesResponse().empty();
+
   ApiStatus productListApiStatus = ApiStatus.LOADING;
   ProductListResponse? productListResponse = ProductListResponse().empty();
   String? productTitle;

@@ -22,8 +22,9 @@ class AppPopUpMenuWidget extends StatelessWidget {
 
   final Function({String? value}) onOptionsSelected;
   final List<String> options;
-  final String toolTipLabel;
   final SupplyProfileResponse? profileResponse;
+  final String toolTipLabel;
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(

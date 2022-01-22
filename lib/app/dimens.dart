@@ -9,6 +9,7 @@ class Dimens {
   double get orderInfoTilesHeight => 110;
 
   double get buttonHeight => 50;
+
   double get buttonWidth => 100;
 
   double get getDefaultRadius => 8;
@@ -50,9 +51,13 @@ class Dimens {
   double get popularBrandsLeftpadding => 10;
 
   double get popularBrandsRightpadding => 10;
+
   double get brandReportWidgetHeight => 400;
+
   double get typeReportWidgetHeight => 400;
+
   double get subtypeReportWidgetHeight => 400;
+
   double get ordersConsolidatedReportWidgetHeight => 500;
 
   get productListItemWebHeight => 230;

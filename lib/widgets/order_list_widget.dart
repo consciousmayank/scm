@@ -66,15 +66,15 @@ class OrderListWidget extends StatelessWidget {
   final Function({required String selectedOrderStatus})? onOrderStatusClick;
   final bool isSupplyRole, isScrollable;
   final String label;
+  final int? numberOfOrders;
   final Function? onPreviousPageClick, onNextPageClick;
   final List<String> orderStatuses;
   final List<Order> orders;
   final int pageNumber, totalPages, selectedOrderId;
   final String selectedOrderStatus;
-  final bool showCompactView;
   final OrderFiltersDurationType? selectedOrdersDurationType;
+  final bool showCompactView;
   final String? fromDateString, toDateString;
-  final int? numberOfOrders;
 
   _buildFullView(BuildContext context) {
     return [
@@ -251,6 +251,24 @@ class OrderListWidget extends StatelessWidget {
     ];
   }
 
+  String getOrderStatus({required String status}) {
+    String orderNumber = '${numberOfOrders == 0 ? 'No' : numberOfOrders}';
+
+    if (status == OrderStatusTypes.CANCELLED.apiToAppTitles) {
+      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Cancelled Order' : 'Cancelled Orders'}';
+    } else if (status == OrderStatusTypes.NEW_ORDER.apiToAppTitles) {
+      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'New Order' : 'New Orders'}';
+    } else if (status == OrderStatusTypes.UNDER_PROCESS.apiToAppTitles) {
+      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Order Under Process' : 'Orders Under Process'}';
+    } else if (status == OrderStatusTypes.SHIPPED.apiToAppTitles) {
+      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Shipped Order' : 'Shipped Orders'}';
+    } else if (status == OrderStatusTypes.DELIVERED.apiToAppTitles) {
+      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Delivered Order' : 'Delivered Orders'}';
+    } else {
+      return 'All Orders ($numberOfOrders)';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final log = getLogger('OrderListPageViewModel');
@@ -361,24 +379,6 @@ class OrderListWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getOrderStatus({required String status}) {
-    String orderNumber = '${numberOfOrders == 0 ? 'No' : numberOfOrders}';
-
-    if (status == OrderStatusTypes.CANCELLED.apiToAppTitles) {
-      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Cancelled Order' : 'Cancelled Orders'}';
-    } else if (status == OrderStatusTypes.NEW_ORDER.apiToAppTitles) {
-      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'New Order' : 'New Orders'}';
-    } else if (status == OrderStatusTypes.UNDER_PROCESS.apiToAppTitles) {
-      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Order Under Process' : 'Orders Under Process'}';
-    } else if (status == OrderStatusTypes.SHIPPED.apiToAppTitles) {
-      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Shipped Order' : 'Shipped Orders'}';
-    } else if (status == OrderStatusTypes.DELIVERED.apiToAppTitles) {
-      return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Delivered Order' : 'Delivered Orders'}';
-    } else {
-      return 'All Orders ($numberOfOrders)';
-    }
   }
 }
 

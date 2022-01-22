@@ -45,6 +45,7 @@ class OrderItemRowWidget extends StatelessWidget {
   // );
 
   final bool noValue;
+
   final EdgeInsets padding;
   final String? label, value;
   final TextStyle? labelStyle, valueStyle;

@@ -23,8 +23,8 @@ class ProductCategoriesResponse {
         currentPage: json["currentPage"],
       );
 
-  int? totalItems;
   int? currentPage;
+  int? totalItems;
   int? totalPages;
   List<String>? types;
 

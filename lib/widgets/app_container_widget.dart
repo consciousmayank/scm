@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppContainerWidget extends StatelessWidget {
-  final Widget child;
-  final EdgeInsets? padding;
   const AppContainerWidget({
     Key? key,
     required this.child,
     this.padding,
   }) : super(key: key);
+
+  final Widget child;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {

@@ -120,7 +120,7 @@ class LoginView extends StatelessWidget {
 }
 
 class LoginViewArgs {
-  final LoginReasons? reasons;
-
   LoginViewArgs({this.reasons});
+
+  final LoginReasons? reasons;
 }

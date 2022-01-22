@@ -4,14 +4,6 @@ import 'package:scm/app/image_config.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class AppButton extends StatefulWidget {
-  final String? title;
-  final bool disabled;
-  final void Function()? onTap;
-  final bool outline;
-  final Widget? leading;
-  final Widget? suffix;
-  final EdgeInsets padding;
-
   const AppButton({
     Key? key,
     required this.title,
@@ -45,6 +37,14 @@ class AppButton extends StatefulWidget {
   })  : disabled = false,
         padding = const EdgeInsets.all(0),
         outline = true;
+
+  final void Function()? onTap;
+  final bool disabled;
+  final Widget? leading;
+  final bool outline;
+  final EdgeInsets padding;
+  final Widget? suffix;
+  final String? title;
 
   @override
   State<AppButton> createState() => _AppButtonState();

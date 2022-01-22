@@ -15,15 +15,10 @@ import 'package:scm/utils/utils.dart';
 import 'package:stacked_services/stacked_services.dart' as stacked_service;
 
 class ApiServiceAppDioInterceptor extends QueuedInterceptor {
-  Dio refreshTokenDioClient = Dio();
   List<RequestOptions> apisQueue = [];
   final log = getLogger('ApiServiceAppDioInterceptor');
   ApiStatus refreshTokenApiStatus = ApiStatus.LOADING;
-  // late final Function({required RequestOptions requestOptions})
-  //     onFetchRefreshToken;
-  final AppPreferencesService _appPreferences =
-      locator<AppPreferencesService>();
-
+  Dio refreshTokenDioClient = Dio();
   // void setRefreshTokenListner(
   //     Function({required RequestOptions requestOptions}) onFetchRefreshToken) {
   //   this.onFetchRefreshToken = onFetchRefreshToken;
@@ -32,26 +27,10 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
   RequestInterceptorHandler requestInterceptorHandler =
       RequestInterceptorHandler();
 
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    requestInterceptorHandler = handler;
-    if (options.path != USER_AUTH) {
-      if (options.path != USER_AUTH) {
-        if (options.path == REFRESH_TOKEN) {
-          options.headers.addAll({"isRefreshToken": true});
-        }
-        if (EnvironmentConfig.SHOW_LOGS) {
-          log.wtf("Api Token :: ${_appPreferences.getApiToken()}");
-        }
-        options.headers.addAll(
-          getAuthHeader(
-            token: _appPreferences.getApiToken(),
-          ),
-        );
-      }
-    }
-    return handler.next(options); //continue
-  }
+  // late final Function({required RequestOptions requestOptions})
+  //     onFetchRefreshToken;
+  final AppPreferencesService _appPreferences =
+      locator<AppPreferencesService>();
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
@@ -128,6 +107,27 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
         ),
       );
     }
+  }
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    requestInterceptorHandler = handler;
+    if (options.path != USER_AUTH) {
+      if (options.path != USER_AUTH) {
+        if (options.path == REFRESH_TOKEN) {
+          options.headers.addAll({"isRefreshToken": true});
+        }
+        if (EnvironmentConfig.SHOW_LOGS) {
+          log.wtf("Api Token :: ${_appPreferences.getApiToken()}");
+        }
+        options.headers.addAll(
+          getAuthHeader(
+            token: _appPreferences.getApiToken(),
+          ),
+        );
+      }
+    }
+    return handler.next(options); //continue
   }
 
   void takeToLoginPage({required String description}) {

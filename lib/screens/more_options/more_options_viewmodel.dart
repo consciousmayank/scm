@@ -35,14 +35,14 @@ class MoreOptionsViewModel extends GeneralisedBaseViewModel {
 }
 
 class MoreItems {
-  final String title, subTitle;
-  final Widget icon;
-  final Function() onPressed;
-
   MoreItems({
     required this.title,
     required this.subTitle,
     required this.onPressed,
     required this.icon,
   });
+
+  final Function() onPressed;
+  final Widget icon;
+  final String title, subTitle;
 }

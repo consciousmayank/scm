@@ -10,8 +10,16 @@ class LoginReasons {
     required this.description,
   });
 
-  final String title;
+  factory LoginReasons.fromJson(String str) =>
+      LoginReasons.fromMap(json.decode(str));
+
+  factory LoginReasons.fromMap(Map<String, dynamic> json) => LoginReasons(
+        title: json["title"],
+        description: json["description"],
+      );
+
   final String description;
+  final String title;
 
   LoginReasons copyWith({
     String? title,
@@ -22,15 +30,7 @@ class LoginReasons {
         description: description ?? this.description,
       );
 
-  factory LoginReasons.fromJson(String str) =>
-      LoginReasons.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory LoginReasons.fromMap(Map<String, dynamic> json) => LoginReasons(
-        title: json["title"],
-        description: json["description"],
-      );
 
   Map<String, dynamic> toMap() => {
         "title": title,

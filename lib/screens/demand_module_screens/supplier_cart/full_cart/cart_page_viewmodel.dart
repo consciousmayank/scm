@@ -32,6 +32,7 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   final AddressApis _addressApis = locator<AddressApis>();
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
+
   final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
   init() {

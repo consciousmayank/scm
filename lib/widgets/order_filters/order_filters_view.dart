@@ -145,6 +145,35 @@ class OrderDurationsView extends ViewModelWidget<OrderListPageViewModel> {
     Key? key,
   }) : super(key: key);
 
+  buildOptions(
+      {required BuildContext context,
+      required OrderListPageViewModel viewModel}) {
+    return OrderFiltersDurationType.values
+        .map(
+          (singleOrderDurationType) => RadioListTile(
+            title: Text(
+              singleOrderDurationType.getNames,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    fontWeight: viewModel.selectedOrderDuration ==
+                            singleOrderDurationType
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                  ),
+            ),
+            value: singleOrderDurationType,
+            groupValue: viewModel.selectedOrderDuration,
+            onChanged: (value) {
+              viewModel.selectedOrderDuration =
+                  value as OrderFiltersDurationType;
+              viewModel.notifyListeners();
+            },
+            selected:
+                viewModel.selectedOrderDuration == singleOrderDurationType,
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context, OrderListPageViewModel viewModel) {
     return Column(
@@ -247,34 +276,5 @@ class OrderDurationsView extends ViewModelWidget<OrderListPageViewModel> {
             : Container(),
       ],
     );
-  }
-
-  buildOptions(
-      {required BuildContext context,
-      required OrderListPageViewModel viewModel}) {
-    return OrderFiltersDurationType.values
-        .map(
-          (singleOrderDurationType) => RadioListTile(
-            title: Text(
-              singleOrderDurationType.getNames,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    fontWeight: viewModel.selectedOrderDuration ==
-                            singleOrderDurationType
-                        ? FontWeight.bold
-                        : FontWeight.normal,
-                  ),
-            ),
-            value: singleOrderDurationType,
-            groupValue: viewModel.selectedOrderDuration,
-            onChanged: (value) {
-              viewModel.selectedOrderDuration =
-                  value as OrderFiltersDurationType;
-              viewModel.notifyListeners();
-            },
-            selected:
-                viewModel.selectedOrderDuration == singleOrderDurationType,
-          ),
-        )
-        .toList();
   }
 }

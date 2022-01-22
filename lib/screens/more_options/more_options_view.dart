@@ -4,11 +4,12 @@ import 'package:scm/widgets/dotted_divider.dart';
 import 'package:stacked/stacked.dart';
 
 class MoreOptionsView extends StatelessWidget {
-  final MoreOptionsViewArguments arguments;
   const MoreOptionsView({
     Key? key,
     required this.arguments,
   }) : super(key: key);
+
+  final MoreOptionsViewArguments arguments;
 
   @override
   Widget build(BuildContext context) {

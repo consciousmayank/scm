@@ -29,6 +29,7 @@ class SuppliersBrandsListResponse {
   final int? currentPage;
   // final Filters? filters;
   final int? totalItems;
+
   final int? totalPages;
 
   SuppliersBrandsListResponse copyWith({

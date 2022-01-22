@@ -193,54 +193,53 @@ TextTheme getAppTextTheme({
 }
 
 class ApplicationTheme {
-  final Color _darkPrimaryColor = const Color(0xFF512DA8);
-  final Color _lightPrimaryColor = const Color(0xFFD1C4E9);
+  ///
+  final Color _bottomAppBarColor = const Color(0xff6D42CE);
 
-  ///background color of major parts of the app like toolbars, tab bars, appbar,
-  final Color _primaryColor = const Color(0xFF673AB7);
-
+  final Color _buttonColor = Colors.blue.shade900;
+  final Color _buttonHoverColor = Colors.orange.shade900;
   ///This is default color of MaterialType.canvas (Rectangle using default theme canvas color)
   final Color _canvasColor = const Color(0xffE09E45);
-
-  /// background color of the Scaffold widget
-  final Color _scaffoldColor = Colors.white;
 
   ///color of Material when used as a Card i.e. default color for Card widget.
   final Color _cardColor = Colors.white;
 
-  ///
-  final Color _bottomAppBarColor = const Color(0xff6D42CE);
-
+  final Color _darkPrimaryColor = const Color(0xFF512DA8);
+  final Color _darkSecondaryColor = const Color(0xFF0097A7);
   //color of Dividers and PopMenuDividers also used between ListTiles, between rows in DataTables and so forth
   final Color _dividerColor = const Color(0x1f6D42CE);
 
   /// focus color used to indicate that a component has input focus.
   final Color _focusColor = const Color(0x1aF5E0C3);
 
-  ///The hover color is used to indicate when a pointer is hovering over a component or widget.
-  final Color _hoverColor = const Color(0x1aF5E0C3);
-
   ///The highlight color is used to show if something is selected.
   ///The highlight color is used during ink splash animations or to indicate an item in a menu is selected.
   final Color _hightlightColorColor = const Color(0x1aF5E0C3);
 
+  ///The hover color is used to indicate when a pointer is hovering over a component or widget.
+  final Color _hoverColor = const Color(0x1aF5E0C3);
+
+  final Color _lightPrimaryColor = const Color(0xFFD1C4E9);
+  final Color _lightSecondaryColor = const Color(0xFFB2EBF2);
+  ///background color of major parts of the app like toolbars, tab bars, appbar,
+  final Color _primaryColor = const Color(0xFF673AB7);
+
+  /// background color of the Scaffold widget
+  final Color _scaffoldColor = Colors.white;
+
+  final Color _secondaryColor = const Color(0xFF00BCD4);
   /// The splash color is visible when we tap on ink. It is the color of ink splashes
   final Color _splashColor = const Color(0x1aF5E0C3);
 
-  final Color _darkSecondaryColor = const Color(0xFF0097A7);
-  final Color _lightSecondaryColor = const Color(0xFFB2EBF2);
-  final Color _secondaryColor = const Color(0xFF00BCD4);
-  final Color _buttonColor = Colors.blue.shade900;
-  final Color _buttonHoverColor = Colors.orange.shade900;
-
   final Color _tabLabelColor = Colors.black;
-  final Color _tabUnselectedLabelColor = Colors.grey.shade700;
-  final TextStyle _tabUnselectedLabelStyle =
-      getAppTextTheme(textColor: Colors.grey.shade700).button!;
   final TextStyle _tabSelectedLabelStyle =
       getAppTextTheme(textColor: Colors.black)
           .button!
           .copyWith(fontWeight: FontWeight.bold);
+
+  final Color _tabUnselectedLabelColor = Colors.grey.shade700;
+  final TextStyle _tabUnselectedLabelStyle =
+      getAppTextTheme(textColor: Colors.grey.shade700).button!;
 
   getAppTheme() {
     return ThemeData(

@@ -21,10 +21,10 @@ class AppInkwell extends StatelessWidget {
         super(key: key);
 
   final Function()? onTap;
-  final ValueChanged<bool>? onHover;
   final BorderRadiusGeometry? borderderRadius;
   final Widget child;
   final bool isCustomBorder;
+  final ValueChanged<bool>? onHover;
 
   @override
   Widget build(BuildContext context) {

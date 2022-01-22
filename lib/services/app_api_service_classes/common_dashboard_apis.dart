@@ -229,6 +229,21 @@ class CommonDashBoardApis extends BaseApi
   }
 
   @override
+  Future<Supplier> getSupplierDetails({required int supplierId}) async {
+    Supplier returningSupplierDetails = Supplier().empty();
+    ParentApiResponse apiResponse =
+        await apiService.getSupplierDetails(supplierId: supplierId);
+    if (filterResponse(
+          apiResponse,
+          showSnackBar: false,
+        ) !=
+        null) {
+      returningSupplierDetails = Supplier.fromMap(apiResponse.response?.data);
+    }
+    return returningSupplierDetails;
+  }
+
+  @override
   Future<ApiResponse> placeOrder(
       {required PostOrderRequest postOrderRequest}) async {
     ApiResponse apiResponse = ApiResponse().empty();
@@ -278,20 +293,5 @@ class CommonDashBoardApis extends BaseApi
           OrderSummaryResponse.fromMap(apiResponse.response?.data);
     }
     return updateOrderResponse;
-  }
-
-  @override
-  Future<Supplier> getSupplierDetails({required int supplierId}) async {
-    Supplier returningSupplierDetails = Supplier().empty();
-    ParentApiResponse apiResponse =
-        await apiService.getSupplierDetails(supplierId: supplierId);
-    if (filterResponse(
-          apiResponse,
-          showSnackBar: false,
-        ) !=
-        null) {
-      returningSupplierDetails = Supplier.fromMap(apiResponse.response?.data);
-    }
-    return returningSupplierDetails;
   }
 }

@@ -17,17 +17,6 @@ class NotificationsListViewModel
   final NotificationsStream _notificationsStream =
       locator<NotificationsStream>();
 
-  init({required NotificationsScreenArgs args}) {
-    arguments = args;
-    if (args.appNotificationsList.isEmpty) {
-      appNotificationsList = _notificationsStream.appNotificationsList;
-    } else {
-      appNotificationsList = args.appNotificationsList;
-    }
-    clickedNotification = appNotificationsList.first;
-    notifyListeners();
-  }
-
   @override
   void onData(RemoteNotificationParams? data) {
     if (data != null) {
@@ -39,6 +28,22 @@ class NotificationsListViewModel
       );
     }
     super.onData(data);
+  }
+
+  @override
+  // TODO: implement stream
+  Stream<RemoteNotificationParams> get stream =>
+      locator<NotificationsStream>().onNewData;
+
+  init({required NotificationsScreenArgs args}) {
+    arguments = args;
+    if (args.appNotificationsList.isEmpty) {
+      appNotificationsList = _notificationsStream.appNotificationsList;
+    } else {
+      appNotificationsList = args.appNotificationsList;
+    }
+    clickedNotification = appNotificationsList.first;
+    notifyListeners();
   }
 
   getSelectedView() {
@@ -58,9 +63,4 @@ class NotificationsListViewModel
       child: Text('Click on the notification on left to open one.'),
     );
   }
-
-  @override
-  // TODO: implement stream
-  Stream<RemoteNotificationParams> get stream =>
-      locator<NotificationsStream>().onNewData;
 }

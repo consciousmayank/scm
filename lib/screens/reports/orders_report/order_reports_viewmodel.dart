@@ -10,26 +10,28 @@ import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 
 class OrderReportsViewModel extends GeneralisedBaseViewModel {
+  List<String> brandsList = [];
+  OrdersReportResponse? consolidatedOrdersReportResponse;
   late DateTimeRange dateTimeRange;
-  int pageNumber = 0;
-  int pageSize = 15;
-  String? selectedOrderStatus, selectedBrand, selectedType;
+  ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
+  ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
+  ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
+  ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
   List<String> orderStatuses = [
     OrderStatusTypes.DELIVERED.apiToAppTitles,
     OrderStatusTypes.INTRANSIT.apiToAppTitles,
     OrderStatusTypes.CREATED.apiToAppTitles,
   ];
-  final ReportsApi _reportsApi = locator<ReportsApi>();
-  ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
-  OrdersReportResponse? consolidatedOrdersReportResponse;
+
   OrdersReportResponse? ordersReportGroupByBrandResponse;
-  OrdersReportResponse? ordersReportGroupByTypeResponse;
   OrdersReportResponse? ordersReportGroupBySubTypeResponse;
-  List<String> brandsList = [];
+  OrdersReportResponse? ordersReportGroupByTypeResponse;
+  int pageNumber = 0;
+  int pageSize = 15;
+  String? selectedOrderStatus, selectedBrand, selectedType;
   List<String> typesList = [];
+
+  final ReportsApi _reportsApi = locator<ReportsApi>();
 
   init({required OrderReportsViewArgs args}) {
     DateTime currentDate = DateTime.now();
