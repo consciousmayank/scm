@@ -28,7 +28,7 @@ class OrderItemContainerWidget extends StatelessWidget {
               vertical: 8,
             ),
       margin: const EdgeInsets.symmetric(
-        horizontal: 16,
+        horizontal: 8,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(
@@ -38,7 +38,7 @@ class OrderItemContainerWidget extends StatelessWidget {
         ),
         color: AppColors().white,
         border: Border.all(
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme.of(context).primaryColorLight,
           width: 1,
         ),
       ),

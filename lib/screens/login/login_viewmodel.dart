@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/appconfigs.dart';
 import 'package:scm/app/di.dart';
@@ -78,14 +80,14 @@ class LoginViewModel extends GeneralisedBaseViewModel {
     }
   }
 
-  String getLoginLabel() {
+  Color getLoginLabel() {
     if (EnvironmentConfig.BASE_URL == EnvironmentConfig.LOCAL_URL) {
-      return labelLogin2(url: 'Local');
+      return Colors.white;
     } else if (EnvironmentConfig.BASE_URL ==
         EnvironmentConfig.LOCAL_LAPTOP_URL) {
-      return labelLogin2(url: 'Local LapTop');
+      return Colors.green;
     } else {
-      return labelLogin2(url: 'Global');
+      return AppColors().loginPageBg;
     }
   }
 

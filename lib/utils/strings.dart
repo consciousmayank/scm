@@ -1,10 +1,10 @@
-const String appName = 'Supply Chain Management';
+const String appName = 'My Supply Market';
 //UI Labels
 const String labelLogin = 'Login';
 final labelLogin2 = ({required String url}) => 'Login : $url';
 final labelBarchart =
     ({required String productStatus}) => '$productStatus Products';
-const String labelLoginButton = 'Login';
+const String labelLoginButton = 'LOGIN';
 const String labelCredentials = 'Please enter your credentials';
 final labelApiUrl = ({required String apiUrl}) => 'Targetting :: $apiUrl';
 const String labelUserName = 'Username';
@@ -111,7 +111,7 @@ const String labelSupplyLandingPageProduct = 'Products';
 const String labelSupplyLandingPageCategories = 'Categories';
 const String labelSupplyLandingPageMyCatalog = 'Catalog';
 const String labelSupplyLandingPageOrder = 'Order';
-const String labelSupplyLandingPageMore = 'More';
+const String labelSupplyLandingPageReports = 'Reports';
 const String labelSubmit = 'Submit';
 
 const String labelDemandLandingPageCatalog = 'Home';
@@ -232,7 +232,7 @@ const String orderFiltersTitle = 'Select Filter';
 const String orderFiltersStatusOptionLabel = 'Order Status';
 const String orderFiltersDurationOptionLabel = 'Duration';
 const String orderFiltersDurationDateLabel = 'Select Date Range';
-orderListSubtitleLabel({required String duration}) => 'For $duration';
+orderListSubtitleLabel({required String duration}) => duration;
 orderListSubtitleLabelWithDates({
   required String fromDate,
   required String toDate,
@@ -251,7 +251,7 @@ const String labelToDate = 'To Date';
 const String labelSelectBrand = 'Select Brand';
 const String labelSelectType = 'Select Type';
 const String labelALL = 'ALL';
-const String labelQuantity = 'Quantity';
+const String labelQuantity = 'QUANTITY';
 const String labelAmount = 'Amount';
 const String labelItemCode = 'Item Code';
 const String passwordChangedTitle = 'Password Changed';

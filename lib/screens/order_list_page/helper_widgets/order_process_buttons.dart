@@ -15,13 +15,15 @@ class OrderPorcessButtonsWidget
   Widget buildOrderButtons({
     required Function() onTap,
     required String buttonText,
+    required Color buttonBg,
   }) {
     return Container(
       padding: const EdgeInsets.all(2),
       // height: 50,
       child: SizedBox(
-        height: AppBar().preferredSize.height,
+        height: AppBar().preferredSize.height * 0.8,
         child: AppButton(
+          buttonBg: buttonBg,
           onTap: onTap,
           title: buttonText,
         ),
@@ -33,126 +35,112 @@ class OrderPorcessButtonsWidget
   Widget build(BuildContext context, OrderListPageViewModel viewModel) {
     switch (viewModel.orderDetails.status) {
       case 'CREATED':
-        return Container(
-          height: AppBar().preferredSize.height * 1.5,
-          // color: Colors.red,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors().white,
-            // color: Colors.red,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 3,
-                  offset: const Offset(0.0, 0.75))
-            ],
-            // color: Colors.red,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: buildOrderButtons(
-                  buttonText: 'REJECT',
-                  onTap: () {
-                    viewModel.rejectOrder(
-                      orderId: viewModel.orderDetails.id,
-                    );
-                  },
-                ),
+        return Row(
+          children: [
+            Expanded(
+              child: Container(),
+              flex: 2,
+            ),
+            Expanded(
+              child: buildOrderButtons(
+                buttonBg: AppColors().buttonRedColor,
+                buttonText: 'REJECT',
+                onTap: () {
+                  viewModel.rejectOrder(
+                    orderId: viewModel.orderDetails.id,
+                  );
+                },
               ),
-              wSizedBox(width: 5),
-              Expanded(
-                child: buildOrderButtons(
-                  buttonText: 'ACCEPT',
-                  onTap: () {
-                    viewModel.acceptOrder(
-                      orderId: viewModel.orderDetails.id,
-                    );
-                  },
-                ),
+              flex: 1,
+            ),
+            wSizedBox(width: 5),
+            Expanded(
+              child: buildOrderButtons(
+                buttonBg: AppColors().buttonGreenColor,
+                buttonText: 'ACCEPT',
+                onTap: () {
+                  viewModel.acceptOrder(
+                    orderId: viewModel.orderDetails.id,
+                  );
+                },
               ),
-            ],
-          ),
+              flex: 1,
+            ),
+          ],
         );
       case 'PROCESSING':
-        return Container(
-          height: AppBar().preferredSize.height * 1.5,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors().white,
-            // color: Colors.red,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 3,
-                  offset: const Offset(0.0, 0.75))
-            ],
-            // color: Colors.red,
-          ),
-          child: buildOrderButtons(
-            buttonText: 'Continue',
-            onTap: () {
-              bool isValid = true;
+        return Row(
+          children: [
+            Expanded(
+              child: Container(),
+              flex: 2,
+            ),
+            Expanded(
+              flex: 1,
+              child: buildOrderButtons(
+                buttonBg: AppColors().buttonGreenColor,
+                buttonText: 'Continue',
+                onTap: () {
+                  bool isValid = true;
 
-              for (var element in viewModel.orderDetails.orderItems!) {
-                int index = viewModel.orderDetails.orderItems!.indexOf(element);
-                if (element.itemQuantity != null && element.itemQuantity! < 1) {
-                  viewModel.showErrorSnackBar(
-                      message: errorQuantityRequired,
-                      onSnackBarOkButton: () {
-                        viewModel.quantityEditingFocusnodes
-                            .elementAt(index)
-                            .requestFocus();
-                      });
-                  isValid = false;
-                  break;
-                } else if (element.itemPrice != null &&
-                    element.itemPrice! < 1) {
-                  viewModel.showErrorSnackBar(
-                      message: errorPriceRequired,
-                      onSnackBarOkButton: () {
-                        viewModel.priceEditingFocusnodes
-                            .elementAt(index)
-                            .requestFocus();
-                      });
-                  isValid = false;
-                  break;
-                } else {
-                  isValid = true;
-                }
-              }
+                  for (var element in viewModel.orderDetails.orderItems!) {
+                    int index =
+                        viewModel.orderDetails.orderItems!.indexOf(element);
+                    if (element.itemQuantity != null &&
+                        element.itemQuantity! < 1) {
+                      viewModel.showErrorSnackBar(
+                          message: errorQuantityRequired,
+                          onSnackBarOkButton: () {
+                            viewModel.quantityEditingFocusnodes
+                                .elementAt(index)
+                                .requestFocus();
+                          });
+                      isValid = false;
+                      break;
+                    } else if (element.itemPrice != null &&
+                        element.itemPrice! < 1) {
+                      viewModel.showErrorSnackBar(
+                          message: errorPriceRequired,
+                          onSnackBarOkButton: () {
+                            viewModel.priceEditingFocusnodes
+                                .elementAt(index)
+                                .requestFocus();
+                          });
+                      isValid = false;
+                      break;
+                    } else {
+                      isValid = true;
+                    }
+                  }
 
-              if (isValid) {
-                viewModel.updateOrder();
-              }
-            },
-          ),
+                  if (isValid) {
+                    viewModel.updateOrder();
+                  }
+                },
+              ),
+            ),
+          ],
         );
       case 'INTRANSIT':
-        return Container(
-          height: AppBar().preferredSize.height * 1.5,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppColors().white,
-            // color: Colors.red,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 3,
-                  offset: const Offset(0.0, 0.75))
-            ],
-            // color: Colors.red,
-          ),
-          child: buildOrderButtons(
-            buttonText: 'DELIVER',
-            onTap: () {
-              viewModel.openDeliveryDetailsDialogBox(
-                orderId: viewModel.orderDetails.id,
-              );
-            },
-          ),
+        return Row(
+          children: [
+            Expanded(
+              child: Container(),
+              flex: 2,
+            ),
+            Expanded(
+              flex: 1,
+              child: buildOrderButtons(
+                buttonBg: AppColors().buttonGreenColor,
+                buttonText: 'DELIVER',
+                onTap: () {
+                  viewModel.openDeliveryDetailsDialogBox(
+                    orderId: viewModel.orderDetails.id,
+                  );
+                },
+              ),
+            ),
+          ],
         );
       case 'DELIVERED':
       // return Container(

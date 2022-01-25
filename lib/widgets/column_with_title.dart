@@ -35,7 +35,7 @@ class ColumnWithTitle extends StatelessWidget {
                 topLeft: Radius.circular(Dimens().getDefaultRadius),
                 topRight: Radius.circular(Dimens().getDefaultRadius),
               ),
-              color: Theme.of(context).secondaryHeaderColor,
+              color: Theme.of(context).primaryColorLight,
             ),
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,

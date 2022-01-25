@@ -70,7 +70,7 @@ class DateTimeToStringConverter {
   DateTimeToStringConverter.ddMMMMyyyyhhmmssaa({
     required this.date,
   }) {
-    format = 'dd-MMMM-yyyy, hh:mm aa';
+    format = 'dd-MM-yyyy, hh:mm aa';
   }
 
   DateTimeToStringConverter.ddmmmyy({

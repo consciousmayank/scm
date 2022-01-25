@@ -49,26 +49,26 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                   ],
                 ),
               ),
-              const AppTableWidget.header(
+              AppTableWidget.header(
                 values: [
                   AppTableSingleItem.string(
                     '#',
-                    flexValue: 2,
+                    flexValue: Dimens().snoFlexValue,
                     textAlignment: TextAlign.center,
                   ),
                   AppTableSingleItem.string(
                     'Name',
-                    flexValue: 5,
+                    flexValue: Dimens().nameFlexValue,
                   ),
                   AppTableSingleItem.string(
-                    'Qty',
+                    labelQuantity,
                     textAlignment: TextAlign.end,
-                    flexValue: 2,
+                    flexValue: Dimens().quantityFlexValue,
                   ),
                   AppTableSingleItem.string(
-                    'Amnt',
+                    labelAmount,
                     textAlignment: TextAlign.end,
-                    flexValue: 3,
+                    flexValue: Dimens().amountFlexValue,
                   ),
                 ],
               ),
@@ -86,24 +86,24 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                                     .indexOf(
                                   singleValue,
                                 ),
-                                flexValue: 2,
+                                flexValue: Dimens().snoFlexValue,
                                 textAlignment: TextAlign.center,
                               ),
                               AppTableSingleItem.string(
                                 singleValue.itemBrand,
-                                flexValue: 5,
+                                flexValue: Dimens().nameFlexValue,
                                 textAlignment: TextAlign.left,
                               ),
                               AppTableSingleItem.int(
                                 singleValue.itemQuantity,
                                 textAlignment: TextAlign.end,
-                                flexValue: 2,
+                                flexValue: Dimens().quantityFlexValue,
                                 formatNumber: true,
                               ),
                               AppTableSingleItem.double(
                                 singleValue.itemAmount,
                                 textAlignment: TextAlign.end,
-                                flexValue: 3,
+                                flexValue: Dimens().amountFlexValue,
                                 formatNumber: true,
                               ),
                             ],
@@ -122,7 +122,7 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
-                      flexValue: 7,
+                      flexValue: Dimens().grandTotaltFlexValue,
                     ),
                     AppTableSingleItem.int(
                       viewModel.getGrandTotalOfOrdersQtyGroupByBrand(),
@@ -132,7 +132,7 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                               ),
                       formatNumber: true,
                       textAlignment: TextAlign.end,
-                      flexValue: 2,
+                      flexValue: Dimens().quantityFlexValue,
                     ),
                     AppTableSingleItem.double(
                       viewModel.getGrandTotalOfOrdersAmountGroupByBrand(),
@@ -141,7 +141,7 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
-                      flexValue: 3,
+                      flexValue: Dimens().amountFlexValue,
                       textAlignment: TextAlign.end,
                     ),
                   ],

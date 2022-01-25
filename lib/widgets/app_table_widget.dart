@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:scm/app/dimens.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class AppTableWidget extends StatelessWidget {
   const AppTableWidget.header({
@@ -27,98 +27,36 @@ class AppTableWidget extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: isHeader
-                        ? Theme.of(context).colorScheme.background
+                        ? Theme.of(context).primaryColorLight
                         : Colors.white,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).primaryColorLight,
                       width: 0.5,
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      singleValue.getValue(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: singleValue.textAlignment,
-                      style: singleValue.textStyle,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 8,
+                    ),
+                    child: Tooltip(
+                      preferBelow: false,
+                      triggerMode: TooltipTriggerMode.tap,
+                      message: singleValue.getValue(),
+                      child: Text(
+                        singleValue.getValue(),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        textAlign: singleValue.textAlignment,
+                        style: singleValue.textStyle,
+                      ),
                     ),
                   ),
                 ),
                 flex: singleValue.flexValue,
               ),
             )
-            .toList()
-
-        // [
-        //   Expanded(
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //         color: isHeader
-        //             ? Theme.of(context).colorScheme.background
-        //             : Colors.white,
-        //         border: Border.all(
-        //           color: Theme.of(context).colorScheme.background,
-        //           width: 0.5,
-        //         ),
-        //       ),
-        //       child: Padding(
-        //         padding: const EdgeInsets.all(16.0),
-        //         child: Text(
-        //           values[0],
-        //           maxLines: 2,
-        //           overflow: TextOverflow.ellipsis,
-        //         ),
-        //       ),
-        //     ),
-        //     flex: 1,
-        //   ),
-        //   Expanded(
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //         color: isHeader
-        //             ? Theme.of(context).colorScheme.background
-        //             : Colors.white,
-        //         border: Border.all(
-        //           color: Theme.of(context).colorScheme.background,
-        //           width: 0.5,
-        //         ),
-        //       ),
-        //       child: Padding(
-        //         padding: const EdgeInsets.all(16.0),
-        //         child: Text(
-        //           values[1],
-        //           maxLines: 2,
-        //           overflow: TextOverflow.ellipsis,
-        //         ),
-        //       ),
-        //     ),
-        //     flex: 4,
-        //   ),
-        //   Expanded(
-        //     child: Container(
-        //       decoration: BoxDecoration(
-        //         color: isHeader
-        //             ? Theme.of(context).colorScheme.background
-        //             : Colors.white,
-        //         border: Border.all(
-        //           color: Theme.of(context).colorScheme.background,
-        //           width: 0.5,
-        //         ),
-        //       ),
-        //       child: Padding(
-        //         padding: const EdgeInsets.all(16.0),
-        //         child: Text(
-        //           values[2],
-        //           maxLines: 2,
-        //           overflow: TextOverflow.ellipsis,
-        //         ),
-        //       ),
-        //     ),
-        //     flex: 3,
-        //   ),
-        // ],
-        );
+            .toList());
   }
 }
 

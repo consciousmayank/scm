@@ -21,7 +21,7 @@ class AppContainerWidget extends StatelessWidget {
             bottom: 2,
           ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).primaryColorLight,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: Theme.of(context).colorScheme.primaryVariant,

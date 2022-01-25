@@ -80,6 +80,7 @@ class ProductListView extends StatelessWidget {
               width: 8,
             ),
             AppButton.appbar(
+              buttonBg: Theme.of(context).primaryColorLight,
               onTap: () => model.openFiltersDialogBox(),
               leading: const Icon(Icons.filter),
               title: model.getAppliedFiltersCount() == 0
@@ -152,6 +153,8 @@ class ProductListView extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           AppButton.appbar(
+                                            buttonBg: Theme.of(context)
+                                                .primaryColorLight,
                                             onTap: () =>
                                                 model.openFiltersDialogBox(),
                                             leading: const Icon(Icons.filter),
@@ -561,6 +564,7 @@ class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {
                     text: 'Loading More Products. Please wait')
                 : Center(
                     child: AppButton(
+                      buttonBg: AppColors().buttonGreenColor,
                       onTap: viewModel.productListResponse!.totalPages! - 1 ==
                               viewModel.pageIndex
                           ? null

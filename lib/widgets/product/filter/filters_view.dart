@@ -410,7 +410,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
         // text!.toLowerCase(),
         textStyle: Theme.of(context).textTheme.headline6!.copyWith(
               color: value == true
-                  ? Theme.of(context).colorScheme.secondaryVariant
+                  ? Theme.of(context).primaryColorLight
                   : AppColors().black,
             ),
       ),
@@ -443,7 +443,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       decoration: BoxDecoration(
         color: viewModel!.clickedFilter != filterTypeTitle
             ? AppColors().white
-            : Theme.of(context).colorScheme.secondaryVariant,
+            : Theme.of(context).primaryColorLight,
         borderRadius: BorderRadius.circular(Dimens().defaultBorder),
         // border: Border(
         //   bottom: BorderSide(
@@ -523,6 +523,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
             child: SizedBox(
               height: Dimens().buttonHeight,
               child: AppButton(
+                buttonBg: AppColors().buttonRedColor,
                 onTap: () {
                   viewModel?.unCheckAllFilters();
                   viewModel?.tempCheckedBrandsList.clear();
@@ -538,6 +539,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
             child: SizedBox(
               height: Dimens().buttonHeight,
               child: AppButton(
+                buttonBg: AppColors().buttonGreenColor,
                 onTap: () {
                   widget.arguments
                       .onApplyFilterButtonClicked(

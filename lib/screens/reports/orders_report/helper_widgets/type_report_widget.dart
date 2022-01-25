@@ -49,26 +49,26 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                   ],
                 ),
               ),
-              const AppTableWidget.header(
+              AppTableWidget.header(
                 values: [
                   AppTableSingleItem.string(
                     '#',
-                    flexValue: 2,
+                    flexValue: Dimens().snoFlexValue,
                     textAlignment: TextAlign.center,
                   ),
                   AppTableSingleItem.string(
                     'Name',
-                    flexValue: 5,
+                    flexValue: Dimens().nameFlexValue,
                   ),
                   AppTableSingleItem.string(
-                    'Qty',
+                    labelQuantity,
                     textAlignment: TextAlign.end,
-                    flexValue: 2,
+                    flexValue: Dimens().quantityFlexValue,
                   ),
                   AppTableSingleItem.string(
-                    'Amnt',
+                    labelAmount,
                     textAlignment: TextAlign.end,
-                    flexValue: 3,
+                    flexValue: Dimens().amountFlexValue,
                   ),
                 ],
               ),
@@ -84,22 +84,22 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                                   viewModel.ordersReportGroupByTypeResponse!
                                       .reportResultSet!
                                       .indexOf(singleValue),
-                                  flexValue: 2,
+                                  flexValue: Dimens().snoFlexValue,
                                   textAlignment: TextAlign.center),
                               AppTableSingleItem.string(
                                 singleValue.itemType,
-                                flexValue: 5,
+                                flexValue: Dimens().nameFlexValue,
                               ),
                               AppTableSingleItem.int(
                                 singleValue.itemQuantity,
                                 textAlignment: TextAlign.end,
-                                flexValue: 2,
+                                flexValue: Dimens().quantityFlexValue,
                                 formatNumber: true,
                               ),
                               AppTableSingleItem.double(
                                 singleValue.itemAmount,
                                 textAlignment: TextAlign.end,
-                                flexValue: 3,
+                                flexValue: Dimens().amountFlexValue,
                                 formatNumber: true,
                               ),
                             ],
@@ -118,7 +118,7 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
-                      flexValue: 7,
+                      flexValue: Dimens().grandTotaltFlexValue,
                     ),
                     AppTableSingleItem.int(
                       viewModel.getGrandTotalOfOrdersQtyGroupByType(),
@@ -128,7 +128,7 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                               ),
                       textAlignment: TextAlign.end,
                       formatNumber: true,
-                      flexValue: 2,
+                      flexValue: Dimens().quantityFlexValue,
                     ),
                     AppTableSingleItem.double(
                       viewModel.getGrandTotalOfOrdersAmountGroupByType(),
@@ -137,7 +137,7 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                                 fontWeight: FontWeight.bold,
                               ),
                       textAlignment: TextAlign.end,
-                      flexValue: 3,
+                      flexValue: Dimens().amountFlexValue,
                       formatNumber: true,
                     ),
                   ],

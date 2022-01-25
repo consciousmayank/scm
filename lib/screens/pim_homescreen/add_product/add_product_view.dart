@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
@@ -80,8 +81,7 @@ class AddProductView extends StatelessWidget {
         message: productMeasurementRequiredErrorMessage,
         onSnackBarOkButton: model.brandFocusNode.requestFocus,
       );
-    }
-    if (model.selectedFiles.isEmpty) {
+    } else if (model.selectedFiles.isEmpty) {
       model.showErrorSnackBar(
         message: productImageRequiredErrorMessage,
         onSnackBarOkButton: () {
@@ -96,11 +96,10 @@ class AddProductView extends StatelessWidget {
   void performCheckOnImage({required AddProductViewModel model}) {
     if (model.selectedFiles.isEmpty) {
       model.showErrorSnackBar(
-        message: productImageRequiredErrorMessage,
-        onSnackBarOkButton: () {
-          model.pickImages();
-        },
-      );
+          message: productImageRequiredErrorMessage,
+          onSnackBarOkButton: () {
+            model.pickImages();
+          });
     } else {
       model.addProduct();
     }
@@ -410,6 +409,7 @@ class AddProductView extends StatelessWidget {
                                   )
                                 : Center(
                                     child: AppButton(
+                                      buttonBg: AppColors().buttonGreenColor,
                                       onTap: () {
                                         model.pickImages();
                                       },
@@ -434,6 +434,7 @@ class AddProductView extends StatelessWidget {
                                     width: double.infinity,
                                     height: Dimens().buttonHeight,
                                     child: AppButton(
+                                      buttonBg: AppColors().buttonGreenColor,
                                       onTap: () {
                                         if (model.isDeoGd()) {
                                           performCheckOnImage(model: model);
@@ -458,6 +459,7 @@ class AddProductView extends StatelessWidget {
                                       width: double.infinity,
                                       height: Dimens().buttonHeight,
                                       child: AppButton(
+                                        buttonBg: AppColors().buttonRedColor,
                                         onTap: () {
                                           model.discardProduct();
                                         },

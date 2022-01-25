@@ -95,6 +95,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
   getOrderList() async {
     orderListApi = ApiStatus.LOADING;
+
     orderList = await _commonDashBoardApis.getOrdersList(
       pageSize: pageSize,
       pageNumber: pageNumber,

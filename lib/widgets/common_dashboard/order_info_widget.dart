@@ -39,7 +39,11 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
         : SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: getValueForScreenType(
-                  context: context, mobile: 1, tablet: 2, desktop: 3),
+                context: context,
+                mobile: 1,
+                tablet: 2,
+                desktop: 3,
+              ),
               crossAxisSpacing: 1.0,
               mainAxisSpacing: 1.0,
               mainAxisExtent: Dimens().orderInfoTilesHeight,
@@ -70,9 +74,10 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   borderderRadius: BorderRadius.circular(8),
                   onTap: () {
                     onClickOfOrderTile(
-                        clickedOrderStatus:
-                            OrderStatusTypes.UNDER_PROCESS.apiToAppTitles,
-                        count: viewModel.orderInfo.processing);
+                      clickedOrderStatus:
+                          OrderStatusTypes.UNDER_PROCESS.apiToAppTitles,
+                      count: viewModel.orderInfo.processing,
+                    );
                   },
                   child: OrderInfoTile.dashboard(
                     title: OrderStatusTypes.UNDER_PROCESS.apiToAppTitles
@@ -179,7 +184,7 @@ class OrderInfoWidget extends ViewModelWidget<CommonDashboardViewModel> {
                     title: 'Total Orders',
                     value: viewModel.orderInfo.all.toString(),
                     icon: newProductIcon,
-                    iconColor: Colors.black,
+                    iconColor: AppColors().allOrdersBg,
                     titleTextStyle: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -263,15 +268,12 @@ class OrderInfoTile extends StatelessWidget {
 
               CircleAvatar(
                 radius: 30,
-                backgroundColor:
-                    Theme.of(context).colorScheme.background.withAlpha(
-                          50,
-                        ),
+                backgroundColor: iconColor,
                 child: Image.asset(
                   icon,
                   height: 30,
                   width: 30,
-                  color: iconColor,
+                  color: Colors.black87,
                 ),
               ),
 

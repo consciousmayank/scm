@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
@@ -74,6 +75,8 @@ class AddBrandView extends StatelessWidget {
                                           height: Dimens().buttonHeight,
                                           width: Dimens().buttonHeight * 5,
                                           child: AppButton(
+                                            buttonBg:
+                                                AppColors().buttonGreenColor,
                                             onTap: () {
                                               model.pickImages();
                                             },
@@ -127,6 +130,7 @@ class AddBrandView extends StatelessWidget {
                                     width: double.infinity,
                                     height: Dimens().buttonHeight,
                                     child: AppButton(
+                                      buttonBg: AppColors().buttonGreenColor,
                                       onTap: () {
                                         if (model.brandToAdd.title!.isEmpty) {
                                           //check if brand title is empty

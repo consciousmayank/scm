@@ -51,7 +51,7 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                         textAlign: TextAlign.left,
                                       ),
                                       Text(
-                                        'Qty',
+                                        labelQuantity,
                                         textAlign: TextAlign.right,
                                       ),
                                       Text(
@@ -107,6 +107,8 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                           CrossAxisAlignment.end,
                                       children: [
                                         AppButton(
+                                          buttonBg:
+                                              AppColors().buttonGreenColor,
                                           onTap: () {
                                             viewModel.editCartItemAt(
                                               index: index,
@@ -125,6 +127,7 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
                                         ),
                                         wSizedBox(width: 8),
                                         AppButton(
+                                          buttonBg: AppColors().buttonRedColor,
                                           onTap: () {
                                             viewModel.deleteCartItemAt(
                                               cartItem: viewModel

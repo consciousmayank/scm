@@ -84,7 +84,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
       children: [
         PageBarWidget.withCustomFiledColor(
           title: suppliersListTitle,
-          filledColor: Theme.of(context).colorScheme.secondary,
+          filledColor: Theme.of(context).primaryColorLight,
         ),
         hSizedBox(height: 8),
         AppTextField(
@@ -151,7 +151,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                                       viewModel.suppliersListResponse.suppliers!
                                           .elementAt(index)
                                           .id
-                                  ? Theme.of(context).colorScheme.secondary
+                                  ? Theme.of(context).primaryColorLight
                                   : AppColors().white,
                               borderRadius: BorderRadius.all(
                                 Radius.circular(

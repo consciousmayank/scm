@@ -203,6 +203,7 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
     return AppButton(
+      buttonBg: AppColors().buttonGreenColor,
       onTap: viewModel.onAddButtonClick,
       title: 'Add',
     );
@@ -217,6 +218,7 @@ class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
     return AppButton(
+      buttonBg: AppColors().buttonGreenColor,
       onTap: viewModel.onUpdateButtonClick,
       title: "Update",
     );
@@ -233,7 +235,8 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return AppButton.outline(
+    return AppButton(
+      buttonBg: AppColors().buttonRedColor,
       onTap: viewModel.onRemoveButtonClick,
       title: 'Remove',
     );

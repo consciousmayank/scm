@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/app/styles.dart';
@@ -66,6 +67,7 @@ class _DiscardProductReasonDialogBoxViewState
                 SizedBox(
                   height: Dimens().buttonHeight,
                   child: AppButton(
+                    buttonBg: AppColors().buttonRedColor,
                     onTap: () {
                       model.discardProduct();
                     },

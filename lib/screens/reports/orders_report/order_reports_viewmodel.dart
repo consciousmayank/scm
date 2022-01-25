@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
@@ -17,6 +19,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
+  final log = getLogger('OrderReportsViewModel');
   List<String> orderStatuses = [
     OrderStatusTypes.DELIVERED.apiToAppTitles,
     OrderStatusTypes.INTRANSIT.apiToAppTitles,
@@ -88,7 +91,9 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
-
+    Future.delayed(
+      Duration(seconds: 3),
+    );
     ordersReportGroupByTypeResponse =
         await _reportsApi.getOrdersReportGroupByTypes(
       pageNumber: pageNumber,
@@ -103,7 +108,9 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
-
+    Future.delayed(
+      Duration(seconds: 3),
+    );
     ordersReportGroupBySubTypeResponse =
         await _reportsApi.getOrdersReportGroupBySubTypes(
       pageNumber: pageNumber,

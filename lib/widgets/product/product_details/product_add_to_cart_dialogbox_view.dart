@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -136,6 +137,7 @@ class _ProductAddToCartDialogBoxViewState
                     child: SizedBox(
                       height: Dimens().buttonHeight,
                       child: AppButton(
+                        buttonBg: AppColors().buttonGreenColor,
                         onTap: () {
                           if (quantityController.text.trim().isNotEmpty &&
                               int.parse(quantityController.text.trim()) > 0) {

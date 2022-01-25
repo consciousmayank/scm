@@ -55,7 +55,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
           PageBarWidget.withCustomFiledColor(
             title:
                 "${widget.arguments.selectedSupplier!.businessName!}'\s Info",
-            filledColor: Theme.of(context).colorScheme.background,
+            filledColor: Theme.of(context).primaryColorLight,
           ),
           hSizedBox(
             height: 8,
@@ -143,7 +143,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     title: widget.arguments.isSupplierCatalog
                         ? 'My Brands'
                         : "Popular Brands",
-                    filledColor: Theme.of(context).colorScheme.background,
+                    filledColor: Theme.of(context).primaryColorLight,
                     options: [
                       AppInkwell(
                         onTap: () => widget.arguments.selectedSupplier != null
@@ -259,7 +259,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     title: widget.arguments.isSupplierCatalog
                         ? 'My Categories'
                         : "Popular Categories",
-                    filledColor: Theme.of(context).colorScheme.background,
+                    filledColor: Theme.of(context).primaryColorLight,
                     options: [
                       AppInkwell(
                         onTap: () => widget.arguments.selectedSupplier != null
@@ -371,7 +371,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                     title: widget.arguments.isSupplierCatalog
                         ? 'My Products'
                         : "Popular Products",
-                    filledColor: Theme.of(context).colorScheme.background,
+                    filledColor: Theme.of(context).primaryColorLight,
                     options: [
                       AppInkwell(
                         onTap: () => widget.arguments.selectedSupplier != null

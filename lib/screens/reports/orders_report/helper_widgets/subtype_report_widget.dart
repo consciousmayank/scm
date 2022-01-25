@@ -49,26 +49,26 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                   ],
                 ),
               ),
-              const AppTableWidget.header(
+              AppTableWidget.header(
                 values: [
                   AppTableSingleItem.string(
                     '#',
-                    flexValue: 2,
+                    flexValue: Dimens().snoFlexValue,
                     textAlignment: TextAlign.center,
                   ),
                   AppTableSingleItem.string(
                     'Name',
-                    flexValue: 5,
+                    flexValue: Dimens().nameFlexValue,
                   ),
                   AppTableSingleItem.string(
                     labelQuantity,
                     textAlignment: TextAlign.end,
-                    flexValue: 2,
+                    flexValue: Dimens().quantityFlexValue,
                   ),
                   AppTableSingleItem.string(
                     labelAmount,
                     textAlignment: TextAlign.end,
-                    flexValue: 3,
+                    flexValue: Dimens().amountFlexValue,
                   ),
                 ],
               ),
@@ -84,23 +84,23 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                                 viewModel.ordersReportGroupBySubTypeResponse!
                                     .reportResultSet!
                                     .indexOf(singleValue),
-                                flexValue: 2,
+                                flexValue: Dimens().snoFlexValue,
                                 textAlignment: TextAlign.center,
                               ),
                               AppTableSingleItem.string(
                                 singleValue.itemSubType,
-                                flexValue: 5,
+                                flexValue: Dimens().nameFlexValue,
                               ),
                               AppTableSingleItem.int(
                                 singleValue.itemQuantity,
                                 textAlignment: TextAlign.end,
-                                flexValue: 2,
+                                flexValue: Dimens().quantityFlexValue,
                                 formatNumber: true,
                               ),
                               AppTableSingleItem.double(
                                 singleValue.itemAmount,
                                 textAlignment: TextAlign.end,
-                                flexValue: 3,
+                                flexValue: Dimens().amountFlexValue,
                                 formatNumber: true,
                               ),
                             ],
@@ -119,7 +119,7 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                           Theme.of(context).textTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
-                      flexValue: 7,
+                      flexValue: Dimens().grandTotaltFlexValue,
                     ),
                     AppTableSingleItem.int(
                       viewModel.getGrandTotalOfOrdersQtyGroupBySubType(),
@@ -129,7 +129,7 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                               ),
                       formatNumber: true,
                       textAlignment: TextAlign.end,
-                      flexValue: 2,
+                      flexValue: Dimens().quantityFlexValue,
                     ),
                     AppTableSingleItem.double(
                       viewModel.getGrandTotalOfOrdersAmountGroupBySubType(),
@@ -139,7 +139,7 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                               ),
                       textAlignment: TextAlign.end,
                       formatNumber: true,
-                      flexValue: 3,
+                      flexValue: Dimens().amountFlexValue,
                     ),
                   ],
                 )

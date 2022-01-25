@@ -1,6 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:scm/app/appcolors.dart';
+import 'package:scm/widgets/app_pop_up_menu_widget.dart';
 
 class AppBarChartWidget extends StatelessWidget {
   const AppBarChartWidget({
@@ -9,8 +11,10 @@ class AppBarChartWidget extends StatelessWidget {
     required this.xAxisTitle,
     required this.yAxisTitle,
     required this.seriesBarData,
+    required this.onClickOfOrderReportsOption,
   }) : super(key: key);
 
+  final Function onClickOfOrderReportsOption;
   final List<charts.Series<Object, String>> seriesBarData;
   final String title, yAxisTitle, xAxisTitle;
 
@@ -22,9 +26,22 @@ class AppBarChartWidget extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.headline6,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              AppPopUpMenuWidget(
+                mainIconColor: AppColors().black,
+                onOptionsSelected: ({value}) {
+                  onClickOfOrderReportsOption();
+                },
+                options: ['Order Report'],
+                toolTipLabel: 'Open Order Report',
+              ),
+            ],
           ),
         ),
         Flexible(
@@ -65,13 +82,8 @@ class AppBarChartWidget extends StatelessWidget {
               charts.PanAndZoomBehavior(),
             ],
             primaryMeasureAxis: charts.NumericAxisSpec(
-              tickProviderSpec:
-                  //     StaticNumericTickProviderSpec(
-                  //   model.listOfTicks,
-                  // ),
-                  const BasicNumericTickProviderSpec(
+              tickProviderSpec: const BasicNumericTickProviderSpec(
                 zeroBound: true,
-                // desiredTickCount: 10,
                 desiredMinTickCount: 10,
               ),
               //to show axis line

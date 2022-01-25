@@ -24,21 +24,23 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: isHeader
-                  ? Theme.of(context).colorScheme.background
-                  : Colors.white,
+              color:
+                  isHeader ? Theme.of(context).primaryColorDark : Colors.white,
               border: Border.all(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).primaryColorDark,
                 width: 0.5,
               ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                values[0],
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: Text(values[0],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: isHeader
+                            ? AppColors().primaryHeaderTextColor
+                            : AppColors().black,
+                      )),
             ),
           ),
           flex: 1,
@@ -46,21 +48,23 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: isHeader
-                  ? Theme.of(context).colorScheme.background
-                  : Colors.white,
+              color:
+                  isHeader ? Theme.of(context).primaryColorDark : Colors.white,
               border: Border.all(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).primaryColorDark,
                 width: 0.5,
               ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                values[1],
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: Text(values[1],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: isHeader
+                            ? AppColors().primaryHeaderTextColor
+                            : AppColors().black,
+                      )),
             ),
           ),
           flex: 4,
@@ -68,21 +72,23 @@ class TopOrderedBrandsCategoryTable extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: isHeader
-                  ? Theme.of(context).colorScheme.background
-                  : Colors.white,
+              color:
+                  isHeader ? Theme.of(context).primaryColorDark : Colors.white,
               border: Border.all(
-                color: Theme.of(context).colorScheme.background,
+                color: Theme.of(context).primaryColorDark,
                 width: 0.5,
               ),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                values[2],
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: Text(values[2],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: isHeader
+                            ? AppColors().primaryHeaderTextColor
+                            : AppColors().black,
+                      )),
             ),
           ),
           flex: 3,

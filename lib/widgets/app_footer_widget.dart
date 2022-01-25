@@ -18,52 +18,60 @@ class AppFooterWidget extends StatelessWidget {
         margin: const EdgeInsets.only(
           top: 10,
         ),
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).primaryColorDark,
         padding: const EdgeInsets.all(32),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              scmLogo,
-              height: 40,
-              width: 40,
-            ),
-            Text(
-              labelAppFooterTitle,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                    color: AppColors().white,
-                  ),
-            ),
-            Row(
-              children: [
-                Text(
-                  labelAppFooterSubTitle1,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: AppColors().white,
-                      ),
-                ),
-                wSizedBox(
-                  width: 16,
-                ),
-                Text(
-                  labelAppFooterSubTitle2,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: AppColors().white,
-                      ),
-                ),
-                wSizedBox(
-                  width: 16,
-                ),
-                Text(
-                  labelAppFooterSubTitle3,
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: AppColors().white,
-                      ),
-                )
-              ],
-            ),
-          ],
+        alignment: Alignment.center,
+        child: Text(
+          labelAppFooterTitle,
+          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                color: AppColors().white,
+              ),
         ),
+
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //   children: [
+        //     // Image.asset(
+        //     //   scmLogo,
+        //     //   height: 40,
+        //     //   width: 40,
+        //     // ),
+        //     // Text(
+        //     //   labelAppFooterTitle,
+        //     //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        //     //         color: AppColors().white,
+        //     //       ),
+        //     // ),
+        //     // Row(
+        //     //   children: [
+        //     //     Text(
+        //     //       labelAppFooterSubTitle1,
+        //     //       style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        //     //             color: AppColors().white,
+        //     //           ),
+        //     //     ),
+        //     //     wSizedBox(
+        //     //       width: 16,
+        //     //     ),
+        //     //     Text(
+        //     //       labelAppFooterSubTitle2,
+        //     //       style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        //     //             color: AppColors().white,
+        //     //           ),
+        //     //     ),
+        //     //     wSizedBox(
+        //     //       width: 16,
+        //     //     ),
+        //     //     Text(
+        //     //       labelAppFooterSubTitle3,
+        //     //       style: Theme.of(context).textTheme.bodyText1!.copyWith(
+        //     //             color: AppColors().white,
+        //     //           ),
+        //     //     )
+        //     //   ],
+        //     // ),
+        //   ],
+        // ),
       ),
     );
   }

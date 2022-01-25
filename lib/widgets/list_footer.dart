@@ -89,36 +89,42 @@ class ListFooter extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (onFirstPageClick != null)
-            AppButton(
-              disabled: pageNumber == 0 || onFirstPageClick == null,
-              onTap: pageNumber == 0 || onFirstPageClick == null
-                  ? null
-                  : () {
-                      onFirstPageClick?.call();
-                    },
-              leading: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(
-                  Icons.arrow_left,
-                ),
+            SizedBox(
+              height: Dimens().buttonHeight / 2,
+              child: AppButton.outline(
+                disabled: pageNumber == 0 || onFirstPageClick == null,
+                onTap: pageNumber == 0 || onFirstPageClick == null
+                    ? null
+                    : () {
+                        onFirstPageClick?.call();
+                      },
+                // leading: const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   child: Icon(
+                //     Icons.arrow_left,
+                //   ),
+                // ),
+                title: 'First Page',
               ),
-              title: 'First Page',
             ),
           if (onPreviousPageClick != null)
-            AppButton(
-              disabled: pageNumber == 0 || onPreviousPageClick == null,
-              onTap: pageNumber == 0 || onPreviousPageClick == null
-                  ? null
-                  : () {
-                      onPreviousPageClick?.call();
-                    },
-              leading: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(
-                  Icons.arrow_left,
-                ),
+            SizedBox(
+              height: Dimens().buttonHeight / 2,
+              child: AppButton.outline(
+                disabled: pageNumber == 0 || onPreviousPageClick == null,
+                onTap: pageNumber == 0 || onPreviousPageClick == null
+                    ? null
+                    : () {
+                        onPreviousPageClick?.call();
+                      },
+                // leading: const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   child: Icon(
+                //     Icons.arrow_left,
+                //   ),
+                // ),
+                title: allIcons ? '' : 'Previous',
               ),
-              title: allIcons ? '' : 'Previous Page',
             ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -189,39 +195,45 @@ class ListFooter extends StatelessWidget {
                   ),
           ),
           if (onNextPageClick != null)
-            AppButton(
-              disabled: pageNumber == (totalPages) ||
-                  onNextPageClick == null ||
-                  totalPages < 0,
-              onTap: pageNumber == (totalPages) ||
-                      onNextPageClick == null ||
-                      totalPages < 0
-                  ? null
-                  : () {
-                      onNextPageClick?.call();
-                    },
-              title: allIcons ? '' : 'Next Page',
-              suffix: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(
-                  Icons.arrow_right,
-                ),
+            SizedBox(
+              height: Dimens().buttonHeight / 2,
+              child: AppButton.outline(
+                disabled: pageNumber == (totalPages) ||
+                    onNextPageClick == null ||
+                    totalPages < 0,
+                onTap: pageNumber == (totalPages) ||
+                        onNextPageClick == null ||
+                        totalPages < 0
+                    ? null
+                    : () {
+                        onNextPageClick?.call();
+                      },
+                title: allIcons ? '' : 'Next',
+                // suffix: const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   child: Icon(
+                //     Icons.arrow_right,
+                //   ),
+                // ),
               ),
             ),
           if (onLastPageClick != null)
-            AppButton(
-              disabled: pageNumber == (totalPages) || onLastPageClick == null,
-              onTap: pageNumber == (totalPages) || onLastPageClick == null
-                  ? null
-                  : () {
-                      onLastPageClick?.call();
-                    },
-              title: 'Last Page',
-              suffix: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(
-                  Icons.arrow_right,
-                ),
+            SizedBox(
+              height: Dimens().buttonHeight / 2,
+              child: AppButton.outline(
+                disabled: pageNumber == (totalPages) || onLastPageClick == null,
+                onTap: pageNumber == (totalPages) || onLastPageClick == null
+                    ? null
+                    : () {
+                        onLastPageClick?.call();
+                      },
+                title: 'Last Page',
+                // suffix: const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                //   child: Icon(
+                //     Icons.arrow_right,
+                //   ),
+                // ),
               ),
             ),
         ],

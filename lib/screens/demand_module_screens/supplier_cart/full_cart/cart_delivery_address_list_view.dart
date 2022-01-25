@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_viewmodel.dart';
@@ -39,6 +40,7 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
                     ),
                     AppButton(
                       leading: const Icon(Icons.add),
+                      buttonBg: AppColors().buttonGreenColor,
                       title: labelAddNewAddress,
                       onTap: () {
                         viewModel.addAddress();
@@ -69,6 +71,7 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 AppButton(
+                                  buttonBg: AppColors().buttonGreenColor,
                                   onTap: () {
                                     viewModel.addAddress(
                                         selectedAddress: viewModel.addressList
@@ -82,6 +85,7 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
                                 ),
                                 wSizedBox(width: 8),
                                 AppButton(
+                                  buttonBg: AppColors().buttonRedColor,
                                   onTap: () {
                                     viewModel.deleteAddress(
                                         selectedAddress: viewModel.addressList

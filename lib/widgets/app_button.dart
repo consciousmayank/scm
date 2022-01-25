@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
@@ -11,6 +12,8 @@ class AppButton extends StatefulWidget {
     this.onTap,
     this.leading,
     this.suffix,
+    this.buttonTextColor = Colors.black,
+    this.buttonBg = Colors.white,
   })  : outline = false,
         padding = const EdgeInsets.all(0),
         super(key: key);
@@ -22,23 +25,28 @@ class AppButton extends StatefulWidget {
     this.onTap,
     this.leading,
     this.suffix,
+    this.buttonTextColor = Colors.black,
+    this.buttonBg = Colors.white,
   })  : outline = false,
         padding = const EdgeInsets.symmetric(
           vertical: 8,
         ),
         super(key: key);
 
-  const AppButton.outline({
-    Key? key,
-    this.title,
-    this.onTap,
-    this.leading,
-    this.suffix,
-  })  : disabled = false,
-        padding = const EdgeInsets.all(0),
+  const AppButton.outline(
+      {Key? key,
+      this.title,
+      this.onTap,
+      this.leading,
+      this.suffix,
+      this.buttonBg = Colors.white,
+      this.buttonTextColor = Colors.black,
+      this.disabled = false})
+      : padding = const EdgeInsets.all(0),
         outline = true;
 
   final void Function()? onTap;
+  final Color buttonBg, buttonTextColor;
   final bool disabled;
   final Widget? leading;
   final bool outline;
@@ -85,16 +93,15 @@ class _AppButtonState extends State<AppButton> {
               alignment: Alignment.center,
               decoration: !widget.outline
                   ? BoxDecoration(
-                      color: !widget.disabled
-                          ? Theme.of(context).colorScheme.secondary
-                          : Colors.grey.shade600,
+                      color:
+                          !widget.disabled ? widget.buttonBg : widget.buttonBg,
                       borderRadius: BorderRadius.circular(8),
                     )
                   : BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: widget.buttonBg,
                         width: 1,
                       ),
                     ),
@@ -109,8 +116,9 @@ class _AppButtonState extends State<AppButton> {
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                             fontWeight:
                                 hover ? FontWeight.w800 : FontWeight.normal,
-                            color:
-                                !widget.outline ? Colors.black : Colors.black,
+                            color: !widget.outline
+                                ? widget.buttonTextColor
+                                : Colors.black,
                           ),
                     ),
                   if (widget.suffix != null) SizedBox(width: 5),

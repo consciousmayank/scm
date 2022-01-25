@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/utils/strings.dart';
@@ -34,6 +35,7 @@ class AddImagesView extends StatelessWidget {
                     Dimens().buttonHeight,
                   ),
                   child: AppButton(
+                    buttonBg: AppColors().buttonGreenColor,
                     title: labelAddImage,
                     onTap: () {
                       model.pickImages();

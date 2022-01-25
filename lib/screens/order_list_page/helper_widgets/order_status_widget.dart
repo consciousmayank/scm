@@ -72,6 +72,7 @@ class OrderStatusWidget extends StatelessWidget {
       child: NullableTextWidget(
         stringValue: status,
         textStyle: statusStyle,
+        textAlign: TextAlign.center,
       ),
     );
   }

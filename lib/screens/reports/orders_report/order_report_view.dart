@@ -108,128 +108,130 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                     padding: const EdgeInsets.all(
                       12.0,
                     ),
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      alignment: WrapAlignment.spaceBetween,
-                      direction: Axis.horizontal,
+                    child: Row(
                       children: [
-                        OptionsInput.noRightPadding(
-                          hintText: labelFromDate,
-                          child: OrderReportsDateWidget(
-                            initialDate: model.dateTimeRange.start,
-                            firstDate: model.dateTimeRange.start.subtract(
-                              const Duration(
-                                days: 180,
+                        Expanded(
+                          child: OptionsInput.noRightPadding(
+                            hintText: labelFromDate,
+                            child: OrderReportsDateWidget(
+                              initialDate: model.dateTimeRange.start,
+                              firstDate: model.dateTimeRange.start.subtract(
+                                const Duration(
+                                  days: 180,
+                                ),
                               ),
-                            ),
-                            dateText: model.getFromDateText(),
-                            onDateChanged: ({required DateTime date}) {
-                              model.updateStartDateInDateRange(date);
-                            },
-                          ),
-                        ),
-                        OptionsInput.noRightPadding(
-                          hintText: labelToDate,
-                          child: OrderReportsDateWidget(
-                            firstDate: model.dateTimeRange.start,
-                            // initialDate: model.dateTimeRange.end,
-                            dateText: model.getToDateText(),
-                            onDateChanged: ({required DateTime date}) {
-                              model.updateEndDateInDateRange(date);
-                            },
-                          ),
-                        ),
-                        OptionsInput(
-                          hintText: orderFiltersStatusOptionLabel,
-                          child: Center(
-                            child: AppDropDown<String>(
-                              selectedOption: getApiToAppOrderStatus(
-                                status: model.selectedOrderStatus,
-                              ),
-                              items: model.orderStatuses
-                                  .map(
-                                    (e) => getApiToAppOrderStatus(
-                                      status: e,
-                                    ),
-                                  )
-                                  .toList(),
-                              onItemSelected: ({required String item}) {
-                                model.selectedOrderStatus =
-                                    getAppToApiOrderStatus(
-                                  status: item,
-                                );
-                                model.getOrderReports();
-                                model.notifyListeners();
+                              dateText: model.getFromDateText(),
+                              onDateChanged: ({required DateTime date}) {
+                                model.updateStartDateInDateRange(date);
                               },
-                              hintText: orderFiltersStatusOptionLabel,
                             ),
                           ),
+                          flex: 1,
                         ),
-                        if (model.getOrderReportsGroupByBrandApiStatus ==
-                                ApiStatus.FETCHED &&
-                            model.ordersReportGroupByBrandResponse != null &&
-                            model.ordersReportGroupByBrandResponse
-                                    ?.reportResultSet !=
-                                null &&
-                            model.ordersReportGroupByBrandResponse!
-                                .reportResultSet!.isNotEmpty)
-                          if (model.getOrderReportsGroupByBrandApiStatus ==
-                                  ApiStatus.FETCHED &&
-                              model.ordersReportGroupByBrandResponse != null &&
-                              model.ordersReportGroupByBrandResponse
-                                      ?.reportResultSet !=
-                                  null &&
-                              model.ordersReportGroupByBrandResponse!
-                                  .reportResultSet!.isNotEmpty)
-                            OptionsInput(
-                              hintText: labelSelectBrand,
-                              child: Center(
-                                child: AppDropDown<String>(
-                                  selectedOption: model.selectedBrand,
-                                  items: model.brandsList,
-                                  onItemSelected: ({required String item}) {
-                                    if (item == labelALL) {
-                                      model.selectedType = labelALL;
-                                    }
-                                    model.selectedBrand = item;
-                                    model.getOrderReports();
-                                    model.notifyListeners();
-                                  },
-                                  hintText: labelSelectBrand,
+                        wSizedBox(width: 8),
+                        Expanded(
+                          child: OptionsInput.noRightPadding(
+                            hintText: labelToDate,
+                            child: OrderReportsDateWidget(
+                              firstDate: model.dateTimeRange.start,
+                              // initialDate: model.dateTimeRange.end,
+                              dateText: model.getToDateText(),
+                              onDateChanged: ({required DateTime date}) {
+                                model.updateEndDateInDateRange(date);
+                              },
+                            ),
+                          ),
+                          flex: 1,
+                        ),
+                        wSizedBox(width: 8),
+                        Expanded(
+                          child: OptionsInput(
+                            hintText: orderFiltersStatusOptionLabel,
+                            child: Center(
+                              child: AppDropDown<String>(
+                                selectedOption: getApiToAppOrderStatus(
+                                  status: model.selectedOrderStatus,
                                 ),
+                                items: model.orderStatuses
+                                    .map(
+                                      (e) => getApiToAppOrderStatus(
+                                        status: e,
+                                      ),
+                                    )
+                                    .toList(),
+                                onItemSelected: ({required String item}) {
+                                  model.selectedOrderStatus =
+                                      getAppToApiOrderStatus(
+                                    status: item,
+                                  );
+                                  model.getOrderReports();
+                                  model.notifyListeners();
+                                },
+                                hintText: orderFiltersStatusOptionLabel,
                               ),
                             ),
-                        if (model.getOrderReportsGroupByTypeApiStatus ==
-                                ApiStatus.FETCHED &&
-                            model.ordersReportGroupByTypeResponse != null &&
-                            model.ordersReportGroupByTypeResponse
-                                    ?.reportResultSet !=
-                                null &&
-                            model.ordersReportGroupByTypeResponse!
-                                .reportResultSet!.isNotEmpty)
-                          if (model.getOrderReportsGroupByTypeApiStatus ==
-                                  ApiStatus.FETCHED &&
-                              model.ordersReportGroupByTypeResponse != null &&
-                              model.ordersReportGroupByTypeResponse
-                                      ?.reportResultSet !=
-                                  null &&
-                              model.ordersReportGroupByTypeResponse!
-                                  .reportResultSet!.isNotEmpty)
-                            OptionsInput(
-                              hintText: labelSelectType,
-                              child: Center(
-                                child: AppDropDown<String>(
-                                  selectedOption: model.selectedType,
-                                  items: model.typesList,
-                                  onItemSelected: ({required String item}) {
-                                    model.selectedType = item;
-                                    model.getOrderReports();
-                                    model.notifyListeners();
-                                  },
-                                  hintText: labelSelectType,
-                                ),
+                          ),
+                          flex: 1,
+                        ),
+                        wSizedBox(width: 8),
+                        Expanded(
+                          child:
+                              // (model.getOrderReportsGroupByBrandApiStatus ==
+                              //         ApiStatus.FETCHED &&
+                              //     model.ordersReportGroupByBrandResponse != null &&
+                              //     model.ordersReportGroupByBrandResponse
+                              //             ?.reportResultSet !=
+                              //         null &&
+                              //     model.ordersReportGroupByBrandResponse!
+                              //         .reportResultSet!.isNotEmpty)
+                              OptionsInput(
+                            hintText: labelSelectBrand,
+                            child: Center(
+                              child: AppDropDown<String>(
+                                selectedOption: model.selectedBrand,
+                                items: model.brandsList,
+                                onItemSelected: ({required String item}) {
+                                  if (item == labelALL) {
+                                    model.selectedType = labelALL;
+                                  }
+                                  model.selectedBrand = item;
+                                  model.getOrderReports();
+                                  model.notifyListeners();
+                                },
+                                hintText: labelSelectBrand,
                               ),
                             ),
+                          ),
+                          flex: 1,
+                        ),
+                        wSizedBox(width: 8),
+                        Expanded(
+                          child:
+                              //  if (model.getOrderReportsGroupByTypeApiStatus ==
+                              //         ApiStatus.FETCHED &&
+                              //     model.ordersReportGroupByTypeResponse != null &&
+                              //     model.ordersReportGroupByTypeResponse
+                              //             ?.reportResultSet !=
+                              //         null &&
+                              //     model.ordersReportGroupByTypeResponse!
+                              //         .reportResultSet!.isNotEmpty)
+                              OptionsInput(
+                            hintText: labelSelectType,
+                            child: Center(
+                              child: AppDropDown<String>(
+                                selectedOption: model.selectedType,
+                                items: model.typesList,
+                                onItemSelected: ({required String item}) {
+                                  model.selectedType = item;
+                                  model.getOrderReports();
+                                  model.notifyListeners();
+                                },
+                                hintText: labelSelectType,
+                              ),
+                            ),
+                          ),
+                          flex: 1,
+                        ),
                       ],
                     ),
                   ),
@@ -299,8 +301,7 @@ class OptionsInput extends StatelessWidget {
     Key? key,
     required this.child,
     required this.hintText,
-  })  : width = 300,
-        padding = null,
+  })  : padding = null,
         super(key: key);
 
   const OptionsInput.noRightPadding({
@@ -313,14 +314,12 @@ class OptionsInput extends StatelessWidget {
       top: 2,
       bottom: 2,
     ),
-  })  : width = 300,
-        super(key: key);
+  }) : super(key: key);
 
   final Widget child;
   final double filterWidgetHeight = 40.0;
   final String hintText;
   final EdgeInsets? padding;
-  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -335,7 +334,6 @@ class OptionsInput extends StatelessWidget {
         AppContainerWidget(
           padding: padding,
           child: SizedBox(
-            width: width,
             height: filterWidgetHeight,
             child: child,
           ),

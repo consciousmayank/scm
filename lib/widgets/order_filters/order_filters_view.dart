@@ -74,6 +74,7 @@ class OrderFiltersView extends ViewModelWidget<OrderListPageViewModel> {
                   height: Dimens().buttonHeight,
                   width: Dimens().buttonHeight * 2,
                   child: AppButton(
+                    buttonBg: AppColors().buttonRedColor,
                     title: 'Cancel',
                     onTap: () {
                       viewModel.indexForList = 0;
@@ -88,6 +89,7 @@ class OrderFiltersView extends ViewModelWidget<OrderListPageViewModel> {
                   width: Dimens().buttonHeight * 2,
                   height: Dimens().buttonHeight,
                   child: AppButton(
+                    buttonBg: AppColors().buttonGreenColor,
                     title: 'Apply',
                     onTap: () {
                       viewModel.indexForList = 0;
@@ -224,6 +226,7 @@ class OrderDurationsView extends ViewModelWidget<OrderListPageViewModel> {
                     SizedBox(
                       height: Dimens().buttonHeight,
                       child: AppButton(
+                        buttonBg: AppColors().buttonGreenColor,
                         onTap: () async {
                           DateTimeRange? newDateTimeRange =
                               await showDateRangePicker(

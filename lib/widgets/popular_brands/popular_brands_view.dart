@@ -347,6 +347,7 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
                     text: 'Loading More Brands. Please wait')
                 : Center(
                     child: AppButton(
+                      buttonBg: AppColors().buttonGreenColor,
                       onTap: viewModel.allBrandsResponse!.totalPages! - 1 ==
                               viewModel.pageIndex
                           ? null

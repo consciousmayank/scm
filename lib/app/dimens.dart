@@ -40,6 +40,16 @@ class Dimens {
 
   double get defaultBorder => 16;
 
+  int get snoFlexValue => 2;
+
+  int get nameFlexValue => 3;
+
+  int get quantityFlexValue => 3;
+
+  int get amountFlexValue => 3;
+
+  int get grandTotaltFlexValue => 5;
+
   double get popularBrandsHeight => 350;
 
   double get popularCategoryHeight => 150;
@@ -64,9 +74,9 @@ class Dimens {
 
   get productListItemWebWidth => 319;
 
-  get dashboardOrderedBrandsInfoCardHeight => 400;
+  get dashboardOrderedBrandsInfoCardHeight => 430;
 
-  get dashboardOrderedTypeInfoCardHeight => 400;
+  get dashboardOrderedTypeInfoCardHeight => 430;
 
   get dashboardOrderListCardHeight => 500;
 

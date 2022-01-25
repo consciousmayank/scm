@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
@@ -87,6 +88,7 @@ class _DeliveryDetilasDialogBoxViewState
                   height: 45,
                   width: MediaQuery.of(context).size.width,
                   child: AppButton(
+                    buttonBg: AppColors().buttonGreenColor,
                     onTap: () {
                       if (_formKey.currentState!.validate()) {
                         widget.completer(

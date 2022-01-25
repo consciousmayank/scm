@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   Color black = Colors.black;
+  final Color buttonGreenColor = const Color.fromRGBO(155, 199, 126, 1.0);
+  final Color buttonRedColor = const Color.fromRGBO(224, 101, 74, 1.0);
+  // Color get dashboardOrderInfoTileTitleBg => const Color(0xff979797);
+
   // late final BuildContext context;
 
   // AppColors({required this.context});
@@ -38,16 +42,22 @@ class AppColors {
 
   Color get dashboardTableHeaderBg => const Color(0xffEEF2F7);
 
-  Color get processingOrderBg => const Color(0xffFFBC00);
+  Color get processingOrderBg => const Color.fromRGBO(246, 200, 132, 1.0);
 
-  Color get placedOrderBg => const Color(0xff6568F3);
+  Color get placedOrderBg => const Color.fromRGBO(181, 216, 199, 1.0);
 
-  Color get deliveredOrderBg => const Color(0xff00C48E);
+  Color get deliveredOrderBg => const Color.fromRGBO(179, 211, 156, 1.0);
 
-  Color get shippedOrderBg => const Color(0xff4EB1D6);
+  Color get shippedOrderBg => const Color.fromRGBO(238, 172, 147, 1.0);
 
   // Color get cancelledOrderBg => const Color(0xff646464);
-  Color get cancelledOrderBg => Colors.red;
+  Color get cancelledOrderBg => const Color.fromRGBO(230, 142, 167, 1.0);
 
-  // Color get dashboardOrderInfoTileTitleBg => const Color(0xff979797);
+  Color get loginPageBg => const Color(0xFF6568F3);
+
+  Color get loginPageButtonBg => const Color(0xFFFA5C7C);
+
+  Color get allOrdersBg => const Color.fromRGBO(139, 206, 247, 1.0);
+
+  Color get primaryHeaderTextColor => const Color.fromRGBO(252, 249, 219, 1.0);
 }

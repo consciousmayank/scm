@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_viewmodel.dart';
@@ -134,6 +135,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                       ),
                       hSizedBox(height: 16),
                       AppButton(
+                        buttonBg: AppColors().buttonGreenColor,
                         onTap: model.isPasswordsMatch &&
                                 model.newPasswordController.text
                                     .trim()

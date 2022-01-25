@@ -116,9 +116,12 @@ class SupplyModuleLandingPageMobileView
                 ),
                 label: labelSupplyLandingPageOrder,
               ),
-              const BottomNavigationBarItem(
-                icon: Icon(Icons.list),
-                label: labelSupplyLandingPageMore,
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  orderReportImage,
+                  height: 25,
+                ),
+                label: labelSupplyLandingPageReports,
               ),
             ],
             selectedIndex: viewModel.currentIndex,
@@ -159,7 +162,14 @@ class SupplyModuleLandingPageWebView
               },
             ),
             wSizedBox(width: 10),
-            Center(child: Text('Hi, ${viewModel.authenticatedUserName}')),
+            Center(
+              child: Text(
+                'Hi, ${viewModel.authenticatedUserName}',
+                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      color: AppColors().white,
+                    ),
+              ),
+            ),
             wSizedBox(width: 30),
             AppPopUpMenuWidget(
               onOptionsSelected: ({value}) =>
@@ -209,7 +219,7 @@ class SupplyModuleLandingPageWebView
               buildRotatedTextRailDestinationWithIcon(
                 isTurned: true,
                 icon: const Icon(Icons.list),
-                text: labelSupplyLandingPageMore,
+                text: labelSupplyLandingPageReports,
               ),
             ],
             currentIndex: viewModel.currentIndex,

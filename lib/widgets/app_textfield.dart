@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const AppTextField(
       {this.obscureText,
+      this.floatingLabelBehavior = FloatingLabelBehavior.always,
       this.innerHintText,
       this.textInputAction = TextInputAction.next,
       this.helperText = '',
@@ -44,6 +45,7 @@ class AppTextField extends StatelessWidget {
 
   const AppTextField.withCounter(
       {this.obscureText,
+      this.floatingLabelBehavior = FloatingLabelBehavior.always,
       this.innerHintText,
       this.textInputAction = TextInputAction.next,
       this.helperText = '',
@@ -86,6 +88,7 @@ class AppTextField extends StatelessWidget {
   final bool enabled;
   final int enteredCount;
   final String? errorText;
+  final FloatingLabelBehavior floatingLabelBehavior;
   final FocusNode? focusNode;
   final List<TextInputFormatter>? formatter;
   final String? helperText; //required only in create consignment
@@ -179,7 +182,11 @@ class AppTextField extends StatelessWidget {
                       .applyDefaults(Theme.of(context).inputDecorationTheme)
                       .copyWith(
                         hintText: innerHintText,
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(color: Colors.grey.shade400),
+                        floatingLabelBehavior: floatingLabelBehavior,
                         counterText: showCounter
                             ? enteredCount == maxCharacters
                                 ? 'Max Characters Limit Reached'

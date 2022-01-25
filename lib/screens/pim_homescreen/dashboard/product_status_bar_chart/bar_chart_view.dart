@@ -33,7 +33,7 @@ class _BarChartBasedOnProductStatusesViewState
     return ViewModelBuilder<BarChartBasedOnProductStatusesViewModel>.reactive(
       onModelReady: (model) => model.init(
         arguments: widget.arguments,
-        barColor: Theme.of(context).colorScheme.background,
+        barColor: Theme.of(context).primaryColorLight,
       ),
       builder: (context, model, child) => Scaffold(
         body: model.isBusy

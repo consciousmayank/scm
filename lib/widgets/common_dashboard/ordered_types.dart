@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
+import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/reports/orders_report/order_report_view.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/bar_chart/app_bar_chart_widget.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_viewmodel.dart';
@@ -84,6 +87,14 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                           seriesBarData: viewModel.orderedTypesBarData,
                           xAxisTitle: 'Types',
                           yAxisTitle: 'Count',
+                          onClickOfOrderReportsOption: () {
+                            viewModel.navigationService.navigateTo(
+                              orderReportsRoute,
+                              arguments: OrderReportsViewArguments(
+                                arguments: OrderReportsViewArgs(),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
