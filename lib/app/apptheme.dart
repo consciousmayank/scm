@@ -113,77 +113,77 @@ TextTheme getAppTextTheme({
   required Color textColor,
 }) {
   return TextTheme(
-    headline1: GoogleFonts.openSans(
+    headline1: GoogleFonts.nunitoSans(
       fontSize: 36,
       fontWeight: FontWeight.w300,
       color: textColor,
       // letterSpacing: -1.5,
     ),
-    headline2: GoogleFonts.openSans(
+    headline2: GoogleFonts.nunitoSans(
       fontSize: 32,
       fontWeight: FontWeight.w300,
       color: textColor,
       // letterSpacing: -0.5,
     ),
-    headline3: GoogleFonts.openSans(
+    headline3: GoogleFonts.nunitoSans(
       fontSize: 30,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    headline4: GoogleFonts.openSans(
+    headline4: GoogleFonts.nunitoSans(
       fontSize: 28,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       color: textColor,
     ),
-    headline5: GoogleFonts.openSans(
+    headline5: GoogleFonts.nunitoSans(
       fontSize: 24,
       fontWeight: FontWeight.w400,
       color: textColor,
     ),
-    headline6: GoogleFonts.openSans(
+    headline6: GoogleFonts.nunitoSans(
       fontSize: 22,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.15,
       color: textColor,
     ),
-    subtitle1: GoogleFonts.openSans(
+    subtitle1: GoogleFonts.nunitoSans(
       fontSize: 20,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.15,
       color: textColor,
     ),
-    subtitle2: GoogleFonts.openSans(
+    subtitle2: GoogleFonts.nunitoSans(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.1,
       color: textColor,
     ),
-    bodyText1: GoogleFonts.openSans(
+    bodyText1: GoogleFonts.nunitoSans(
       fontSize: 17,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.5,
       color: textColor,
     ),
-    bodyText2: GoogleFonts.openSans(
+    bodyText2: GoogleFonts.nunitoSans(
       fontSize: 15,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       color: textColor,
     ),
-    button: GoogleFonts.openSans(
+    button: GoogleFonts.nunitoSans(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       letterSpacing: 1.25,
       color: textColor,
     ),
-    caption: GoogleFonts.openSans(
+    caption: GoogleFonts.nunitoSans(
       fontSize: 12,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.4,
       color: textColor,
     ),
-    overline: GoogleFonts.openSans(
+    overline: GoogleFonts.nunitoSans(
       fontSize: 10,
       fontWeight: FontWeight.w400,
       letterSpacing: 1.5,
@@ -504,9 +504,6 @@ class ApplicationTheme {
       bottomSheetTheme: const BottomSheetThemeData(
           //bottom sheet theme
           ),
-      popupMenuTheme: const PopupMenuThemeData(
-          //pop menu theme
-          ),
       bannerTheme: const MaterialBannerThemeData(
           // material banner theme
           ),
@@ -521,287 +518,3 @@ class ApplicationTheme {
     );
   }
 }
-
-
-
-/*
-
-ThemeData(
-      brightness: Brightness.light,
-      visualDensity: const VisualDensity(vertical: 0.5, horizontal: 0.5),
-
-      ///background color of major parts of the app like toolbars, tab bars, appbar,
-      primaryColor: _primaryColor,
-      primaryColorBrightness: Brightness.light,
-      primaryColorLight: _lightPrimaryColor,
-      primaryColorDark: _darkPrimaryColor,
-
-      ///This is default color of MaterialType.canvas (Rectangle using default theme canvas color)
-      canvasColor: _canvasColor,
-
-      /// background color of the Scaffold widget
-      scaffoldBackgroundColor: _scaffoldColor,
-
-      /// Color of Bottom App Bar
-      bottomAppBarColor: _bottomAppBarColor,
-
-      ///color of Material when used as a Card i.e. default color for Card widget.
-      cardColor: _cardColor,
-      //color of Dividers and PopMenuDividers also used between ListTiles, between rows in DataTables and so forth
-      dividerColor: _dividerColor,
-
-      /// focus color used to indicate that a component has input focus.
-      focusColor: _focusColor,
-
-      ///The hover color is used to indicate when a pointer is hovering over a component or widget.
-      hoverColor: _secondaryColor,
-
-      ///The highlight color is used to show if something is selected.
-      ///The highlight color is used during ink splash animations or to indicate an item in a menu is selected.
-      highlightColor: const Color(0xff936F3E),
-
-      /// The splash color is visible when we tap on ink. It is the color of ink splashes
-      splashColor: const Color(0xff457BE0),
-      // splashFactory: # override create method from  InteractiveInkFeatureFactory
-      ///The selectedRowColor is used to highlight selected rows.
-      selectedRowColor: Colors.grey,
-
-      ///The color used for widgets that are inactive (but enabled) state. For example, an unchecked checkbox.
-      unselectedWidgetColor: Colors.grey.shade400,
-
-      ///The color used for widgets that are inoperative and the user can’t interact with it regardless of its state
-      ///For eg. it is the color of the disabled checkbox which may be checked or unchecked.
-      disabledColor: Colors.grey.shade200,
-
-      ///This provides default configurations of button widgets, like RaisedButton, FlatButton.
-      ///We can provide a theme to all buttons through buttonTheme.
-      // buttonTheme: ButtonThemeData(
-      //   ///Default background color used by RaisedButtons. If not provided, the primarySwatch[600] is used
-      //   buttonColor: _buttonColor,
-      //   focusColor: _buttonFocusColor,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.all(
-      //       Radius.circular(
-      //         Dimens().getDefaultRadius,
-      //       ),
-      //     ),
-      //   ),
-
-      //   ///Color when the mouse passes over it
-      //   hoverColor: _buttonHoverColor,
-
-      //   ///Color to start filling the Buttons when pressed. Used in FlatButton, OutlineButton or RaisedButton.
-      //   splashColor: _splashColor,
-      //   disabledColor: _disabledButtonColor,
-
-      //   /// Color used to fill the background when splash has ended.
-      //   highlightColor: _buttonHighlightColor,
-
-      //   /// Default minimum width.
-      //   minWidth: Dimens().buttonHeight * 1.5,
-
-      //   /// Default height.
-      //   height: Dimens().buttonHeight,
-      //   padding: EdgeInsets.all(
-      //     Dimens().defaultButtonPadding,
-      //   ),
-      // ),
-
-      ///This provides default configurations of ToggleButton widgets.
-      ///We can provide a theme to all types of toggle buttons with toggleButtonsTheme
-      toggleButtonsTheme: ToggleButtonsThemeData(
-          color: _buttonColor,
-          selectedColor: _buttonHoverColor,
-          borderColor: Colors.black
-          //toggle button theme
-          ),
-
-      ///This is the color of the header of a PaginatedDataTable when there are any selected rows
-      secondaryHeaderColor: _primaryColor.withAlpha(180),
-
-      ///This is a color that contrasts with the primary color. It is used to show the remaining parts of a progress bar.
-      backgroundColor: const Color(0xff457BE0),
-
-      ///This is the background color of dialog elements.
-      dialogBackgroundColor: _lightPrimaryColor,
-
-      ///This is an indicator color of a selected tab in the tab bar.
-      indicatorColor: const Color(0xff457BE0),
-
-      ///This is the color of hint texts or placeholder text color in TextFields.
-      hintColor: Colors.grey,
-
-      ///The color to use for input validation errors e.g. in TextField fields
-      errorColor: Colors.red,
-
-      ///This color is used to highlight the active states of toggleable widgets like Switch, Radio, and Checkbox.
-      toggleableActiveColor: _lightSecondaryColor,
-
-      ///Text with color that contrasts with the card and canvas colors.
-      textTheme: getAppTextTheme(
-        textColor: Colors.black,
-      ),
-
-      ///This is a text theme that contrasts with the primary color.
-      primaryTextTheme: getAppTextTheme(
-        textColor: _lightSecondaryColor,
-      ),
-      inputDecorationTheme: getInputDecorationTheme(),
-
-      ///This is an icon theme that contrasts with the card and canvas colors.
-      iconTheme: IconThemeData(color: _darkSecondaryColor),
-
-      ///This is an icon theme that contrasts with the primary Color.
-      primaryIconTheme: IconThemeData(color: _darkPrimaryColor),
-
-      ///The colors and shapes used to render Slider. This value can be obtained by SliderTheme.of
-      sliderTheme: const SliderThemeData(
-          // slider themes
-          ),
-
-      ///A theme for customizing the size, shape and color of tab bar indicator
-      tabBarTheme: TabBarTheme(
-          labelColor: _tabLabelColor,
-          unselectedLabelColor: _tabUnselectedLabelColor,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          labelStyle: _tabSelectedLabelStyle,
-          unselectedLabelStyle: _tabUnselectedLabelStyle,
-          indicatorSize: TabBarIndicatorSize.tab),
-
-      ///A theme for customizing the visual properties of Tooltips. This value can be obtained by TooltipTheme.of .
-      tooltipTheme: const TooltipThemeData(
-          // tool tip theme
-          ),
-
-      ///The colors and styles used to render Card. This value can be obtained by CardTheme.of
-      cardTheme: const CardTheme(
-          // card theme
-          ),
-
-      ///The colors and styles used to render Chips. This value can be obtained by ChipTheme.of .
-      chipTheme: ChipThemeData(
-          backgroundColor: _secondaryColor,
-          disabledColor: _secondaryColor.withAlpha(
-            20,
-          ),
-          shape: const StadiumBorder(),
-          brightness: Brightness.light,
-          labelPadding: const EdgeInsets.symmetric(
-            horizontal: 8,
-          ),
-          labelStyle: getAppTextTheme(textColor: Colors.black).bodyText2!,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-          ),
-          secondaryLabelStyle:
-              getAppTextTheme(textColor: Colors.black).caption!,
-          secondarySelectedColor: Colors.white38,
-          selectedColor: Colors.white
-          // chip theme
-          ),
-
-      ///The platform the material widgets should adapt to target.
-      ///This should be used in order to style UI elements according to platform conventions.
-      platform: TargetPlatform.iOS,
-
-      ///This is used to configure hit test size of certain Material widgets
-      materialTapTargetSize: MaterialTapTargetSize.padded,
-
-      ///This is toggle for semi-transparent overlay color on Material surfaces that is used to indicate elevation for dark themes.
-      ///If true then a semi-transaparent version of colorScheme.onSurface will be applied on top of color of Material widgets when their Material.color is colorScheme.surface.
-      ///If false then the surface color will be used unmodified.
-      applyElevationOverlayColor: true,
-
-      ///Default MaterialPageRoute transition per TargetPlatform.
-      pageTransitionsTheme: const PageTransitionsTheme(builders: {
-        TargetPlatform.iOS: const CupertinoPageTransitionsBuilder(),
-        TargetPlatform.android: const ZoomPageTransitionsBuilder(),
-        TargetPlatform.windows: const FadeUpwardsPageTransitionsBuilder(),
-        TargetPlatform.macOS: const ZoomPageTransitionsBuilder(),
-      }),
-
-      ///This is a theme for customizing the color, elevation, brightness, iconTheme, and textTheme of AppBar.
-      appBarTheme: getAppBarTheme().copyWith(
-        backgroundColor: _primaryColor,
-      ),
-
-      ///A theme for customizing the shape, elevation, and color of a BottomAppBar.
-      bottomAppBarTheme: const BottomAppBarTheme(
-          // bottom app bar theme
-          ),
-      colorScheme: ColorScheme.fromSwatch(
-        
-        primary: _primaryColor,
-        primaryVariant: _darkPrimaryColor,
-        secondary: _secondaryColor,
-        secondaryVariant: _darkSecondaryColor,
-        brightness: Brightness.light,
-        background: Color(0xffB5BFD3),
-        error: Colors.red,
-        onBackground: const Color(0xffB5BFD3),
-        onError: Colors.red,
-        onPrimary: _lightSecondaryColor,
-        onSecondary: _lightPrimaryColor,
-        onSurface: Color(0xff457BE0),
-        surface: Color(0xff457BE0),
-      ),
-      dialogTheme: const DialogTheme(
-          // dialog theme
-          ),
-
-      ///A theme for customizing the shape, elevation, and color of FloatingActionButton.
-      // floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      //     // floating action button theme
-      //     ),
-
-      ///A theme for customizing the background color, elevation, textStyles, and iconThemes of a NavigationRail.
-      navigationRailTheme: NavigationRailThemeData(
-        selectedIconTheme: const IconThemeData(
-          color: Colors.yellow,
-          size: 25,
-        ),
-        unselectedIconTheme: IconThemeData(
-          color: Colors.grey.shade200,
-          size: 20,
-        ),
-        backgroundColor: _primaryColor,
-        unselectedLabelTextStyle:
-            getAppTextTheme(textColor: _secondaryColor).bodyText1?.copyWith(
-                  fontSize: 12,
-                ),
-        selectedLabelTextStyle:
-            getAppTextTheme(textColor: Colors.yellow).bodyText1?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  decorationColor: Colors.yellow,
-                  decoration: TextDecoration.overline,
-                  decorationStyle: TextDecorationStyle.wavy,
-                ),
-        labelType: NavigationRailLabelType.all,
-      ),
-
-      ///The color and geometry TextTheme values used to configure textTheme, primaryTextTheme and accentTextTheme.
-      typography: Typography.material2018(),
-      cupertinoOverrideTheme: const CupertinoThemeData(
-          //cupertino theme
-          ),
-      bottomSheetTheme: const BottomSheetThemeData(
-          //bottom sheet theme
-          ),
-      popupMenuTheme: const PopupMenuThemeData(
-          //pop menu theme
-          ),
-      bannerTheme: const MaterialBannerThemeData(
-          // material banner theme
-          ),
-      dividerTheme: const DividerThemeData(
-          //divider, vertical divider theme
-          ),
-      buttonBarTheme: const ButtonBarThemeData(
-          // button bar theme
-          ),
-      // fontFamily: 'ROBOTO',
-      splashFactory: InkSplash.splashFactory,
-    )
-
-*/    

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/model_classes/app_notifications_helper.dart';
+import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_viewmodel.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_screen_desktop.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_screen_mobile.dart';
@@ -24,14 +25,19 @@ class NotificationsScreenView extends StatefulWidget {
 class _NotificationsScreenViewState extends State<NotificationsScreenView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<NotificationsListViewModel>.reactive(
-      onModelReady: (model) => model.init(args: widget.arguments),
-      builder: (context, model, child) => ScreenTypeLayout(
-        mobile: const NotificationsScreenMobile(),
-        desktop: const NotificationsScreenDesktop(),
-        tablet: const NotificationsScreenTablet(),
+    return ScreenTypeLayout.builder(
+      mobile: (BuildContext context) => const NotSupportedScreensView(),
+      tablet: (BuildContext context) => const NotSupportedScreensView(),
+      desktop: (BuildContext context) =>
+          ViewModelBuilder<NotificationsListViewModel>.reactive(
+        onModelReady: (model) => model.init(args: widget.arguments),
+        builder: (context, model, child) => ScreenTypeLayout(
+          mobile: const NotificationsScreenMobile(),
+          desktop: const NotificationsScreenDesktop(),
+          tablet: const NotificationsScreenTablet(),
+        ),
+        viewModelBuilder: () => NotificationsListViewModel(),
       ),
-      viewModelBuilder: () => NotificationsListViewModel(),
     );
   }
 }

@@ -2,6 +2,7 @@
 flutter clean
 flutter pub get
 flutter build web --release --dart-define BASE_URL=https://geekscms.com --dart-define SHOW_LOGS=false
+#flutter build web --release --dart-define BASE_URL=https://geekmsm.in --dart-define SHOW_LOGS=false
 #flutter build web --release --dart-define BASE_URL=http://192.168.0.193:8080/scm --dart-define SHOW_LOGS=false
 firebase deploy
 

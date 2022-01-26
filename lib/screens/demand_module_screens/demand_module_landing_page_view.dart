@@ -9,6 +9,7 @@ import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
+import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/services/notification/fcm_permissions.dart';
 import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
@@ -44,9 +45,9 @@ class _DemandModuleLandingPageViewState
         mobile: (
           mobileViewContext,
         ) =>
-            const SupplyModuleLandingPageMobileView(),
+            const NotSupportedScreensView(),
         desktop: (webViewContext) => const SupplyModuleLandingPageWebView(),
-        tablet: (tabletViewContext) => const SupplyModuleLandingPageWebView(),
+        tablet: (tabletViewContext) => const NotSupportedScreensView(),
       ),
       viewModelBuilder: () => DemandModuleLandingPageViewModel(),
     );
@@ -154,15 +155,12 @@ class SupplyModuleLandingPageWebView
   ) {
     return Scaffold(
       appBar: appbarWidget(context: context, title: 'Demand', options: [
-        wSizedBox(width: 30),
-        Center(child: Text('Hi, ${viewModel.authenticatedUserName}')),
-        wSizedBox(width: 30),
         CartIconView(
           arguments: CartIconViewArguments(),
         ),
-        wSizedBox(width: 30),
+        wSizedBox(width: 10),
         viewModel.profileApiStatus == ApiStatus.FETCHED
-            ? AppPopUpMenuWidget.withCircleAvatar(
+            ? AppPopUpMenuWidget.withProfile(
                 profileResponse: viewModel.supplyProfileResponse,
                 onOptionsSelected: ({value}) =>
                     viewModel.actionPopUpItemSelected(selectedValue: value),

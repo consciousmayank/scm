@@ -7,6 +7,7 @@ import 'package:scm/app/appconfigs.dart';
 
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/app_themes_types.dart';
+import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/services/notification/fcm_permissions.dart';
@@ -47,9 +48,9 @@ class _SupplyModuleLandingPageViewState
         mobile: (
           mobileViewContext,
         ) =>
-            const SupplyModuleLandingPageMobileView(),
+            const NotSupportedScreensView(),
         desktop: (webViewContext) => const SupplyModuleLandingPageWebView(),
-        tablet: (tabletViewContext) => const SupplyModuleLandingPageWebView(),
+        tablet: (tabletViewContext) => const NotSupportedScreensView(),
       ),
       viewModelBuilder: () => SupplyModuleLandingPageViewModel(),
     );
@@ -162,20 +163,22 @@ class SupplyModuleLandingPageWebView
               },
             ),
             wSizedBox(width: 10),
-            Center(
-              child: Text(
-                'Hi, ${viewModel.authenticatedUserName}',
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      color: AppColors().white,
-                    ),
-              ),
-            ),
-            wSizedBox(width: 30),
-            AppPopUpMenuWidget(
+            // Center(
+            //   child: Text(
+            //     'Hi, ${viewModel.authenticatedUserName}',
+            //     style: Theme.of(context).textTheme.bodyText2?.copyWith(
+            //           color: AppColors().white,
+            //         ),
+            //   ),
+            // ),
+
+            AppPopUpMenuWidget.withProfile(
               onOptionsSelected: ({value}) =>
                   viewModel.actionPopUpItemSelected(selectedValue: value),
               options: profileOptions,
-              toolTipLabel: popUpMenuLabelToolTip,
+              toolTipLabel:
+                  'Hi, ${viewModel.supplyProfileResponse?.businessName}',
+              profileResponse: viewModel.supplyProfileResponse,
             ),
             wSizedBox(width: 10),
           ]),

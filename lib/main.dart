@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -43,6 +44,13 @@ void main() async {
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   usePathUrlStrategy();
+  ResponsiveSizingConfig.instance.setCustomBreakpoints(
+    const ScreenBreakpoints(
+      desktop: 1280,
+      tablet: 700,
+      watch: 50,
+    ),
+  );
   runApp(const MyApp());
 }
 

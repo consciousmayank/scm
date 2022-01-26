@@ -13,9 +13,11 @@ import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
 import 'package:scm/widgets/delivery_details_dialog_box.dart';
+import 'package:scm/widgets/demand_app_qr_code_dialog_box.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
+import 'package:scm/widgets/supply_app_qr_code_dialog_box.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 void setupDialogUi() {
@@ -75,6 +77,16 @@ void setupDialogUi() {
         ),
     DialogType.ADD_ADDRESS: (context, sheetRequest, completer) =>
         AddressDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.DEMAND_APP_QR_CODE: (context, sheetRequest, completer) =>
+        DemandAppQrCodeDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.SUPPLY_APP_QR_CODE: (context, sheetRequest, completer) =>
+        SupplyAppQrCodeDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),
@@ -187,6 +199,7 @@ class CenteredBaseDialogArguments {
     required this.title,
     required this.child,
     this.contentPadding,
+    this.noColorOnTop = false,
   });
 
   final Function(DialogResponse) completer;
@@ -194,6 +207,7 @@ class CenteredBaseDialogArguments {
   final EdgeInsets? contentPadding;
   final DialogRequest request;
   final String title;
+  final bool noColorOnTop;
 }
 
 class CenteredBaseDialog extends StatelessWidget {
@@ -207,18 +221,31 @@ class CenteredBaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: Colors.transparent,
       elevation: 20,
       insetPadding: arguments.contentPadding ??
           EdgeInsets.all(
             MediaQuery.of(context).size.height * 0.25,
           ),
-      child: ColumnWithTitle(
-        title: arguments.title,
-        child: arguments.child,
-        dialogClose: () => arguments.completer(DialogResponse(
-          confirmed: false,
-        )),
-      ),
+      child: arguments.noColorOnTop
+          ? ColumnWithTitle.noColorOnTop(
+              title: arguments.title,
+              child: arguments.child,
+              dialogClose: () => arguments.completer(
+                DialogResponse(
+                  confirmed: false,
+                ),
+              ),
+            )
+          : ColumnWithTitle(
+              title: arguments.title,
+              child: arguments.child,
+              dialogClose: () => arguments.completer(
+                DialogResponse(
+                  confirmed: false,
+                ),
+              ),
+            ),
     );
   }
 }

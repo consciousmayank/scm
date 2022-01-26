@@ -18,6 +18,7 @@ class AppDropDown<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<T>(
+      dropdownColor: AppColors().white,
       isExpanded: true,
       hint: Text(
         hintText,

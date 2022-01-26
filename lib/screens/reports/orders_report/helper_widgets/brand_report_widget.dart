@@ -55,21 +55,27 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                     '#',
                     flexValue: Dimens().snoFlexValue,
                     textAlignment: TextAlign.center,
+                    textStyle: Theme.of(context).textTheme.button?.copyWith(
+                          color: AppColors().primaryHeaderTextColor,
+                        ),
                   ),
-                  AppTableSingleItem.string(
-                    'Name',
-                    flexValue: Dimens().nameFlexValue,
-                  ),
-                  AppTableSingleItem.string(
-                    labelQuantity,
-                    textAlignment: TextAlign.end,
-                    flexValue: Dimens().quantityFlexValue,
-                  ),
-                  AppTableSingleItem.string(
-                    labelAmount,
-                    textAlignment: TextAlign.end,
-                    flexValue: Dimens().amountFlexValue,
-                  ),
+                  AppTableSingleItem.string('Name',
+                      flexValue: Dimens().nameFlexValue,
+                      textStyle: Theme.of(context).textTheme.button?.copyWith(
+                            color: AppColors().primaryHeaderTextColor,
+                          )),
+                  AppTableSingleItem.string(labelQuantity,
+                      textAlignment: TextAlign.end,
+                      flexValue: Dimens().quantityFlexValue,
+                      textStyle: Theme.of(context).textTheme.button?.copyWith(
+                            color: AppColors().primaryHeaderTextColor,
+                          )),
+                  AppTableSingleItem.string(labelAmount,
+                      textAlignment: TextAlign.end,
+                      flexValue: Dimens().amountFlexValue,
+                      textStyle: Theme.of(context).textTheme.button?.copyWith(
+                            color: AppColors().primaryHeaderTextColor,
+                          )),
                 ],
               ),
               if (viewModel.ordersReportGroupByBrandResponse != null)

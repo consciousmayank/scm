@@ -27,27 +27,45 @@ class OrdersConsilidatedReportWidget
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        const AppTableWidget.header(
+        AppTableWidget.header(
           values: [
             AppTableSingleItem.string(
               '#',
               flexValue: 1,
               textAlignment: TextAlign.center,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                    color: AppColors().primaryHeaderTextColor,
+                  ),
             ),
             AppTableSingleItem.string(
               labelItemCode,
               flexValue: 2,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                    color: AppColors().primaryHeaderTextColor,
+                  ),
             ),
-            AppTableSingleItem.string('Item Name', flexValue: 7),
+            AppTableSingleItem.string(
+              'Item Name',
+              flexValue: 7,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                    color: AppColors().primaryHeaderTextColor,
+                  ),
+            ),
             AppTableSingleItem.string(
               labelQuantity,
               textAlignment: TextAlign.end,
               flexValue: 2,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                    color: AppColors().primaryHeaderTextColor,
+                  ),
             ),
             AppTableSingleItem.string(
               labelAmount,
               textAlignment: TextAlign.end,
               flexValue: 2,
+              textStyle: Theme.of(context).textTheme.button?.copyWith(
+                    color: AppColors().primaryHeaderTextColor,
+                  ),
             ),
           ],
         ),

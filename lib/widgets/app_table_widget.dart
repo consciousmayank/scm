@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:scm/app/appcolors.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class AppTableWidget extends StatelessWidget {
@@ -27,10 +28,10 @@ class AppTableWidget extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: isHeader
-                        ? Theme.of(context).primaryColorLight
+                        ? Theme.of(context).primaryColorDark
                         : Colors.white,
                     border: Border.all(
-                      color: Theme.of(context).primaryColorLight,
+                      color: Theme.of(context).primaryColorDark,
                       width: 0.5,
                     ),
                   ),
@@ -48,7 +49,11 @@ class AppTableWidget extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.fade,
                         textAlign: singleValue.textAlignment,
-                        style: singleValue.textStyle,
+                        style: singleValue.textStyle?.copyWith(
+                          color: isHeader
+                              ? AppColors().primaryHeaderTextColor
+                              : AppColors().black,
+                        ),
                       ),
                     ),
                   ),

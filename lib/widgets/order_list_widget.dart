@@ -658,9 +658,11 @@ class OrderItemViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+        top: 16,
+        bottom: 8,
       ),
       child: isCustomChild
           ? customChild

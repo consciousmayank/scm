@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scm/enums/app_themes_types.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -70,45 +71,47 @@ class PimHomeScreenView extends StatelessWidget {
     return ViewModelBuilder<PimHomeScreenViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
       builder: (context, model, child) => WillPopScope(
-        child: Scaffold(
-          appBar: appbarWidget(context: context, options: [
-            wSizedBox(width: 10),
-            Center(child: Text('Hi, ${model.authenticatedUserName}')),
-            wSizedBox(width: 30),
-            AppPopUpMenuWidget(
-              onOptionsSelected: ({value}) =>
-                  model.actionPopUpItemSelected(selectedValue: value),
-              options: profileOptions,
-              toolTipLabel: popUpMenuLabelToolTip,
-            ),
-            wSizedBox(width: 10),
-          ]),
-          body: Row(
-            children: [
-              AppNavigationRailWidget(
-                destinations: model.isDeo()
-                    ? getDeoDestinations(
-                        isRotated: model.navRailIsExtended,
-                      )
-                    : model.isDeoGd()
-                        ? getGdDestinations(
-                            isRotated: model.navRailIsExtended,
-                          )
-                        : getSuperVisorDestinations(
-                            isRotated: model.navRailIsExtended,
-                          ),
-                currentIndex: model.currentIndex,
-                onNavigationIndexChanged: (int index) {
-                  model.setIndex(index);
-                },
+        child: ScreenTypeLayout.builder(
+          mobile: (BuildContext context) => const NotSupportedScreensView(),
+          tablet: (BuildContext context) => const NotSupportedScreensView(),
+          desktop: (BuildContext context) => Scaffold(
+            appBar: appbarWidget(context: context, options: [
+              AppPopUpMenuWidget.withName(
+                onOptionsSelected: ({value}) =>
+                    model.actionPopUpItemSelected(selectedValue: value),
+                options: profileOptions,
+                toolTipLabel: popUpMenuLabelToolTip,
+                name: 'Hi, ${model.authenticatedUserName}',
               ),
-              const VerticalDivider(thickness: 1, width: 1),
-              Expanded(
-                child: Center(
-                  child: model.getSelectedView(),
+              wSizedBox(width: 10),
+            ]),
+            body: Row(
+              children: [
+                AppNavigationRailWidget(
+                  destinations: model.isDeo()
+                      ? getDeoDestinations(
+                          isRotated: model.navRailIsExtended,
+                        )
+                      : model.isDeoGd()
+                          ? getGdDestinations(
+                              isRotated: model.navRailIsExtended,
+                            )
+                          : getSuperVisorDestinations(
+                              isRotated: model.navRailIsExtended,
+                            ),
+                  currentIndex: model.currentIndex,
+                  onNavigationIndexChanged: (int index) {
+                    model.setIndex(index);
+                  },
                 ),
-              ),
-            ],
+                const VerticalDivider(thickness: 1, width: 1),
+                Expanded(
+                  child: Center(
+                    child: model.getSelectedView(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         onWillPop: () {

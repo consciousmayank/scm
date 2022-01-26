@@ -4,6 +4,7 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
@@ -26,205 +27,214 @@ class PopularBrandsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<PopularBrandsViewModel>.reactive(
-      onModelReady: (model) => model.init(arguments: arguments),
-      builder: (context, model, child) => Scaffold(
-        appBar: arguments.isFullScreen
-            ? appbarWidget(
-                context: context,
-                title: arguments.supplierId == null
-                    ? labelBrands
-                    : suppliersBrandListPageTitle(
-                        suppliersName: arguments.supplierName!,
-                      ),
-                automaticallyImplyLeading: true,
-                options: [
-                  AnimatedSearchWidget(
-                    hintText: labelSearchBrands,
-                    onSearch: ({required String searchTerm}) {
-                      model.brandTitle = searchTerm;
-                      model.getAllBrands();
-                    },
-                    onCrossButtonClicked: () {
-                      model.brandTitle = '';
-                      model.getAllBrands();
-                    },
-                    // searchController: model.searchController,
-                    // searchFocusNode: model.searchFocusNode,
-                  )
-                ],
-              )
-            : null,
-        body: model.isBusy
-            ? const Center(
-                child: LoadingWidgetWithText(
-                  text: 'Fetching Popular Brands. Please Wait',
-                ),
-              )
-            : Card(
-                shape: Dimens().getCardShape(),
-                color: AppColors().popularBrandsBg,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: Dimens().popularBrandsToppadding,
-                    left: Dimens().popularBrandsLeftpadding,
-                    right: Dimens().popularBrandsRightpadding,
+    return ScreenTypeLayout.builder(
+      mobile: (BuildContext context) => const NotSupportedScreensView(),
+      tablet: (BuildContext context) => const NotSupportedScreensView(),
+      desktop: (BuildContext context) =>
+          ViewModelBuilder<PopularBrandsViewModel>.reactive(
+        onModelReady: (model) => model.init(arguments: arguments),
+        builder: (context, model, child) => Scaffold(
+          appBar: arguments.isFullScreen
+              ? appbarWidget(
+                  context: context,
+                  title: arguments.supplierId == null
+                      ? labelBrands
+                      : suppliersBrandListPageTitle(
+                          suppliersName: arguments.supplierName!,
+                        ),
+                  automaticallyImplyLeading: true,
+                  options: [
+                    AnimatedSearchWidget(
+                      hintText: labelSearchBrands,
+                      onSearch: ({required String searchTerm}) {
+                        model.brandTitle = searchTerm;
+                        model.getAllBrands();
+                      },
+                      onCrossButtonClicked: () {
+                        model.brandTitle = '';
+                        model.getAllBrands();
+                      },
+                      // searchController: model.searchController,
+                      // searchFocusNode: model.searchFocusNode,
+                    )
+                  ],
+                )
+              : null,
+          body: model.isBusy
+              ? const Center(
+                  child: LoadingWidgetWithText(
+                    text: 'Fetching Popular Brands. Please Wait',
                   ),
-                  child: Column(
-                    children: [
-                      if (!arguments.isFullScreen)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              labelPopularBrands,
-                              style: AppTextStyles(context: context)
-                                  .popularBrandsTitleStyle,
-                            ),
-                            AppInkwell(
-                              onTap: arguments.onSeeAllBrandsClicked == null
-                                  ? null
-                                  : () => arguments.onSeeAllBrandsClicked!(),
-                              child: Text(
-                                'See All',
+                )
+              : Card(
+                  shape: Dimens().getCardShape(),
+                  color: AppColors().popularBrandsBg,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: Dimens().popularBrandsToppadding,
+                      left: Dimens().popularBrandsLeftpadding,
+                      right: Dimens().popularBrandsRightpadding,
+                    ),
+                    child: Column(
+                      children: [
+                        if (!arguments.isFullScreen)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                labelPopularBrands,
                                 style: AppTextStyles(context: context)
-                                    .popularBrandsTitleStyle
-                                    .copyWith(
-                                        color:
-                                            AppColors().popularBrandsSeeAllBg,
-                                        decoration: TextDecoration.underline),
+                                    .popularBrandsTitleStyle,
                               ),
-                            ),
-                          ],
-                        ),
-                      arguments.isFullScreen
-                          ? Flexible(
-                              child: GridView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount:
-                                    model.allBrandsResponse!.brands!.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: getValueForScreenType(
-                                    context: context,
-                                    mobile: 1,
-                                    tablet: arguments.isFullScreen ? 4 : 2,
-                                    desktop: arguments.isFullScreen ? 5 : 2,
-                                  ),
-                                  crossAxisSpacing: 8.0,
-                                  mainAxisSpacing: 8.0,
-                                  childAspectRatio: 2.0,
+                              AppInkwell(
+                                onTap: arguments.onSeeAllBrandsClicked == null
+                                    ? null
+                                    : () => arguments.onSeeAllBrandsClicked!(),
+                                child: Text(
+                                  'See All',
+                                  style: AppTextStyles(context: context)
+                                      .popularBrandsTitleStyle
+                                      .copyWith(
+                                          color:
+                                              AppColors().popularBrandsSeeAllBg,
+                                          decoration: TextDecoration.underline),
                                 ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SinglePopularBrandItem(
-                                      item: model.allBrandsResponse!.brands!
-                                          .elementAt(
-                                        index,
-                                      ),
-                                      onItemClicked: ({
-                                        required Brand selectedItem,
-                                      }) {
-                                        model.takeToProductListView(
-                                            selectedItem: selectedItem);
-                                      },
-                                    ),
-                                  );
-                                },
                               ),
-                            )
-                          : Container(),
-                      if (arguments.isFullScreen)
-                        ListFooter.firstPreviousNextLast(
-                          pageNumber: model.pageIndex,
-                          totalPages:
-                              model.allBrandsResponse!.totalItems == null
-                                  ? 0
-                                  : model.allBrandsResponse!.totalPages! - 1,
-                          onPreviousPageClick: () {
-                            model.pageIndex--;
-                            model.getAllBrands();
-                          },
-                          onNextPageClick: () {
-                            model.pageIndex++;
-                            model.getAllBrands();
-                          },
-                          onFirstPageClick: () {
-                            model.pageIndex = 0;
-                            model.getAllBrands();
-                          },
-                          onLastPageClick: () {
-                            model.pageIndex =
-                                model.allBrandsResponse!.totalPages == null
-                                    ? 0
-                                    : model.allBrandsResponse!.totalPages! - 1;
-                            model.getAllBrands();
-                          },
-                        ),
-                      if (!arguments.isFullScreen)
-                        model.allBrandsResponse != null ||
-                                model.allBrandsResponse!.brands != null
-                            ? SizedBox(
-                                height: Dimens().popularBrandsHeight - 50,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    ListView.builder(
-                                      itemBuilder: (context, index) => Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SinglePopularBrandItem(
-                                          item: model.allBrandsResponse!.brands!
-                                              .elementAt(
-                                            index,
-                                          ),
-                                          onItemClicked: (
-                                              {required Brand selectedItem}) {
-                                            model.takeToProductListView(
-                                                selectedItem: selectedItem);
-                                          },
-                                        ),
-                                      ),
-                                      itemCount: model
-                                          .allBrandsResponse!.brands!.length,
-                                      scrollDirection: Axis.horizontal,
+                            ],
+                          ),
+                        arguments.isFullScreen
+                            ? Flexible(
+                                child: GridView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount:
+                                      model.allBrandsResponse!.brands!.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: getValueForScreenType(
+                                      context: context,
+                                      mobile: 1,
+                                      tablet: arguments.isFullScreen ? 4 : 2,
+                                      desktop: arguments.isFullScreen ? 5 : 2,
                                     ),
-                                    Positioned(
-                                      left: 0,
-                                      child: AppInkwell.withBorder(
-                                        onTap: () {},
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            Icons.arrow_left,
-                                            size: 30,
-                                          ),
+                                    crossAxisSpacing: 8.0,
+                                    mainAxisSpacing: 8.0,
+                                    childAspectRatio: 2.0,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SinglePopularBrandItem(
+                                        item: model.allBrandsResponse!.brands!
+                                            .elementAt(
+                                          index,
                                         ),
+                                        onItemClicked: ({
+                                          required Brand selectedItem,
+                                        }) {
+                                          model.takeToProductListView(
+                                              selectedItem: selectedItem);
+                                        },
                                       ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      child: AppInkwell.withBorder(
-                                        onTap: () {},
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            Icons.arrow_right,
-                                            size: 30,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
                               )
                             : Container(),
-                    ],
+                        if (arguments.isFullScreen)
+                          ListFooter.firstPreviousNextLast(
+                            pageNumber: model.pageIndex,
+                            totalPages:
+                                model.allBrandsResponse!.totalItems == null
+                                    ? 0
+                                    : model.allBrandsResponse!.totalPages! - 1,
+                            onPreviousPageClick: () {
+                              model.pageIndex--;
+                              model.getAllBrands();
+                            },
+                            onNextPageClick: () {
+                              model.pageIndex++;
+                              model.getAllBrands();
+                            },
+                            onFirstPageClick: () {
+                              model.pageIndex = 0;
+                              model.getAllBrands();
+                            },
+                            onLastPageClick: () {
+                              model.pageIndex =
+                                  model.allBrandsResponse!.totalPages == null
+                                      ? 0
+                                      : model.allBrandsResponse!.totalPages! -
+                                          1;
+                              model.getAllBrands();
+                            },
+                          ),
+                        if (!arguments.isFullScreen)
+                          model.allBrandsResponse != null ||
+                                  model.allBrandsResponse!.brands != null
+                              ? SizedBox(
+                                  height: Dimens().popularBrandsHeight - 50,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      ListView.builder(
+                                        itemBuilder: (context, index) =>
+                                            Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SinglePopularBrandItem(
+                                            item: model
+                                                .allBrandsResponse!.brands!
+                                                .elementAt(
+                                              index,
+                                            ),
+                                            onItemClicked: (
+                                                {required Brand selectedItem}) {
+                                              model.takeToProductListView(
+                                                  selectedItem: selectedItem);
+                                            },
+                                          ),
+                                        ),
+                                        itemCount: model
+                                            .allBrandsResponse!.brands!.length,
+                                        scrollDirection: Axis.horizontal,
+                                      ),
+                                      Positioned(
+                                        left: 0,
+                                        child: AppInkwell.withBorder(
+                                          onTap: () {},
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.arrow_left,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        child: AppInkwell.withBorder(
+                                          onTap: () {},
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.arrow_right,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
+        viewModelBuilder: () => PopularBrandsViewModel(),
       ),
-      viewModelBuilder: () => PopularBrandsViewModel(),
     );
   }
 }

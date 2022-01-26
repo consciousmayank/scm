@@ -38,6 +38,8 @@ class AppColors {
 
   get productListItemWebCategoryTextColor => const Color(0xff6C757D);
 
+  get loginPageQrCodeTextColor => const Color(0xff287AA2);
+
   // Color get productFilterBg => primaryColor.shade500;
 
   Color get dashboardTableHeaderBg => const Color(0xffEEF2F7);

@@ -1,5 +1,12 @@
 In this build following was done.
 
+Wednessday 26 January 2022
+    - Finalised Login Page.
+    - Now supporting screens with width 1280 or more.
+
+Tuesday 23 January 2022
+    -Finalised Orders Page and Dashboard and LoginView
+
 Saturday 22 January 2022
     - Fixed following bugs.
         - Remove button is inconsistent in product.

@@ -11,17 +11,28 @@ class ColumnWithTitle extends StatelessWidget {
     required this.child,
     this.titleWidthFull = true,
     this.dialogClose,
-  }) : super(key: key);
+  })  : noColorOnTop = false,
+        super(key: key);
+
+  const ColumnWithTitle.noColorOnTop({
+    Key? key,
+    required this.title,
+    required this.child,
+    this.titleWidthFull = true,
+    this.dialogClose,
+  })  : noColorOnTop = true,
+        super(key: key);
 
   final Function()? dialogClose;
   final Widget child;
   final String title;
-  final bool titleWidthFull;
+  final bool titleWidthFull, noColorOnTop;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: Dimens().getCardShape(),
+      color: AppColors().white,
       shadowColor: Colors.black,
       elevation: 4,
       child: Column(
@@ -35,7 +46,7 @@ class ColumnWithTitle extends StatelessWidget {
                 topLeft: Radius.circular(Dimens().getDefaultRadius),
                 topRight: Radius.circular(Dimens().getDefaultRadius),
               ),
-              color: Theme.of(context).primaryColorLight,
+              color: noColorOnTop ? null : Theme.of(context).primaryColorLight,
             ),
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,
@@ -53,7 +64,8 @@ class ColumnWithTitle extends StatelessWidget {
                   AppInkwell(
                     child: Icon(
                       Icons.close,
-                      color: AppColors().white,
+                      color:
+                          noColorOnTop ? AppColors().black : AppColors().white,
                     ),
                     onTap: dialogClose,
                   )

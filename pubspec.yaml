@@ -55,6 +55,7 @@ dependencies:
   dio_flutter_transformer2: ^4.0.1
   logger: 1.1.0 
   http_certificate_pinning: ^2.0.3
+  qr_flutter: ^4.0.0
 
   
 dev_dependencies:
