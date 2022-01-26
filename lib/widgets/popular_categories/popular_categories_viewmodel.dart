@@ -39,28 +39,26 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
     if (args.supplierId == null) {
       navigationService.navigateTo(
         productListViewPageRoute,
-        arguments: ProductListViewArguments(
-          arguments: ProductListViewArgs.fullScreen(
-            brandsFilterList: [],
-            categoryFilterList: [selectedCategory],
-            subCategoryFilterList: [],
-            productTitle: '',
-            isSupplierCatalog: args.isSupplierCatalog,
-          ),
+        arguments: ProductListViewArgs.fullScreen(
+          brandsFilterList: [],
+          categoryFilterList: [selectedCategory],
+          subCategoryFilterList: [],
+          productTitle: '',
+          isSupplierCatalog: args.isSupplierCatalog,
         ),
       );
     } else {
-      navigationService.navigateTo(productListViewPageRoute,
-          arguments: ProductListViewArguments(
-            arguments: ProductListViewArgs.asSupplierProductList(
-              brandsFilterList: [],
-              categoryFilterList: [selectedCategory],
-              subCategoryFilterList: [],
-              productTitle: '',
-              supplierId: args.supplierId,
-              supplierName: args.supplierName,
-            ),
-          ));
+      navigationService.navigateTo(
+        productListViewPageRoute,
+        arguments: ProductListViewArgs.asSupplierProductList(
+          brandsFilterList: [],
+          categoryFilterList: [selectedCategory],
+          subCategoryFilterList: [],
+          productTitle: '',
+          supplierId: args.supplierId,
+          supplierName: args.supplierName,
+        ),
+      );
     }
   }
 }

@@ -8,13 +8,14 @@ import 'package:scm/app/app.router.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/app/setup_snackbars.dart';
+import 'package:scm/routes/routes.dart';
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/services/notification/notification_click.dart';
 import 'package:scm/services/notification/remote_notification_params.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'app/di.dart';
 import 'firebase_options.dart';
-import 'url_strategy.dart';
 
 import 'services/notification/local_notification_service.dart';
 
@@ -43,7 +44,7 @@ void main() async {
   setupDialogUi();
   setupSnackbarUi();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  usePathUrlStrategy();
+
   ResponsiveSizingConfig.instance.setCustomBreakpoints(
     const ScreenBreakpoints(
       desktop: 1280,
@@ -63,6 +64,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // String token;
+  final AppRouter _router = AppRouter();
 
   @override
   void initState() {
@@ -128,7 +130,8 @@ class _MyAppState extends State<MyApp> {
               theme: ApplicationTheme().getAppTheme(),
               debugShowCheckedModeBanner: false,
               navigatorKey: StackedService.navigatorKey,
-              onGenerateRoute: StackedRouter().onGenerateRoute,
+              onGenerateRoute: _router.generateRoute,
+              initialRoute: mainViewRoute,
 
               // initialRoute: dashBoardPageRoute,
             );

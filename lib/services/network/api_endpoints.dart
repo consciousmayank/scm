@@ -74,7 +74,7 @@ final GET_ORDER_STATUS_LIST =
 
 const String ORDERS = "/api/supply/order";
 
-const String USER_AUTH = "/api/user/authenticate";
+const String USER_AUTH = "/api/user/authenticate?webClient=true";
 const String UPDATE_PASSWORD = "/api/user/update/password";
 
 const String USER_REGISTER = '/api/user/register';

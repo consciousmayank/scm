@@ -90,9 +90,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                           onClickOfOrderReportsOption: () {
                             viewModel.navigationService.navigateTo(
                               orderReportsRoute,
-                              arguments: OrderReportsViewArguments(
-                                arguments: OrderReportsViewArgs(),
-                              ),
+                              arguments: OrderReportsViewArgs(),
                             );
                           },
                         ),

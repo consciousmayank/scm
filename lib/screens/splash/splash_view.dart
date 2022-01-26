@@ -67,10 +67,8 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       locator<NavigationService>().replaceWith(
         logInPageRoute,
-        arguments: LoginViewArguments(
-          arguments: LoginViewArgs(
-            reasons: widget.reasons,
-          ),
+        arguments: LoginViewArgs(
+          reasons: widget.reasons,
         ),
       );
     }

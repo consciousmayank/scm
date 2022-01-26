@@ -134,11 +134,9 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
     _appPreferences.clearPreferences();
     locator<stacked_service.NavigationService>().clearStackAndShow(
       mainViewRoute,
-      arguments: SplashScreenArguments(
-        reasons: LoginReasons(
-          title: invalidTokenTitle,
-          description: description,
-        ),
+      arguments: LoginReasons(
+        title: invalidTokenTitle,
+        description: description,
       ),
     );
   }

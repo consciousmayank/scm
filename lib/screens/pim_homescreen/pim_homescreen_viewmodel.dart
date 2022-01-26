@@ -29,9 +29,7 @@ class PimHomeScreenViewModel extends GeneralisedIndexTrackingViewModel {
     preferences.clearPreferences();
     locator<NavigationService>().pushNamedAndRemoveUntil(
       logInPageRoute,
-      arguments: LoginViewArguments(
-        arguments: LoginViewArgs(),
-      ),
+      arguments: LoginViewArgs(),
     );
   }
 

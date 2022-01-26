@@ -120,13 +120,11 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   takeToProductListFullScreen() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments(
-        arguments: ProductListViewArgs.fullScreen(
-          brandsFilterList: [],
-          categoryFilterList: [],
-          subCategoryFilterList: [],
-          productTitle: '',
-        ),
+      arguments: ProductListViewArgs.fullScreen(
+        brandsFilterList: [],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
       ),
     );
   }

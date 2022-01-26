@@ -13,9 +13,7 @@ class MoreOptionsViewModel extends GeneralisedBaseViewModel {
   takeToOrderReports() {
     navigationService.navigateTo(
       orderReportsRoute,
-      arguments: OrderReportsViewArguments(
-        arguments: OrderReportsViewArgs(),
-      ),
+      arguments: OrderReportsViewArgs(),
     );
   }
 

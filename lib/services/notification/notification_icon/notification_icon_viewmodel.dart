@@ -39,10 +39,8 @@ class NotificationIconViewModel
     locator<NavigationService>()
         .navigateTo(
       notificationScreenPageRoute,
-      arguments: NotificationsScreenViewArguments(
-        arguments: NotificationsScreenArgs.fromNotificationIcon(
-          appNotificationsList: appNotificationsList,
-        ),
+      arguments: NotificationsScreenArgs.fromNotificationIcon(
+        appNotificationsList: appNotificationsList,
       ),
     )!
         .then((value) {

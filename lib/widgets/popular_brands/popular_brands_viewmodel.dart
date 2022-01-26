@@ -55,14 +55,12 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({required Brand selectedItem}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments(
-        arguments: ProductListViewArgs.fullScreen(
-          brandsFilterList: [selectedItem.title],
-          categoryFilterList: [],
-          subCategoryFilterList: [],
-          productTitle: '',
-          isSupplierCatalog: arguments.isSupplierCatalog,
-        ),
+      arguments: ProductListViewArgs.fullScreen(
+        brandsFilterList: [selectedItem.title],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }

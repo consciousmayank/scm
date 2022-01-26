@@ -33,12 +33,10 @@ class OnNotificationClick {
         onButtonClicked = () {
           _navigationService.navigateTo(
             notificationScreenPageRoute,
-            arguments: NotificationsScreenViewArguments(
-              arguments: NotificationsScreenArgs.fromNotificationClick(
-                clickedNotification: AppNotificationsHelper(
-                  isNotificationRead: false,
-                  notification: notificationParams,
-                ),
+            arguments: NotificationsScreenArgs.fromNotificationClick(
+              clickedNotification: AppNotificationsHelper(
+                isNotificationRead: false,
+                notification: notificationParams,
               ),
             ),
           );

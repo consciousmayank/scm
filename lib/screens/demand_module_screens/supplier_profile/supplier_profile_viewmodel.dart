@@ -93,24 +93,22 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   void takeToProductListView({Brand? selectedBrand, String? selectedCategory}) {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments(
-        arguments: ProductListViewArgs.asSupplierProductList(
-          brandsFilterList: selectedBrand == null
-              ? []
-              : [
-                  selectedBrand.title,
-                ],
-          categoryFilterList: selectedCategory == null
-              ? []
-              : [
-                  selectedCategory,
-                ],
-          subCategoryFilterList: [],
-          productTitle: '',
-          supplierId: arguments.selectedSupplier?.id,
-          supplierName: arguments.selectedSupplier?.businessName,
-          isSupplierCatalog: arguments.isSupplierCatalog,
-        ),
+      arguments: ProductListViewArgs.asSupplierProductList(
+        brandsFilterList: selectedBrand == null
+            ? []
+            : [
+                selectedBrand.title,
+              ],
+        categoryFilterList: selectedCategory == null
+            ? []
+            : [
+                selectedCategory,
+              ],
+        subCategoryFilterList: [],
+        productTitle: '',
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }
@@ -147,10 +145,8 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForSupplier() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArguments(
-        arguments: PopularBrandsViewArgs.fullScreen(
-          isSupplierCatalog: arguments.isSupplierCatalog,
-        ),
+      arguments: PopularBrandsViewArgs.fullScreen(
+        isSupplierCatalog: arguments.isSupplierCatalog,
       ),
     );
   }
@@ -158,11 +154,9 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToPopularBrandsFullScreenForDemander() {
     navigationService.navigateTo(
       brandsListViewPageRoute,
-      arguments: PopularBrandsViewArguments(
-        arguments: PopularBrandsViewArgs.demanderPopularBrands(
-          supplierId: arguments.selectedSupplier?.id,
-          supplierName: arguments.selectedSupplier?.businessName,
-        ),
+      arguments: PopularBrandsViewArgs.demanderPopularBrands(
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }
@@ -170,21 +164,17 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToCategoriesFullScreenForSupplier() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArguments(
-        arguments: PopularCategoriesViewArgs(
-            isSupplierCatalog: arguments.isSupplierCatalog),
-      ),
+      arguments: PopularCategoriesViewArgs(
+          isSupplierCatalog: arguments.isSupplierCatalog),
     );
   }
 
   navigateToCategoriesFullScreenForDemander() {
     navigationService.navigateTo(
       categoriesListViewPageRoute,
-      arguments: PopularCategoriesViewArguments(
-        arguments: PopularCategoriesViewArgs.demanderPopularBrands(
-          supplierId: arguments.selectedSupplier?.id,
-          supplierName: arguments.selectedSupplier?.businessName,
-        ),
+      arguments: PopularCategoriesViewArgs.demanderPopularBrands(
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }
@@ -192,14 +182,12 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForSupplier() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments(
-        arguments: ProductListViewArgs.fullScreen(
-          isSupplierCatalog: arguments.isSupplierCatalog,
-          brandsFilterList: [],
-          categoryFilterList: [],
-          subCategoryFilterList: [],
-          productTitle: '',
-        ),
+      arguments: ProductListViewArgs.fullScreen(
+        isSupplierCatalog: arguments.isSupplierCatalog,
+        brandsFilterList: [],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
       ),
     );
   }
@@ -207,15 +195,13 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   navigateToProductListFullScreenForDemander() {
     navigationService.navigateTo(
       productListViewPageRoute,
-      arguments: ProductListViewArguments(
-        arguments: ProductListViewArgs.asSupplierProductList(
-          brandsFilterList: [],
-          categoryFilterList: [],
-          subCategoryFilterList: [],
-          productTitle: '',
-          supplierId: arguments.selectedSupplier?.id,
-          supplierName: arguments.selectedSupplier?.businessName,
-        ),
+      arguments: ProductListViewArgs.asSupplierProductList(
+        brandsFilterList: [],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
+        supplierId: arguments.selectedSupplier?.id,
+        supplierName: arguments.selectedSupplier?.businessName,
       ),
     );
   }

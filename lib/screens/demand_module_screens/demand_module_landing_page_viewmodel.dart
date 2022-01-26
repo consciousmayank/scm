@@ -62,9 +62,7 @@ class DemandModuleLandingPageViewModel
     preferences.clearPreferences();
     navigationService.pushNamedAndRemoveUntil(
       logInPageRoute,
-      arguments: LoginViewArguments(
-        arguments: LoginViewArgs(),
-      ),
+      arguments: LoginViewArgs(),
     );
   }
 
