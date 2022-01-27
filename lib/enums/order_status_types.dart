@@ -54,7 +54,7 @@ extension OrderStatusTypesStringValues on OrderStatusTypes {
       case OrderStatusTypes.PROCESSING:
         return "PROCESSING";
       case OrderStatusTypes.UNDER_PROCESS:
-        return "UNDER PROCCESS";
+        return "PROCESSING";
       case OrderStatusTypes.INTRANSIT:
         return "INTRANSIT";
       case OrderStatusTypes.SHIPPED:

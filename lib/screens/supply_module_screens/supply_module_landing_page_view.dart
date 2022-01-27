@@ -18,7 +18,9 @@ import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_bottom_navigation_bar_widget.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
+import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
+import 'package:scm/widgets/version_widget/version_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class SupplyModuleLandingPageView extends StatefulWidget {
@@ -151,7 +153,8 @@ class SupplyModuleLandingPageWebView
           context: context,
           title: viewModel.selectedOptionTitle(),
           options: [
-            wSizedBox(width: 30),
+            const VersionWidgetView(),
+            wSizedBox(width: 10),
             // if (model.currentIndex != 0)
             AnimatedSearchWidget(
               hintText: labelSearchAllProducts,

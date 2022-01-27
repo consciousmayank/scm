@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_status_timeline_widget.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:stacked/stacked.dart';
 
-class OrderPorcessButtonsWidget
+class OrderProcessButtonsWidget
     extends ViewModelWidget<OrderListPageViewModel> {
-  const OrderPorcessButtonsWidget({
+  const OrderProcessButtonsWidget({
     Key? key,
   }) : super(key: key);
 
@@ -21,7 +22,7 @@ class OrderPorcessButtonsWidget
       padding: const EdgeInsets.all(2),
       // height: 50,
       child: SizedBox(
-        height: AppBar().preferredSize.height * 0.8,
+        height: AppBar().preferredSize.height,
         child: AppButton(
           buttonBg: buttonBg,
           onTap: onTap,
@@ -38,6 +39,7 @@ class OrderPorcessButtonsWidget
         return Row(
           children: [
             Expanded(
+              // child: OrderStatusTimeLineWidget(),
               child: Container(),
               flex: 2,
             ),
@@ -72,8 +74,9 @@ class OrderPorcessButtonsWidget
         return Row(
           children: [
             Expanded(
+              // child: OrderStatusTimeLineWidget(),
               child: Container(),
-              flex: 2,
+              flex: 4,
             ),
             Expanded(
               flex: 1,
@@ -125,8 +128,9 @@ class OrderPorcessButtonsWidget
         return Row(
           children: [
             Expanded(
+              // child: OrderStatusTimeLineWidget(),
               child: Container(),
-              flex: 2,
+              flex: 4,
             ),
             Expanded(
               flex: 1,
@@ -136,6 +140,7 @@ class OrderPorcessButtonsWidget
                 onTap: () {
                   viewModel.openDeliveryDetailsDialogBox(
                     orderId: viewModel.orderDetails.id,
+                    amount: viewModel.orderDetails.totalAmount,
                   );
                 },
               ),
@@ -143,53 +148,11 @@ class OrderPorcessButtonsWidget
           ],
         );
       case 'DELIVERED':
-      // return Container(
-      //   height: AppBar().preferredSize.height * 1.5,
-      //   width: MediaQuery.of(context).size.width,
-      //   padding: const EdgeInsets.all(8),
-      //   decoration: BoxDecoration(
-      //     color: Colors.green,
-      //     boxShadow: <BoxShadow>[
-      //       BoxShadow(
-      //           color: AppColors.shadesOfBlack[400]!,
-      //           blurRadius: 3,
-      //           offset: Offset(0.0, 0.75))
-      //     ],
-      //     // color: Colors.red,
-      //   ),
-      //   child: Center(
-      //     child: Text(
-      //       'Order has been Delivered.',
-      //       style: Theme.of(context).textTheme.headline4!.copyWith(
-      //             color: AppColors().white,
-      //           ),
-      //     ),
-      //   ),
-      // );
+        // return const OrderStatusTimeLineWidget();
+        return Container();
       case 'CANCELLED':
-      // return Container(
-      //   height: AppBar().preferredSize.height * 1.5,
-      //   width: MediaQuery.of(context).size.width,
-      //   padding: const EdgeInsets.all(8),
-      //   decoration: BoxDecoration(
-      //     color: Colors.red,
-      //     boxShadow: <BoxShadow>[
-      //       BoxShadow(
-      //           color: AppColors.shadesOfBlack[400]!,
-      //           blurRadius: 3,
-      //           offset: Offset(0.0, 0.75))
-      //     ],
-      //     // color: Colors.red,
-      //   ),
-      //   child: Center(
-      //     child: Text(
-      //       'Order has been Cancelled.',
-      //       style: Theme.of(context).textTheme.headline4!.copyWith(
-      //             color: AppColors().white,
-      //           ),
-      //     ),
-      //   ),
-      // );
+        // return const OrderStatusTimeLineWidget();
+        return Container();
 
       default:
         return Container();

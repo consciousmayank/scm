@@ -93,11 +93,11 @@ class OrderListPageView extends StatelessWidget {
                                     // orderStatuses: model.getInAppOrderStatusList(),
                                     orderStatuses: model.orderStatusList,
                                     fromDateString:
-                                        DateTimeToStringConverter.ddMMMMyy(
+                                        DateTimeToStringConverter.ddMMMyy(
                                       date: model.dateTimeRange.start,
                                     ).convert(),
                                     toDateString:
-                                        DateTimeToStringConverter.ddMMMMyy(
+                                        DateTimeToStringConverter.ddMMMyy(
                                       date: model.dateTimeRange.end,
                                     ).convert(),
                                   ),

@@ -12,7 +12,7 @@ import 'package:scm/services/notification/notification_dialog_box.dart';
 import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
-import 'package:scm/widgets/delivery_details_dialog_box.dart';
+import 'package:scm/widgets/delivery_details_dialog_box/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/demand_app_qr_code_dialog_box.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
@@ -61,7 +61,7 @@ void setupDialogUi() {
           completer: completer,
         ),
     DialogType.DELIVERY_DETAILS: (context, sheetRequest, completer) =>
-        DeliveryDetilasDialogBoxView(
+        DeliveryDetailsDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

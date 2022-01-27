@@ -6,6 +6,7 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
+import 'package:scm/widgets/version_widget/version_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class PimHomeScreenView extends StatelessWidget {
@@ -76,6 +77,7 @@ class PimHomeScreenView extends StatelessWidget {
           tablet: (BuildContext context) => const NotSupportedScreensView(),
           desktop: (BuildContext context) => Scaffold(
             appBar: appbarWidget(context: context, options: [
+              const VersionWidgetView(),
               AppPopUpMenuWidget.withName(
                 onOptionsSelected: ({value}) =>
                     model.actionPopUpItemSelected(selectedValue: value),

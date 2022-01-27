@@ -17,6 +17,7 @@ import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
+import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginView extends StatelessWidget {
@@ -131,7 +132,27 @@ class LoginView extends StatelessWidget {
                                       title: labelLoginButton,
                                     ),
                                     hSizedBox(
-                                      height: 48,
+                                      height: 32,
+                                    ),
+                                    FutureBuilder<String>(
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return NullableTextWidget(
+                                            stringValue: snapshot.data,
+                                            textStyle: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                          );
+                                        } else {
+                                          return const NullableTextWidget(
+                                            stringValue: '',
+                                          );
+                                        }
+                                      },
+                                      future: model.getAppVersion(),
+                                    ),
+                                    hSizedBox(
+                                      height: 16,
                                     ),
                                   ],
                                 ),

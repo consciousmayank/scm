@@ -118,7 +118,7 @@ class LoginHelperView extends StatelessWidget {
                     ),
                     hSizedBox(height: 16),
                     const Text(
-                      'Download Application to Register and Reset Password.',
+                      'Download Application to Register / Reset Password.',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

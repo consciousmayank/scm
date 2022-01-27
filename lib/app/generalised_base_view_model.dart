@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scm/app/di.dart';
 
 import 'package:scm/enums/snackbar_types.dart';
@@ -105,5 +106,11 @@ class GeneralisedBaseViewModel extends BaseViewModel {
   bool isDeoGd() {
     return preferences.getSelectedUserRole() ==
         AuthenticatedUserRoles.ROLE_GD.getStatusString;
+  }
+
+  Future<String> getAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return 'Version ${packageInfo.version}.'
+        '${packageInfo.buildNumber}';
   }
 }

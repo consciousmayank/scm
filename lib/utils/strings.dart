@@ -128,7 +128,7 @@ const String labelSearchCategory = 'Search Categories';
 const String labelSearchSubCategory = 'Search Sub-Categories';
 const String labelSearchProducts = 'Search Products';
 const String labelSearchAllProducts = 'Search All Products';
-const String labelRecentOrders = 'RECENT ORDERS';
+const String labelRecentOrders = 'RECENT DELIVERED ORDERS';
 const String labelOrders = 'ORDERS LIST';
 const String labelOrderDetail = 'ORDER DETAILS';
 const String labelAppFooterTitle = 'Product Of Geek Technotonic @2021';
@@ -226,7 +226,7 @@ const String expiredTokenDescription =
 const supplyModuleLandingPageHomeTitle = 'Dashboard';
 const supplyModuleLandingPageProductsTitle = 'All Products';
 const supplyModuleLandingPageCatalogTitle = 'My Catalog';
-const supplyModuleLandingPageOrdersTitle = 'My Orders';
+const supplyModuleLandingPageOrdersTitle = 'Order Details';
 const supplyModuleLandingPageMoreTitle = 'Supply Module';
 const String orderFiltersTitle = 'Select Filter';
 const String orderFiltersStatusOptionLabel = 'Order Status';
@@ -237,7 +237,7 @@ orderListSubtitleLabelWithDates({
   required String fromDate,
   required String toDate,
 }) =>
-    'From $fromDate to $toDate';
+    '$fromDate-$toDate';
 const String optionOrderReportTitle = 'Order Report';
 const String optionOrderReportSubTitle =
     'A Consolidated Report of all your orders';
@@ -258,3 +258,9 @@ const String passwordChangedTitle = 'Password Changed';
 const String passwordChangedDescription =
     'Your password has been changed successfully';
 const String labelOk = 'Ok';
+const List<String> timeLineOrderStatuses = [
+  'Placed',
+  'Processed',
+  'Shipped',
+  'Delivered',
+];

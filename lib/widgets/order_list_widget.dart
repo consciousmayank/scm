@@ -98,7 +98,7 @@ class OrderListWidget extends StatelessWidget {
                         Value.withText(value: 'PLACED ON'),
                         Value.withText(value: 'TOTAL ITEMS'),
                         Value.withText(value: 'TOTAL AMOUNT'),
-                        Value.withText(value: 'STATUS'),
+                        // Value.withText(value: 'STATUS'),
                       ],
                     );
                   }
@@ -132,9 +132,9 @@ class OrderListWidget extends StatelessWidget {
                       Value.withText(
                         value: '${orders.elementAt(index).totalAmount}',
                       ),
-                      Value.withOutlinedContainer(
-                        value: '${orders.elementAt(index).status}',
-                      ),
+                      // Value.withOutlinedContainer(
+                      //   value: '${orders.elementAt(index).status}',
+                      // ),
                     ],
                     isSelected: selectedOrderId > 0 &&
                         selectedOrderId == orders.elementAt(index).id,
@@ -328,7 +328,7 @@ class OrderListWidget extends StatelessWidget {
       return 'New Orders';
     } else if (status == OrderStatusTypes.UNDER_PROCESS.apiToAppTitles) {
       // return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Order Under Process' : 'Orders Under Process'}';
-      return 'Orders Under Process';
+      return 'IN PROCESS';
     } else if (status == OrderStatusTypes.SHIPPED.apiToAppTitles) {
       // return '$orderNumber ${numberOfOrders == 1 || numberOfOrders == 0 ? 'Shipped Order' : 'Shipped Orders'}';
       return 'Shipped Orders';
@@ -373,7 +373,7 @@ class OrderListWidget extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                flex: 2,
+                                flex: 1,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,7 +390,7 @@ class OrderListWidget extends StatelessWidget {
                                       textAlign: TextAlign.left,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .subtitle2
+                                          .button
                                           ?.copyWith(
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -459,7 +459,7 @@ class OrderListWidget extends StatelessWidget {
                                                 ),
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2
+                                              .button
                                               ?.copyWith(
                                                 fontWeight: FontWeight.bold,
                                               ),

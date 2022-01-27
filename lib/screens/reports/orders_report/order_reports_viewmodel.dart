@@ -91,9 +91,6 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
-    Future.delayed(
-      Duration(seconds: 3),
-    );
     ordersReportGroupByTypeResponse =
         await _reportsApi.getOrdersReportGroupByTypes(
       pageNumber: pageNumber,
@@ -107,9 +104,6 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
-    );
-    Future.delayed(
-      Duration(seconds: 3),
     );
     ordersReportGroupBySubTypeResponse =
         await _reportsApi.getOrdersReportGroupBySubTypes(

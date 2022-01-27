@@ -211,6 +211,10 @@ class OrderTracking {
   String? message;
   String? status;
 
+  OrderTracking empty() {
+    return OrderTracking(creationdate: '', id: 0, message: '', status: '');
+  }
+
   OrderTracking copyWith({
     int? id,
     String? status,

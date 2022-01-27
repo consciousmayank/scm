@@ -16,6 +16,8 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
+import 'package:scm/widgets/nullable_text_widget.dart';
+import 'package:scm/widgets/version_widget/version_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class DemandModuleLandingPageView extends StatefulWidget {
@@ -155,6 +157,8 @@ class SupplyModuleLandingPageWebView
   ) {
     return Scaffold(
       appBar: appbarWidget(context: context, title: 'Demand', options: [
+        const VersionWidgetView(),
+        wSizedBox(width: 8),
         CartIconView(
           arguments: CartIconViewArguments(),
         ),

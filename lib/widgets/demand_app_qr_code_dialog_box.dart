@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -33,11 +34,31 @@ class _SupplyAppQrCodeDialogBoxViewState
       builder: (context, model, child) => CenteredBaseDialog(
         arguments: CenteredBaseDialogArguments(
           noColorOnTop: true,
-          contentPadding: const EdgeInsets.only(
-            left: 150,
-            right: 150,
-            top: 50,
-            bottom: 50,
+          contentPadding: EdgeInsets.only(
+            left: getValueForScreenType(
+              context: context,
+              mobile: MediaQuery.of(context).size.width * 0.5,
+              tablet: MediaQuery.of(context).size.width * 0.10,
+              desktop: MediaQuery.of(context).size.width * 0.20,
+            ),
+            right: getValueForScreenType(
+              context: context,
+              mobile: MediaQuery.of(context).size.width * 0.5,
+              tablet: MediaQuery.of(context).size.width * 0.10,
+              desktop: MediaQuery.of(context).size.width * 0.20,
+            ),
+            top: getValueForScreenType(
+              context: context,
+              mobile: MediaQuery.of(context).size.width * 0.001,
+              tablet: MediaQuery.of(context).size.width * 0.010,
+              desktop: MediaQuery.of(context).size.width * 0.020,
+            ),
+            bottom: getValueForScreenType(
+              context: context,
+              mobile: MediaQuery.of(context).size.width * 0.001,
+              tablet: MediaQuery.of(context).size.width * 0.010,
+              desktop: MediaQuery.of(context).size.width * 0.020,
+            ),
           ),
           request: widget.request,
           completer: widget.completer,
@@ -99,10 +120,14 @@ class _SupplyAppQrCodeDialogBoxViewState
                                     width: 40,
                                     fit: BoxFit.cover,
                                   ),
-                                  const Text(
+                                  Text(
                                     'Google Play',
                                     style: TextStyle(
-                                      fontSize: 28,
+                                      fontSize: getValueForScreenType(
+                                          context: context,
+                                          mobile: 12,
+                                          desktop: 28,
+                                          tablet: 16),
                                     ),
                                   ),
                                 ],
@@ -122,7 +147,13 @@ class _SupplyAppQrCodeDialogBoxViewState
                               child: QrImage(
                                 data: model.getPlayStoreUrl(),
                                 version: QrVersions.auto,
-                                size: 300.0,
+                                size: getValueForScreenType(
+                                  context: context,
+                                  mobile: MediaQuery.of(context).size.width / 3,
+                                  tablet: MediaQuery.of(context).size.width / 3,
+                                  desktop:
+                                      MediaQuery.of(context).size.height / 3,
+                                ),
                               ),
                             ),
                           ],
@@ -171,10 +202,14 @@ class _SupplyAppQrCodeDialogBoxViewState
                                     width: 40,
                                     fit: BoxFit.cover,
                                   ),
-                                  const Text(
+                                  Text(
                                     'App Store',
                                     style: TextStyle(
-                                      fontSize: 28,
+                                      fontSize: getValueForScreenType(
+                                          context: context,
+                                          mobile: 12,
+                                          desktop: 28,
+                                          tablet: 16),
                                     ),
                                   ),
                                 ],
@@ -194,7 +229,13 @@ class _SupplyAppQrCodeDialogBoxViewState
                               child: QrImage(
                                 data: model.getAppStoreUrl(),
                                 version: QrVersions.auto,
-                                size: 300.0,
+                                size: getValueForScreenType(
+                                  context: context,
+                                  mobile: MediaQuery.of(context).size.width / 3,
+                                  tablet: MediaQuery.of(context).size.width / 3,
+                                  desktop:
+                                      MediaQuery.of(context).size.height / 3,
+                                ),
                               ),
                             ),
                           ],

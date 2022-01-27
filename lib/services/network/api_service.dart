@@ -1256,11 +1256,11 @@ class ApiService {
 
           switch (selectedDuration) {
             case OrderFiltersDurationType.LAST_30_DAYS:
-            case OrderFiltersDurationType.LAST_2_MONTHS:
+            // case OrderFiltersDurationType.LAST_2_MONTHS:
             case OrderFiltersDurationType.LAST_3_MONTHS:
-            case OrderFiltersDurationType.LAST_4_MONTHS:
-            case OrderFiltersDurationType.LAST_5_MONTHS:
-            case OrderFiltersDurationType.LAST_6_MONTHS:
+              // case OrderFiltersDurationType.LAST_4_MONTHS:
+              // case OrderFiltersDurationType.LAST_5_MONTHS:
+              // case OrderFiltersDurationType.LAST_6_MONTHS:
               queryParamenters['pastMonths'] = selectedDuration.getValue;
               break;
             case OrderFiltersDurationType.CUSTOM:

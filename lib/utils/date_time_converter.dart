@@ -73,6 +73,12 @@ class DateTimeToStringConverter {
     format = 'dd-MM-yyyy, hh:mm aa';
   }
 
+  DateTimeToStringConverter.ddMMMyy({
+    required this.date,
+  }) {
+    format = 'dd/MMM/yy';
+  }
+
   DateTimeToStringConverter.ddmmmyy({
     required this.date,
   }) {
@@ -107,6 +113,12 @@ class DateTimeToStringConverter {
     required this.date,
   }) {
     format = 'dd-MM-yyyy hh:mm:ss aa';
+  }
+
+  DateTimeToStringConverter.ddmmyyhhmmssaaNewLine({
+    required this.date,
+  }) {
+    format = 'dd/MM/yyyy hh:mm aa';
   }
 
   DateTimeToStringConverter.hhmmssaa({

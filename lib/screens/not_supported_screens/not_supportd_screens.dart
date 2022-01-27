@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
@@ -50,9 +51,14 @@ class NotSupportedScreensView extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 text: TextSpan(
                                   text: 'You seem to be on a',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 40,
+                                    fontSize: getValueForScreenType(
+                                      context: context,
+                                      mobile: 14,
+                                      tablet: 18,
+                                      desktop: 40,
+                                    ),
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
@@ -60,7 +66,12 @@ class NotSupportedScreensView extends StatelessWidget {
                                       style: TextStyle(
                                         color: AppColors()
                                             .loginPageQrCodeTextColor,
-                                        fontSize: 40,
+                                        fontSize: getValueForScreenType(
+                                          context: context,
+                                          mobile: 14,
+                                          tablet: 18,
+                                          desktop: 40,
+                                        ),
                                         fontWeight: FontWeight.w600,
                                       ),
                                     )
@@ -70,9 +81,14 @@ class NotSupportedScreensView extends StatelessWidget {
                               RichText(
                                 text: TextSpan(
                                   text: 'Kindly',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 40,
+                                    fontSize: getValueForScreenType(
+                                      context: context,
+                                      mobile: 14,
+                                      tablet: 18,
+                                      desktop: 40,
+                                    ),
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
@@ -80,14 +96,24 @@ class NotSupportedScreensView extends StatelessWidget {
                                       style: TextStyle(
                                           color: AppColors()
                                               .loginPageQrCodeTextColor,
-                                          fontSize: 40,
+                                          fontSize: getValueForScreenType(
+                                            context: context,
+                                            mobile: 14,
+                                            tablet: 18,
+                                            desktop: 40,
+                                          ),
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    const TextSpan(
+                                    TextSpan(
                                       text: ' for better viewing experience.',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 40,
+                                        fontSize: getValueForScreenType(
+                                          context: context,
+                                          mobile: 14,
+                                          tablet: 18,
+                                          desktop: 40,
+                                        ),
                                       ),
                                     )
                                   ],

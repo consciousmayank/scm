@@ -5,6 +5,7 @@ import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/address.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/order_process_buttons.dart';
+import 'package:scm/screens/order_list_page/helper_widgets/order_status_timeline_widget.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/processing_items_list_table.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/quantity_input_widget.dart';
@@ -13,6 +14,7 @@ import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
+import 'package:scm/widgets/order_list_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
@@ -38,12 +40,28 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
         // crossAxisAlignment: CrossAxisAlignment.start,
         slivers: [
           SliverToBoxAdapter(
-            child: viewModel.isSupplier()
-                ? const Padding(
-                    padding: EdgeInsets.only(top: 4.0, right: 4),
-                    child: OrderPorcessButtonsWidget(),
-                  )
-                : Container(),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProcessingItemsListTable.header(
+                      flexValues: const [1],
+                      values: [
+                        Text(
+                          "ORDER TRACK",
+                          style:
+                              Theme.of(context).textTheme.bodyText1?.copyWith(
+                                    color: AppColors().primaryHeaderTextColor,
+                                  ),
+                        )
+                      ],
+                    ),
+                    const OrderSummaryItemViewWidget.customChild(
+                        customChild: OrderStatusTimeLineWidget()),
+                  ],
+                )),
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -121,6 +139,14 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                 ],
               ),
             ),
+          ),
+          SliverToBoxAdapter(
+            child: viewModel.isSupplier()
+                ? const Padding(
+                    padding: EdgeInsets.only(top: 4.0, right: 4),
+                    child: OrderProcessButtonsWidget(),
+                  )
+                : Container(),
           ),
           SliverToBoxAdapter(
             child: hSizedBox(
@@ -359,7 +385,7 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                             style: Theme.of(context).textTheme.bodyText1,
                           )
                         ],
-                        flexValues: [1],
+                        flexValues: const [1],
                       ),
                     ],
                   ),

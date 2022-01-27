@@ -10,6 +10,8 @@ import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_status_types.dart';
+import 'package:scm/enums/order_summary_api_type.dart';
+import 'package:scm/enums/timeline_order_status_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
@@ -17,7 +19,7 @@ import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart'
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/delivery_details_dialog_box.dart';
+import 'package:scm/widgets/delivery_details_dialog_box/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -178,12 +180,15 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  Future<void> openDeliveryDetailsDialogBox({required int? orderId}) async {
+  Future<void> openDeliveryDetailsDialogBox(
+      {required int? orderId, double? amount}) async {
     DialogResponse? dialogResponse = await dialogService.showCustomDialog(
       variant: DialogType.DELIVERY_DETAILS,
       barrierDismissible: true,
       data: DeliveryDetilasDialogBoxViewArguments(
-          title: 'Enter Delivery Details'),
+        title: 'Enter Delivery Details',
+        amount: amount ?? 0.00,
+      ),
     );
 
     if (dialogResponse != null) {
@@ -419,16 +424,58 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  // void updateTextControllers() {
-  //   toDateController = TextEditingController(
-  //     text: DateTimeToStringConverter.ddMMMMyy(
-  //       date: dateTimeRange.end,
-  //     ).convert(),
-  //   );
-  //   fromDateController = TextEditingController(
-  //     text: DateTimeToStringConverter.ddMMMMyy(
-  //       date: dateTimeRange.start,
-  //     ).convert(),
-  //   );
-  // }
+  Color getColor(
+      {String? orderStatus, required TimeLineOrderStatusTypes timeLineStatus}) {
+    if (orderStatus == null) {
+      return Colors.grey.shade300;
+    }
+
+    if (orderStatus == OrderStatusTypes.CREATED.apiToAppTitles &&
+        timeLineStatus.getStatusCode <
+            TimeLineOrderStatusTypes.PROCESSING.getStatusCode) {
+      return Colors.green;
+    } else if (orderStatus == OrderStatusTypes.PROCESSING.apiToAppTitles &&
+        timeLineStatus.getStatusCode <
+            TimeLineOrderStatusTypes.SHIPPED.getStatusCode) {
+      return Colors.green;
+    } else if (orderStatus == OrderStatusTypes.INTRANSIT.apiToAppTitles &&
+        timeLineStatus.getStatusCode <
+            TimeLineOrderStatusTypes.DELIVERED.getStatusCode) {
+      return Colors.green;
+    } else if (orderStatus == OrderStatusTypes.DELIVERED.apiToAppTitles) {
+      return Colors.green;
+    } else if (orderStatus == OrderStatusTypes.CANCELLED.apiToAppTitles) {
+      return Colors.green;
+    } else {
+      return Colors.grey.shade300;
+    }
+  }
+
+  String getDateForStatus({String? status}) {
+    if (status == null ||
+        orderDetails.orderTracking == null ||
+        orderDetails.orderTracking!.isEmpty) {
+      return '';
+    }
+
+    if (orderDetails.orderTracking!
+        .firstWhere(
+          (element) => element.status == status,
+          orElse: () => OrderTracking().empty(),
+        )
+        .creationdate!
+        .isEmpty) {
+      return '';
+    } else {
+      return DateTimeToStringConverter.ddmmyyhhmmssaaNewLine(
+        date: StringToDateTimeConverter.ddmmyyhhmmssaa(
+          date: orderDetails.orderTracking!
+              .firstWhere(
+                (element) => element.status == status,
+              )
+              .creationdate!,
+        ).convert(),
+      ).convert();
+    }
+  }
 }

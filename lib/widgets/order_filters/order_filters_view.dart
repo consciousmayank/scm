@@ -64,6 +64,12 @@ class OrderFiltersView extends ViewModelWidget<OrderListPageViewModel> {
               ),
               flex: 1,
             ),
+            Container(
+              color: Theme.of(context).primaryColorLight,
+              height: 0.5,
+              width: double.infinity,
+            ),
+            hSizedBox(height: 16),
             Row(
               children: [
                 Expanded(

@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scm/app/di.dart';
 
 import 'package:scm/enums/snackbar_types.dart';
