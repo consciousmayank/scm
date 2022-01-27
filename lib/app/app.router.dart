@@ -13,10 +13,12 @@ class Routes {
 }
 
 class StackedRouter extends RouterBase {
-  @override
-  List<RouteDef> get routes => _routes;
+  final _pagesMap = <Type, StackedRouteFactory>{};
   final _routes = <RouteDef>[];
+
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
-  final _pagesMap = <Type, StackedRouteFactory>{};
+
+  @override
+  List<RouteDef> get routes => _routes;
 }

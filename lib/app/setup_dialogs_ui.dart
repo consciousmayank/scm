@@ -205,9 +205,9 @@ class CenteredBaseDialogArguments {
   final Function(DialogResponse) completer;
   final Widget child;
   final EdgeInsets? contentPadding;
+  final bool noColorOnTop;
   final DialogRequest request;
   final String title;
-  final bool noColorOnTop;
 }
 
 class CenteredBaseDialog extends StatelessWidget {

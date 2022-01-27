@@ -25,8 +25,8 @@ class ColumnWithTitle extends StatelessWidget {
 
   final Function()? dialogClose;
   final Widget child;
-  final String title;
   final bool titleWidthFull, noColorOnTop;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
