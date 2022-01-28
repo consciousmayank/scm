@@ -20,14 +20,37 @@ class NotSupportedScreensView extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double maxWidthOfOuterContainer = screenWidth * 0.45;
-    double maxWidthOfItems = screenWidth * 0.40;
+    double maxWidthOfItems = getValueForScreenType(
+      context: context,
+      mobile: screenWidth,
+      tablet: screenWidth * 0.40,
+      desktop: screenWidth * 0.40,
+    );
     return ViewModelBuilder<LoginHelperViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFF287AA2),
         body: Padding(
-          padding: const EdgeInsets.all(64.0),
+          padding: EdgeInsets.all(
+            getValueForScreenType(
+              context: context,
+              mobile: 4,
+              desktop: 64.0,
+              tablet: 64.0,
+            ),
+          ),
           child: Material(
-            borderRadius: BorderRadius.circular(16.0),
+            borderRadius: getValueForScreenType(
+              context: context,
+              mobile: BorderRadius.circular(
+                4.0,
+              ),
+              tablet: BorderRadius.circular(
+                16.0,
+              ),
+              desktop: BorderRadius.circular(
+                16.0,
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

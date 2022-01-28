@@ -1,0 +1,5 @@
+./flutter-stylizer-for-mac -w ./...
+flutter clean
+flutter pub get
+flutter build web --release --dart-define BASE_URL=https://geekmsm.in --dart-define SHOW_LOGS=false
+firebase hosting:channel:deploy live_server

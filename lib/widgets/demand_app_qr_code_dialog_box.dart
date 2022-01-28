@@ -25,8 +25,23 @@ class SupplyAppQrCodeDialogBoxView extends StatefulWidget {
 
 class _SupplyAppQrCodeDialogBoxViewState
     extends State<SupplyAppQrCodeDialogBoxView> {
+  late double screenWidth,
+      screenHeight,
+      maxWidthOfOuterContainer,
+      maxWidthOfItems;
+
   @override
   Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    maxWidthOfOuterContainer = screenWidth * 0.45;
+    maxWidthOfItems = getValueForScreenType(
+      context: context,
+      mobile: screenWidth,
+      tablet: screenWidth * 0.40,
+      desktop: screenWidth * 0.40,
+    );
+
     SupplyAppQrCodeDialogBoxViewArguments arguments =
         widget.request.data as SupplyAppQrCodeDialogBoxViewArguments;
     return ViewModelBuilder<SupplyAppQrCodeDialogBoxViewModel>.reactive(
@@ -37,27 +52,27 @@ class _SupplyAppQrCodeDialogBoxViewState
           contentPadding: EdgeInsets.only(
             left: getValueForScreenType(
               context: context,
-              mobile: MediaQuery.of(context).size.width * 0.5,
-              tablet: MediaQuery.of(context).size.width * 0.10,
-              desktop: MediaQuery.of(context).size.width * 0.20,
+              mobile: 0,
+              tablet: 0,
+              desktop: screenWidth * 0.20,
             ),
             right: getValueForScreenType(
               context: context,
-              mobile: MediaQuery.of(context).size.width * 0.5,
-              tablet: MediaQuery.of(context).size.width * 0.10,
-              desktop: MediaQuery.of(context).size.width * 0.20,
+              mobile: 0,
+              tablet: 0,
+              desktop: screenWidth * 0.20,
             ),
             top: getValueForScreenType(
               context: context,
-              mobile: MediaQuery.of(context).size.width * 0.001,
-              tablet: MediaQuery.of(context).size.width * 0.010,
-              desktop: MediaQuery.of(context).size.width * 0.020,
+              mobile: 0,
+              tablet: screenWidth * 0.05,
+              desktop: screenWidth * 0.020,
             ),
             bottom: getValueForScreenType(
               context: context,
-              mobile: MediaQuery.of(context).size.width * 0.001,
-              tablet: MediaQuery.of(context).size.width * 0.010,
-              desktop: MediaQuery.of(context).size.width * 0.020,
+              mobile: 0,
+              tablet: screenWidth * 0.05,
+              desktop: screenWidth * 0.020,
             ),
           ),
           request: widget.request,
@@ -82,173 +97,351 @@ class _SupplyAppQrCodeDialogBoxViewState
                 ),
               ),
               hSizedBox(height: 32),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 32,
-                          horizontal: 16,
+              getValueForScreenType(
+                context: context,
+                mobile: Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView(
+                      children: [
+                        ...getGooglePlayStoreQrCode(model: model),
+                        hSizedBox(height: 16),
+                        RotatedBox(
+                          quarterTurns: -1,
+                          child: Image.asset(
+                            verticalSeperatorIcon,
+                            height: 300,
+                            width: 10,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 72,
-                              width: 282,
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 32,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color(0xFF646464),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Image.asset(
-                                    playStoreIcon,
-                                    height: 40,
-                                    width: 40,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    'Google Play',
-                                    style: TextStyle(
-                                      fontSize: getValueForScreenType(
-                                          context: context,
-                                          mobile: 12,
-                                          desktop: 28,
-                                          tablet: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            hSizedBox(
-                              height: 32,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors().loginPageBg,
-                                  width: 10,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: QrImage(
-                                data: model.getPlayStoreUrl(),
-                                version: QrVersions.auto,
-                                size: getValueForScreenType(
-                                  context: context,
-                                  mobile: MediaQuery.of(context).size.width / 3,
-                                  tablet: MediaQuery.of(context).size.width / 3,
-                                  desktop:
-                                      MediaQuery.of(context).size.height / 3,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      flex: 1,
+                        hSizedBox(height: 16),
+                        ...getAppStoreQrCode(model: model),
+                      ],
                     ),
-                    Image.asset(
-                      verticalSeperatorIcon,
-                      height: 300,
-                      width: 10,
-                      fit: BoxFit.cover,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 32,
-                          horizontal: 16,
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              height: 72,
-                              width: 282,
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 32,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: const Color(0xFF646464),
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Image.asset(
-                                    appStoreIcon,
-                                    height: 40,
-                                    width: 40,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    'App Store',
-                                    style: TextStyle(
-                                      fontSize: getValueForScreenType(
-                                          context: context,
-                                          mobile: 12,
-                                          desktop: 28,
-                                          tablet: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            hSizedBox(
-                              height: 32,
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: AppColors().loginPageBg,
-                                  width: 10,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: QrImage(
-                                data: model.getAppStoreUrl(),
-                                version: QrVersions.auto,
-                                size: getValueForScreenType(
-                                  context: context,
-                                  mobile: MediaQuery.of(context).size.width / 3,
-                                  tablet: MediaQuery.of(context).size.width / 3,
-                                  desktop:
-                                      MediaQuery.of(context).size.height / 3,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      flex: 1,
-                    ),
-                  ],
+                  ),
                 ),
-              )
+                tablet: getBarcodesRow(
+                  model: model,
+                ),
+                desktop: getBarcodesRow(
+                  model: model,
+                ),
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  List<Widget> getAppStoreQrCode({
+    required SupplyAppQrCodeDialogBoxViewModel model,
+  }) {
+    return [
+      Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+        ),
+        height: 72,
+        width: 282,
+        margin: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 32,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xFF646464),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              appStoreIcon,
+              height: getValueForScreenType(
+                context: context,
+                mobile: 40,
+                tablet: 20,
+                desktop: 40,
+              ),
+              width: getValueForScreenType(
+                context: context,
+                mobile: 40,
+                tablet: 20,
+                desktop: 40,
+              ),
+              fit: BoxFit.cover,
+            ),
+            const Text(
+              'App Store',
+              style: TextStyle(
+                fontSize: 28,
+              ),
+            ),
+          ],
+        ),
+      ),
+      hSizedBox(
+        height: 32,
+      ),
+      Container(
+        height: screenWidth / 2,
+        alignment: Alignment.center,
+        child: QrImage(
+          data: model.getAppStoreUrl(),
+          version: QrVersions.auto,
+          size: screenWidth / 2,
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> getGooglePlayStoreQrCode({
+    required SupplyAppQrCodeDialogBoxViewModel model,
+  }) {
+    return [
+      Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+        ),
+        height: 72,
+        width: 282,
+        margin: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 32,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xFF646464),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              playStoreIcon,
+              height: getValueForScreenType(
+                context: context,
+                mobile: 40,
+                tablet: 20,
+                desktop: 40,
+              ),
+              width: getValueForScreenType(
+                context: context,
+                mobile: 40,
+                tablet: 20,
+                desktop: 40,
+              ),
+              fit: BoxFit.cover,
+            ),
+            const Text(
+              'Google Play',
+              style: TextStyle(
+                fontSize: 28,
+              ),
+            ),
+          ],
+        ),
+      ),
+      hSizedBox(
+        height: 32,
+      ),
+      Container(
+        height: screenWidth / 2,
+        alignment: Alignment.center,
+        child: QrImage(
+          data: model.getPlayStoreUrl(),
+          version: QrVersions.auto,
+          size: screenWidth / 2,
+        ),
+      ),
+    ];
+  }
+
+  getBarcodesRow({required SupplyAppQrCodeDialogBoxViewModel model}) {
+    return Expanded(
+      child: Row(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 32,
+                horizontal: 16,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    height: 72,
+                    width: 282,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 32,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF646464),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset(
+                          playStoreIcon,
+                          height: getValueForScreenType(
+                            context: context,
+                            mobile: 20,
+                            tablet: 20,
+                            desktop: 40,
+                          ),
+                          width: getValueForScreenType(
+                            context: context,
+                            mobile: 20,
+                            tablet: 20,
+                            desktop: 40,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                        Text(
+                          'Google Play',
+                          style: TextStyle(
+                            fontSize: getValueForScreenType(
+                                context: context,
+                                mobile: 12,
+                                desktop: 28,
+                                tablet: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  hSizedBox(
+                    height: 32,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors().loginPageBg,
+                        width: 10,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: QrImage(
+                      data: model.getPlayStoreUrl(),
+                      version: QrVersions.auto,
+                      size: getValueForScreenType(
+                        context: context,
+                        mobile: MediaQuery.of(context).size.width / 4,
+                        tablet: MediaQuery.of(context).size.height / 4,
+                        desktop: MediaQuery.of(context).size.height / 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+          Image.asset(
+            verticalSeperatorIcon,
+            height: 300,
+            width: 10,
+            fit: BoxFit.cover,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 32,
+                horizontal: 16,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    height: 72,
+                    width: 282,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 32,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xFF646464),
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Image.asset(
+                          appStoreIcon,
+                          height: getValueForScreenType(
+                            context: context,
+                            mobile: 20,
+                            tablet: 20,
+                            desktop: 40,
+                          ),
+                          width: getValueForScreenType(
+                            context: context,
+                            mobile: 20,
+                            tablet: 20,
+                            desktop: 40,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                        Text(
+                          'App Store',
+                          style: TextStyle(
+                            fontSize: getValueForScreenType(
+                                context: context,
+                                mobile: 12,
+                                desktop: 28,
+                                tablet: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  hSizedBox(
+                    height: 32,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors().loginPageBg,
+                        width: 10,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: QrImage(
+                      data: model.getAppStoreUrl(),
+                      version: QrVersions.auto,
+                      size: getValueForScreenType(
+                        context: context,
+                        mobile: MediaQuery.of(context).size.width / 4,
+                        tablet: MediaQuery.of(context).size.height / 4,
+                        desktop: MediaQuery.of(context).size.height / 3,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            flex: 1,
+          ),
+        ],
       ),
     );
   }

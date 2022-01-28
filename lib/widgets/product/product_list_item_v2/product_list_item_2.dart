@@ -42,66 +42,71 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                 ),
                 child: Row(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: (getProductImage(
-                                      productImage:
-                                          widget.arguments.product?.images) ==
-                                  null ||
-                              getProductImage(
-                                      productImage:
-                                          widget.arguments.product?.images)!
-                                  .isEmpty)
-                          ? image_widget.Image.asset(productDefaultImage)
-                          : image_widget.Image.memory(
-                              getProductImage(
-                                  productImage:
-                                      widget.arguments.product?.images)!,
-                              fit: BoxFit.cover,
-                            ),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: (getProductImage(
+                                        productImage:
+                                            widget.arguments.product?.images) ==
+                                    null ||
+                                getProductImage(
+                                        productImage:
+                                            widget.arguments.product?.images)!
+                                    .isEmpty)
+                            ? image_widget.Image.asset(productDefaultImage)
+                            : image_widget.Image.memory(
+                                getProductImage(
+                                    productImage:
+                                        widget.arguments.product?.images)!,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
                     Expanded(
+                      flex: 3,
                       child: Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: NullableTextWidget(
-                              stringValue: widget.arguments.product?.title,
-                              maxLines: 2,
-                              textStyle: Theme.of(context).textTheme.subtitle1,
+                              stringValue:
+                                  '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
+                              maxLines: 5,
+                              textStyle: Theme.of(context).textTheme.bodyText1,
                               textAlign: TextAlign.left,
                             ),
                           ),
                           hSizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(
-                                      Dimens().defaultBorder / 2),
-                                  color:
-                                      AppColors().productListItemWebCategoryBg,
-                                  border: Border.all(
-                                    color: AppColors()
-                                        .productListItemWebCategoryContainerBg,
-                                    width: 1,
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 4),
-                                  child: NullableTextWidget(
-                                    stringValue: widget.arguments.product?.type,
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyText2,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   crossAxisAlignment: CrossAxisAlignment.end,
+                          //   children: [
+                          //     Container(
+                          //       margin: const EdgeInsets.all(8.0),
+                          //       child: Padding(
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 16, vertical: 4),
+                          //         child: Row(
+                          //           children: [
+                          //             Text(
+                          //               'Type: ',
+                          //               style:
+                          //                   Theme.of(context).textTheme.caption,
+                          //             ),
+                          //             NullableTextWidget(
+                          //               stringValue:
+                          //                   widget.arguments.product?.type,
+                          //               textStyle: Theme.of(context)
+                          //                   .textTheme
+                          //                   .bodyText2,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           const Spacer(),
                           Row(
                             children: [

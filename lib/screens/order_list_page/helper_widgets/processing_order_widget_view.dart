@@ -186,7 +186,7 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'PRICE',
+                          'PRICE/UNIT',
                           style:
                               Theme.of(context).textTheme.bodyText1?.copyWith(
                                     color: AppColors().primaryHeaderTextColor,
