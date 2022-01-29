@@ -30,111 +30,6 @@ class _SupplyAppQrCodeDialogBoxViewState
       maxWidthOfOuterContainer,
       maxWidthOfItems;
 
-  @override
-  Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-    maxWidthOfOuterContainer = screenWidth * 0.45;
-    maxWidthOfItems = getValueForScreenType(
-      context: context,
-      mobile: screenWidth,
-      tablet: screenWidth * 0.40,
-      desktop: screenWidth * 0.40,
-    );
-
-    SupplyAppQrCodeDialogBoxViewArguments arguments =
-        widget.request.data as SupplyAppQrCodeDialogBoxViewArguments;
-    return ViewModelBuilder<SupplyAppQrCodeDialogBoxViewModel>.reactive(
-      viewModelBuilder: () => SupplyAppQrCodeDialogBoxViewModel(),
-      builder: (context, model, child) => CenteredBaseDialog(
-        arguments: CenteredBaseDialogArguments(
-          noColorOnTop: true,
-          contentPadding: EdgeInsets.only(
-            left: getValueForScreenType(
-              context: context,
-              mobile: 0,
-              tablet: 0,
-              desktop: screenWidth * 0.20,
-            ),
-            right: getValueForScreenType(
-              context: context,
-              mobile: 0,
-              tablet: 0,
-              desktop: screenWidth * 0.20,
-            ),
-            top: getValueForScreenType(
-              context: context,
-              mobile: 0,
-              tablet: screenWidth * 0.05,
-              desktop: screenWidth * 0.020,
-            ),
-            bottom: getValueForScreenType(
-              context: context,
-              mobile: 0,
-              tablet: screenWidth * 0.05,
-              desktop: screenWidth * 0.020,
-            ),
-          ),
-          request: widget.request,
-          completer: widget.completer,
-          title: arguments.title,
-          child: Column(
-            children: [
-              hSizedBox(height: 16),
-              const Text(
-                'Supply Application',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              hSizedBox(height: 16),
-              const Text(
-                'Scan QR Code to Download Application',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              hSizedBox(height: 32),
-              getValueForScreenType(
-                context: context,
-                mobile: Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      children: [
-                        ...getGooglePlayStoreQrCode(model: model),
-                        hSizedBox(height: 16),
-                        RotatedBox(
-                          quarterTurns: -1,
-                          child: Image.asset(
-                            verticalSeperatorIcon,
-                            height: 300,
-                            width: 10,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        hSizedBox(height: 16),
-                        ...getAppStoreQrCode(model: model),
-                      ],
-                    ),
-                  ),
-                ),
-                tablet: getBarcodesRow(
-                  model: model,
-                ),
-                desktop: getBarcodesRow(
-                  model: model,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   List<Widget> getAppStoreQrCode({
     required SupplyAppQrCodeDialogBoxViewModel model,
   }) {
@@ -442,6 +337,111 @@ class _SupplyAppQrCodeDialogBoxViewState
             flex: 1,
           ),
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    maxWidthOfOuterContainer = screenWidth * 0.45;
+    maxWidthOfItems = getValueForScreenType(
+      context: context,
+      mobile: screenWidth,
+      tablet: screenWidth * 0.40,
+      desktop: screenWidth * 0.40,
+    );
+
+    SupplyAppQrCodeDialogBoxViewArguments arguments =
+        widget.request.data as SupplyAppQrCodeDialogBoxViewArguments;
+    return ViewModelBuilder<SupplyAppQrCodeDialogBoxViewModel>.reactive(
+      viewModelBuilder: () => SupplyAppQrCodeDialogBoxViewModel(),
+      builder: (context, model, child) => CenteredBaseDialog(
+        arguments: CenteredBaseDialogArguments(
+          noColorOnTop: true,
+          contentPadding: EdgeInsets.only(
+            left: getValueForScreenType(
+              context: context,
+              mobile: 0,
+              tablet: 0,
+              desktop: screenWidth * 0.20,
+            ),
+            right: getValueForScreenType(
+              context: context,
+              mobile: 0,
+              tablet: 0,
+              desktop: screenWidth * 0.20,
+            ),
+            top: getValueForScreenType(
+              context: context,
+              mobile: 0,
+              tablet: screenWidth * 0.05,
+              desktop: screenWidth * 0.020,
+            ),
+            bottom: getValueForScreenType(
+              context: context,
+              mobile: 0,
+              tablet: screenWidth * 0.05,
+              desktop: screenWidth * 0.020,
+            ),
+          ),
+          request: widget.request,
+          completer: widget.completer,
+          title: arguments.title,
+          child: Column(
+            children: [
+              hSizedBox(height: 16),
+              const Text(
+                'Supply Application',
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              hSizedBox(height: 16),
+              const Text(
+                'Scan QR Code to Download Application',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              hSizedBox(height: 32),
+              getValueForScreenType(
+                context: context,
+                mobile: Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListView(
+                      children: [
+                        ...getGooglePlayStoreQrCode(model: model),
+                        hSizedBox(height: 16),
+                        RotatedBox(
+                          quarterTurns: -1,
+                          child: Image.asset(
+                            verticalSeperatorIcon,
+                            height: 300,
+                            width: 10,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        hSizedBox(height: 16),
+                        ...getAppStoreQrCode(model: model),
+                      ],
+                    ),
+                  ),
+                ),
+                tablet: getBarcodesRow(
+                  model: model,
+                ),
+                desktop: getBarcodesRow(
+                  model: model,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

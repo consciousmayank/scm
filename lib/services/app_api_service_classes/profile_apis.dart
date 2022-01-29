@@ -81,6 +81,10 @@ class ProfileApisImpl extends BaseApi implements ProfileApis {
     if (filterResponse(apiResponse, showSnackBar: false) != null) {
       profileResponse =
           SupplyProfileResponse.fromMap(apiResponse.response?.data);
+
+      preferences.saveSupplierDemandProfile(
+        userProfile: profileResponse,
+      );
     }
 
     if (profileResponse != null) {

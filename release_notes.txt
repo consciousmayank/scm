@@ -1,5 +1,8 @@
 In this build following was done.
 
+Friday 28 January 2022
+    - Implemented Order Report pdf download.
+
 Wednessday 26 January 2022
     - Finalised Login Page.
     - Now supporting screens with width 1280 or more.

@@ -88,10 +88,11 @@ class BrandReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                             values: [
                               AppTableSingleItem.int(
                                 viewModel.ordersReportGroupByBrandResponse!
-                                    .reportResultSet!
-                                    .indexOf(
-                                  singleValue,
-                                ),
+                                        .reportResultSet!
+                                        .indexOf(
+                                      singleValue,
+                                    ) +
+                                    1,
                                 flexValue: Dimens().snoFlexValue,
                                 textAlignment: TextAlign.center,
                               ),

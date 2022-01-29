@@ -96,10 +96,28 @@ class _OrderReportsViewState extends State<OrderReportsView> {
         onModelReady: (model) => model.init(args: widget.arguments),
         builder: (context, model, child) => Scaffold(
           appBar: appbarWidget(
-            context: context,
-            title: ordersReportsPageTitle,
-            automaticallyImplyLeading: true,
-          ),
+              context: context,
+              title: ordersReportsPageTitle,
+              automaticallyImplyLeading: true,
+              options: [
+                IconButton(
+                  onPressed: model.getOrderReportsGroupByTypeApiStatus ==
+                              ApiStatus.FETCHED &&
+                          model.getConsolidatedOrderReportsApiStatus ==
+                              ApiStatus.FETCHED &&
+                          model.getOrderReportsGroupByBrandApiStatus ==
+                              ApiStatus.FETCHED &&
+                          model.getOrderReportsGroupBySubTypeApiStatus ==
+                              ApiStatus.FETCHED
+                      ? () {
+                          model.writeOnPdf();
+                        }
+                      : null,
+                  icon: const Icon(
+                    Icons.picture_as_pdf_outlined,
+                  ),
+                )
+              ]),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: CustomScrollView(

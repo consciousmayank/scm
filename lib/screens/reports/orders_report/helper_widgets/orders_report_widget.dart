@@ -75,11 +75,12 @@ class OrdersConsilidatedReportWidget
                 (singleValue) => AppTableWidget.values(
                   values: [
                     AppTableSingleItem.int(
-                        viewModel
-                            .consolidatedOrdersReportResponse!.reportResultSet!
-                            .indexOf(
-                          singleValue,
-                        ),
+                        viewModel.consolidatedOrdersReportResponse!
+                                .reportResultSet!
+                                .indexOf(
+                              singleValue,
+                            ) +
+                            1,
                         flexValue: 1,
                         textAlignment: TextAlign.center),
                     AppTableSingleItem.int(

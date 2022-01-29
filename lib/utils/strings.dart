@@ -149,6 +149,8 @@ const String orderStatusInDelivered = 'DELIVERED';
 const String orderStatusInCancelled = 'CANCELLED';
 final imageUploadedSuccessMessage =
     ({required String storedDirectory}) => 'Image saved to $storedDirectory';
+final reportDownloadedSuccessMessage =
+    ({required String storedDirectory}) => 'Report saved to $storedDirectory';
 const String errorReasonRequired =
     'Reason for discarding the product is required';
 const String errorReasonLength =

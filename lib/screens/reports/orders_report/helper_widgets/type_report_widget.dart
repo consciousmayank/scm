@@ -86,8 +86,9 @@ class TypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                             values: [
                               AppTableSingleItem.int(
                                   viewModel.ordersReportGroupByTypeResponse!
-                                      .reportResultSet!
-                                      .indexOf(singleValue),
+                                          .reportResultSet!
+                                          .indexOf(singleValue) +
+                                      1,
                                   flexValue: Dimens().snoFlexValue,
                                   textAlignment: TextAlign.center),
                               AppTableSingleItem.string(

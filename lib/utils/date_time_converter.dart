@@ -88,7 +88,7 @@ class DateTimeToStringConverter {
   DateTimeToStringConverter.ddmmyy({
     required this.date,
   }) {
-    format = 'dd-MM-yyyy';
+    format = 'dd/MM/yyyy';
   }
 
   DateTimeToStringConverter.ddmmyy24Hrs({

@@ -86,8 +86,9 @@ class SubTypeReportWidget extends ViewModelWidget<OrderReportsViewModel> {
                             values: [
                               AppTableSingleItem.int(
                                 viewModel.ordersReportGroupBySubTypeResponse!
-                                    .reportResultSet!
-                                    .indexOf(singleValue),
+                                        .reportResultSet!
+                                        .indexOf(singleValue) +
+                                    1,
                                 flexValue: Dimens().snoFlexValue,
                                 textAlignment: TextAlign.center,
                               ),

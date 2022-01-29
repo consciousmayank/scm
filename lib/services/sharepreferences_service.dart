@@ -1,3 +1,4 @@
+import 'package:scm/model_classes/supply_profile_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class InterFaceAppPreferences {
@@ -22,6 +23,12 @@ abstract class InterFaceAppPreferences {
   String getAuthenticatedUserName();
 
   void setAuthenticatedUserName({required String user});
+
+  void saveSupplierDemandProfile({
+    required SupplyProfileResponse userProfile,
+  });
+
+  SupplyProfileResponse? getSupplierDemandProfile();
 }
 
 class AppPreferencesService implements InterFaceAppPreferences {
@@ -29,6 +36,7 @@ class AppPreferencesService implements InterFaceAppPreferences {
   final String authenticatedUserName = "authenticated_user_name";
   final String authenticatedUserRoles = "authenticated_user_roles";
   final String loggedInUserCredentials = "logged_in_user_credentials";
+  final String profileInfo = "profile_info";
   final String selectedUserRole = "selected_user_role";
   final String supplierBusinessName = "supplier_info";
 
@@ -75,6 +83,18 @@ class AppPreferencesService implements InterFaceAppPreferences {
   }
 
   @override
+  SupplyProfileResponse? getSupplierDemandProfile() {
+    String? savedProfileInfo = _sharedPrefs.getString(profileInfo);
+    if (savedProfileInfo != null) {
+      return SupplyProfileResponse.fromJson(
+        savedProfileInfo,
+      );
+    } else {
+      return null;
+    }
+  }
+
+  @override
   void saveApiToken({String? tokenString}) {
     if (tokenString == null) {
       _sharedPrefs.remove(apiToken);
@@ -95,6 +115,11 @@ class AppPreferencesService implements InterFaceAppPreferences {
     } else {
       _sharedPrefs.setString(supplierBusinessName, name);
     }
+  }
+
+  @override
+  void saveSupplierDemandProfile({required SupplyProfileResponse userProfile}) {
+    _sharedPrefs.setString(profileInfo, userProfile.toJson());
   }
 
   @override
