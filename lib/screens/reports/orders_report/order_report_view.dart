@@ -5,15 +5,11 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
-import 'package:scm/screens/reports/orders_report/helper_widgets/brand_report_widget.dart';
-import 'package:scm/screens/reports/orders_report/helper_widgets/orders_report_widget.dart';
-import 'package:scm/screens/reports/orders_report/helper_widgets/subtype_report_widget.dart';
+import 'package:scm/screens/reports/orders_report/helper_widgets/order_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/to_date_widget.dart';
-import 'package:scm/screens/reports/orders_report/helper_widgets/type_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/order_reports_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_container_widget.dart';
 import 'package:scm/widgets/app_dropdown_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -31,62 +27,6 @@ class OrderReportsView extends StatefulWidget {
 }
 
 class _OrderReportsViewState extends State<OrderReportsView> {
-  getMobileViewOfbrandTypeSubtypeReport({
-    required BuildContext context,
-    required OrderReportsViewModel model,
-  }) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(
-              child: const BrandReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            ),
-            SizedBox(
-              child: const TypeReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            ),
-            SizedBox(
-              child: const SubTypeReportWidget(),
-              width: MediaQuery.of(context).size.width,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  getTabletViewOfbrandTypeSubtypeReport({
-    required BuildContext context,
-    required OrderReportsViewModel model,
-  }) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            SizedBox(
-              child: const BrandReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            ),
-            SizedBox(
-              child: const TypeReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            ),
-            SizedBox(
-              child: const SubTypeReportWidget(),
-              width: MediaQuery.of(context).size.width * 0.80,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout.builder(
@@ -168,36 +108,6 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                             flex: 1,
                           ),
                           wSizedBox(width: 8),
-                          // Expanded(
-                          //   child: OptionsInput(
-                          //     hintText: orderFiltersStatusOptionLabel,
-                          //     child: Center(
-                          //       child: AppDropDown<String>(
-                          //         selectedOption: getApiToAppOrderStatus(
-                          //           status: model.selectedOrderStatus,
-                          //         ),
-                          //         items: model.orderStatuses
-                          //             .map(
-                          //               (e) => getApiToAppOrderStatus(
-                          //                 status: e,
-                          //               ),
-                          //             )
-                          //             .toList(),
-                          //         onItemSelected: ({required String item}) {
-                          //           model.selectedOrderStatus =
-                          //               getAppToApiOrderStatus(
-                          //             status: item,
-                          //           );
-                          //           model.getOrderReports();
-                          //           model.notifyListeners();
-                          //         },
-                          //         hintText: orderFiltersStatusOptionLabel,
-                          //       ),
-                          //     ),
-                          //   ),
-                          //   flex: 1,
-                          // ),
-                          // wSizedBox(width: 8),
                           Expanded(
                             child: OptionsInput(
                               hintText: labelSelectBrand,
@@ -249,42 +159,63 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: getValueForScreenType(
-                      context: context,
-                      mobile: getMobileViewOfbrandTypeSubtypeReport(
-                        context: context,
-                        model: model,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ReportWidget.groupByBrands(
+                          title: ordersReportsGroupByBrandsWidgetTitle,
+                          amountGrandTotal:
+                              model.getGrandTotalOfOrdersAmountGroupByBrand(),
+                          quantityGrandTotal:
+                              model.getGrandTotalOfOrdersQtyGroupByBrand(),
+                          reportResponse:
+                              model.ordersReportGroupByBrandResponse,
+                        ),
+                        flex: 1,
                       ),
-                      tablet: getTabletViewOfbrandTypeSubtypeReport(
-                        context: context,
-                        model: model,
+                      Expanded(
+                        child: ReportWidget.groupByCategory(
+                          title: ordersReportsGroupByTypeWidgetTitle,
+                          amountGrandTotal:
+                              model.getGrandTotalOfOrdersAmountGroupByType(),
+                          quantityGrandTotal:
+                              model.getGrandTotalOfOrdersQtyGroupByType(),
+                          reportResponse: model.ordersReportGroupByTypeResponse,
+                        ),
+                        flex: 1,
                       ),
-                      desktop: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Expanded(
-                            child: BrandReportWidget(),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: TypeReportWidget(),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: SubTypeReportWidget(),
-                            flex: 1,
-                          ),
-                        ],
-                      )),
+                      Expanded(
+                        child: ReportWidget.groupBySubCategory(
+                          title: ordersReportsGroupBySubTypeWidgetTitle,
+                          amountGrandTotal:
+                              model.getGrandTotalOfOrdersAmountGroupBySubType(),
+                          quantityGrandTotal:
+                              model.getGrandTotalOfOrdersQtyGroupBySubType(),
+                          reportResponse:
+                              model.ordersReportGroupBySubTypeResponse,
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
                 ),
                 SliverToBoxAdapter(
                   child: hSizedBox(
                     height: 16,
                   ),
                 ),
-                const SliverToBoxAdapter(
-                  child: OrdersConsilidatedReportWidget(),
+                SliverToBoxAdapter(
+                  // child: OrdersConsilidatedReportWidget(),
+                  child: ReportWidget.consolidated(
+                    title: consolidatedOrdersReportsWidgetTitle,
+                    amountGrandTotal:
+                        model.getGrandTotalOfConsolidatedOrdersAmount(),
+                    quantityGrandTotal:
+                        model.getGrandTotalOfConsolidatedOrdersQty(),
+                    reportResponse: model.consolidatedOrdersReportResponse,
+                  ),
                 ),
                 SliverToBoxAdapter(
                   child: hSizedBox(
@@ -302,11 +233,11 @@ class _OrderReportsViewState extends State<OrderReportsView> {
 }
 
 class OrderReportsViewArgs {
-  final OrderStatusTypes orderStatus;
-
   OrderReportsViewArgs({
     required this.orderStatus,
   });
+
+  final OrderStatusTypes orderStatus;
 }
 
 class OptionsInput extends StatelessWidget {

@@ -9,9 +9,9 @@ import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/supply_profile_response.dart';
+import 'package:scm/screens/app_reports/app_reports_view.dart';
 import 'package:scm/screens/demand_module_screens/suppliers_list/suppliers_list_view.dart';
 import 'package:scm/screens/login/login_view.dart';
-import 'package:scm/screens/more_options/more_options_view.dart';
 import 'package:scm/screens/order_list_page/order_list_page_view.dart';
 import 'package:scm/screens/pim_homescreen/change_password/change_password_dialog_box_view.dart';
 import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
@@ -87,6 +87,30 @@ class DemandModuleLandingPageViewModel
     }
   }
 
+  String selectedOptionTitle() {
+    switch (currentIndex) {
+      case 0:
+        return supplyModuleLandingPageHomeTitle;
+
+      case 1:
+        // return const SupplyProductsOptionsPageView();
+        return supplyModuleLandingPageProductsTitle;
+
+      case 2:
+        // return ProductCategoriesListView();
+        return supplyModuleLandingPageCatalogTitle;
+
+      case 3:
+        // return OrderListView();
+        return supplyModuleLandingPageOrdersTitle;
+      case 4:
+        // return MenuItemsView();
+        return supplyModuleLandingPageMoreTitle;
+      default:
+        return '';
+    }
+  }
+
   getSelectedView() {
     switch (currentIndex) {
       case 0:
@@ -120,8 +144,8 @@ class DemandModuleLandingPageViewModel
         );
       case 3:
         // return MenuItemsView();
-        return MoreOptionsView(
-          arguments: MoreOptionsViewArguments(),
+        return AppReportsView(
+          arguments: AppReportsViewArguments(),
         );
     }
   }

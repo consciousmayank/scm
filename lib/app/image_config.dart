@@ -111,3 +111,7 @@ final String verticalSeperatorIcon = _imagePath + 'vertical_seperator.png';
 final String deliveredOrdersIcon = _imagePath + 'delivered_orders_icon.png';
 final String shippedOrdersIcon = _imagePath + 'shipped_orders_icon.png';
 final String newOrdersIcon = _imagePath + 'new_order_icon_2.png';
+final String cancelledOrdersIcon = _imagePath + 'cancelled_order_icon.png';
+final String inProcessOrdersIcon = _imagePath + 'in_process_order_icon.png';
+final String tableToggleIcon = _imagePath + 'table_toggle_icon.png';
+final String graphToogleIcon = _imagePath + 'graph_toogle_icon.png';

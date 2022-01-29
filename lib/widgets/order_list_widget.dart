@@ -105,46 +105,49 @@ class OrderListWidget extends StatelessWidget {
 
                   index -= 1;
 
-                  return OrderListTableWidget.values(
-                    titles: [
-                      Value.withText(value: '${orders.elementAt(index).id}'),
-                      !isSupplyRole
-                          ? Value.withText(
-                              value:
-                                  '${orders.elementAt(index).supplyBusinessName}',
-                            )
-                          : Value.withText(
-                              value:
-                                  '${orders.elementAt(index).demandBusinessName}',
-                            ),
-                      Value.withText(
-                        value: (DateTimeToStringConverter.ddMMMMyy(
-                                date: StringToDateTimeConverter.ddmmyy(
-                                        date: orders
-                                            .elementAt(index)
-                                            .createDateTime!)
-                                    .convert())
-                            .convert()),
-                      ),
-                      Value.withText(
-                        value: '${orders.elementAt(index).totalItems}',
-                      ),
-                      Value.withText(
-                        value: '${orders.elementAt(index).totalAmount}',
-                      ),
-                      // Value.withOutlinedContainer(
-                      //   value: '${orders.elementAt(index).status}',
-                      // ),
-                    ],
-                    isSelected: selectedOrderId > 0 &&
-                        selectedOrderId == orders.elementAt(index).id,
-                    onOrderClick: () {
+                  return AppInkwell.withBorder(
+                    borderderRadius: Dimens().getBorderRadius(),
+                    onTap: () {
                       onOrderClick!(
                         selectedOrder: orders.elementAt(
                           index,
                         ),
                       );
                     },
+                    child: OrderListTableWidget.values(
+                      titles: [
+                        Value.withText(value: '${orders.elementAt(index).id}'),
+                        !isSupplyRole
+                            ? Value.withText(
+                                value:
+                                    '${orders.elementAt(index).supplyBusinessName}',
+                              )
+                            : Value.withText(
+                                value:
+                                    '${orders.elementAt(index).demandBusinessName}',
+                              ),
+                        Value.withText(
+                          value: (DateTimeToStringConverter.ddMMMMyy(
+                                  date: StringToDateTimeConverter.ddmmyy(
+                                          date: orders
+                                              .elementAt(index)
+                                              .createDateTime!)
+                                      .convert())
+                              .convert()),
+                        ),
+                        Value.withText(
+                          value: '${orders.elementAt(index).totalItems}',
+                        ),
+                        Value.withText(
+                          value: '${orders.elementAt(index).totalAmount}',
+                        ),
+                        // Value.withOutlinedContainer(
+                        //   value: '${orders.elementAt(index).status}',
+                        // ),
+                      ],
+                      isSelected: selectedOrderId > 0 &&
+                          selectedOrderId == orders.elementAt(index).id,
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) =>
@@ -514,19 +517,18 @@ class OrderListTableWidget extends StatelessWidget {
     this.isHeader = true,
     required this.titles,
     this.isSelected = false,
-  })  : onOrderClick = null,
-        super(key: key);
+  }) : super(key: key);
 
   const OrderListTableWidget.values({
     Key? key,
     this.isHeader = false,
     required this.titles,
     required this.isSelected,
-    required this.onOrderClick,
+    // required this.onOrderClick,
   }) : super(key: key);
 
   final bool isHeader, isSelected;
-  final Function? onOrderClick;
+  // final Function? onOrderClick;
   final List<Value> titles;
 
   @override
@@ -549,61 +551,24 @@ class OrderListTableWidget extends StatelessWidget {
                 flex: titles.indexOf(title) == 0 ? 1 : 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: title.widgetType == WidgetType.OUTLINED_CONTAINER
-                      ? AppInkwell.withBorder(
-                          onTap: onOrderClick != null
-                              ? () => onOrderClick!()
-                              : null,
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: getBorderColor(status: title.value),
-                              border: Border.all(
-                                  color: getBorderColor(status: title.value),
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(
-                                Dimens().defaultBorder,
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                getApiToAppOrderStatus(
-                                  status: title.value,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    ?.copyWith(
-                                      color: isHeader
-                                          ? AppColors().primaryHeaderTextColor
-                                          : AppColors().black,
-                                    ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Text(
-                          title.value,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: titles.indexOf(title) == titles.length - 1
-                              ? TextAlign.center
-                              : TextAlign.left,
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: isHeader
-                                        ? AppColors().primaryHeaderTextColor
-                                        : AppColors().black,
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                    decoration: isSelected
-                                        ? TextDecoration.underline
-                                        : TextDecoration.none,
-                                  ),
+                  child: Text(
+                    title.value,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: titles.indexOf(title) == titles.length - 1
+                        ? TextAlign.center
+                        : TextAlign.left,
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                          color: isHeader
+                              ? AppColors().primaryHeaderTextColor
+                              : AppColors().black,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
+                          decoration: isSelected
+                              ? TextDecoration.underline
+                              : TextDecoration.none,
                         ),
+                  ),
                 ),
               ),
             )

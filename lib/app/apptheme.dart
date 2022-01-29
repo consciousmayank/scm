@@ -338,15 +338,6 @@ class ApplicationTheme {
       //   ),
       // ),
 
-      ///This provides default configurations of ToggleButton widgets.
-      ///We can provide a theme to all types of toggle buttons with toggleButtonsTheme
-      toggleButtonsTheme: ToggleButtonsThemeData(
-          color: _buttonColor,
-          selectedColor: _buttonHoverColor,
-          borderColor: Colors.black
-          //toggle button theme
-          ),
-
       ///This is the color of the header of a PaginatedDataTable when there are any selected rows
       secondaryHeaderColor: _primaryColor.withAlpha(180),
 

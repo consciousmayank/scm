@@ -5,10 +5,12 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/orders_report_response.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
 import 'package:scm/utils/strings.dart';
 
@@ -285,4 +287,77 @@ void fieldFocusChange({
 }) {
   currentFocus.unfocus();
   FocusScope.of(context).requestFocus(nextFocus);
+}
+
+double getAmountGrandTotalOfOrderReport(
+    {required OrdersReportResponse? reportResponse}) {
+  if (reportResponse == null || reportResponse.reportResultSet == null) {
+    return 0;
+  } else if (reportResponse.reportResultSet!.isEmpty) {
+    return 0;
+  } else {
+    return reportResponse.reportResultSet!.fold(
+      0,
+      (previousValue, element) => previousValue + element.itemAmount!,
+    );
+  }
+}
+
+int getQuantityGrandTotalOfOrderReport(
+    {required OrdersReportResponse? reportResponse}) {
+  if (reportResponse == null || reportResponse.reportResultSet == null) {
+    return 0;
+  } else if (reportResponse.reportResultSet!.isEmpty) {
+    return 0;
+  } else {
+    return reportResponse.reportResultSet!.fold(
+      0,
+      (previousValue, element) => previousValue + element.itemQuantity!,
+    );
+  }
+}
+
+Future<DateTimeRange?> selectDateRange({
+  required BuildContext context,
+  required DateTimeRange initialDateTimeRange,
+}) async {
+  DateTimeRange? picked = await showDateRangePicker(
+    saveText: orderFiltersDurationDateLabel,
+    context: context,
+    firstDate: DateTime.now().subtract(
+      const Duration(
+        days: 365,
+      ),
+    ),
+    lastDate: DateTime.now(),
+    initialDateRange: initialDateTimeRange,
+    builder: (context, child) {
+      return Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 50.0),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height *
+                  getValueForScreenType(
+                    context: context,
+                    mobile: 0.95,
+                    tablet: 0.85,
+                    desktop: 0.65,
+                  ),
+              width: MediaQuery.of(context).size.width *
+                  getValueForScreenType(
+                    context: context,
+                    mobile: 0.95,
+                    tablet: 0.65,
+                    desktop: 0.35,
+                  ),
+              child: child,
+            ),
+          ),
+        ],
+      );
+    },
+  );
+
+  return picked;
 }

@@ -16,14 +16,14 @@ import 'package:scm/widgets/common_dashboard/helper_widgets/table_graph_toggle_i
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
 
-class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
-  const OrderedTypesWidget({
+class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
+  const OrderedSubTypeWidget({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, CommonDashboardViewModel viewModel) {
-    return viewModel.orderedTypesApi == ApiStatus.LOADING ||
+    return viewModel.orderedSubTypeApi == ApiStatus.LOADING ||
             viewModel.getOrderReportsGroupBySubTypeApiStatus ==
                 ApiStatus.LOADING
         ? const SliverToBoxAdapter(
@@ -31,14 +31,14 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
               height: 200,
               child: Center(
                 child: LoadingWidgetWithText(
-                  text: 'Fetching Ordered Category,',
+                  text: 'Fetching Ordered Subtypes,',
                 ),
               ),
             ),
           )
         : SliverToBoxAdapter(
             child: SizedBox(
-              height: Dimens().dashboardOrderedTypeInfoCardHeight,
+              height: Dimens().dashboardOrderedBrandsInfoCardHeight,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +58,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Category',
+                                  'SubType',
                                   style: Theme.of(context).textTheme.subtitle1,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -85,7 +85,8 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                     )
                                   ],
                                   selected: ({required int newValue}) {
-                                    viewModel.reportsByCategoryIndex = newValue;
+                                    viewModel.reportsBySubCategoryIndex =
+                                        newValue;
                                     viewModel.notifyListeners();
                                   },
                                 )
@@ -94,26 +95,26 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                           ),
                           Expanded(
                             child: IndexedStack(
-                              index: viewModel.reportsByCategoryIndex,
+                              index: viewModel.reportsBySubCategoryIndex,
                               children: [
-                                ReportWidget.dashBoardGroupByCategory(
+                                ReportWidget.dashBoardGroupBySubCategory(
                                   amountGrandTotal:
                                       getAmountGrandTotalOfOrderReport(
                                     reportResponse: viewModel
-                                        .ordersReportGroupByTypeResponse,
+                                        .ordersReportGroupBySubTypeResponse,
                                   ),
                                   quantityGrandTotal:
                                       getQuantityGrandTotalOfOrderReport(
                                     reportResponse: viewModel
-                                        .ordersReportGroupByTypeResponse,
+                                        .ordersReportGroupBySubTypeResponse,
                                   ),
-                                  reportResponse:
-                                      viewModel.ordersReportGroupByTypeResponse,
+                                  reportResponse: viewModel
+                                      .ordersReportGroupBySubTypeResponse,
                                 ),
                                 AppBarChartWidget(
-                                  seriesBarData:
-                                      viewModel.ordersReportGroupByTypeBarData,
-                                  xAxisTitle: 'Brands',
+                                  seriesBarData: viewModel
+                                      .ordersReportGroupBySubTypeBarData,
+                                  xAxisTitle: 'SubType',
                                   yAxisTitle: 'Quantity',
                                   onClickOfOrderReportsOption: () {
                                     viewModel.navigationService.navigateTo(
@@ -136,8 +137,8 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                   Flexible(
                     child: Card(
                       shape: Dimens().getCardShape(),
-                      color: AppColors().white,
                       elevation: Dimens().getDefaultElevation,
+                      color: AppColors().white,
                       child: Column(
                         children: [
                           Padding(
@@ -148,7 +149,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Trending Categories',
+                                  'Trending Sub Categories',
                                   style: Theme.of(context).textTheme.subtitle1,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -175,7 +176,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                     )
                                   ],
                                   selected: ({required int newValue}) {
-                                    viewModel.trendingCategoriesIndex =
+                                    viewModel.trendingSubCategoriesIndex =
                                         newValue;
                                     viewModel.notifyListeners();
                                   },
@@ -185,7 +186,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                           ),
                           Expanded(
                             child: IndexedStack(
-                              index: viewModel.trendingCategoriesIndex,
+                              index: viewModel.trendingSubCategoriesIndex,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -237,16 +238,16 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                           ),
                                         ],
                                       ),
-                                      // const TopOrderedBrandsCategoryTable
-                                      // .header(),
-
-                                      ...viewModel.orderedTypes
+                                      // '${viewModel.orderedBrands.indexOf(singleBrand) + 1}',
+                                      // '${singleBrand.brand}',
+                                      // '${singleBrand.count}',
+                                      ...viewModel.orderedSubTypes
                                           .map(
                                             (singleBrand) =>
                                                 AppTableWidget.values(
                                               values: [
                                                 AppTableSingleItem.int(
-                                                  viewModel.orderedTypes
+                                                  viewModel.orderedSubTypes
                                                           .indexOf(
                                                               singleBrand) +
                                                       1,
@@ -256,7 +257,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                                       TextAlign.center,
                                                 ),
                                                 AppTableSingleItem.string(
-                                                  singleBrand.type,
+                                                  singleBrand.subType,
                                                   textAlignment:
                                                       TextAlign.start,
                                                   flexValue: Dimens()
@@ -276,8 +277,9 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                   ),
                                 ),
                                 AppBarChartWidget(
-                                  seriesBarData: viewModel.orderedTypesBarData,
-                                  xAxisTitle: 'Types',
+                                  seriesBarData:
+                                      viewModel.orderedSubTypesBarData,
+                                  xAxisTitle: 'Sub Categories',
                                   yAxisTitle: 'Count',
                                   onClickOfOrderReportsOption: () {
                                     viewModel.navigationService.navigateTo(
@@ -287,7 +289,7 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                       ),
                                     );
                                   },
-                                )
+                                ),
                               ],
                             ),
                           ),

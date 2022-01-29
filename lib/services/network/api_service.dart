@@ -1205,6 +1205,27 @@ class ApiService {
     return ParentApiResponse(error: error, response: response);
   }
 
+  getOrderedSubTypes({required int pageSize}) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            ORDERED_SUB_TYPES(
+              role: getLoggedInRole(),
+            ),
+            queryParameters: {
+              'size': pageSize,
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
   Future<ParentApiResponse> getOrderStatusList() async {
     Response? response;
     DioError? error;

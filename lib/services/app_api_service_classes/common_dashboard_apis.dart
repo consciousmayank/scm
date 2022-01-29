@@ -5,6 +5,7 @@ import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
+import 'package:scm/model_classes/common_dashboard_ordered_sub_types.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/order_summary_response.dart';
@@ -26,6 +27,9 @@ abstract class CommonDashBoardApisAbstractClass {
       {required int pageSize});
 
   Future<List<CommonDashboardOrderedTypes>> getOrderedTypes(
+      {required int pageSize});
+
+  Future<List<CommonDashboardOrderedSubTypes>> getOrderedSubTypes(
       {required int pageSize});
 
   Future<OrderListResponse> getOrdersList({
@@ -171,6 +175,26 @@ class CommonDashBoardApis extends BaseApi
 
       for (var item in list) {
         returingResponse.add(CommonDashboardOrderedBrands.fromMap(item));
+      }
+    }
+
+    return returingResponse;
+  }
+
+  @override
+  Future<List<CommonDashboardOrderedSubTypes>> getOrderedSubTypes(
+      {required int pageSize}) async {
+    List<CommonDashboardOrderedSubTypes> returingResponse = [];
+
+    ParentApiResponse apiResponse = await apiService.getOrderedSubTypes(
+      pageSize: pageSize,
+    );
+
+    if (filterResponse(apiResponse) != null) {
+      var list = apiResponse.response!.data;
+
+      for (var item in list) {
+        returingResponse.add(CommonDashboardOrderedSubTypes.fromMap(item));
       }
     }
 

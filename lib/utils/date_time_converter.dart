@@ -49,6 +49,12 @@ class StringToDateTimeConverter {
 }
 
 class DateTimeToStringConverter {
+  DateTimeToStringConverter.MMddyyyy({
+    required this.date,
+  }) {
+    format = 'MMM dd, yyyy';
+  }
+
   DateTimeToStringConverter.dd({
     required this.date,
   }) {

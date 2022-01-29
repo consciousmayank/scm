@@ -28,15 +28,14 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
   final log = getLogger('OrderReportsViewModel');
-
   OrdersReportResponse? ordersReportGroupByBrandResponse;
   OrdersReportResponse? ordersReportGroupBySubTypeResponse;
   OrdersReportResponse? ordersReportGroupByTypeResponse;
   int pageNumber = 0;
   int pageSize = 15;
   final pdf = pw.Document();
-  String? selectedBrand, selectedType;
   late String selectedOrderStatus;
+  String? selectedBrand, selectedType;
   List<String> typesList = [];
 
   final ReportsApi _reportsApi = locator<ReportsApi>();

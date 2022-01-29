@@ -3,6 +3,7 @@ In this build following was done.
 Saturday 29 January 2022
     - Implemented Reports view.
     - Removed Order Status Selection dropdown from Orders Report View. Now the order status will come from the Reports Screen.
+    - Implemented Reports in dashboard.
 
 Friday 28 January 2022
     - Implemented Order Report pdf download.

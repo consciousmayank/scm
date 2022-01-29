@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:scm/app/di.dart';
@@ -8,6 +6,7 @@ import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/model_classes/common_dashboard_order_info.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_brands.dart';
+import 'package:scm/model_classes/common_dashboard_ordered_sub_types.dart';
 import 'package:scm/model_classes/common_dashboard_ordered_types.dart';
 import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/orders_report_response.dart';
@@ -17,20 +16,20 @@ import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
-  int trendingBrandsIndex = 0;
   late final CommonDashboardViewArguments arguments;
   late final Color barChartsBarColor;
   //for order reports
-  OrdersReportResponse? consolidatedOrdersReportResponse;
-
   late DateTimeRange dateTimeRange;
-  ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
+
+  // ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
+
   ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
   CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
   ApiStatus orderInfoApi = ApiStatus.LOADING,
       orderedBrandsApi = ApiStatus.LOADING,
+      orderedSubTypeApi = ApiStatus.LOADING,
       orderedTypesApi = ApiStatus.LOADING,
       orderListApi = ApiStatus.LOADING;
 
@@ -39,16 +38,37 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   List<charts.Series<CommonDashboardOrderedBrands, String>>
       orderedBrandsBarData = [];
 
+  List<CommonDashboardOrderedSubTypes> orderedSubTypes = [];
+  List<charts.Series<CommonDashboardOrderedSubTypes, String>>
+      orderedSubTypesBarData = [];
+
   List<CommonDashboardOrderedTypes> orderedTypes = [];
   List<charts.Series<CommonDashboardOrderedTypes, String>> orderedTypesBarData =
       [];
 
+  List<charts.Series<ReportResultSet, String>> ordersReportGroupByBrandBarData =
+      [];
+
   OrdersReportResponse? ordersReportGroupByBrandResponse;
+  List<charts.Series<ReportResultSet, String>>
+      ordersReportGroupBySubTypeBarData = [];
+
   OrdersReportResponse? ordersReportGroupBySubTypeResponse;
+  List<charts.Series<ReportResultSet, String>> ordersReportGroupByTypeBarData =
+      [];
+
   OrdersReportResponse? ordersReportGroupByTypeResponse;
+  // List<charts.Series<ReportResultSet, String>> consolidatedBarData = [];
   int pageNumber = 0;
-  int pageSize = 5;
+
+  int pageSize = 10;
+  int reportsByBrandsIndex = 0;
+  int reportsByCategoryIndex = 0;
+  int reportsBySubCategoryIndex = 0;
   late String selectedOrderStatus;
+  int trendingBrandsIndex = 0;
+  int trendingCategoriesIndex = 0;
+  int trendingSubCategoriesIndex = 0;
 
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
@@ -64,6 +84,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
     getOrderInfo();
     getOrderedBrands();
     getOrderedTypes();
+    getOrderedSubType();
     getOrdereList();
 
     //for order reports
@@ -121,6 +142,33 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
+  getOrderedSubType() async {
+    orderedSubTypes = await _commonDashBoardApis.getOrderedSubTypes(
+      pageSize: pageSize,
+    );
+
+    orderedSubTypesBarData = [
+      charts.Series(
+        id: 'Ordered SubTypes',
+        data: orderedSubTypes,
+        insideLabelStyleAccessorFn: (CommonDashboardOrderedSubTypes series,
+                _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+        outsideLabelStyleAccessorFn: (CommonDashboardOrderedSubTypes series,
+                _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.black),
+        domainFn: (CommonDashboardOrderedSubTypes series, _) => series.subType!,
+        measureFn: (CommonDashboardOrderedSubTypes series, _) => series.count,
+        colorFn: (CommonDashboardOrderedSubTypes series, _) =>
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
+        labelAccessorFn: (CommonDashboardOrderedSubTypes series, _) =>
+            series.count.toString(),
+      ),
+    ];
+    orderedSubTypeApi = ApiStatus.FETCHED;
+    notifyListeners();
+  }
+
   getOrderedTypes() async {
     orderedTypes = await _commonDashBoardApis.getOrderedTypes(
       pageSize: pageSize,
@@ -156,22 +204,43 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   }
 
   void getOrderReports() async {
-    consolidatedOrdersReportResponse =
-        await _reportsApi.getConsolidatedOrdersReport(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: null,
-      selectedType: null,
-    );
+    getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
+    getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
+    getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
+    notifyListeners();
+    // consolidatedOrdersReportResponse =
+    //     await _reportsApi.getConsolidatedOrdersReport(
+    //   pageNumber: pageNumber,
+    //   pageSize: pageSize,
+    //   dateFrom: DateTimeToStringConverter.yyyymmdd(
+    //     date: dateTimeRange.start,
+    //   ).convert(),
+    //   dateTo: DateTimeToStringConverter.yyyymmdd(
+    //     date: dateTimeRange.end,
+    //   ).convert(),
+    //   selectedOrderStatus: selectedOrderStatus,
+    //   selectedBrand: null,
+    //   selectedType: null,
+    // );
 
-    getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
+    // consolidatedBarData = [
+    //   charts.Series(
+    //     id: 'Order Items',
+    //     data: consolidatedOrdersReportResponse!.reportResultSet!,
+    //     insideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+    //         const charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+    //     outsideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+    //         const charts.TextStyleSpec(fontSize: 10, color: charts.Color.black),
+    //     domainFn: (ReportResultSet series, _) => series.itemTitle!,
+    //     measureFn: (ReportResultSet series, _) => series.itemQuantity,
+    //     colorFn: (ReportResultSet series, _) =>
+    //         charts.ColorUtil.fromDartColor(barChartsBarColor),
+    //     labelAccessorFn: (ReportResultSet series, _) =>
+    //         series.itemQuantity.toString(),
+    //   ),
+    // ];
+
+    // getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
 
     ordersReportGroupByBrandResponse =
         await _reportsApi.getOrdersReportGroupByBrands(
@@ -187,6 +256,24 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       selectedBrand: null,
       selectedType: null,
     );
+
+    ordersReportGroupByBrandBarData = [
+      charts.Series(
+        id: 'Brand',
+        data: ordersReportGroupByBrandResponse!.reportResultSet!,
+        insideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+        outsideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.black),
+        domainFn: (ReportResultSet series, _) => series.itemBrand!,
+        measureFn: (ReportResultSet series, _) => series.itemQuantity,
+        colorFn: (ReportResultSet series, _) =>
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
+        labelAccessorFn: (ReportResultSet series, _) =>
+            series.itemQuantity.toString(),
+      ),
+    ];
+
     ordersReportGroupByTypeResponse =
         await _reportsApi.getOrdersReportGroupByTypes(
       pageNumber: pageNumber,
@@ -201,6 +288,24 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       selectedBrand: null,
       selectedType: null,
     );
+
+    ordersReportGroupByTypeBarData = [
+      charts.Series(
+        id: 'Order Items',
+        data: ordersReportGroupByTypeResponse!.reportResultSet!,
+        insideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+        outsideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.black),
+        domainFn: (ReportResultSet series, _) => series.itemType!,
+        measureFn: (ReportResultSet series, _) => series.itemQuantity,
+        colorFn: (ReportResultSet series, _) =>
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
+        labelAccessorFn: (ReportResultSet series, _) =>
+            series.itemQuantity.toString(),
+      ),
+    ];
+
     ordersReportGroupBySubTypeResponse =
         await _reportsApi.getOrdersReportGroupBySubTypes(
       pageNumber: pageNumber,
@@ -216,11 +321,31 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       selectedType: null,
     );
 
-    getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
+    ordersReportGroupBySubTypeBarData = [
+      charts.Series(
+        id: 'Order Items',
+        data: ordersReportGroupBySubTypeResponse!.reportResultSet!,
+        insideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.white),
+        outsideLabelStyleAccessorFn: (ReportResultSet series, _) =>
+            const charts.TextStyleSpec(fontSize: 10, color: charts.Color.black),
+        domainFn: (ReportResultSet series, _) => series.itemSubType!,
+        measureFn: (ReportResultSet series, _) => series.itemQuantity,
+        colorFn: (ReportResultSet series, _) =>
+            charts.ColorUtil.fromDartColor(barChartsBarColor),
+        labelAccessorFn: (ReportResultSet series, _) =>
+            series.itemQuantity.toString(),
+      ),
+    ];
+
     getOrderReportsGroupByBrandApiStatus = ApiStatus.FETCHED;
     getOrderReportsGroupByTypeApiStatus = ApiStatus.FETCHED;
     getOrderReportsGroupBySubTypeApiStatus = ApiStatus.FETCHED;
 
     notifyListeners();
+  }
+
+  String getDateTimeText() {
+    return "${DateTimeToStringConverter.MMddyyyy(date: dateTimeRange.start).convert()} - ${DateTimeToStringConverter.MMddyyyy(date: dateTimeRange.end).convert()}";
   }
 }
