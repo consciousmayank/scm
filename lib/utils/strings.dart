@@ -260,9 +260,4 @@ const String passwordChangedTitle = 'Password Changed';
 const String passwordChangedDescription =
     'Your password has been changed successfully';
 const String labelOk = 'Ok';
-const List<String> timeLineOrderStatuses = [
-  'Placed',
-  'Processed',
-  'Shipped',
-  'Delivered',
-];
+const String labelOrderReport = 'Order Report';
