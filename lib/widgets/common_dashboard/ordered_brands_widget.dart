@@ -3,6 +3,7 @@ import 'package:scm/app/app.router.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/reports/orders_report/order_report_view.dart';
 import 'package:scm/utils/utils.dart';
@@ -91,8 +92,10 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                           yAxisTitle: 'Count',
                           onClickOfOrderReportsOption: () {
                             viewModel.navigationService.navigateTo(
-                              orderReportsRoute,
-                              arguments: OrderReportsViewArgs(),
+                              orderReportsScreenPageRoute,
+                              arguments: OrderReportsViewArgs(
+                                orderStatus: OrderStatusTypes.DELIVERED,
+                              ),
                             );
                           },
                         ),

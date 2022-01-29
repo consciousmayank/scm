@@ -28,11 +28,6 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
   ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
   final log = getLogger('OrderReportsViewModel');
-  List<String> orderStatuses = [
-    OrderStatusTypes.DELIVERED.apiToAppTitles,
-    OrderStatusTypes.INTRANSIT.apiToAppTitles,
-    OrderStatusTypes.CREATED.apiToAppTitles,
-  ];
 
   OrdersReportResponse? ordersReportGroupByBrandResponse;
   OrdersReportResponse? ordersReportGroupBySubTypeResponse;
@@ -40,7 +35,8 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   int pageNumber = 0;
   int pageSize = 15;
   final pdf = pw.Document();
-  String? selectedOrderStatus, selectedBrand, selectedType;
+  String? selectedBrand, selectedType;
+  late String selectedOrderStatus;
   List<String> typesList = [];
 
   final ReportsApi _reportsApi = locator<ReportsApi>();
@@ -62,7 +58,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       );
     }
 
-    selectedOrderStatus = orderStatuses.first;
+    selectedOrderStatus = args.orderStatus.apiToAppTitles;
     selectedBrand = labelALL;
     selectedType = labelALL;
     getOrderReports();
@@ -79,7 +75,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       dateTo: DateTimeToStringConverter.yyyymmdd(
         date: dateTimeRange.end,
       ).convert(),
-      selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedOrderStatus: selectedOrderStatus,
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
@@ -96,7 +92,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       dateTo: DateTimeToStringConverter.yyyymmdd(
         date: dateTimeRange.end,
       ).convert(),
-      selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedOrderStatus: selectedOrderStatus,
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
@@ -110,7 +106,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       dateTo: DateTimeToStringConverter.yyyymmdd(
         date: dateTimeRange.end,
       ).convert(),
-      selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedOrderStatus: selectedOrderStatus,
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );
@@ -124,7 +120,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       dateTo: DateTimeToStringConverter.yyyymmdd(
         date: dateTimeRange.end,
       ).convert(),
-      selectedOrderStatus: selectedOrderStatus ?? orderStatuses.first,
+      selectedOrderStatus: selectedOrderStatus,
       selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
       selectedType: selectedType == labelALL ? null : selectedType,
     );

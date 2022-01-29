@@ -3,6 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
+import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/brand_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/orders_report_widget.dart';
@@ -167,47 +168,38 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                             flex: 1,
                           ),
                           wSizedBox(width: 8),
+                          // Expanded(
+                          //   child: OptionsInput(
+                          //     hintText: orderFiltersStatusOptionLabel,
+                          //     child: Center(
+                          //       child: AppDropDown<String>(
+                          //         selectedOption: getApiToAppOrderStatus(
+                          //           status: model.selectedOrderStatus,
+                          //         ),
+                          //         items: model.orderStatuses
+                          //             .map(
+                          //               (e) => getApiToAppOrderStatus(
+                          //                 status: e,
+                          //               ),
+                          //             )
+                          //             .toList(),
+                          //         onItemSelected: ({required String item}) {
+                          //           model.selectedOrderStatus =
+                          //               getAppToApiOrderStatus(
+                          //             status: item,
+                          //           );
+                          //           model.getOrderReports();
+                          //           model.notifyListeners();
+                          //         },
+                          //         hintText: orderFiltersStatusOptionLabel,
+                          //       ),
+                          //     ),
+                          //   ),
+                          //   flex: 1,
+                          // ),
+                          // wSizedBox(width: 8),
                           Expanded(
                             child: OptionsInput(
-                              hintText: orderFiltersStatusOptionLabel,
-                              child: Center(
-                                child: AppDropDown<String>(
-                                  selectedOption: getApiToAppOrderStatus(
-                                    status: model.selectedOrderStatus,
-                                  ),
-                                  items: model.orderStatuses
-                                      .map(
-                                        (e) => getApiToAppOrderStatus(
-                                          status: e,
-                                        ),
-                                      )
-                                      .toList(),
-                                  onItemSelected: ({required String item}) {
-                                    model.selectedOrderStatus =
-                                        getAppToApiOrderStatus(
-                                      status: item,
-                                    );
-                                    model.getOrderReports();
-                                    model.notifyListeners();
-                                  },
-                                  hintText: orderFiltersStatusOptionLabel,
-                                ),
-                              ),
-                            ),
-                            flex: 1,
-                          ),
-                          wSizedBox(width: 8),
-                          Expanded(
-                            child:
-                                // (model.getOrderReportsGroupByBrandApiStatus ==
-                                //         ApiStatus.FETCHED &&
-                                //     model.ordersReportGroupByBrandResponse != null &&
-                                //     model.ordersReportGroupByBrandResponse
-                                //             ?.reportResultSet !=
-                                //         null &&
-                                //     model.ordersReportGroupByBrandResponse!
-                                //         .reportResultSet!.isNotEmpty)
-                                OptionsInput(
                               hintText: labelSelectBrand,
                               child: Center(
                                 child: AppDropDown<String>(
@@ -229,16 +221,7 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                           ),
                           wSizedBox(width: 8),
                           Expanded(
-                            child:
-                                //  if (model.getOrderReportsGroupByTypeApiStatus ==
-                                //         ApiStatus.FETCHED &&
-                                //     model.ordersReportGroupByTypeResponse != null &&
-                                //     model.ordersReportGroupByTypeResponse
-                                //             ?.reportResultSet !=
-                                //         null &&
-                                //     model.ordersReportGroupByTypeResponse!
-                                //         .reportResultSet!.isNotEmpty)
-                                OptionsInput(
+                            child: OptionsInput(
                               hintText: labelSelectType,
                               child: Center(
                                 child: AppDropDown<String>(
@@ -318,7 +301,13 @@ class _OrderReportsViewState extends State<OrderReportsView> {
   }
 }
 
-class OrderReportsViewArgs {}
+class OrderReportsViewArgs {
+  final OrderStatusTypes orderStatus;
+
+  OrderReportsViewArgs({
+    required this.orderStatus,
+  });
+}
 
 class OptionsInput extends StatelessWidget {
   const OptionsInput({

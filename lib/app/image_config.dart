@@ -108,3 +108,6 @@ final String loginPageRowIcon2 = _imagePath + 'login_page_row_icon2.png';
 final String playStoreIcon = _imagePath + 'playstore_icon.png';
 final String appStoreIcon = _imagePath + 'app_store_icon.png';
 final String verticalSeperatorIcon = _imagePath + 'vertical_seperator.png';
+final String deliveredOrdersIcon = _imagePath + 'delivered_orders_icon.png';
+final String shippedOrdersIcon = _imagePath + 'shipped_orders_icon.png';
+final String newOrdersIcon = _imagePath + 'new_order_icon_2.png';

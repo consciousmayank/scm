@@ -1,6 +1,5 @@
 const String mainViewRoute = '/';
 const String logInPageRoute = '/login';
-const String orderReportsRoute = '/orderReports';
 const String pimHomeScreenRoute = '/pimHome';
 const String productListViewPageRoute = '/productList';
 const String supplyLandingScreenRoute = '/supply';
