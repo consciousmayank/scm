@@ -16,6 +16,7 @@ import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
+  int trendingBrandsIndex = 0;
   late final CommonDashboardViewArguments arguments;
   late final Color barChartsBarColor;
   //for order reports
