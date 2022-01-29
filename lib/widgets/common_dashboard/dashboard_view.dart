@@ -45,6 +45,22 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
                 }
               },
             ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  left: 8,
+                  right: 8,
+                  bottom: 16,
+                ),
+                child: Text(
+                  labelOrderReport.toUpperCase(),
+                  style: Theme.of(context).textTheme.headline6,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
             const OrderedBrands(),
             const OrderedTypesWidget(),
             DashboardOrderListWidget(

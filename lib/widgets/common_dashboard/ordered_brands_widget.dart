@@ -38,65 +38,91 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Flexible(
-                    child: Card(
-                      shape: Dimens().getCardShape(),
-                      elevation: Dimens().getDefaultElevation,
-                      color: AppColors().white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Top 5 Ordered Brands',
-                                style: Theme.of(context).textTheme.headline6,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const TopOrderedBrandsCategoryTable.header(),
-                            ...viewModel.orderedBrands
-                                .map(
-                                  (singleBrand) =>
-                                      TopOrderedBrandsCategoryTable.values(
-                                    values: [
-                                      '${viewModel.orderedBrands.indexOf(singleBrand) + 1}',
-                                      '${singleBrand.brand}',
-                                      '${singleBrand.count}',
-                                    ],
-                                  ),
-                                )
-                                .toList()
-                          ],
-                        ),
-                      ),
+                    child: Container(
+                      color: Colors.amberAccent,
                     ),
                     flex: 1,
                   ),
                   wSizedBox(width: 8),
                   Flexible(
-                    child: Card(
-                      shape: Dimens().getCardShape(),
-                      elevation: Dimens().getDefaultElevation,
-                      color: AppColors().white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: AppBarChartWidget(
-                          title: 'Order Report',
-                          seriesBarData: viewModel.orderedBrandsBarData,
-                          xAxisTitle: 'Brands',
-                          yAxisTitle: 'Count',
-                          onClickOfOrderReportsOption: () {
-                            viewModel.navigationService.navigateTo(
-                              orderReportsRoute,
-                              arguments: OrderReportsViewArgs(),
-                            );
-                          },
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Title'),
+                          ],
                         ),
-                      ),
+                        Expanded(
+                          child: IndexedStack(
+                            index: viewModel.trendingBrandsIndex,
+                            children: [
+                              Card(
+                                shape: Dimens().getCardShape(),
+                                elevation: Dimens().getDefaultElevation,
+                                color: AppColors().white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Top 5 Ordered Brands',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                      const TopOrderedBrandsCategoryTable
+                                          .header(),
+                                      ...viewModel.orderedBrands
+                                          .map(
+                                            (singleBrand) =>
+                                                TopOrderedBrandsCategoryTable
+                                                    .values(
+                                              values: [
+                                                '${viewModel.orderedBrands.indexOf(singleBrand) + 1}',
+                                                '${singleBrand.brand}',
+                                                '${singleBrand.count}',
+                                              ],
+                                            ),
+                                          )
+                                          .toList()
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Card(
+                                shape: Dimens().getCardShape(),
+                                elevation: Dimens().getDefaultElevation,
+                                color: AppColors().white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AppBarChartWidget(
+                                    title: 'Order Report',
+                                    seriesBarData:
+                                        viewModel.orderedBrandsBarData,
+                                    xAxisTitle: 'Brands',
+                                    yAxisTitle: 'Count',
+                                    onClickOfOrderReportsOption: () {
+                                      viewModel.navigationService.navigateTo(
+                                        orderReportsRoute,
+                                        arguments: OrderReportsViewArgs(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     flex: 1,
                   )
