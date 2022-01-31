@@ -52,7 +52,7 @@ class AppReportsViewModel extends GeneralisedBaseViewModel {
         title: 'New Order',
         count: orderInfo.created ?? 0,
         icon: newOrdersIcon,
-        orderStatus: OrderStatusTypes.NEW_ORDER,
+        orderStatus: OrderStatusTypes.CREATED,
       ),
     );
     orderStatuses.add(
@@ -68,7 +68,7 @@ class AppReportsViewModel extends GeneralisedBaseViewModel {
         title: 'SHIPPED ORDER REPORT',
         count: orderInfo.intransit ?? 0,
         icon: shippedOrdersIcon,
-        orderStatus: OrderStatusTypes.SHIPPED,
+        orderStatus: OrderStatusTypes.INTRANSIT,
       ),
     );
     orderStatuses.add(

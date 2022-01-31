@@ -67,7 +67,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   int reportsByCategoryIndex = 0;
   int reportsBySubCategoryIndex = 0;
   late String selectedOrderStatus;
-  int trendingBrandsIndex = 0;
+  // int trendingBrandsIndex = 0;
   int trendingCategoriesIndex = 0;
   int trendingSubCategoriesIndex = 0;
 
