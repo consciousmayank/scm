@@ -116,13 +116,18 @@ class DemandModuleLandingPageViewModel
       case 0:
         return CommonDashboardView(
           arguments: CommonDashboardViewArguments(
-            onClickOfOrder: ({required Order clickedOrder}) {
+            onClickOfOrder: ({
+              required Order clickedOrder,
+              required String clickedOrderStatus,
+            }) {
               selectedOrder = clickedOrder;
+              clickedOrderStatus = clickedOrderStatus;
               setIndex(2);
             },
             onClickOfOrderTile: ({required String clickedOrderStatus}) {
               this.clickedOrderStatus = clickedOrderStatus;
               clickedOrderStatus = orderStatusAll;
+
               setIndex(2);
             },
           ),

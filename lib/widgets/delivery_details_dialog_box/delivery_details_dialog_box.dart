@@ -131,7 +131,7 @@ class _DeliveryDetailsDialogBoxViewState
                           innerHintText: "Enter The Amount",
                           enabled: true,
                           keyboardType: TextInputType.number,
-                          validator: (value) {
+                          textFormFieldValidator: (value) {
                             if (value == null) {
                               return 'Required';
                             } else if (value.isEmpty) {
@@ -154,7 +154,7 @@ class _DeliveryDetailsDialogBoxViewState
                           // onFieldSubmitted: (_) {
                           //   // fieldFocusChange(context, firstNameFocusNode, lastNameFocusNode);
                           // },
-                          validator: (value) {
+                          textFormFieldValidator: (value) {
                             if (value == null) {
                               return 'Required';
                             } else if (value.isEmpty) {
@@ -175,7 +175,7 @@ class _DeliveryDetailsDialogBoxViewState
                     keyboardType: TextInputType.name,
                     hintText: 'Delivered By',
                     innerHintText: 'e.g. VIKAS, UK07CA8178',
-                    validator: (value) {
+                    textFormFieldValidator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter deliver by';
                       }
@@ -189,7 +189,7 @@ class _DeliveryDetailsDialogBoxViewState
                     maxLines: 6,
                     keyboardType: TextInputType.multiline,
                     hintText: "Remarks (If Any)",
-                    validator: (value) {
+                    textFormFieldValidator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter deliver by';
                       }

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:scm/routes/routes_constants.dart';
-import 'package:scm/app/app.router.dart';
+import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_index_tracking_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/order_list_response.dart';
-import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/supply_profile_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/app_reports/app_reports_view.dart';
@@ -23,6 +21,7 @@ class SupplyModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';
   String clickedOrderStatus = orderStatusAll;
+  var log = getLogger('SupplyModuleLandingPageViewModel');
   ApiStatus profileApiStatus = ApiStatus.LOADING;
   String searchTerm = '';
   Order? selectedOrder;
@@ -119,17 +118,23 @@ class SupplyModuleLandingPageViewModel
     switch (currentIndex) {
       case 0:
         return CommonDashboardView(
-            arguments: CommonDashboardViewArguments(
-          onClickOfOrderTile: ({required String clickedOrderStatus}) {
-            this.clickedOrderStatus = clickedOrderStatus;
-            setIndex(3);
-          },
-          onClickOfOrder: ({required Order clickedOrder}) {
-            selectedOrder = clickedOrder;
-            clickedOrderStatus = orderStatusAll;
-            setIndex(3);
-          },
-        ));
+          arguments: CommonDashboardViewArguments(
+            onClickOfOrderTile: ({
+              required String clickedOrderStatus,
+            }) {
+              this.clickedOrderStatus = clickedOrderStatus;
+              setIndex(3);
+            },
+            onClickOfOrder: ({
+              required Order clickedOrder,
+              required String clickedOrderStatus,
+            }) {
+              selectedOrder = clickedOrder;
+              this.clickedOrderStatus = clickedOrderStatus;
+              setIndex(3);
+            },
+          ),
+        );
 
       case 1:
         // return const SupplyProductsOptionsPageView();

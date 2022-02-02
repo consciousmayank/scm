@@ -1,15 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/appconfigs.dart';
-
 import 'package:scm/app/image_config.dart';
-import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_viewmodel.dart';
-import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/services/notification/fcm_permissions.dart';
 import 'package:scm/services/notification/notification_icon/notification_icon_view.dart';
 import 'package:scm/utils/strings.dart';
@@ -18,7 +12,6 @@ import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_bottom_navigation_bar_widget.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
-import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:scm/widgets/version_widget/version_widget.dart';
 import 'package:stacked/stacked.dart';
@@ -37,7 +30,6 @@ class _SupplyModuleLandingPageViewState
     extends State<SupplyModuleLandingPageView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     FirebasePushNotificationsPermissions().getPermission();
   }
@@ -166,15 +158,6 @@ class SupplyModuleLandingPageWebView
               },
             ),
             wSizedBox(width: 10),
-            // Center(
-            //   child: Text(
-            //     'Hi, ${viewModel.authenticatedUserName}',
-            //     style: Theme.of(context).textTheme.bodyText2?.copyWith(
-            //           color: AppColors().white,
-            //         ),
-            //   ),
-            // ),
-
             AppPopUpMenuWidget.withProfile(
               onOptionsSelected: ({value}) =>
                   viewModel.actionPopUpItemSelected(selectedValue: value),

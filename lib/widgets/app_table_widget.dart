@@ -31,7 +31,9 @@ class AppTableWidget extends StatelessWidget {
                         ? Theme.of(context).primaryColorDark
                         : Colors.white,
                     border: Border.all(
-                      color: Theme.of(context).primaryColorDark,
+                      color: isHeader
+                          ? Theme.of(context).primaryColorDark
+                          : Colors.grey.shade300,
                       width: 0.5,
                     ),
                   ),
@@ -44,17 +46,18 @@ class AppTableWidget extends StatelessWidget {
                       preferBelow: false,
                       triggerMode: TooltipTriggerMode.tap,
                       message: singleValue.getValue(),
-                      child: Text(
-                        singleValue.getValue(),
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                        textAlign: singleValue.textAlignment,
-                        style: singleValue.textStyle?.copyWith(
-                          color: isHeader
-                              ? AppColors().primaryHeaderTextColor
-                              : AppColors().black,
-                        ),
-                      ),
+                      child: singleValue.customWidget ??
+                          Text(
+                            singleValue.getValue(),
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            textAlign: singleValue.textAlignment,
+                            style: singleValue.textStyle?.copyWith(
+                              color: isHeader
+                                  ? AppColors().primaryHeaderTextColor
+                                  : AppColors().black,
+                            ),
+                          ),
                     ),
                   ),
                 ),
@@ -73,6 +76,17 @@ class AppTableSingleItem {
     this.textStyle,
     this.formatNumber = false,
   })  : intValue = null,
+        customWidget = null,
+        stringValue = null;
+
+  const AppTableSingleItem.customWidget(
+    this.customWidget, {
+    this.flexValue = 1,
+    this.textAlignment,
+    this.textStyle,
+    this.formatNumber = false,
+  })  : intValue = null,
+        doubleValue = null,
         stringValue = null;
 
   const AppTableSingleItem.int(
@@ -82,6 +96,7 @@ class AppTableSingleItem {
     this.textStyle,
     this.formatNumber = false,
   })  : doubleValue = null,
+        customWidget = null,
         stringValue = null;
 
   const AppTableSingleItem.string(
@@ -91,6 +106,7 @@ class AppTableSingleItem {
     this.textStyle,
   })  : doubleValue = null,
         formatNumber = false,
+        customWidget = null,
         intValue = null;
 
   final double? doubleValue;
@@ -100,6 +116,7 @@ class AppTableSingleItem {
   final String? stringValue;
   final TextAlign? textAlignment;
   final TextStyle? textStyle;
+  final Widget? customWidget;
 
   getValue() {
     var format = NumberFormat.currency(locale: 'HI');

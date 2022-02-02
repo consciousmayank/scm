@@ -4,6 +4,7 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/order_status_types.dart';
+import 'package:scm/model_classes/orders_report_response.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/order_report_widget.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/to_date_widget.dart';
@@ -12,6 +13,9 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_container_widget.dart';
 import 'package:scm/widgets/app_dropdown_widget.dart';
+import 'package:scm/widgets/app_textfield.dart';
+import 'package:scm/widgets/loading_widget.dart';
+import 'package:scm/widgets/no_data_widget.dart';
 import 'package:stacked/stacked.dart';
 
 class OrderReportsView extends StatefulWidget {
@@ -75,76 +79,72 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: OptionsInput.noRightPadding(
-                              hintText: labelFromDate,
-                              child: OrderReportsDateWidget(
-                                initialDate: model.dateTimeRange.start,
-                                firstDate: model.dateTimeRange.start.subtract(
-                                  const Duration(
-                                    days: 180,
-                                  ),
-                                ),
-                                dateText: model.getFromDateText(),
-                                onDateChanged: ({required DateTime date}) {
-                                  model.updateStartDateInDateRange(date);
-                                },
-                              ),
-                            ),
-                            flex: 1,
-                          ),
-                          wSizedBox(width: 8),
-                          Expanded(
-                            child: OptionsInput.noRightPadding(
+                            child: OrderReportsDateWidget.dashboard(
+                              toolTip: labelFromDateToolTip,
+                              initialDate: model.dateTimeRange.start,
+                              firstDate: getFirstDateForOrder(
+                                  dateTime: model.dateTimeRange.start),
+                              dateText: model.getFromDateText(),
+                              onDateChanged: ({required DateTime date}) {
+                                model.updateStartDateInDateRange(date);
+                              },
                               hintText: labelToDate,
-                              child: OrderReportsDateWidget(
-                                firstDate: model.dateTimeRange.start,
-                                // initialDate: model.dateTimeRange.end,
-                                dateText: model.getToDateText(),
-                                onDateChanged: ({required DateTime date}) {
-                                  model.updateEndDateInDateRange(date);
-                                },
-                              ),
                             ),
                             flex: 1,
                           ),
                           wSizedBox(width: 8),
                           Expanded(
-                            child: OptionsInput(
+                            child: OrderReportsDateWidget.dashboard(
+                              toolTip: labelToDateToolTip,
+                              firstDate: model.dateTimeRange.start,
+                              // initialDate: model.dateTimeRange.end,
+                              dateText: model.getToDateText(),
+                              onDateChanged: ({required DateTime date}) {
+                                model.updateEndDateInDateRange(date);
+                              },
+                              hintText: labelFromDate,
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 8),
+                          Expanded(
+                            child: AppTextField<String>.dropDown(
+                              tooltTipText: labelSelectBrand,
                               hintText: labelSelectBrand,
-                              child: Center(
-                                child: AppDropDown<String>(
-                                  selectedOption: model.selectedBrand,
-                                  items: model.brandsList,
-                                  onItemSelected: ({required String item}) {
-                                    if (item == labelALL) {
-                                      model.selectedType = labelALL;
-                                    }
-                                    model.selectedBrand = item;
-                                    model.getOrderReports();
-                                    model.notifyListeners();
-                                  },
-                                  hintText: labelSelectBrand,
-                                ),
-                              ),
+                              labelText: labelSelectBrand,
+                              dropDownItems: model.brandsList,
+                              onDropDownItemSelected: (
+                                  {required String? selectedValue}) {
+                                if (selectedValue != null) {
+                                  if (selectedValue == labelALL) {
+                                    model.selectedType = labelALL;
+                                  }
+                                  model.selectedBrand = selectedValue;
+                                  model.getOrderReports();
+                                  model.notifyListeners();
+                                }
+                              },
                             ),
                             flex: 1,
                           ),
                           wSizedBox(width: 8),
                           Expanded(
-                            child: OptionsInput(
+                            child: AppTextField.dropDown(
+                              tooltTipText: labelSelectType,
                               hintText: labelSelectType,
-                              child: Center(
-                                child: AppDropDown<String>(
-                                  selectedOption: model.selectedType,
-                                  items: model.typesList,
-                                  onItemSelected: ({required String item}) {
-                                    model.selectedType = item;
-                                    model.getOrderReports();
-                                    model.notifyListeners();
-                                  },
-                                  hintText: labelSelectType,
-                                ),
-                              ),
+                              labelText: labelSelectType,
+                              dropDownItems: model.typesList,
+                              onDropDownItemSelected: (
+                                  {required String? selectedValue}) {
+                                if (selectedValue != null) {
+                                  if (selectedValue == labelALL) {
+                                    model.selectedType = labelALL;
+                                  }
+                                  model.selectedType = selectedValue;
+                                  model.getOrderReports();
+                                  model.notifyListeners();
+                                }
+                              },
                             ),
                             flex: 1,
                           ),
@@ -164,38 +164,74 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: ReportWidget.groupByBrands(
-                          title: ordersReportsGroupByBrandsWidgetTitle,
-                          amountGrandTotal:
-                              model.getGrandTotalOfOrdersAmountGroupByBrand(),
-                          quantityGrandTotal:
-                              model.getGrandTotalOfOrdersQtyGroupByBrand(),
-                          reportResponse:
-                              model.ordersReportGroupByBrandResponse,
-                        ),
+                        child: model.getOrderReportsGroupByBrandApiStatus ==
+                                ApiStatus.LOADING
+                            ? const LoadingReportsWidget(
+                                loadingText:
+                                    'Fetching Order Report group by Brands.',
+                              )
+                            : model.ordersReportGroupByBrandResponse
+                                    .reportResultSet!.isEmpty
+                                ? const NoDataWidget(
+                                    text: labelNoData,
+                                  )
+                                : ReportWidget.groupByBrands(
+                                    title:
+                                        ordersReportsGroupByBrandsWidgetTitle,
+                                    amountGrandTotal: model
+                                        .getGrandTotalOfOrdersAmountGroupByBrand(),
+                                    quantityGrandTotal: model
+                                        .getGrandTotalOfOrdersQtyGroupByBrand(),
+                                    reportResponse:
+                                        model.ordersReportGroupByBrandResponse,
+                                  ),
                         flex: 1,
                       ),
                       Expanded(
-                        child: ReportWidget.groupByCategory(
-                          title: ordersReportsGroupByTypeWidgetTitle,
-                          amountGrandTotal:
-                              model.getGrandTotalOfOrdersAmountGroupByType(),
-                          quantityGrandTotal:
-                              model.getGrandTotalOfOrdersQtyGroupByType(),
-                          reportResponse: model.ordersReportGroupByTypeResponse,
-                        ),
+                        child: model.getOrderReportsGroupByTypeApiStatus ==
+                                ApiStatus.LOADING
+                            ? const LoadingReportsWidget(
+                                loadingText:
+                                    'Fetching Order Report group by Category.',
+                              )
+                            : model.ordersReportGroupByBrandResponse
+                                    .reportResultSet!.isEmpty
+                                ? const NoDataWidget(
+                                    text: labelNoData,
+                                  )
+                                : ReportWidget.groupByCategory(
+                                    title: ordersReportsGroupByTypeWidgetTitle,
+                                    amountGrandTotal: model
+                                        .getGrandTotalOfOrdersAmountGroupByType(),
+                                    quantityGrandTotal: model
+                                        .getGrandTotalOfOrdersQtyGroupByType(),
+                                    reportResponse:
+                                        model.ordersReportGroupByTypeResponse,
+                                  ),
                         flex: 1,
                       ),
                       Expanded(
-                        child: ReportWidget.groupBySubCategory(
-                          title: ordersReportsGroupBySubTypeWidgetTitle,
-                          amountGrandTotal:
-                              model.getGrandTotalOfOrdersAmountGroupBySubType(),
-                          quantityGrandTotal:
-                              model.getGrandTotalOfOrdersQtyGroupBySubType(),
-                          reportResponse:
-                              model.ordersReportGroupBySubTypeResponse,
-                        ),
+                        child: model.getOrderReportsGroupBySubTypeApiStatus ==
+                                ApiStatus.LOADING
+                            ? const LoadingReportsWidget(
+                                loadingText:
+                                    'Fetching Order Report group by Sub Category.',
+                              )
+                            : model.ordersReportGroupBySubTypeResponse
+                                    .reportResultSet!.isEmpty
+                                ? const NoDataWidget(
+                                    text: labelNoData,
+                                  )
+                                : ReportWidget.groupBySubCategory(
+                                    title:
+                                        ordersReportsGroupBySubTypeWidgetTitle,
+                                    amountGrandTotal: model
+                                        .getGrandTotalOfOrdersAmountGroupBySubType(),
+                                    quantityGrandTotal: model
+                                        .getGrandTotalOfOrdersQtyGroupBySubType(),
+                                    reportResponse: model
+                                        .ordersReportGroupBySubTypeResponse,
+                                  ),
                         flex: 1,
                       ),
                     ],
@@ -208,14 +244,25 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                 ),
                 SliverToBoxAdapter(
                   // child: OrdersConsilidatedReportWidget(),
-                  child: ReportWidget.consolidated(
-                    title: consolidatedOrdersReportsWidgetTitle,
-                    amountGrandTotal:
-                        model.getGrandTotalOfConsolidatedOrdersAmount(),
-                    quantityGrandTotal:
-                        model.getGrandTotalOfConsolidatedOrdersQty(),
-                    reportResponse: model.consolidatedOrdersReportResponse,
-                  ),
+                  child: model.getConsolidatedOrderReportsApiStatus ==
+                          ApiStatus.LOADING
+                      ? const LoadingReportsWidget(
+                          loadingText: 'Fetching Consolidated Order Report.',
+                        )
+                      : model.consolidatedOrdersReportResponse.reportResultSet!
+                              .isEmpty
+                          ? const NoDataWidget(
+                              text: labelNoData,
+                            )
+                          : ReportWidget.consolidated(
+                              title: consolidatedOrdersReportsWidgetTitle,
+                              amountGrandTotal: model
+                                  .getGrandTotalOfConsolidatedOrdersAmount(),
+                              quantityGrandTotal:
+                                  model.getGrandTotalOfConsolidatedOrdersQty(),
+                              reportResponse:
+                                  model.consolidatedOrdersReportResponse,
+                            ),
                 ),
                 SliverToBoxAdapter(
                   child: hSizedBox(
@@ -287,3 +334,56 @@ class OptionsInput extends StatelessWidget {
     );
   }
 }
+
+class LoadingReportsWidget extends StatelessWidget {
+  const LoadingReportsWidget({
+    Key? key,
+    required this.loadingText,
+  }) : super(key: key);
+
+  final String loadingText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: Dimens().getCardShape(),
+      elevation: Dimens().getDefaultElevation,
+      color: Colors.white,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        margin: const EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(
+          vertical: MediaQuery.of(context).size.height * 0.20,
+        ),
+        alignment: Alignment.center,
+        child: LoadingWidgetWithText(
+          text: loadingText,
+        ),
+      ),
+    );
+  }
+}
+
+// class NoDataForReportsWidget extends StatelessWidget {
+//   const NoDataForReportsWidget({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       shape: Dimens().getCardShape(),
+//       elevation: Dimens().getDefaultElevation,
+//       color: Colors.white,
+//       child: Container(
+//         height: MediaQuery.of(context).size.height * 0.5,
+//         margin: const EdgeInsets.all(8),
+//         padding: EdgeInsets.symmetric(
+//           vertical: MediaQuery.of(context).size.height * 0.20,
+//         ),
+//         alignment: Alignment.center,
+//         child: const Text('No Data'),
+//       ),
+//     );
+//   }
+// }

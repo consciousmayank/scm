@@ -20,6 +20,7 @@ import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/delivery_details_dialog_box/delivery_details_dialog_box.dart';
+import 'package:scm/widgets/order_processing_confirmation/order_processing_confirmation_dialogBox.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -39,10 +40,10 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   ApiStatus ordersStatusListApi = ApiStatus.LOADING;
   int pageNumber = 0;
   int pageSize = 15;
-  List<TextEditingController> priceEditingControllers = [];
-  List<FocusNode> priceEditingFocusnodes = [];
-  List<TextEditingController> quantityEditingControllers = [];
-  List<FocusNode> quantityEditingFocusnodes = [];
+  // List<TextEditingController> priceEditingControllers = [];
+  // List<FocusNode> priceEditingFocusnodes = [];
+  // List<TextEditingController> quantityEditingControllers = [];
+  // List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
   OrderFiltersDurationType selectedOrderDuration =
       OrderFiltersDurationType.LAST_30_DAYS;
@@ -52,34 +53,43 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
 
-  void initializeEditexts() {
-    orderDetails.orderItems?.forEach((element) {
-      element.edit = true;
-      priceEditingControllers.add(TextEditingController());
-      quantityEditingControllers.add(
-        TextEditingController(
-            // text: orderDetails.orderItems!
-            //     .elementAt(orderDetails.orderItems!.indexOf(element))
-            //     .itemQuantity
-            //     .toString()
-            //     .toString(),
-            ),
-      );
-      priceEditingFocusnodes.add(FocusNode());
-      quantityEditingFocusnodes.add(FocusNode());
-    });
-    notifyListeners();
-  }
+  Key? currentQuantityTextFieldHavingFocus;
+
+  // void initializeEditexts() {
+  //   orderDetails.orderItems?.forEach((element) {
+  //     element.edit = true;
+  //     priceEditingControllers.add(TextEditingController());
+  //     quantityEditingControllers.add(
+  //       TextEditingController(
+  //           // text: orderDetails.orderItems!
+  //           //     .elementAt(orderDetails.orderItems!.indexOf(element))
+  //           //     .itemQuantity
+  //           //     .toString()
+  //           //     .toString(),
+  //           ),
+  //     );
+  //     priceEditingFocusnodes.add(FocusNode());
+  //     quantityEditingFocusnodes.add(FocusNode());
+  //   });
+  //   notifyListeners();
+  // }
 
   init(OrderListPageViewArguments arguments) {
-    dateTimeRange = DateTimeRange(
-      end: DateTime.now(),
-      start: DateTime.now().subtract(
-        const Duration(
-          days: 1,
-        ),
-      ),
-    );
+    DateTime currentDate = DateTime.now();
+
+    if (currentDate.day == 1) {
+      //today is first of the month. so we need to get last month's first day as start date and last month's last day as end date
+      dateTimeRange = DateTimeRange(
+        start: DateTime(currentDate.year, currentDate.month - 1, 1),
+        end: DateTime(currentDate.year, currentDate.month, 0),
+      );
+    } else {
+      //today is not first of the month. so we need to get this month's first day as start date and today's date as end date
+      dateTimeRange = DateTimeRange(
+        start: DateTime(currentDate.year, currentDate.month, 1),
+        end: DateTime(currentDate.year, currentDate.month, currentDate.day),
+      );
+    }
     // updateTextControllers();
 
     args = arguments;
@@ -92,7 +102,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     } else {
       getOrdersDetails(orderId: arguments.orderId.toString());
     }
-    log.wtf(selectedOrderStatus);
   }
 
   getOrderList() async {
@@ -122,8 +131,12 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     if (orderList.orders!.isNotEmpty) {
       getOrdersDetails();
+    } else if (selectedOrderStatus != labelALL) {
+      selectedOrderStatus = labelALL;
+      getOrderList();
     } else {
       orderDetails = OrderSummaryResponse().empty();
+      orderDetailsApi = ApiStatus.FETCHED;
     }
     orderListApi = ApiStatus.FETCHED;
 
@@ -141,7 +154,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     if (orderDetails.status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
       turnSelectedOrderItemsEditable();
-      initializeEditexts();
+      // initializeEditexts();
     }
 
     orderDetailsApi = ApiStatus.FETCHED;
@@ -158,7 +171,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     if (orderDetails.id! > 0) {
       showInfoSnackBar(message: orderDetails.status ?? 'Success');
       turnSelectedOrderItemsEditable();
-      initializeEditexts();
+      // initializeEditexts();
     }
     getOrderList();
     notifyListeners();
@@ -292,7 +305,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       orderItems: orderItems,
       totalAmount: totalOrderPrice,
     );
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updatePrice({required int index, required String price}) {
@@ -309,7 +322,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       orderItems: orderItems,
       totalAmount: totalOrderPrice,
     );
-    notifyListeners();
+    // notifyListeners();
   }
 
   double getTotalOrderPrice({required OrderSummaryResponse order}) {
@@ -476,6 +489,79 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
               .creationdate!,
         ).convert(),
       ).convert();
+    }
+  }
+
+  void updateStartDateInDateRange(DateTime newDateTime) {
+    dateTimeRange = DateTimeRange(
+      end: dateTimeRange.end,
+      start: newDateTime,
+    );
+    notifyListeners();
+  }
+
+  void updateEndDateInDateRange(DateTime newDateTime) {
+    dateTimeRange = DateTimeRange(
+      end: newDateTime,
+      start: dateTimeRange.start,
+    );
+    notifyListeners();
+  }
+
+  String getToDateText() {
+    return DateTimeToStringConverter.ddMMMMyyyy(
+      date: dateTimeRange.end,
+    ).convert();
+  }
+
+  String getFromDateText() {
+    return DateTimeToStringConverter.ddMMMMyyyy(
+      date: dateTimeRange.start,
+    ).convert();
+  }
+
+  bool hideWidgetForProcessingOrderStatus() {
+    String? status = selectedOrder.status;
+    if (status == null) {
+      return false;
+    }
+
+    if (status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
+      return true;
+    }
+
+    return false;
+  }
+
+  bool hideWidgetForCreatedOrderStatus() {
+    String? status = selectedOrder.status;
+    if (status == null) {
+      return false;
+    }
+
+    if (status == OrderStatusTypes.CREATED.apiToAppTitles) {
+      return true;
+    }
+
+    return false;
+  }
+
+  void shippingStatusConfirmation({List<OrderItem>? finalisedOrderList}) async {
+    DialogResponse? orderProcessingConfirmationDialogResponse;
+    if (finalisedOrderList != null) {
+      orderProcessingConfirmationDialogResponse =
+          await dialogService.showCustomDialog(
+        variant: DialogType.ORDER_PROCESS_CONFIRMATION,
+        data: OrderProcessingConfirmationDialogBoxViewArguments(
+          title: 'Confirm Order',
+          orderList: finalisedOrderList,
+        ),
+      );
+    }
+
+    if (orderProcessingConfirmationDialogResponse != null &&
+        orderProcessingConfirmationDialogResponse.confirmed) {
+      updateOrder();
     }
   }
 }

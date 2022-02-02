@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
+import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/screens/order_list_page/helper_widgets/order_status_timeline_widget.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -84,41 +85,51 @@ class OrderProcessButtonsWidget
                 buttonBg: AppColors().buttonGreenColor,
                 buttonText: 'Continue',
                 onTap: () {
-                  bool isValid = true;
-
                   for (var element in viewModel.orderDetails.orderItems!) {
-                    int index =
-                        viewModel.orderDetails.orderItems!.indexOf(element);
-                    if (element.itemQuantity != null &&
-                        element.itemQuantity! < 1) {
-                      viewModel.showErrorSnackBar(
-                          message: errorQuantityRequired,
-                          onSnackBarOkButton: () {
-                            viewModel.quantityEditingFocusnodes
-                                .elementAt(index)
-                                .requestFocus();
-                          });
-                      isValid = false;
-                      break;
-                    } else if (element.itemPrice != null &&
-                        element.itemPrice! < 1) {
-                      viewModel.showErrorSnackBar(
-                          message: errorPriceRequired,
-                          onSnackBarOkButton: () {
-                            viewModel.priceEditingFocusnodes
-                                .elementAt(index)
-                                .requestFocus();
-                          });
-                      isValid = false;
-                      break;
-                    } else {
-                      isValid = true;
-                    }
+                    element = element.copyWith(
+                      itemPrice: element.itemQuantity! * element.itemPrice!,
+                    );
                   }
 
-                  if (isValid) {
-                    viewModel.updateOrder();
-                  }
+                  viewModel.shippingStatusConfirmation(
+                    finalisedOrderList: viewModel.orderDetails.orderItems,
+                  );
+                  // bool isValid = true;
+
+                  // for (var element in viewModel.orderDetails.orderItems!) {
+                  //   int index =
+                  //       viewModel.orderDetails.orderItems!.indexOf(element);
+
+                  //   // if (element.itemQuantity != null &&
+                  //   //     element.itemQuantity! < 1) {
+                  //   //   viewModel.showErrorSnackBar(
+                  //   //       message: errorQuantityRequired,
+                  //   //       onSnackBarOkButton: () {
+                  //   //         viewModel.quantityEditingFocusnodes
+                  //   //             .elementAt(index)
+                  //   //             .requestFocus();
+                  //   //       });
+                  //   //   isValid = false;
+                  //   //   break;
+                  //   // } else if (element.itemPrice != null &&
+                  //   //     element.itemPrice! < 1) {
+                  //   //   viewModel.showErrorSnackBar(
+                  //   //       message: errorPriceRequired,
+                  //   //       onSnackBarOkButton: () {
+                  //   //         viewModel.priceEditingFocusnodes
+                  //   //             .elementAt(index)
+                  //   //             .requestFocus();
+                  //   //       });
+                  //   //   isValid = false;
+                  //   //   break;
+                  //   // } else {
+                  //   //   isValid = true;
+                  //   // }
+                  // }
+
+                  // if (isValid) {
+                  //   viewModel.updateOrder();
+                  // }
                 },
               ),
             ),

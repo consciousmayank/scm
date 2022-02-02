@@ -87,7 +87,7 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                                     viewModel.reportsByBrandsIndex = newValue;
                                     viewModel.notifyListeners();
                                   },
-                                )
+                                ),
                               ],
                             ),
                           ),
@@ -109,11 +109,11 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                                   reportResponse: viewModel
                                       .ordersReportGroupByBrandResponse,
                                 ),
-                                AppBarChartWidget(
+                                AppBarChartWidget.grouped(
                                   seriesBarData:
                                       viewModel.ordersReportGroupByBrandBarData,
                                   xAxisTitle: 'Brands',
-                                  yAxisTitle: 'Quantity',
+                                  yAxisTitle: '',
                                   onClickOfOrderReportsOption: () {
                                     viewModel.navigationService.navigateTo(
                                       orderReportsScreenPageRoute,
@@ -235,9 +235,6 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                                           ),
                                         ],
                                       ),
-                                      // '${viewModel.orderedBrands.indexOf(singleBrand) + 1}',
-                                      // '${singleBrand.brand}',
-                                      // '${singleBrand.count}',
                                       ...viewModel.orderedBrands
                                           .map(
                                             (singleBrand) =>
@@ -269,7 +266,38 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                                               ],
                                             ),
                                           )
-                                          .toList()
+                                          .toList(),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) =>
+                                              AppTableWidget.values(
+                                            values: [
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .snoFlexValueTrending,
+                                                textAlignment: TextAlign.center,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                textAlignment: TextAlign.start,
+                                                flexValue: Dimens()
+                                                    .nameFlexValueTrending,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .countFlexValueTrending,
+                                                textAlignment: TextAlign.end,
+                                              )
+                                            ],
+                                          ),
+                                          itemCount: 10 -
+                                              viewModel.orderedBrands.length,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -14,6 +14,7 @@ import 'package:scm/widgets/brands_dialog_box/brands_dialogbox_view.dart';
 import 'package:scm/widgets/column_with_title.dart';
 import 'package:scm/widgets/delivery_details_dialog_box/delivery_details_dialog_box.dart';
 import 'package:scm/widgets/demand_app_qr_code_dialog_box.dart';
+import 'package:scm/widgets/order_processing_confirmation/order_processing_confirmation_dialogBox.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
@@ -87,6 +88,11 @@ void setupDialogUi() {
         ),
     DialogType.SUPPLY_APP_QR_CODE: (context, sheetRequest, completer) =>
         SupplyAppQrCodeDialogBoxView(
+          request: sheetRequest,
+          completer: completer,
+        ),
+    DialogType.ORDER_PROCESS_CONFIRMATION: (context, sheetRequest, completer) =>
+        OrderProcessingConfirmationDialogBoxView(
           request: sheetRequest,
           completer: completer,
         ),

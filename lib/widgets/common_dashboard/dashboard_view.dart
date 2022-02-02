@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/model_classes/order_list_response.dart';
+import 'package:scm/screens/reports/orders_report/helper_widgets/to_date_widget.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_footer_widget.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
+import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_order_list_widget.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_viewmodel.dart';
 import 'package:scm/widgets/common_dashboard/order_info_widget.dart';
@@ -38,9 +41,10 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
                   {required String clickedOrderStatus, int? count}) {
                 if (count != null && count > 0) {
                   widget.arguments.onClickOfOrderTile!(
-                      clickedOrderStatus: clickedOrderStatus);
+                    clickedOrderStatus: clickedOrderStatus,
+                  );
                 } else {
-                  model.showErrorSnackBar(
+                  model.showInfoSnackBar(
                     message: noOrderInState(
                       state: clickedOrderStatus,
                     ),
@@ -57,47 +61,57 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
                   bottom: 16,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      labelOrderReport.toUpperCase(),
-                      style: Theme.of(context).textTheme.headline6,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        labelOrderReport.toUpperCase(),
+                        style: Theme.of(context).textTheme.headline6,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          model.getDateTimeText(),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.125,
+                      child: OrderReportsDateWidget.dashboard(
+                        toolTip: labelFromDateToolTip,
+                        hintText: labelFromDate,
+                        initialDate: model.dateTimeRange.start,
+                        firstDate: getFirstDateForOrder(
+                          dateTime: model.dateTimeRange.start,
                         ),
-                        wSizedBox(
-                          width: 16,
-                        ),
-                        Tooltip(
-                          message: 'Change Date',
-                          preferBelow: true,
-                          child: AppButton.outline(
-                            buttonBg: Theme.of(context).primaryColor,
-                            suffix: Icon(
-                              Icons.calendar_today,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            onTap: () {
-                              selectDateRange(
-                                context: context,
-                                initialDateTimeRange: model.dateTimeRange,
-                              ).then((value) {
-                                if (value != null) {
-                                  model.dateTimeRange = value;
-                                  model.getOrderReports();
-                                }
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )
+                        dateText: model.getFromDateText(),
+                        onDateChanged: ({required DateTime date}) {
+                          model.updateStartDateInDateRange(date);
+                        },
+                      ),
+                    ),
+                    wSizedBox(width: 8),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.125,
+                      child: OrderReportsDateWidget.dashboard(
+                        toolTip: labelToDateToolTip,
+                        hintText: labelToDate,
+                        firstDate: model.dateTimeRange.start,
+                        // initialDate: model.dateTimeRange.end,
+                        dateText: model.getToDateText(),
+                        onDateChanged: ({required DateTime date}) {
+                          model.updateEndDateInDateRange(date);
+                        },
+                      ),
+                    ),
+                    wSizedBox(width: 8),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.125,
+                      child: AppTextField(
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        initialValue: 'Order Report',
+                        helperText: 'Open Order Report',
+                        buttonType: ButtonType.FULL,
+                        enabled: false,
+                        onButtonPressed: () => model.takeToOrderReportsPage(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -107,7 +121,10 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
             const OrderedSubTypeWidget(),
             DashboardOrderListWidget(
               onClickOfOrder: ({required Order clickedOrder}) {
-                widget.arguments.onClickOfOrder!(clickedOrder: clickedOrder);
+                widget.arguments.onClickOfOrder!(
+                  clickedOrder: clickedOrder,
+                  clickedOrderStatus: clickedOrder.status!,
+                );
               },
             ),
             const SliverToBoxAdapter(
@@ -130,5 +147,6 @@ class CommonDashboardViewArguments {
   final Function({required String clickedOrderStatus})? onClickOfOrderTile;
   final Function({
     required Order clickedOrder,
+    required String clickedOrderStatus,
   })? onClickOfOrder;
 }

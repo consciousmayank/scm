@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/widgets/no_data_widget.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/model_classes/suppliers_list_response.dart';
@@ -167,7 +168,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 ),
               SliverToBoxAdapter(
                 child: model.brandsApiStatus == ApiStatus.LOADING
-                    ? const LoadingWidget(text: labelFetchingBrands)
+                    ? const LoadingWidgetWithText(text: labelFetchingBrands)
                     : model.allBrandsResponse!.brands!.isEmpty
                         ? const NoDataWidget(text: labelNoBrandsFound)
                         : Container(
@@ -281,7 +282,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 ),
               SliverToBoxAdapter(
                 child: model.categoriesApiStatus == ApiStatus.LOADING
-                    ? const LoadingWidget(text: labelFetchingCategories)
+                    ? const LoadingWidgetWithText(text: labelFetchingCategories)
                     : model.productCategoriesResponse!.types!.isEmpty
                         ? const NoDataWidget(
                             text: labelNoCategoriesFound,
@@ -394,7 +395,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                 ),
               model.productListApiStatus == ApiStatus.LOADING
                   ? const SliverToBoxAdapter(
-                      child: LoadingWidget(text: labelFetchingProducts),
+                      child: LoadingWidgetWithText(text: labelFetchingProducts),
                     )
                   : model.allBrandsResponse!.brands!.isEmpty
                       ? const SliverToBoxAdapter(
@@ -484,53 +485,4 @@ class SuppplierProfileViewArguments {
 
   final bool isSupplierCatalog;
   final Supplier? selectedSupplier;
-}
-
-class NoDataWidget extends StatelessWidget {
-  const NoDataWidget({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.40,
-      width: MediaQuery.of(context).size.width,
-      child: Card(
-        shape: Dimens().getCardShape(),
-        color: Colors.white,
-        child: Center(
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LoadingWidget extends StatelessWidget {
-  const LoadingWidget({
-    Key? key,
-    required this.text,
-  }) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.40,
-      width: MediaQuery.of(context).size.width,
-      child: Center(
-        child: LoadingWidgetWithText(
-          text: text,
-        ),
-      ),
-    );
-  }
 }

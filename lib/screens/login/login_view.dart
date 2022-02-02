@@ -108,8 +108,14 @@ class LoginView extends StatelessWidget {
                                       obscureText: !model.isPasswordVisible,
                                       buttonType: ButtonType.SMALL,
                                       buttonIcon: model.isPasswordVisible
-                                          ? const Icon(Icons.visibility_off)
-                                          : const Icon(Icons.visibility),
+                                          ? const Icon(
+                                              Icons.visibility_off,
+                                              size: 20,
+                                            )
+                                          : const Icon(
+                                              Icons.visibility,
+                                              size: 20,
+                                            ),
                                       onButtonPressed: () {
                                         model.isPasswordVisible =
                                             !model.isPasswordVisible;

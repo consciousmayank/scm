@@ -58,6 +58,8 @@ class NotSupportedScreensView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // Text('Screen Height: $screenHeight'),
+                  // Text('Screen Width: $screenWidth'),
                   Container(
                     alignment: Alignment.center,
                     child: Column(

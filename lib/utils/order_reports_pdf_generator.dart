@@ -16,25 +16,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderReportsPdfGenerator {
-  final String appName, selectedOrderStatus, selectedBrand, selectedType;
-  final DateTimeRange dateTimeRange;
-  final OrdersReportResponse consolidatedOrdersReportResponse,
-      ordersReportGroupByTypeResponse,
-      ordersReportGroupBySubTypeResponse,
-      ordersReportGroupByBrandResponse;
-
-  final int totalOfOrdersQtyGroupBySubType,
-      totalOfOrdersQtyGroupByType,
-      totalOfOrdersQtyGroupByBrand,
-      totalOfConsolidatedOrdersQty;
-  final double totalOfOrdersAmountGroupBySubType,
-      totalOfOrdersAmountGroupByType,
-      totalOfOrdersAmountGroupByBrand,
-      totalOfConsolidatedOrdersAmount;
-
-  final pdf = pw.Document();
-  final AppPreferencesService preferences = locator<AppPreferencesService>();
-
   OrderReportsPdfGenerator({
     required this.appName,
     required this.selectedOrderStatus,
@@ -54,6 +35,25 @@ class OrderReportsPdfGenerator {
     required this.totalOfOrdersAmountGroupByBrand,
     required this.totalOfConsolidatedOrdersAmount,
   });
+
+  final DateTimeRange dateTimeRange;
+  final OrdersReportResponse consolidatedOrdersReportResponse,
+      ordersReportGroupByTypeResponse,
+      ordersReportGroupBySubTypeResponse,
+      ordersReportGroupByBrandResponse;
+
+  final pdf = pw.Document();
+  final AppPreferencesService preferences = locator<AppPreferencesService>();
+  final String appName, selectedOrderStatus, selectedBrand, selectedType;
+  final double totalOfOrdersAmountGroupBySubType,
+      totalOfOrdersAmountGroupByType,
+      totalOfOrdersAmountGroupByBrand,
+      totalOfConsolidatedOrdersAmount;
+
+  final int totalOfOrdersQtyGroupBySubType,
+      totalOfOrdersQtyGroupByType,
+      totalOfOrdersQtyGroupByBrand,
+      totalOfConsolidatedOrdersQty;
 
   void writeOnPdf() async {
     pdf.addPage(

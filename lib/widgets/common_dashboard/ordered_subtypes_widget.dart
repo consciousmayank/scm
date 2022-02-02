@@ -31,7 +31,7 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
               height: 200,
               child: Center(
                 child: LoadingWidgetWithText(
-                  text: 'Fetching Ordered Subtypes,',
+                  text: 'Fetching Ordered Sub Categories,',
                 ),
               ),
             ),
@@ -58,7 +58,7 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'SubType',
+                                  'Sub Category',
                                   style: Theme.of(context).textTheme.subtitle1,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -111,11 +111,11 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                   reportResponse: viewModel
                                       .ordersReportGroupBySubTypeResponse,
                                 ),
-                                AppBarChartWidget(
+                                AppBarChartWidget.grouped(
                                   seriesBarData: viewModel
                                       .ordersReportGroupBySubTypeBarData,
-                                  xAxisTitle: 'SubType',
-                                  yAxisTitle: 'Quantity',
+                                  xAxisTitle: 'Sub Category',
+                                  yAxisTitle: '',
                                   onClickOfOrderReportsOption: () {
                                     viewModel.navigationService.navigateTo(
                                       orderReportsScreenPageRoute,
@@ -272,7 +272,38 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                               ],
                                             ),
                                           )
-                                          .toList()
+                                          .toList(),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) =>
+                                              AppTableWidget.values(
+                                            values: [
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .snoFlexValueTrending,
+                                                textAlignment: TextAlign.center,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                textAlignment: TextAlign.start,
+                                                flexValue: Dimens()
+                                                    .nameFlexValueTrending,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .countFlexValueTrending,
+                                                textAlignment: TextAlign.end,
+                                              )
+                                            ],
+                                          ),
+                                          itemCount: 10 -
+                                              viewModel.orderedSubTypes.length,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

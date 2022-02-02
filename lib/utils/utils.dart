@@ -322,7 +322,10 @@ Future<DateTimeRange?> selectDateRange({
   required DateTimeRange initialDateTimeRange,
 }) async {
   DateTimeRange? picked = await showDateRangePicker(
-    saveText: orderFiltersDurationDateLabel,
+    helpText: "Please Select Start and End Date",
+    confirmText: 'Confirm Text',
+    saveText: 'Select Date',
+    initialEntryMode: DatePickerEntryMode.calendarOnly,
     context: context,
     firstDate: DateTime.now().subtract(
       const Duration(
@@ -360,4 +363,20 @@ Future<DateTimeRange?> selectDateRange({
   );
 
   return picked;
+}
+
+DateTime getFirstDateForOrder({DateTime? dateTime}) {
+  int numberOfAllowedDays = 180;
+
+  return dateTime == null
+      ? DateTime.now().subtract(
+          Duration(
+            days: numberOfAllowedDays,
+          ),
+        )
+      : dateTime.subtract(
+          Duration(
+            days: numberOfAllowedDays,
+          ),
+        );
 }

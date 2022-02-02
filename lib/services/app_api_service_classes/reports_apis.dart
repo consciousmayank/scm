@@ -3,7 +3,7 @@ import 'package:scm/model_classes/parent_api_response.dart';
 import 'package:scm/services/network/base_api.dart';
 
 abstract class ReportsApisAbstractClass {
-  Future<OrdersReportResponse?> getConsolidatedOrdersReport({
+  Future<OrdersReportResponse> getConsolidatedOrdersReport({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -13,7 +13,7 @@ abstract class ReportsApisAbstractClass {
     String? selectedType,
   });
 
-  Future<OrdersReportResponse?> getOrdersReportGroupByBrands({
+  Future<OrdersReportResponse> getOrdersReportGroupByBrands({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -23,7 +23,7 @@ abstract class ReportsApisAbstractClass {
     String? selectedType,
   });
 
-  Future<OrdersReportResponse?> getOrdersReportGroupByTypes({
+  Future<OrdersReportResponse> getOrdersReportGroupByTypes({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -33,7 +33,7 @@ abstract class ReportsApisAbstractClass {
     String? selectedType,
   });
 
-  Future<OrdersReportResponse?> getOrdersReportGroupBySubTypes({
+  Future<OrdersReportResponse> getOrdersReportGroupBySubTypes({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -46,7 +46,7 @@ abstract class ReportsApisAbstractClass {
 
 class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
   @override
-  Future<OrdersReportResponse?> getConsolidatedOrdersReport({
+  Future<OrdersReportResponse> getConsolidatedOrdersReport({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -56,7 +56,8 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
     String? selectedBrand,
     String? selectedType,
   }) async {
-    OrdersReportResponse? orderReportsApiResponse;
+    OrdersReportResponse? orderReportsApiResponse =
+        OrdersReportResponse().empty();
 
     ParentApiResponse apiResponse = await apiService.getOrdersReport(
       dateFrom: dateFrom,
@@ -79,7 +80,7 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupByBrands({
+  Future<OrdersReportResponse> getOrdersReportGroupByBrands({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -101,7 +102,7 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupBySubTypes({
+  Future<OrdersReportResponse> getOrdersReportGroupBySubTypes({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,
@@ -123,7 +124,7 @@ class ReportsApi extends BaseApi implements ReportsApisAbstractClass {
   }
 
   @override
-  Future<OrdersReportResponse?> getOrdersReportGroupByTypes({
+  Future<OrdersReportResponse> getOrdersReportGroupByTypes({
     required int pageNumber,
     required int pageSize,
     required String dateFrom,

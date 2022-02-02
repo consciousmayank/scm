@@ -4,20 +4,46 @@ import 'package:scm/app/appcolors.dart';
 class AppDropDown<T> extends StatelessWidget {
   const AppDropDown({
     Key? key,
-    required this.items,
-    required this.onItemSelected,
+    required this.dropDownItems,
+    required this.onDropDownItemSelected,
     required this.hintText,
-    required this.selectedOption,
+    this.selectedOption,
+    this.focusNode,
+    this.labelText,
+    this.innerHintText,
+    this.dropDownFieldValidator,
+    this.floatingLabelBehavior = FloatingLabelBehavior.always,
   }) : super(key: key);
 
-  final Function({required T item}) onItemSelected;
+  final Function({
+    required T selectedDropdownOption,
+  }) onDropDownItemSelected;
+
+  final FormFieldValidator<T>? dropDownFieldValidator;
+  final List<T> dropDownItems;
+  final FloatingLabelBehavior floatingLabelBehavior;
+  final FocusNode? focusNode;
   final String hintText;
-  final List<T> items;
+  final String? labelText, innerHintText;
   final T? selectedOption;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<T>(
+    return DropdownButtonFormField<T>(
+      validator: dropDownFieldValidator,
+      focusNode: focusNode,
+      decoration: const InputDecoration()
+          .applyDefaults(Theme.of(context).inputDecorationTheme)
+          .copyWith(
+            label: labelText != null ? Text(labelText!) : null,
+            labelStyle: Theme.of(context).textTheme.subtitle2,
+            hintText: innerHintText,
+            hintStyle: Theme.of(context)
+                .textTheme
+                .subtitle1
+                ?.copyWith(color: Colors.grey.shade400),
+            floatingLabelBehavior: floatingLabelBehavior,
+          ),
       dropdownColor: AppColors().white,
       isExpanded: true,
       hint: Text(
@@ -32,13 +58,12 @@ class AppDropDown<T> extends StatelessWidget {
         color: Theme.of(context).colorScheme.primary,
       ),
       iconSize: 30,
-      underline: Container(),
       onChanged: (T? value) {
         if (value != null) {
-          onItemSelected(item: value);
+          onDropDownItemSelected(selectedDropdownOption: value);
         }
       },
-      items: items.map<DropdownMenuItem<T>>(
+      items: dropDownItems.map<DropdownMenuItem<T>>(
         (T location) {
           return DropdownMenuItem<T>(
             child: Text(

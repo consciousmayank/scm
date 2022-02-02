@@ -110,11 +110,11 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                   reportResponse:
                                       viewModel.ordersReportGroupByTypeResponse,
                                 ),
-                                AppBarChartWidget(
+                                AppBarChartWidget.grouped(
                                   seriesBarData:
                                       viewModel.ordersReportGroupByTypeBarData,
                                   xAxisTitle: 'Brands',
-                                  yAxisTitle: 'Quantity',
+                                  yAxisTitle: '',
                                   onClickOfOrderReportsOption: () {
                                     viewModel.navigationService.navigateTo(
                                       orderReportsScreenPageRoute,
@@ -271,7 +271,38 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                                               ],
                                             ),
                                           )
-                                          .toList()
+                                          .toList(),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) =>
+                                              AppTableWidget.values(
+                                            values: [
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .snoFlexValueTrending,
+                                                textAlignment: TextAlign.center,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                textAlignment: TextAlign.start,
+                                                flexValue: Dimens()
+                                                    .nameFlexValueTrending,
+                                              ),
+                                              AppTableSingleItem.string(
+                                                '',
+                                                flexValue: Dimens()
+                                                    .countFlexValueTrending,
+                                                textAlignment: TextAlign.end,
+                                              )
+                                            ],
+                                          ),
+                                          itemCount: 10 -
+                                              viewModel.orderedTypes.length,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

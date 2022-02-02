@@ -68,7 +68,7 @@ class Dimens {
 
   double get popularBrandsRightpadding => 10;
 
-  double get brandReportWidgetHeight => 400;
+  double get brandReportWidgetHeight => 406;
 
   double get typeReportWidgetHeight => 400;
 

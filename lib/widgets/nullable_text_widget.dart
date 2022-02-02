@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scm/app/styles.dart';
 
 class NullableTextWidget extends StatelessWidget {
@@ -12,17 +13,19 @@ class NullableTextWidget extends StatelessWidget {
     this.maxLines = 4,
   })  : intValue = null,
         doubleValue = null,
+        formatNumber = false,
         super(key: key);
 
-  const NullableTextWidget.double(
-      {Key? key,
-      required this.doubleValue,
-      this.selectable = false,
-      this.textStyle,
-      this.decoration,
-      this.maxLines = 4,
-      this.textAlign = TextAlign.left})
-      : stringValue = null,
+  const NullableTextWidget.double({
+    Key? key,
+    required this.doubleValue,
+    this.selectable = false,
+    this.textStyle,
+    this.decoration,
+    this.maxLines = 4,
+    this.textAlign = TextAlign.left,
+    this.formatNumber = false,
+  })  : stringValue = null,
         intValue = null,
         super(key: key);
 
@@ -34,6 +37,7 @@ class NullableTextWidget extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.decoration,
     this.maxLines = 4,
+    this.formatNumber = false,
   })  : stringValue = null,
         doubleValue = null,
         super(key: key);
@@ -48,6 +52,7 @@ class NullableTextWidget extends StatelessWidget {
       this.textAlign = TextAlign.left})
       : intValue = null,
         doubleValue = null,
+        formatNumber = false,
         super(key: key);
 
   final BoxDecoration? decoration;
@@ -58,14 +63,24 @@ class NullableTextWidget extends StatelessWidget {
   final String? stringValue;
   final TextAlign textAlign;
   final TextStyle? textStyle;
+  final bool formatNumber;
 
   getValue() {
+    var format = NumberFormat.currency(locale: 'HI');
     if (intValue == null && doubleValue == null) {
       return stringValue;
     } else if (stringValue == null && doubleValue == null) {
-      return intValue != null ? intValue.toString() : '--';
+      return intValue != null
+          ? formatNumber
+              ? format.format(intValue).replaceAll('INR', '')
+              : intValue.toString()
+          : '--';
     } else if (stringValue == null && intValue == null) {
-      return doubleValue != null ? doubleValue.toString() : '--';
+      return doubleValue != null
+          ? formatNumber
+              ? format.format(doubleValue).replaceAll('INR', '')
+              : doubleValue?.toStringAsFixed(2)
+          : '--';
     } else {
       return '--';
     }

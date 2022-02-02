@@ -6,6 +6,7 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/screens/order_list_page/order_list_page_viewmodel.dart';
+import 'package:scm/screens/reports/orders_report/helper_widgets/to_date_widget.dart';
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -203,82 +204,106 @@ class OrderDurationsView extends ViewModelWidget<OrderListPageViewModel> {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: AppTextField(
-                            controller: TextEditingController(
-                              text: DateTimeToStringConverter.ddMMMMyy(
-                                date: viewModel.dateTimeRange.start,
-                              ).convert(),
+                          child: OrderReportsDateWidget.dashboard(
+                            toolTip: labelFromDateToolTip,
+                            hintText: labelFromDate,
+                            initialDate: viewModel.dateTimeRange.start,
+                            firstDate: getFirstDateForOrder(
+                              dateTime: viewModel.dateTimeRange.start,
                             ),
-                            enabled: false,
-                            hintText: 'From Date',
+                            dateText: viewModel.getFromDateText(),
+                            onDateChanged: ({required DateTime date}) {
+                              viewModel.updateStartDateInDateRange(date);
+                            },
                           ),
+
+                          // AppTextField(
+                          //   controller: TextEditingController(
+                          //     text: DateTimeToStringConverter.ddMMMMyy(
+                          //       date: viewModel.dateTimeRange.end,
+                          //     ).convert(),
+                          //   ),
+                          //   enabled: false,
+                          //   hintText: 'To Date',
+                          // ),
                         ),
                         wSizedBox(width: 4),
                         Expanded(
                           flex: 1,
-                          child: AppTextField(
-                            controller: TextEditingController(
-                              text: DateTimeToStringConverter.ddMMMMyy(
-                                date: viewModel.dateTimeRange.end,
-                              ).convert(),
-                            ),
-                            enabled: false,
-                            hintText: 'To Date',
+                          child: OrderReportsDateWidget.dashboard(
+                            toolTip: labelToDateToolTip,
+                            hintText: labelToDate,
+                            firstDate: viewModel.dateTimeRange.start,
+                            // initialDate: model.dateTimeRange.end,
+                            dateText: viewModel.getToDateText(),
+                            onDateChanged: ({required DateTime date}) {
+                              viewModel.updateEndDateInDateRange(date);
+                            },
                           ),
+
+                          // AppTextField(
+                          //   controller: TextEditingController(
+                          //     text: DateTimeToStringConverter.ddMMMMyy(
+                          //       date: viewModel.dateTimeRange.start,
+                          //     ).convert(),
+                          //   ),
+                          //   enabled: false,
+                          //   hintText: 'From Date',
+                          // ),
                         ),
                       ],
                     ),
                     hSizedBox(height: 8),
-                    SizedBox(
-                      height: Dimens().buttonHeight,
-                      child: AppButton(
-                        buttonBg: AppColors().buttonGreenColor,
-                        onTap: () async {
-                          DateTimeRange? newDateTimeRange =
-                              await showDateRangePicker(
-                            saveText: orderFiltersDurationDateLabel,
-                            context: context,
-                            firstDate: DateTime.now().subtract(
-                              const Duration(
-                                days: 365,
-                              ),
-                            ),
-                            lastDate: DateTime.now(),
-                            initialDateRange: viewModel.dateTimeRange,
-                            builder: (context, child) {
-                              return Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 50.0),
-                                    child: SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              getValueForScreenType(
-                                                context: context,
-                                                mobile: 0.95,
-                                                tablet: 0.85,
-                                                desktop: 0.65,
-                                              ),
-                                      width: MediaQuery.of(context).size.width *
-                                          getValueForScreenType(
-                                            context: context,
-                                            mobile: 0.95,
-                                            tablet: 0.65,
-                                            desktop: 0.35,
-                                          ),
-                                      child: child,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                    // SizedBox(
+                    //   height: Dimens().buttonHeight,
+                    //   child: AppButton(
+                    //     buttonBg: AppColors().buttonGreenColor,
+                    //     onTap: () async {
+                    //       DateTimeRange? newDateTimeRange =
+                    //           await showDateRangePicker(
+                    //         saveText: orderFiltersDurationDateLabel,
+                    //         context: context,
+                    //         firstDate: DateTime.now().subtract(
+                    //           const Duration(
+                    //             days: 365,
+                    //           ),
+                    //         ),
+                    //         lastDate: DateTime.now(),
+                    //         initialDateRange: viewModel.dateTimeRange,
+                    //         builder: (context, child) {
+                    //           return Column(
+                    //             children: <Widget>[
+                    //               Padding(
+                    //                 padding: const EdgeInsets.only(top: 50.0),
+                    //                 child: SizedBox(
+                    //                   height:
+                    //                       MediaQuery.of(context).size.height *
+                    //                           getValueForScreenType(
+                    //                             context: context,
+                    //                             mobile: 0.95,
+                    //                             tablet: 0.85,
+                    //                             desktop: 0.65,
+                    //                           ),
+                    //                   width: MediaQuery.of(context).size.width *
+                    //                       getValueForScreenType(
+                    //                         context: context,
+                    //                         mobile: 0.95,
+                    //                         tablet: 0.65,
+                    //                         desktop: 0.35,
+                    //                       ),
+                    //                   child: child,
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           );
+                    //         },
+                    //       );
 
-                          viewModel.updateDateRange(newDateTimeRange);
-                        },
-                        title: orderFiltersDurationDateLabel,
-                      ),
-                    ),
+                    //       viewModel.updateDateRange(newDateTimeRange);
+                    //     },
+                    //     title: orderFiltersDurationDateLabel,
+                    //   ),
+                    // ),
                   ],
                 ),
               )

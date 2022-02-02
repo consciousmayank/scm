@@ -102,8 +102,8 @@ const String labelChangePasswordOldPassword = 'Current Password';
 const String labelChangePasswordNewPassword = 'New Password';
 const String labelChangePasswordConfirmPassword = 'Confirm Password';
 const List<String> profileOptions = [
-  'Change Password',
-  'Logout',
+  popUpMenuLabelChangePassword,
+  popUpMenuLabelLogout,
 ];
 
 const String labelSupplyLandingPageCatalog = 'Home';
@@ -249,7 +249,9 @@ const String ordersReportsGroupByTypeWidgetTitle = 'Order Category';
 const String ordersReportsGroupBySubTypeWidgetTitle = 'Order SubCategory';
 const String consolidatedOrdersReportsWidgetTitle = 'Order Items';
 const String labelFromDate = 'From Date';
+const String labelFromDateToolTip = 'Click to change From Date';
 const String labelToDate = 'To Date';
+const String labelToDateToolTip = 'Click to change To Date';
 const String labelSelectBrand = 'Select Brand';
 const String labelSelectType = 'Select Type';
 const String labelALL = 'ALL';
@@ -261,4 +263,5 @@ const String passwordChangedTitle = 'Password Changed';
 const String passwordChangedDescription =
     'Your password has been changed successfully';
 const String labelOk = 'Ok';
-const String labelOrderReport = 'Order Report';
+const String labelOrderReport = 'Delivered Orders';
+const String labelNoData = 'No Data';
