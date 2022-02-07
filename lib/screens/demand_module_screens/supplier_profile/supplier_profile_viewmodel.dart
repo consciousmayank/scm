@@ -1,3 +1,5 @@
+import 'package:scm/model_classes/product_categories_response.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
@@ -5,7 +7,6 @@ import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
-import 'package:scm/model_classes/product_categories_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
@@ -29,8 +30,8 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   ApiStatus categoriesApiStatus = ApiStatus.LOADING;
   List<String?> categoryFilterList = [];
   int pageIndex = 0;
-  ProductCategoriesResponse? productCategoriesResponse =
-      ProductCategoriesResponse().empty();
+  SuppliersTypesListResponse? productCategoriesResponse =
+      SuppliersTypesListResponse().empty();
 
   ApiStatus productListApiStatus = ApiStatus.LOADING;
   ProductListResponse? productListResponse = ProductListResponse().empty();
@@ -215,4 +216,6 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
     getCategories();
     getProductList();
   }
+
+  showSuppliersAddressListDialog() {}
 }

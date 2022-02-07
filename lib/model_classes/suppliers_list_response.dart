@@ -205,6 +205,18 @@ class Supplier {
         "address": List<dynamic>.from(address!.map((x) => x.toMap())),
         "id": id,
       };
+
+  String contactNumber() {
+    if (mobile == null && phone == null) {
+      return '--';
+    } else if (mobile != null && phone == null) {
+      return mobile!;
+    } else if (mobile == null && phone != null) {
+      return phone!;
+    } else {
+      return mobile! + ', ' + phone!;
+    }
+  }
 }
 
 class Address {

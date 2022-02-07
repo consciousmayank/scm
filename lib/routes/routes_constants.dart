@@ -9,3 +9,6 @@ const String brandsListViewPageRoute = '/brandsList';
 const String cartViewPageRoute = '/cartView';
 const String notificationScreenPageRoute = '/notifications';
 const String orderReportsScreenPageRoute = '/orderReports';
+const String selectedSupplierScreenPageRoute = '/selectedSupplier';
+const String selectedSupplierProductsScreenPageRoute =
+    '/selectedSupplierProductsScreen';

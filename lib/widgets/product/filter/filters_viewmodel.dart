@@ -4,9 +4,10 @@ import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/model_classes/brands_for_filter.dart';
 import 'package:scm/model_classes/categories_for_filter.dart';
-import 'package:scm/model_classes/product_categories_response.dart';
-import 'package:scm/model_classes/product_sub_categories_response.dart';
 import 'package:scm/model_classes/products_brands_response.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/services/app_api_service_classes/product_brands_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
@@ -15,6 +16,7 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
+
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';
@@ -36,28 +38,28 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   String? _brandTitle;
   final ProductBrandsApis _brandsApis = locator<ProductBrandsApiImpl>();
   List<BrandsForFilter>? _brandsForFilterList = [];
-  List<String>? _brandsList;
+  List<Brand>? _brandsList;
   ProductBrandsResponse? _brandsResponse;
   List<CategoriesForFilter>? _categoriesForFilterList = [];
-  ProductCategoriesResponse? _categoriesResponse;
+  SuppliersTypesListResponse? _categoriesResponse;
   String? _categoryTitle;
-  List<String?>? _checkedBrandsList = [];
-  List<String?>? _checkedCategoriesList = [];
-  List<String?>? _checkedSubCategoriesList = [];
+  List<Brand?>? _checkedBrandsList = [];
+  List<Type?>? _checkedCategoriesList = [];
+  List<SubType?>? _checkedSubCategoriesList = [];
   final ProductCategoriesApis _productCategoriesApis =
       locator<ProductCategoriesApiImpl>();
 
-  List<String>? _productCategoriesList;
+  List<Type>? _productCategoriesList;
   final ProductSubCategoriesApis _subCategoriesApis =
       locator<ProductSubCategoriesApisImpl>();
 
   List<SubCategoriesForFilter>? _subCategoriesForFilterList = [];
-  List<String>? _subCategoriesList;
-  ProductSubCategoriesResponse? _subCategoriesResponse;
+  List<SubType>? _subCategoriesList;
+  SuppliersSubTypesListResponse? _subCategoriesResponse;
   String? _subCategoryTitle;
-  List<String?>? _tempCheckedBrandsList = [];
-  List<String?>? _tempCheckedCategoriesList = [];
-  List<String?>? _tempCheckedSubCategoriesList = [];
+  List<Brand?>? _tempCheckedBrandsList = [];
+  List<Type?>? _tempCheckedCategoriesList = [];
+  List<SubType?>? _tempCheckedSubCategoriesList = [];
 
   init({required ProductsFilterViewArguments args}) {
     this.args = args;
@@ -65,45 +67,45 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     getBrandsList(showLoader: true);
   }
 
-  List<String?> get checkedSubCategoriesList => _checkedSubCategoriesList!;
+  List<SubType?> get checkedSubCategoriesList => _checkedSubCategoriesList!;
 
-  List<String?> get tempCheckedSubCategoriesList =>
+  List<SubType?> get tempCheckedSubCategoriesList =>
       _tempCheckedSubCategoriesList!;
 
-  set checkedSubCategoriesList(List<String?>? value) {
+  set checkedSubCategoriesList(List<SubType?>? value) {
     _checkedSubCategoriesList = value;
   }
 
-  set tempCheckedSubCategoriesList(List<String?>? value) {
+  set tempCheckedSubCategoriesList(List<SubType?>? value) {
     _tempCheckedSubCategoriesList = value;
   }
 
   // Set<String> ? _checkedBrandsSet;
 
-  List<String?> get checkedBrandsList => _checkedBrandsList!;
+  List<Brand?> get checkedBrandsList => _checkedBrandsList!;
 
-  List<String?> get tempCheckedBrandsList => _tempCheckedBrandsList!;
+  List<Brand?> get tempCheckedBrandsList => _tempCheckedBrandsList!;
 
-  set checkedBrandsList(List<String?>? value) {
+  set checkedBrandsList(List<Brand?>? value) {
     _checkedBrandsList = value;
     notifyListeners();
   }
 
-  set tempCheckedBrandsList(List<String?>? value) {
+  set tempCheckedBrandsList(List<Brand?>? value) {
     _tempCheckedBrandsList = value;
     notifyListeners();
   }
 
-  List<String?> get checkedCategoriesList => _checkedCategoriesList!;
+  List<Type?> get checkedCategoriesList => _checkedCategoriesList!;
 
-  List<String?> get tempCheckedCategoriesList => _tempCheckedCategoriesList!;
+  List<Type?> get tempCheckedCategoriesList => _tempCheckedCategoriesList!;
 
-  set checkedCategoriesList(List<String?>? value) {
+  set checkedCategoriesList(List<Type?>? value) {
     _checkedCategoriesList = value;
     notifyListeners();
   }
 
-  set tempCheckedCategoriesList(List<String?>? value) {
+  set tempCheckedCategoriesList(List<Type?>? value) {
     _tempCheckedCategoriesList = value;
     notifyListeners();
   }
@@ -133,15 +135,15 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
   /// clear/ uncheck all the applied filters
   unCheckAllFilters() {
-    brandsForFilterList.forEach((element) {
+    for (var element in brandsForFilterList) {
       element.isSelected = false;
-    });
-    categoriesForFilterList.forEach((element) {
+    }
+    for (var element in categoriesForFilterList) {
       element.isSelected = false;
-    });
-    subCategoriesForFilterList.forEach((element) {
+    }
+    for (var element in subCategoriesForFilterList) {
       element.isSelected = false;
-    });
+    }
     notifyListeners();
   }
 
@@ -152,9 +154,9 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<String> get brandsList => _brandsList!;
+  List<Brand> get brandsList => _brandsList!;
 
-  set brandsList(List<String>? value) {
+  set brandsList(List<Brand>? value) {
     _brandsList = value;
     notifyListeners();
   }
@@ -184,8 +186,10 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       brandsResponse = await _brandsApis.getBrandsList(
         pageIndex: pageIndexForBrandsApi,
         brandTitle: brandTitle,
-        checkedCategoryFilterList: tempCheckedCategoriesList,
-        checkedSubCategoryFilterList: tempCheckedSubCategoriesList,
+        checkedCategoryFilterList:
+            tempCheckedCategoriesList.map((e) => e!.type).toList(),
+        checkedSubCategoryFilterList:
+            tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
         isSupplierCatalog: args.isSupplierCatalog,
@@ -211,12 +215,13 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
   /// the coming brand list is of type [String] so below
   /// it is converted into objects to give it [isSelected] property
-  void makeBrandListCheckable({required List<String>? apiResponseBrandList}) {
+  void makeBrandListCheckable({required List<Brand>? apiResponseBrandList}) {
     apiResponseBrandList?.forEach((element) {
       brandsForFilterList.add(
         BrandsForFilter(
-          brandName: element.trim(),
+          brandName: element.brand,
           isSelected: false,
+          count: element.count ?? 0,
         ),
       );
     });
@@ -233,7 +238,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
     for (int i = 0; i < brandsForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedBrandsList.length; j++) {
-        if (brandsForFilterList[i].brandName == tempCheckedBrandsList[j]) {
+        if (brandsForFilterList[i].brandName ==
+            tempCheckedBrandsList[j]?.brand) {
           brandsForFilterList[i].isSelected = true;
         }
       }
@@ -265,7 +271,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
     for (int i = 0; i < brandsForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedBrandsList.length; j++) {
-        if (brandsForFilterList[i].brandName == tempCheckedBrandsList[j]) {
+        if (brandsForFilterList[i].brandName ==
+            tempCheckedBrandsList[j]?.brand) {
           brandsForFilterList[i].isSelected = true;
         }
       }
@@ -283,19 +290,20 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<BrandsForFilter>? addPreSelectedBrandsToFilterList({
     required List<BrandsForFilter>? brandsForFilterList,
     // required argss? args,
-    required List<String>? filterApiList,
+    required List<Brand>? filterApiList,
   }) {
     filterApiList = filterApiList?.toSet().toList();
-    tempCheckedBrandsList.forEach((element) {
+    for (var element in tempCheckedBrandsList) {
       if (!filterApiList!.contains(element)) {
         brandsForFilterList?.add(
           BrandsForFilter(
-            brandName: element,
+            brandName: element?.brand,
             isSelected: true,
+            count: element?.count ?? 0,
           ),
         );
       }
-    });
+    }
 
     return brandsForFilterList?.toSet().toList();
   }
@@ -306,19 +314,20 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<CategoriesForFilter>? addPreSelectedCategoriesToFilterList({
     required List<CategoriesForFilter>? categoriesForFilterList,
     required ProductsFilterViewArguments? args,
-    required List<String>? filterApiList,
+    required List<Type>? filterApiList,
   }) {
     filterApiList = filterApiList?.toSet().toList();
-    tempCheckedCategoriesList.forEach((element) {
+    for (var element in tempCheckedCategoriesList) {
       if (!filterApiList!.contains(element)) {
         categoriesForFilterList?.add(
           CategoriesForFilter(
-            categoryName: element,
+            categoryName: element?.type,
             isSelected: true,
+            count: element?.count ?? 0,
           ),
         );
       }
-    });
+    }
 
     return categoriesForFilterList?.toSet().toList();
   }
@@ -353,16 +362,16 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     return filterList.toSet().toList();
   }
 
-  List<String> get productCategoriesList => _productCategoriesList!;
+  List<Type> get productCategoriesList => _productCategoriesList!;
 
-  set productCategoriesList(List<String> value) {
+  set productCategoriesList(List<Type> value) {
     _productCategoriesList = value;
     notifyListeners();
   }
 
-  ProductCategoriesResponse? get categoriesResponse => _categoriesResponse;
+  SuppliersTypesListResponse? get categoriesResponse => _categoriesResponse;
 
-  set categoriesResponse(ProductCategoriesResponse? value) {
+  set categoriesResponse(SuppliersTypesListResponse? value) {
     _categoriesResponse = value;
     notifyListeners();
   }
@@ -371,20 +380,40 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   populatingCheckedList() {
     if (args.selectedCategory != null) {
       args.selectedCategory?.forEach((element) {
-        checkedCategoriesList.add(element);
-        tempCheckedCategoriesList.add(element);
+        checkedCategoriesList.add(
+          Type(
+            type: element?.type ?? '',
+            count: element?.count ?? 0,
+          ),
+        );
+        tempCheckedCategoriesList.add(
+          Type(
+            type: element?.type ?? '',
+            count: element?.count ?? 0,
+          ),
+        );
       });
     }
     if (args.selectedBrand != null) {
       args.selectedBrand?.forEach((element) {
         checkedBrandsList.add(element);
-        tempCheckedBrandsList.add(element);
+        tempCheckedBrandsList.add(
+          Brand(
+            brand: element?.brand ?? '',
+            count: element?.count ?? 0,
+          ),
+        );
       });
     }
     if (args.selectedSuCategory != null) {
       args.selectedSuCategory?.forEach((element) {
         checkedSubCategoriesList.add(element);
-        tempCheckedSubCategoriesList.add(element);
+        tempCheckedSubCategoriesList.add(
+          SubType(
+            subType: element?.subType ?? '',
+            count: element?.count ?? 0,
+          ),
+        );
       });
     }
   }
@@ -413,8 +442,9 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       categoriesResponse =
           await _productCategoriesApis.getProductCategoriesList(
         pageIndex: pageIndexForCategoriesApi,
-        checkedBrandList: tempCheckedBrandsList,
-        checkedSubCategoriesList: tempCheckedSubCategoriesList,
+        checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
+        checkedSubCategoriesList:
+            tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
         categoryTitle: categoryTitle,
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
@@ -442,14 +472,15 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   /// converted into objects to give it [isSelected] property
 
   void makeCategoriesListCheckable(
-      {required List<String>? apiResponseCategoriesList}) {
+      {required List<Type>? apiResponseCategoriesList}) {
     /// making categories list checkable
-    apiResponseCategoriesList!.forEach((element) {
+    for (var element in apiResponseCategoriesList!) {
       categoriesForFilterList.add(CategoriesForFilter(
-        categoryName: element,
+        categoryName: element.type,
         isSelected: false,
+        count: element.count ?? 0,
       ));
-    });
+    }
 
     if (args.selectedCategory != null) {
       categoriesForFilterList = addPreSelectedCategoriesToFilterList(
@@ -464,7 +495,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     for (int i = 0; i < categoriesForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedCategoriesList.length; j++) {
         if (categoriesForFilterList[i].categoryName ==
-            tempCheckedCategoriesList[j]) {
+            tempCheckedCategoriesList[j]?.type) {
           categoriesForFilterList[i].isSelected = true;
         }
       }
@@ -497,7 +528,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     for (int i = 0; i < categoriesForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedCategoriesList.length; j++) {
         if (categoriesForFilterList[i].categoryName ==
-            tempCheckedCategoriesList[j]) {
+            tempCheckedCategoriesList[j]?.type) {
           categoriesForFilterList[i].isSelected = true;
         }
       }
@@ -508,17 +539,17 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         filterList: categoriesForFilterList);
   }
 
-  List<String> get subCategoriesList => _subCategoriesList!;
+  List<SubType> get subCategoriesList => _subCategoriesList!;
 
-  set subCategoriesList(List<String> value) {
+  set subCategoriesList(List<SubType> value) {
     _subCategoriesList = value;
     notifyListeners();
   }
 
-  ProductSubCategoriesResponse get subCategoriesResponse =>
+  SuppliersSubTypesListResponse get subCategoriesResponse =>
       _subCategoriesResponse!;
 
-  set subCategoriesResponse(ProductSubCategoriesResponse value) {
+  set subCategoriesResponse(SuppliersSubTypesListResponse value) {
     _subCategoriesResponse = value;
   }
 
@@ -545,8 +576,9 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
           await _subCategoriesApis.getProductSubCategoriesList(
         pageIndex: pageIndexForSubCategoriesApi,
         subCategoryTitle: subCategoryTitle,
-        checkedCategoryList: tempCheckedCategoriesList,
-        checkedBrandList: tempCheckedBrandsList,
+        checkedCategoryList:
+            tempCheckedCategoriesList.map((e) => e?.type).toList(),
+        checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
         productTitle: args.searchProductTitle,
         supplierId: args.supplierId,
         isSupplierCatalog: args.isSupplierCatalog,
@@ -554,12 +586,12 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
       totalItemsForSubCategoriesApi = subCategoriesResponse.totalItems;
       if (showLoader) {
-        subCategoriesList = copyList(subCategoriesResponse.subtypes!);
+        subCategoriesList = copyList(subCategoriesResponse.subTypes!);
       } else {
-        subCategoriesList.addAll(subCategoriesResponse.subtypes!);
+        subCategoriesList.addAll(subCategoriesResponse.subTypes!);
       }
       makeSubCategoriesListCheckable(
-        apiResponseSubCategoriesList: copyList(subCategoriesResponse.subtypes),
+        apiResponseSubCategoriesList: copyList(subCategoriesResponse.subTypes),
       );
       pageIndexForSubCategoriesApi = pageIndexForSubCategoriesApi! + 1;
     }
@@ -572,16 +604,16 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   /// the coming (from api) subCategories list is of type [String] so below
   /// it is converted into objects to give it [isSelected] property
   void makeSubCategoriesListCheckable(
-      {required List<String>? apiResponseSubCategoriesList}) {
+      {required List<SubType>? apiResponseSubCategoriesList}) {
     /// making sub categories list checkable
-    apiResponseSubCategoriesList!.forEach((element) {
+    for (var element in apiResponseSubCategoriesList!) {
       subCategoriesForFilterList.add(
         SubCategoriesForFilter(
-          subCategoryName: element,
-          isSelected: false,
-        ),
+            subCategoryName: element.subType,
+            isSelected: false,
+            count: element.count ?? 0),
       );
-    });
+    }
 
     if (args.selectedCategory != null) {
       subCategoriesForFilterList = addPreSelectedSubCategoriesToFilterList(
@@ -595,7 +627,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     for (int i = 0; i < subCategoriesForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedSubCategoriesList.length; j++) {
         if (subCategoriesForFilterList[i].subCategoryName ==
-            tempCheckedSubCategoriesList[j]) {
+            tempCheckedSubCategoriesList[j]?.subType) {
           subCategoriesForFilterList[i].isSelected = true;
         }
       }
@@ -626,7 +658,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     for (int i = 0; i < subCategoriesForFilterList.length; i++) {
       for (int j = 0; j < tempCheckedSubCategoriesList.length; j++) {
         if (subCategoriesForFilterList[i].subCategoryName ==
-            tempCheckedSubCategoriesList[j]) {
+            tempCheckedSubCategoriesList[j]?.subType) {
           subCategoriesForFilterList[i].isSelected = true;
         }
       }
@@ -644,19 +676,20 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   List<SubCategoriesForFilter>? addPreSelectedSubCategoriesToFilterList({
     required List<SubCategoriesForFilter>? subCategoriesForFilterList,
     // required argss? args,
-    required List<String>? filterApiList,
+    required List<SubType>? filterApiList,
   }) {
     filterApiList = filterApiList?.toSet().toList();
-    tempCheckedSubCategoriesList.forEach((element) {
+    for (var element in tempCheckedSubCategoriesList) {
       if (!filterApiList!.contains(element)) {
         subCategoriesForFilterList?.add(
           SubCategoriesForFilter(
-            subCategoryName: element,
+            subCategoryName: element?.subType ?? '',
             isSelected: true,
+            count: element?.count ?? 0,
           ),
         );
       }
-    });
+    }
 
     return subCategoriesForFilterList?.toSet().toList();
   }
@@ -667,8 +700,10 @@ class SubCategoriesForFilter {
   SubCategoriesForFilter({
     required this.subCategoryName,
     required this.isSelected,
+    required this.count,
   });
 
   bool? isSelected;
   final String? subCategoryName;
+  final int? count;
 }

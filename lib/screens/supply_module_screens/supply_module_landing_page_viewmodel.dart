@@ -31,6 +31,7 @@ class SupplyModuleLandingPageViewModel
   final ProfileApis _profileApis = locator<ProfileApisImpl>();
 
   initScreen() {
+    // setIndex(2);
     authenticatedUserName = preferences.getAuthenticatedUserName();
     getProfile();
   }

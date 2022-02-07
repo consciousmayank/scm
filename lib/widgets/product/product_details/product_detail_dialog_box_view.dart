@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scm/app/dimens.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/widgets/product/product_details/product_detail_view.dart';
@@ -28,15 +29,11 @@ class _ProductDetailDialogBoxViewState
         widget.request.data as ProductDetailDialogBoxViewArguments;
     return CenteredBaseDialog(
       arguments: CenteredBaseDialogArguments(
-        contentPadding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.20,
-          right: MediaQuery.of(context).size.width * 0.20,
-          top: MediaQuery.of(context).size.height * 0.20,
-          bottom: MediaQuery.of(context).size.height * 0.30,
-        ),
+        noColorOnTop: true,
+        contentPadding: Dimens().productDetaildialogPadding(context: context),
         request: widget.request,
         completer: widget.completer,
-        title: arguments.title,
+        title: 'Product Detail', //arguments.title,
         child: ProductDetailView(
           arguments: ProductDetailViewArguments(
             productId: arguments.productId,

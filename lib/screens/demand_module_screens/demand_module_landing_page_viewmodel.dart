@@ -35,14 +35,14 @@ class DemandModuleLandingPageViewModel
   final ProfileApis _profileApis = locator<ProfileApisImpl>();
 
   initScreen() {
-    // setIndex(2);
+    // setIndex(1);
     authenticatedUserName = preferences.getAuthenticatedUserName();
     getProfile();
     getCart();
   }
 
   void getCart() async {
-    Cart cart = await _demandCartApi.getCart();
+    await _demandCartApi.getCart();
   }
 
   actionPopUpItemSelected({String? selectedValue}) {

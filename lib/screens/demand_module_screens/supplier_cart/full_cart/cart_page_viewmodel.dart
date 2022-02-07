@@ -6,9 +6,12 @@ import 'package:scm/model_classes/add_address_model.dart';
 import 'package:scm/model_classes/add_address_request.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
+import 'package:scm/model_classes/order_list_response.dart';
 import 'package:scm/model_classes/post_order_request.dart';
 import 'package:scm/model_classes/suppliers_list_response.dart';
+import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
+import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/services/app_api_service_classes/address_apis.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
 import 'package:scm/services/app_api_service_classes/demand_cart_api.dart';
@@ -17,17 +20,22 @@ import 'package:scm/widgets/address/address_dialog_box.dart';
 import 'package:scm/widgets/product/product_details/product_add_to_cart_dialogbox_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
+import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:scm/model_classes/address.dart' as demanders_address;
 
 class CartPageViewModel extends GeneralisedBaseViewModel {
+  late bool orderPlaced;
   late AddToCart addToCartObject;
   List<demanders_address.Address> addressList = [];
   Cart cart = Cart().empty();
   ApiStatus cartApiStatus = ApiStatus.LOADING;
   ApiStatus getAddressListApiStatus = ApiStatus.LOADING;
+  ApiStatus getLatestOrdersListApi = ApiStatus.LOADING;
+  ApiStatus placeOrderApiStatus = ApiStatus.FETCHED;
   demanders_address.Address? selectedAddress;
-  String? supplierName;
+  // String? supplierName;
+  late Supplier responseSupplierDetails;
 
   final AddressApis _addressApis = locator<AddressApis>();
   final CommonDashBoardApis _commonDashBoardApis =
@@ -36,18 +44,19 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   final DemandCartApi _demandCartApi = locator<DemandCartApi>();
 
   init() {
-    supplierName = '';
+    orderPlaced = false;
+    responseSupplierDetails = Supplier().empty();
     getCartItems();
     getDemadersAddressList();
   }
 
   void getSupplierDetails() async {
     setBusy(true);
-    Supplier response = await _commonDashBoardApis.getSupplierDetails(
+    responseSupplierDetails = await _commonDashBoardApis.getSupplierDetails(
       supplierId: cart.supplyId!,
     );
     setBusy(false);
-    supplierName = response.businessName;
+    // supplierName = responseSupplierDetails.businessName;
   }
 
   void getCartItems() async {
@@ -236,18 +245,78 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   }
 
   void placeOrder() async {
+    orderPlaced = false;
+    placeOrderApiStatus = ApiStatus.LOADING;
+    notifyListeners();
+
     ApiResponse apiResponse = await _commonDashBoardApis.placeOrder(
       postOrderRequest: PostOrderRequest(
         billingAddress: selectedAddress!.copyWith(id: null),
         shippingAddress: selectedAddress!.copyWith(id: null),
       ),
     );
-
-    if (apiResponse.isSuccessful()) {
-      showInfoSnackBar(message: apiResponse.message);
-      navigationService.back();
-    } else {
+    placeOrderApiStatus = ApiStatus.FETCHED;
+    if (apiResponse.statusCode != 200) {
       showErrorSnackBar(message: apiResponse.message);
     }
+
+    placeOrderApiStatus = ApiStatus.FETCHED;
+    orderPlaced = true;
+    getRecentOrderList();
+    notifyListeners();
+  }
+
+  int getCartItemsQuantityTotal() {
+    if (cart.cartItems == null) {
+      return 0;
+    }
+    int quantityTotal = 0;
+    for (var element in cart.cartItems!) {
+      if (element.itemQuantity != null) {
+        quantityTotal += element.itemQuantity!;
+      }
+    }
+
+    return quantityTotal;
+  }
+
+  OrderListResponse orderList = OrderListResponse().empty();
+  getRecentOrderList() async {
+    orderList = await _commonDashBoardApis.getOrdersList(
+      pageSize: 1,
+      pageNumber: 0,
+      status: 'CREATED',
+    );
+    getLatestOrdersListApi = ApiStatus.FETCHED;
+    notifyListeners();
+  }
+
+  takeToProductsPageOfSelectedSupplier() {
+    navigationService
+        .navigateTo(
+      productListViewPageRoute,
+      arguments: ProductListViewArgs.asSupplierProductList(
+        isCallingScreenCart: true,
+        brandsFilterList: [],
+        categoryFilterList: [],
+        subCategoryFilterList: [],
+        productTitle: '',
+        supplierId: responseSupplierDetails.id,
+        supplierName: responseSupplierDetails.businessName,
+        isSupplierCatalog: false,
+      ),
+    )
+        ?.then((value) {
+      cartApiStatus = ApiStatus.LOADING;
+      notifyListeners();
+      getCartItems();
+    });
+
+    // navigationService.navigateTo(
+    //   selectedSupplierScreenPageRoute,
+    //   arguments: SuppplierProfileViewArguments(
+    //     selectedSupplier: responseSupplierDetails,
+    //   ),
+    // );
   }
 }

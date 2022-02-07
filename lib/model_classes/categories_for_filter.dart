@@ -3,8 +3,10 @@ class CategoriesForFilter {
   CategoriesForFilter({
     required this.categoryName,
     required this.isSelected,
+    required this.count,
   });
 
   final String? categoryName;
   bool? isSelected;
+  final int? count;
 }

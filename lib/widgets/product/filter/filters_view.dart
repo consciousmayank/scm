@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
-import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_button.dart';
-import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/filter/filters_viewmodel.dart';
 import 'package:scm/widgets/product/filter/simple_search_widget.dart';
@@ -130,6 +130,8 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                             child: ListView.builder(
                               itemBuilder: (context, index) =>
                                   buildFilterTypeValues(
+                                subText:
+                                    viewModel.brandsForFilterList[index].count,
                                 context: context,
                                 value: viewModel
                                     .brandsForFilterList[index].isSelected,
@@ -144,15 +146,21 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                                     /// on check of checkbox, add the list item to checkedBrandList
 
                                     viewModel.tempCheckedBrandsList.add(
-                                        viewModel.brandsForFilterList[index]
-                                            .brandName);
+                                      Brand(
+                                        brand: viewModel
+                                            .brandsForFilterList[index]
+                                            .brandName,
+                                        count: viewModel
+                                            .brandsForFilterList[index].count,
+                                      ),
+                                    );
                                     viewModel.checkBrandsAndMoveToTop();
                                   } else {
                                     /// on uncheck of checkbox, remove the list item to checkedBrandList
 
                                     viewModel.tempCheckedBrandsList
                                         .removeWhere((element) {
-                                      return element ==
+                                      return element?.brand ==
                                           viewModel.brandsForFilterList[index]
                                               .brandName;
                                     });
@@ -228,6 +236,8 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                                   context: context,
                                   text: viewModel.categoriesForFilterList[index]
                                       .categoryName,
+                                  subText: viewModel
+                                      .categoriesForFilterList[index].count,
                                   value: viewModel
                                       .categoriesForFilterList[index]
                                       .isSelected,
@@ -239,16 +249,22 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                                     /// later it will be sent to bring the filtered products list
 
                                     if (value == true) {
-                                      viewModel.tempCheckedCategoriesList.add(
-                                          viewModel
-                                              .categoriesForFilterList[index]
-                                              .categoryName!);
+                                      viewModel.tempCheckedCategoriesList
+                                          .add(Type(
+                                        type: viewModel
+                                            .categoriesForFilterList[index]
+                                            .categoryName!,
+                                        count: viewModel
+                                                .categoriesForFilterList[index]
+                                                .count ??
+                                            0,
+                                      ));
                                       viewModel.checkCategoriesAndMoveToTop();
                                     } else {
                                       viewModel.tempCheckedCategoriesList
                                           .removeWhere(
                                         (element) =>
-                                            element ==
+                                            element?.type ==
                                             viewModel
                                                 .categoriesForFilterList[index]
                                                 .categoryName,
@@ -283,113 +299,120 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                       ),
                     )
                   : Container(
-                      child: (viewModel.tempCheckedCategoriesList.isNotEmpty)
-                          ? Column(
-                              children: [
-                                SimpleSearchWidget.innerHint(
-                                  searchTerm: viewModel.subCategoryTitle,
-                                  onSearchTermCleared: () {
-                                    viewModel.subCategoryTitle = null;
-                                    viewModel.getProductsSubCategoriesList(
-                                        showLoader: true);
-                                  },
-                                  onSearchTermEntered: (
-                                      {required String searchTerm}) {
-                                    if (searchTerm.length > 2) {
-                                      viewModel.subCategoryTitle = searchTerm;
-                                      viewModel.getProductsSubCategoriesList(
-                                        showLoader: true,
-                                      );
-                                    }
-                                  },
-                                  innerHintText: labelSearchSubCategory,
-                                ),
-                                Text(
-                                  'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
-                                  // style: AppTextStyles
-                                  //     .robotoMedium10PrimaryShade5
-                                  //     .copyWith(
-                                  //   fontSize: 14,
-                                  // ),
-                                ),
-                                Expanded(
-                                  child: LazyLoadScrollView(
-                                    scrollOffset:
-                                        (MediaQuery.of(context).size.height ~/
-                                            6),
-                                    onEndOfPage: () =>
-                                        viewModel.getProductsSubCategoriesList(
-                                      showLoader: false,
-                                    ),
-                                    child: ListView.builder(
-                                      itemBuilder: (context, index) =>
-                                          buildFilterTypeValues(
-                                        context: context,
-                                        text: viewModel
-                                            .subCategoriesForFilterList[index]
-                                            .subCategoryName,
-                                        value: viewModel
-                                            .subCategoriesForFilterList[index]
-                                            .isSelected,
-                                        onChanged: (value) {
-                                          viewModel
-                                              .subCategoriesForFilterList[index]
-                                              .isSelected = value;
-
-                                          /// adding checked Sub - Categories to [checkedSubCategoriesList]
-                                          /// later it will be sent to bring the filtered products list
-
-                                          // viewModel.s
-                                          if (value == true) {
-                                            // viewModel.checkedSubCategoriesList.add(
-                                            //     viewModel
-                                            //         .subCategoriesForFilterList[index]
-                                            //         .subCategoryName!);
-                                            viewModel
-                                                .tempCheckedSubCategoriesList
-                                                .add(viewModel
-                                                    .subCategoriesForFilterList[
-                                                        index]
-                                                    .subCategoryName!);
-
-                                            viewModel
-                                                .checkSubCategoriesAndMoveToTop();
-                                          } else {
-                                            // viewModel.checkedSubCategoriesList
-                                            //     .removeWhere((element) =>
-                                            //         element ==
-                                            //         viewModel
-                                            //             .subCategoriesForFilterList[
-                                            //                 index]
-                                            //             .subCategoryName);
-                                            viewModel
-                                                .tempCheckedSubCategoriesList
-                                                .removeWhere((element) =>
-                                                    element ==
-                                                    viewModel
-                                                        .subCategoriesForFilterList[
-                                                            index]
-                                                        .subCategoryName);
-                                          }
-                                          viewModel.notifyListeners();
-                                        },
-                                      ),
-                                      itemCount: viewModel
-                                          .subCategoriesForFilterList.length,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 20.0,
-                                horizontal: 6,
-                              ),
-                              child: Text(
-                                  'Please select a CATEGORY to see SUB-CATEGORIES'),
+                      child:
+                          // (viewModel.tempCheckedCategoriesList.isNotEmpty)
+                          // ?
+                          Column(
+                      children: [
+                        SimpleSearchWidget.innerHint(
+                          searchTerm: viewModel.subCategoryTitle,
+                          onSearchTermCleared: () {
+                            viewModel.subCategoryTitle = null;
+                            viewModel.getProductsSubCategoriesList(
+                                showLoader: true);
+                          },
+                          onSearchTermEntered: ({required String searchTerm}) {
+                            if (searchTerm.length > 2) {
+                              viewModel.subCategoryTitle = searchTerm;
+                              viewModel.getProductsSubCategoriesList(
+                                showLoader: true,
+                              );
+                            }
+                          },
+                          innerHintText: labelSearchSubCategory,
+                        ),
+                        Text(
+                          'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
+                          // style: AppTextStyles
+                          //     .robotoMedium10PrimaryShade5
+                          //     .copyWith(
+                          //   fontSize: 14,
+                          // ),
+                        ),
+                        Expanded(
+                          child: LazyLoadScrollView(
+                            scrollOffset:
+                                (MediaQuery.of(context).size.height ~/ 6),
+                            onEndOfPage: () =>
+                                viewModel.getProductsSubCategoriesList(
+                              showLoader: false,
                             ),
-                    ),
+                            child: ListView.builder(
+                              itemBuilder: (context, index) =>
+                                  buildFilterTypeValues(
+                                context: context,
+                                text: viewModel
+                                    .subCategoriesForFilterList[index]
+                                    .subCategoryName,
+                                subText: viewModel
+                                    .subCategoriesForFilterList[index].count,
+                                value: viewModel
+                                    .subCategoriesForFilterList[index]
+                                    .isSelected,
+                                onChanged: (value) {
+                                  viewModel.subCategoriesForFilterList[index]
+                                      .isSelected = value;
+
+                                  /// adding checked Sub - Categories to [checkedSubCategoriesList]
+                                  /// later it will be sent to bring the filtered products list
+
+                                  // viewModel.s
+                                  if (value == true) {
+                                    // viewModel.checkedSubCategoriesList.add(
+                                    //     viewModel
+                                    //         .subCategoriesForFilterList[index]
+                                    //         .subCategoryName!);
+                                    viewModel.tempCheckedSubCategoriesList.add(
+                                      SubType(
+                                        subType: viewModel
+                                                .subCategoriesForFilterList[
+                                                    index]
+                                                .subCategoryName ??
+                                            '',
+                                        count: viewModel
+                                                .subCategoriesForFilterList[
+                                                    index]
+                                                .count ??
+                                            0,
+                                      ),
+                                    );
+
+                                    viewModel.checkSubCategoriesAndMoveToTop();
+                                  } else {
+                                    // viewModel.checkedSubCategoriesList
+                                    //     .removeWhere((element) =>
+                                    //         element ==
+                                    //         viewModel
+                                    //             .subCategoriesForFilterList[
+                                    //                 index]
+                                    //             .subCategoryName);
+                                    viewModel.tempCheckedSubCategoriesList
+                                        .removeWhere((element) =>
+                                            element?.subType ==
+                                            viewModel
+                                                .subCategoriesForFilterList[
+                                                    index]
+                                                .subCategoryName);
+                                  }
+                                  viewModel.notifyListeners();
+                                },
+                              ),
+                              itemCount:
+                                  viewModel.subCategoriesForFilterList.length,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                      // : const Padding(
+                      //     padding: EdgeInsets.symmetric(
+                      //       vertical: 20.0,
+                      //       horizontal: 6,
+                      //     ),
+                      //     child: Text(
+                      //         'Please select a CATEGORY to see SUB-CATEGORIES'),
+                      //   ),
+                      ),
             ),
         ],
       ),
@@ -399,13 +422,14 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
   Widget buildFilterTypeValues({
     required bool? value,
     required String? text,
+    required int? subText,
     required void Function(bool?)? onChanged,
     required BuildContext context,
   }) {
     return CheckboxListTile(
       value: value,
       onChanged: onChanged,
-      title: NullableTextWidget(
+      secondary: NullableTextWidget(
         stringValue: text,
         // text!.toLowerCase(),
         textStyle: Theme.of(context).textTheme.headline6!.copyWith(
@@ -414,6 +438,17 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                   : AppColors().black,
             ),
       ),
+      title: subText == null //|| subText < 1
+          ? null
+          : NullableTextWidget.int(
+              intValue: subText,
+              // text!.toLowerCase(),
+              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: value == true
+                        ? Theme.of(context).primaryColorLight
+                        : AppColors().black,
+                  ),
+            ),
     );
 
     // Row(
@@ -629,9 +664,9 @@ class ProductsFilterViewArguments {
   final bool isSupplierCatalog;
   final Function onCancelButtonClicked;
   final String? searchProductTitle;
-  final List<String?>? selectedBrand;
-  final List<String?>? selectedCategory;
-  final List<String?>? selectedSuCategory;
+  final List<Brand?>? selectedBrand;
+  final List<Type?>? selectedCategory;
+  final List<SubType?>? selectedSuCategory;
   final int? supplierId;
 }
 
@@ -642,7 +677,7 @@ class ProductsFilterViewOutputArguments {
     this.checkedSubCategories,
   });
 
-  final List<String?>? checkedBrands;
-  final List<String?>? checkedCategories;
-  final List<String?>? checkedSubCategories;
+  final List<Brand?>? checkedBrands;
+  final List<Type?>? checkedCategories;
+  final List<SubType?>? checkedSubCategories;
 }

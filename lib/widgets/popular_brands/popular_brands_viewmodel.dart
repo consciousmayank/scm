@@ -53,16 +53,31 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   }
 
   void takeToProductListView({required Brand selectedItem}) {
-    navigationService.navigateTo(
-      productListViewPageRoute,
-      arguments: ProductListViewArgs.fullScreen(
-        brandsFilterList: [selectedItem.title],
-        categoryFilterList: [],
-        subCategoryFilterList: [],
-        productTitle: '',
-        isSupplierCatalog: arguments.isSupplierCatalog,
-      ),
-    );
+    if (arguments.supplierId == null) {
+      navigationService.navigateTo(
+        productListViewPageRoute,
+        arguments: ProductListViewArgs.fullScreen(
+          brandsFilterList: [selectedItem.title],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
+      );
+    } else {
+      navigationService.navigateTo(
+        productListViewPageRoute,
+        arguments: ProductListViewArgs.asSupplierProductList(
+          brandsFilterList: [selectedItem.title],
+          categoryFilterList: [],
+          subCategoryFilterList: [],
+          productTitle: '',
+          supplierId: arguments.supplierId,
+          supplierName: arguments.supplierName,
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
+      );
+    }
   }
 
   init({required PopularBrandsViewArgs arguments}) {

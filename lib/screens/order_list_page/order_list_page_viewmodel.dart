@@ -131,9 +131,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
     if (orderList.orders!.isNotEmpty) {
       getOrdersDetails();
-    } else if (selectedOrderStatus != labelALL) {
-      selectedOrderStatus = labelALL;
-      getOrderList();
     } else {
       orderDetails = OrderSummaryResponse().empty();
       orderDetailsApi = ApiStatus.FETCHED;

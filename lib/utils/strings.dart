@@ -165,7 +165,7 @@ const String labelCart = 'Cart';
 const String labelCancel = 'Cancel';
 const String labelYes = 'Yes';
 const String labelPlaceOrder = 'PLACE ORDER';
-const String labelAddNewAddress = 'Address';
+const String labelAddNewAddress = 'Add New Address';
 const String labelDeleteAddress = 'Delete Address';
 const String labelDeleteAddressDescription =
     'Are you sure you want to delete this address?';
@@ -177,6 +177,7 @@ const String labelErrorAddressCountryRequired = 'Country is required';
 const String labelErrorAddressCityRequired = 'City is required';
 const String labelErrorAddressStateRequired = 'State is required';
 const String labelErrorAddressPincodeInvalid = 'Pincode is invalid';
+const String labelPickAddressToPlaceOrder = 'Please Select a Delivery Address.';
 const List<String> addressTypes = [
   'Head Office',
   'Branch Office',
@@ -256,6 +257,7 @@ const String labelSelectBrand = 'Select Brand';
 const String labelSelectType = 'Select Type';
 const String labelALL = 'ALL';
 const String labelQuantity = 'QUANTITY';
+const String labelOptions = 'OPTIONS';
 const String labelCount = 'COUNT';
 const String labelAmount = 'Amount';
 const String labelItemCode = 'Item Code';
@@ -265,3 +267,7 @@ const String passwordChangedDescription =
 const String labelOk = 'Ok';
 const String labelOrderReport = 'Delivered Orders';
 const String labelNoData = 'No Data';
+const String labelEditAddress = 'Edit Address';
+const String labelRemoveItem = 'Remove Item';
+const String labelEditItemQuantity = 'Edit Item Quantity';
+const String labelViewAllAddresses = 'View All';

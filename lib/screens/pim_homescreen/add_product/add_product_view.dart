@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/styles.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';

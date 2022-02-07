@@ -1,5 +1,11 @@
 In this build following was done.
 
+Monday 7 Feb 2022,
+    -Implementing Size Filter in product list.
+
+Saturday 5 Feb 2022,
+    -Images now getting downloaded from a seperate API.
+
 Saturday 29 January 2022
     - Implemented Reports view.
     - Removed Order Status Selection dropdown from Orders Report View. Now the order status will come from the Reports Screen.

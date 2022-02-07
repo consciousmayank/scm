@@ -1,4 +1,5 @@
 import 'package:scm/enums/order_summary_api_type.dart';
+import 'package:scm/enums/product_image_types.dart';
 
 const LOGIN = "/driver/auth";
 
@@ -20,14 +21,14 @@ final GET_PRODUCT_LIST_BY_CATEGORY =
 final GET_PRODUCT_LIST_BY_BRAND_AND_CATEGORY = (brand, category, pageIndex) =>
     "/api/product/list?brand=$brand&type=$category&page=$pageIndex";
 
-const String GET_PRODUCT_SUB_CATEGORIES_LIST = "/api/product/subtypes";
+const String GET_PRODUCT_SUB_CATEGORIES_LIST = "/api/product/subtype";
 const String GET_SUPPLY_PRODUCT_SUB_CATEGORIES_LIST =
-    "/api/supply/product/subtypes";
+    "/api/supply/product/subtype";
 
 const String GET_PRODUCT_LIST = "/api/product/list";
-const String GET_BRAND_LIST = "/api/product/brands";
+const String GET_BRAND_LIST = "/api/product/brand";
 const String GET_SUPPLY_BRAND_LIST = "/api/supply/product/brand";
-const String GET_CATEGORIES_LIST = "/api/product/types";
+const String GET_CATEGORIES_LIST = "/api/product/type";
 
 const String GET_BRANDS_FOR_PIM = "/api/brands";
 const String GET_DASHBOARD_FOR_SUPERVISOR_DASHBOARD = "/api/admin/statistics";
@@ -118,3 +119,20 @@ final PROFILE = ({required String role}) => "/api/$role/profile";
 final ORDERS_REPORT = ({required String role}) => "/api/$role/order/report";
 final SUPPLIER_DETAILS =
     ({required int supplierId}) => "/api/demand/supply/$supplierId";
+final GET_PRODUCT_IMAGE_VIA_PRODUCT_ID = ({
+  required int productId,
+  required ProductImagesType productImagesType,
+  int? supplierId,
+}) {
+  switch (productImagesType) {
+    case ProductImagesType.STANDARD:
+      return '/api/product/$productId/images';
+      break;
+    case ProductImagesType.SUPPLIER_CATALOG:
+      return '/api/supply/product/$productId/images';
+      break;
+    case ProductImagesType.DEMAND:
+      return '/api/demand/supply/$supplierId/product/$productId/images';
+      break;
+  }
+};

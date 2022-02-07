@@ -9,7 +9,7 @@ class SuppliersTypesListResponse {
     this.types,
     this.totalItems,
     this.totalPages,
-    this.filters,
+    // this.filters,
     this.currentPage,
   });
 
@@ -21,12 +21,12 @@ class SuppliersTypesListResponse {
         types: List<Type>.from(json["types"].map((x) => Type.fromMap(x))),
         totalItems: json["totalItems"],
         totalPages: json["totalPages"],
-        filters: Filters.fromMap(json["filters"]),
+        // filters: Filters.fromMap(json["filters"]),
         currentPage: json["currentPage"],
       );
 
   final int? currentPage;
-  final Filters? filters;
+  // final Filters? filters;
   final int? totalItems;
   final int? totalPages;
   final List<Type>? types;
@@ -42,7 +42,7 @@ class SuppliersTypesListResponse {
         types: types ?? this.types,
         totalItems: totalItems ?? this.totalItems,
         totalPages: totalPages ?? this.totalPages,
-        filters: filters ?? this.filters,
+        // filters: filters ?? this.filters,
         currentPage: currentPage ?? this.currentPage,
       );
 
@@ -52,7 +52,7 @@ class SuppliersTypesListResponse {
         "types": List<dynamic>.from(types!.map((x) => x.toMap())),
         "totalItems": totalItems,
         "totalPages": totalPages,
-        "filters": filters!.toMap(),
+        // "filters": filters!.toMap(),
         "currentPage": currentPage,
       };
 
@@ -61,7 +61,7 @@ class SuppliersTypesListResponse {
       types: [],
       totalItems: 0,
       totalPages: 0,
-      filters: Filters().empty(),
+      // filters: Filters().empty(),
       currentPage: 0,
     );
   }
@@ -124,27 +124,33 @@ class Filters {
 class Type {
   Type({
     this.type,
+    this.count,
   });
 
   factory Type.fromJson(String str) => Type.fromMap(json.decode(str));
 
   factory Type.fromMap(Map<String, dynamic> json) => Type(
         type: json["type"],
+        count: json["count"],
       );
 
   final String? type;
+  final int? count;
 
   Type empty() {
     return Type(
       type: '',
+      count: 0,
     );
   }
 
   Type copyWith({
     String? type,
+    int? count,
   }) =>
       Type(
         type: type ?? this.type,
+        count: count ?? this.count,
       );
 
   String toJson() => json.encode(toMap());

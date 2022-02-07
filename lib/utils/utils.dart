@@ -10,6 +10,7 @@ import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/enums/user_roles.dart';
+import 'package:scm/model_classes/address.dart';
 import 'package:scm/model_classes/orders_report_response.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
 import 'package:scm/utils/strings.dart';
@@ -379,4 +380,11 @@ DateTime getFirstDateForOrder({DateTime? dateTime}) {
             days: numberOfAllowedDays,
           ),
         );
+}
+
+String getAddressString({required Address? address}) {
+  if (address == null) {
+    return '';
+  }
+  return '${address.addressLine1}, ${address.addressLine2}, \n${address.locality} ${address.nearby}, \n${address.city}, ${address.state}, ${address.country}, ${address.pincode}';
 }

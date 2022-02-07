@@ -3,8 +3,10 @@ class BrandsForFilter {
   BrandsForFilter({
     required this.brandName,
     required this.isSelected,
+    required this.count,
   });
 
   final String? brandName;
+  final int count;
   bool? isSelected;
 }

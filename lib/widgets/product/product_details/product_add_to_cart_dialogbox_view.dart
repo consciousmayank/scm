@@ -74,19 +74,17 @@ class _ProductAddToCartDialogBoxViewState
             .itemQuantity ??
         0;
 
-    quantityController.text = productCount.toString();
+    quantityController.text = productCount == 0 ? '' : productCount.toString();
 
     return CenteredBaseDialog(
       arguments: CenteredBaseDialogArguments(
-        contentPadding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.20,
-          right: MediaQuery.of(context).size.width * 0.20,
-          top: MediaQuery.of(context).size.height * 0.20,
-          bottom: MediaQuery.of(context).size.height * 0.25,
-        ),
+        noColorOnTop: true,
+        contentPadding: Dimens().productDetaildialogPadding(context: context),
         request: widget.request,
         completer: widget.completer,
-        title: arguments.title,
+        title: productCount == 0
+            ? 'Add To Cart'
+            : 'Update Quantity', //arguments.title,
         child: Column(
           children: [
             Flexible(
@@ -103,44 +101,22 @@ class _ProductAddToCartDialogBoxViewState
                 top: 8.0,
                 bottom: 8.0,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: AppTextField(
-                      autoFocus: true,
-                      formatter: <TextInputFormatter>[
-                        Dimens().numericTextInputFormatter,
-                      ],
-                      hintText: 'Product Quantity',
-                      controller: quantityController,
-                      onFieldSubmitted: (value) {
-                        if (value.isNotEmpty) {
-                          sendFeedBack(
-                            productId: arguments.productId!,
-                            productCount: productCount,
-                            isConfirmed: true,
-                          );
-                        } else {
-                          locator<SnackbarService>().showCustomSnackBar(
-                            message: 'Please enter a valid quantity',
-                            variant: SnackbarType.ERROR,
-                          );
-                        }
-                      },
-                    ),
-                    flex: 2,
-                  ),
-                  wSizedBox(width: 8),
-                  Expanded(
-                    child: SizedBox(
-                      height: Dimens().buttonHeight,
-                      child: AppButton(
-                        buttonBg: AppColors().buttonGreenColor,
-                        onTap: () {
-                          if (quantityController.text.trim().isNotEmpty &&
-                              int.parse(quantityController.text.trim()) > 0) {
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: AppTextField(
+                        autoFocus: true,
+                        formatter: <TextInputFormatter>[
+                          Dimens().numericTextInputFormatter,
+                        ],
+                        labelText: 'Product Quantity',
+                        controller: quantityController,
+                        onFieldSubmitted: (value) {
+                          if (value.isNotEmpty) {
                             sendFeedBack(
                               productId: arguments.productId!,
                               productCount: productCount,
@@ -153,14 +129,39 @@ class _ProductAddToCartDialogBoxViewState
                             );
                           }
                         },
-                        title: productCount == 0
-                            ? 'Add To Cart'
-                            : 'Update Quantity',
                       ),
+                      flex: 2,
                     ),
-                    flex: 1,
-                  ),
-                ],
+                    wSizedBox(width: 8),
+                    Expanded(
+                      child: SizedBox(
+                        height: Dimens().buttonHeight,
+                        child: AppButton(
+                          buttonBg: AppColors().buttonGreenColor,
+                          onTap: () {
+                            if (quantityController.text.trim().isNotEmpty &&
+                                int.parse(quantityController.text.trim()) > 0) {
+                              sendFeedBack(
+                                productId: arguments.productId!,
+                                productCount: productCount,
+                                isConfirmed: true,
+                              );
+                            } else {
+                              locator<SnackbarService>().showCustomSnackBar(
+                                message: 'Please enter a valid quantity',
+                                variant: SnackbarType.ERROR,
+                              );
+                            }
+                          },
+                          title: productCount == 0
+                              ? 'Add To Cart'
+                              : 'Update Quantity',
+                        ),
+                      ),
+                      flex: 1,
+                    ),
+                  ],
+                ),
               ),
             )
           ],

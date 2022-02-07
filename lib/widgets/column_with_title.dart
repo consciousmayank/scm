@@ -46,7 +46,7 @@ class ColumnWithTitle extends StatelessWidget {
                 topLeft: Radius.circular(Dimens().getDefaultRadius),
                 topRight: Radius.circular(Dimens().getDefaultRadius),
               ),
-              color: noColorOnTop ? null : Theme.of(context).primaryColorLight,
+              color: noColorOnTop ? null : Theme.of(context).primaryColor,
             ),
             padding: EdgeInsets.all(
               Dimens().getColumnWithTitleHeaderPadding,
@@ -58,7 +58,11 @@ class ColumnWithTitle extends StatelessWidget {
                   title,
                   style: AppTextStyles(
                     context: context,
-                  ).getColumnWithTitleTextStyle,
+                  ).getColumnWithTitleTextStyle.copyWith(
+                        color: noColorOnTop
+                            ? AppColors().black
+                            : AppColors().black,
+                      ),
                 ),
                 if (dialogClose != null)
                   AppInkwell(

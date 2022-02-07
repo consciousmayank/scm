@@ -1,11 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/utils/strings.dart';
@@ -13,6 +10,7 @@ import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/animated_search_widget.dart';
 import 'package:scm/widgets/app_button.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
+import 'package:scm/widgets/app_table_widget.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
@@ -89,7 +87,8 @@ class ProductListView extends StatelessWidget {
                   : 'Filter (${model.getAppliedFiltersCount()})',
             ),
             wSizedBox(width: 8),
-            if (arguments.supplierName != null)
+            if (arguments.supplierName != null &&
+                !arguments.isCallingScreenCart)
               CartIconView(
                 key: UniqueKey(),
                 arguments: CartIconViewArguments(),
@@ -196,8 +195,6 @@ class ProductListView extends StatelessWidget {
                                     hSizedBox(height: 8),
                                     Flexible(
                                       child: GridView.builder(
-                                        //Enable endless list
-                                        // key: const PageStorageKey('product_list'),
                                         scrollDirection:
                                             arguments.isScrollVertical
                                                 ? Axis.vertical
@@ -216,55 +213,62 @@ class ProductListView extends StatelessWidget {
                                                 ? arguments.productsPerLine
                                                 : 2,
                                           ),
-                                          crossAxisSpacing: 8.0,
-                                          mainAxisSpacing: 8.0,
                                           mainAxisExtent: 200,
                                         ),
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return ProductListItem2View(
-                                            arguments: arguments
-                                                    .isSupplierCatalog
-                                                ? ProductListItem2ViewArguments
-                                                    .catalog(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
+                                          return AppTableWidget.values(values: [
+                                            AppTableSingleItem.customWidget(
+                                              ProductListItem2View(
+                                                arguments: arguments
+                                                        .isSupplierCatalog
+                                                    ? ProductListItem2ViewArguments
+                                                        .catalog(
                                                         product: model
                                                             .productListResponse!
                                                             .products!
                                                             .elementAt(index),
-                                                      );
-                                                    },
-                                                  )
-                                                : ProductListItem2ViewArguments(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
+                                                        onProductOperationCompleted:
+                                                            () {
+                                                          model.reloadPage();
+                                                        },
+                                                        onProductClick: () {
+                                                          model
+                                                              .openProductDetails(
+                                                            product: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index),
+                                                          );
+                                                        },
+                                                      )
+                                                    : ProductListItem2ViewArguments(
                                                         product: model
                                                             .productListResponse!
                                                             .products!
                                                             .elementAt(index),
-                                                      );
-                                                    },
-                                                    supplierId:
-                                                        arguments.supplierId,
-                                                  ),
-                                          );
+                                                        onProductOperationCompleted:
+                                                            () {
+                                                          model.reloadPage();
+                                                        },
+                                                        onProductClick: () {
+                                                          model
+                                                              .openProductDetails(
+                                                            product: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index),
+                                                          );
+                                                        },
+                                                        supplierId: arguments
+                                                            .supplierId,
+                                                      ),
+                                              ),
+                                              flexValue: 1,
+                                            )
+                                          ]);
 
                                           // ProductListItem(
                                           //   arguments: arguments.isSupplierCatalog
@@ -473,6 +477,7 @@ class ProductListViewArgs {
     required this.productTitle,
     required this.supplierId,
   })  : productsPerLine = 4,
+        isCallingScreenCart = false,
         isSupplierCatalog = false,
         supplierName = null;
 
@@ -489,6 +494,7 @@ class ProductListViewArgs {
     required this.supplierId,
     required this.supplierName,
     this.isSupplierCatalog = false,
+    this.isCallingScreenCart = false,
   }) : productsPerLine = 3;
 
   ProductListViewArgs.asWidget({
@@ -504,6 +510,7 @@ class ProductListViewArgs {
     required this.supplierId,
   })  : productsPerLine = 4,
         isSupplierCatalog = false,
+        isCallingScreenCart = false,
         supplierName = null;
 
   ProductListViewArgs.fullScreen({
@@ -518,6 +525,7 @@ class ProductListViewArgs {
     required this.subCategoryFilterList,
     required this.productTitle,
   })  : productsPerLine = 3,
+        isCallingScreenCart = false,
         supplierName = null,
         supplierId = null;
 
@@ -528,6 +536,7 @@ class ProductListViewArgs {
       showBottomPageChanger,
       showFilterAndSortOption,
       showAppbar,
+      isCallingScreenCart,
       isSupplierCatalog;
 
   final String? productTitle;

@@ -58,7 +58,7 @@ class NullableTextWidget extends StatelessWidget {
   final BoxDecoration? decoration;
   final double? doubleValue;
   final int? intValue;
-  final int maxLines;
+  final int? maxLines;
   final bool selectable;
   final String? stringValue;
   final TextAlign textAlign;

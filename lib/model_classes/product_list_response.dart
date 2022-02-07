@@ -161,9 +161,9 @@ class Product {
         measurement: json["measurement"]?.toDouble(),
         measurementUnit: json["measurementUnit"],
         creationdate: json["creationdate"],
-        images: json["images"] != null
-            ? List<Image>.from(json["images"].map((x) => Image.fromMap(x)))
-            : [],
+        // images: json["images"] != null
+        //     ? List<Image>.from(json["images"].map((x) => Image.fromMap(x)))
+        //     : [],
         tags: json["tags"],
       );
 

@@ -11,53 +11,89 @@ class ProfileImageWidget extends StatelessWidget {
   const ProfileImageWidget({
     Key? key,
     this.imageUrlString,
-    this.profileImageSize,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
     this.elevation = 10,
   })  : borderDerRadius = null,
         imageDownloadString = null,
+        isForCatalog = false,
+        supplierId = null,
+        productId = null,
         super(key: key);
 
   const ProfileImageWidget.downloadImage({
     Key? key,
     required this.imageDownloadString,
-    this.profileImageSize,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
     this.elevation = 0,
   })  : borderDerRadius = null,
+        productId = null,
+        supplierId = null,
+        isForCatalog = false,
         imageUrlString = null,
         super(key: key);
 
   const ProfileImageWidget.downloadImageWithCurvedBorders({
     Key? key,
     required this.imageDownloadString,
-    this.profileImageSize,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
     this.elevation = 0,
     required this.borderDerRadius,
   })  : imageUrlString = null,
+        supplierId = null,
+        productId = null,
+        isForCatalog = false,
         super(key: key);
 
   const ProfileImageWidget.withCurvedBorder({
     Key? key,
     this.imageUrlString,
-    this.profileImageSize,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
     required this.elevation,
     required this.borderDerRadius,
   })  : imageDownloadString = null,
+        productId = null,
+        supplierId = null,
+        isForCatalog = false,
+        super(key: key);
+
+  const ProfileImageWidget.productImage({
+    Key? key,
+    required this.profileImageHeight,
+    required this.profileImageWidth,
+    required this.elevation,
+    required this.productId,
+    required this.borderDerRadius,
+    required this.isForCatalog,
+    required this.supplierId,
+  })  : imageDownloadString = null,
+        imageUrlString = null,
         super(key: key);
 
   const ProfileImageWidget.withNoElevation({
     Key? key,
     this.imageUrlString,
-    this.profileImageSize,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
     this.elevation,
   })  : borderDerRadius = null,
+        productId = null,
+        supplierId = null,
         imageDownloadString = null,
+        isForCatalog = false,
         super(key: key);
 
   final BorderRadiusGeometry? borderDerRadius;
   final double? elevation;
   final String? imageDownloadString;
   final String? imageUrlString;
-  final double? profileImageSize;
+  final double? profileImageHeight, profileImageWidth;
+  final int? productId;
+  final bool? isForCatalog;
+  final int? supplierId;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +101,9 @@ class ProfileImageWidget extends StatelessWidget {
       onModelReady: (model) => model.init(
         imageUrlString: imageUrlString,
         imageDownloadString: imageDownloadString,
+        productId: productId,
+        supplierId: supplierId,
+        isForCatalog: isForCatalog,
       ),
       viewModelBuilder: () => AppImageViewModel(),
       builder: (context, model, child) => Card(
@@ -74,26 +113,29 @@ class ProfileImageWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: borderDerRadius ??
               BorderRadius.circular(
-                profileImageSize ?? 40,
+                profileImageHeight ?? 40,
               ),
         ),
         child: model.isBusy
-            ? const SizedBox(
-                child: LoadingWidget(),
-                height: 40,
-                width: 40,
+            ? Center(
+                child: imageDownloadString == null && imageUrlString == null
+                    ? const LoadingWidget.image()
+                    : const LoadingWidget(),
               )
             : model.image == null
-                ? Image.asset(defaultProductImage,
-                    height: profileImageSize ?? 40)
-                // : Image.asset(profileIconBlue)
+                ? Image.asset(
+                    defaultProductImage,
+                    height: profileImageHeight ?? 40,
+                    width: profileImageWidth,
+                  )
+                // : Image.asset(profileIcoBlue)
                 : Image.memory(
-                    const Base64Codec().decode((model.image!.split(',')[1])
-                        .replaceAll("\\n", "")
-                        .trim()),
-                    height: profileImageSize != null ? profileImageSize! : 40,
-                    fit: BoxFit.fill,
-                    width: profileImageSize != null ? profileImageSize! : 40,
+                    const Base64Codec().decode(
+                      (model.image!.split(',')[1]).replaceAll("\\n", "").trim(),
+                    ),
+                    height: profileImageHeight ?? 40,
+                    width: profileImageWidth,
+                    fit: BoxFit.contain,
                   ),
       ),
     );

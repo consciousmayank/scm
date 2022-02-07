@@ -7,6 +7,7 @@ import 'package:scm/screens/demand_module_screens/suppliers_list/suppliers_list_
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
+import 'package:scm/widgets/app_table_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -41,6 +42,7 @@ class _SuppliersListViewState extends State<SuppliersListView> {
               Expanded(
                 child: Card(
                   shape: Dimens().getCardShape(),
+                  elevation: Dimens().getDefaultElevation,
                   color: AppColors().white,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -82,9 +84,14 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
   Widget build(BuildContext context, SuppliersListViewModel viewModel) {
     return Column(
       children: [
-        PageBarWidget.withCustomFiledColor(
-          title: suppliersListTitle,
-          filledColor: Theme.of(context).primaryColorLight,
+        AppTableWidget.header(
+          values: [
+            AppTableSingleItem.string(
+              suppliersListTitle,
+              flexValue: 1,
+              textStyle: Theme.of(context).textTheme.headline6,
+            ),
+          ],
         ),
         hSizedBox(height: 8),
         AppTextField(
@@ -140,11 +147,7 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                               viewModel.notifyListeners();
                             }
                           },
-                          borderderRadius: BorderRadius.all(
-                            Radius.circular(
-                              Dimens().suppliersListItemImageCircularRaduis,
-                            ),
-                          ),
+                          borderderRadius: Dimens().getBorderRadius(),
                           child: Container(
                             decoration: BoxDecoration(
                               color: viewModel.selectedSupplier!.id ==
@@ -159,61 +162,30 @@ class SupplierListWidget extends ViewModelWidget<SuppliersListViewModel> {
                                 ),
                               ),
                             ),
-                            child: Row(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // ProfileImageWidget.withCurvedBorder(
-                                //   elevation: 0,
-                                //   borderDerRadius: BorderRadius.all(
-                                //     Radius.circular(
-                                //       Dimens()
-                                //           .suppliersListItemImageCiircularRaduis,
-                                //     ),
-                                //   ),
-                                //   imageUrlString: checkImageUrl(
-                                //     imageUrl: viewModel
-                                //         .suppliersListResponse.suppliers!
-                                //         .elementAt(index)
-                                //         .image,
-                                //   ),
-                                // ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 4,
-                                    bottom: 4,
-                                    right: 4,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      NullableTextWidget(
-                                        stringValue: viewModel
-                                            .suppliersListResponse.suppliers!
-                                            .elementAt(index)
-                                            .businessName,
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                NullableTextWidget(
+                                  stringValue: viewModel
+                                      .suppliersListResponse.suppliers!
+                                      .elementAt(index)
+                                      .businessName,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      NullableTextWidget(
-                                        stringValue: viewModel.getAddress(
-                                          viewModel
-                                              .suppliersListResponse.suppliers!
-                                              .elementAt(index)
-                                              .address,
-                                        ),
-                                        textStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                      )
-                                    ],
+                                ),
+                                NullableTextWidget(
+                                  stringValue: viewModel.getAddress(
+                                    viewModel.suppliersListResponse.suppliers!
+                                        .elementAt(index)
+                                        .address,
                                   ),
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyText2,
                                 )
                               ],
                             ),

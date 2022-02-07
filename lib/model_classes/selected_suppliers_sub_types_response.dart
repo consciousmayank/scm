@@ -9,7 +9,7 @@ class SuppliersSubTypesListResponse {
     this.subTypes,
     this.totalItems,
     this.totalPages,
-    this.filters,
+    // this.filters,
     this.currentPage,
   });
 
@@ -22,12 +22,12 @@ class SuppliersSubTypesListResponse {
             List<SubType>.from(json["subTypes"].map((x) => SubType.fromMap(x))),
         totalItems: json["totalItems"],
         totalPages: json["totalPages"],
-        filters: Filters.fromMap(json["filters"]),
+        // filters: Filters.fromMap(json["filters"]),
         currentPage: json["currentPage"],
       );
 
   final int? currentPage;
-  final Filters? filters;
+  // final Filters? filters;
   final List<SubType>? subTypes;
   final int? totalItems;
   final int? totalPages;
@@ -43,7 +43,7 @@ class SuppliersSubTypesListResponse {
         subTypes: subTypes ?? this.subTypes,
         totalItems: totalItems ?? this.totalItems,
         totalPages: totalPages ?? this.totalPages,
-        filters: filters ?? this.filters,
+        // filters: filters ?? this.filters,
         currentPage: currentPage ?? this.currentPage,
       );
 
@@ -53,7 +53,7 @@ class SuppliersSubTypesListResponse {
         "subTypes": List<dynamic>.from(subTypes!.map((x) => x.toMap())),
         "totalItems": totalItems,
         "totalPages": totalPages,
-        "filters": filters!.toMap(),
+        // "filters": filters!.toMap(),
         "currentPage": currentPage,
       };
 
@@ -62,7 +62,7 @@ class SuppliersSubTypesListResponse {
       subTypes: [],
       totalItems: 0,
       totalPages: 0,
-      filters: Filters().empty(),
+      // filters: Filters().empty(),
       currentPage: 0,
     );
   }
@@ -125,19 +125,23 @@ class Filters {
 class SubType {
   SubType({
     this.subType,
+    this.count,
   });
 
   factory SubType.fromJson(String str) => SubType.fromMap(json.decode(str));
 
   factory SubType.fromMap(Map<String, dynamic> json) => SubType(
         subType: json["subType"],
+        count: json["count"],
       );
 
   final String? subType;
+  int? count;
 
   SubType empty() {
     return SubType(
       subType: '',
+      count: 0,
     );
   }
 

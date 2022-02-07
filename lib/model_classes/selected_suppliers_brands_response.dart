@@ -71,21 +71,26 @@ class SuppliersBrandsListResponse {
 class Brand {
   Brand({
     this.brand,
+    this.count,
   });
 
   factory Brand.fromJson(String str) => Brand.fromMap(json.decode(str));
 
   factory Brand.fromMap(Map<String, dynamic> json) => Brand(
         brand: json["brand"],
+        count: json["count"],
       );
 
   final String? brand;
+  final int? count;
 
   Brand copyWith({
     String? brand,
+    int? count,
   }) =>
       Brand(
         brand: brand ?? this.brand,
+        count: count ?? this.count,
       );
 
   String toJson() => json.encode(toMap());

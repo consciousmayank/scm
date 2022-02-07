@@ -113,7 +113,7 @@ class PopularCategoriesView extends StatelessWidget {
                                     ),
                                     crossAxisSpacing: 8.0,
                                     mainAxisSpacing: 8.0,
-                                    childAspectRatio: 2.0,
+                                    mainAxisExtent: 200,
                                   ),
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -121,9 +121,11 @@ class PopularCategoriesView extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: SingleCategoryItemWidget(
                                         item: model.categoriesResponse!.types!
-                                            .elementAt(
-                                          index,
-                                        ),
+                                                .elementAt(
+                                                  index,
+                                                )
+                                                .type ??
+                                            '',
                                         onItemClicked: (
                                             {required String selectedItem}) {
                                           model.takeToProductListView(
@@ -147,11 +149,13 @@ class PopularCategoriesView extends StatelessWidget {
                                               Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: SinglePopularBrandItem(
-                                              item: model
-                                                  .categoriesResponse!.types!
-                                                  .elementAt(
-                                                index,
-                                              ),
+                                              item: model.categoriesResponse!
+                                                      .types!
+                                                      .elementAt(
+                                                        index,
+                                                      )
+                                                      .type ??
+                                                  '',
                                               onItemClicked: (
                                                   {required String
                                                       selectedItem}) {

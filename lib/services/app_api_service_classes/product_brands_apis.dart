@@ -39,11 +39,13 @@ class ProductBrandsApiImpl extends BaseApi implements ProductBrandsApis {
       isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      if (supplierId == null && !isSupplierCatalog) {
-        return ProductBrandsResponse.fromMap(apiResponse.response!.data);
-      } else {
-        return getBrands(apiResponse.response?.data);
-      }
+      return getBrands(apiResponse.response?.data);
+
+      // if (supplierId == null && !isSupplierCatalog) {
+      //   return ProductBrandsResponse.fromMap(apiResponse.response!.data);
+      // } else {
+      //   return getBrands(apiResponse.response?.data);
+      // }
     }
   }
 
@@ -57,7 +59,7 @@ class ProductBrandsApiImpl extends BaseApi implements ProductBrandsApis {
     return ProductBrandsResponse(
       brands: suppliersBrandsListResponse.brands!
           .map(
-            (element) => element.brand!,
+            (element) => element,
           )
           .toList(),
       currentPage: suppliersBrandsListResponse.currentPage,

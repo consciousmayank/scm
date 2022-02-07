@@ -18,6 +18,13 @@ class NoDataWidget extends StatelessWidget {
         encloseInSizedBox = false,
         super(key: key);
 
+  const NoDataWidget.noCard({
+    Key? key,
+    required this.text,
+  })  : encloseInCard = false,
+        encloseInSizedBox = true,
+        super(key: key);
+
   const NoDataWidget.noSizedBox({
     Key? key,
     required this.text,

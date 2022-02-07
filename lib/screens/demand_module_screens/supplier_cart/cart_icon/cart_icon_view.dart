@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
 
 import 'package:scm/app/image_config.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_viewmodel.dart';
+import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -32,17 +34,17 @@ class _CartIconViewState extends State<CartIconView> {
       fireOnModelReadyOnce: true,
       initialiseSpecialViewModelsOnce: true,
       onModelReady: (model) => model.init(args: widget.arguments),
-      builder: (context, model, child) => InkWell(
+      builder: (context, model, child) => AppInkwell.withBorder(
+        borderderRadius: Dimens().getBorderRadius(),
         onTap: () {
           if (model.cart.cartItems!.isNotEmpty) {
             model.takeToCart();
           } else {
             locator<SnackbarService>().showCustomSnackBar(
-              variant: SnackbarType.ERROR,
+              variant: SnackbarType.NORMAL,
               duration: const Duration(
                 seconds: 4,
               ),
-              title: "Error",
               message: 'Your cart is empty. Please add some products.',
             );
           }
@@ -56,13 +58,16 @@ class _CartIconViewState extends State<CartIconView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(
-                    12.0,
+                    8,
                   ),
-                  child: Image.asset(
-                    cartIcon,
-                    height: 40,
-                    width: 40,
-                    color: AppColors().white,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Image.asset(
+                      cartIcon,
+                      height: 40,
+                      width: 40,
+                      color: AppColors().white,
+                    ),
                   ),
                 ),
                 Container(

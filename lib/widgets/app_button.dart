@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/image_config.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class AppButton extends StatefulWidget {
   const AppButton({
     Key? key,
-    required this.title,
+    this.title,
     this.disabled = false,
     this.onTap,
     this.leading,
+    this.toolTipMessage,
     this.suffix,
     this.buttonTextColor = Colors.black,
     this.buttonBg = Colors.white,
@@ -27,6 +26,7 @@ class AppButton extends StatefulWidget {
     this.suffix,
     this.buttonTextColor = Colors.black,
     this.buttonBg = Colors.white,
+    this.toolTipMessage,
   })  : outline = false,
         padding = const EdgeInsets.symmetric(
           vertical: 8,
@@ -40,6 +40,7 @@ class AppButton extends StatefulWidget {
       this.leading,
       this.suffix,
       this.buttonBg = Colors.white,
+      this.toolTipMessage,
       this.buttonTextColor = Colors.black,
       this.disabled = false})
       : padding = const EdgeInsets.all(0),
@@ -52,7 +53,7 @@ class AppButton extends StatefulWidget {
   final bool outline;
   final EdgeInsets padding;
   final Widget? suffix;
-  final String? title;
+  final String? title, toolTipMessage;
 
   @override
   State<AppButton> createState() => _AppButtonState();
@@ -63,6 +64,15 @@ class _AppButtonState extends State<AppButton> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.toolTipMessage != null
+        ? Tooltip(
+            message: widget.toolTipMessage,
+            child: getChild(context: context),
+          )
+        : getChild(context: context);
+  }
+
+  Widget getChild({required BuildContext context}) {
     return Padding(
       padding: widget.padding,
       child: AppInkwell.withBorder(
@@ -109,7 +119,7 @@ class _AppButtonState extends State<AppButton> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (widget.leading != null) widget.leading!,
-                  if (widget.leading != null) SizedBox(width: 5),
+                  if (widget.title != null) SizedBox(width: 5),
                   if (widget.title != null)
                     Text(
                       widget.title!,
@@ -121,7 +131,7 @@ class _AppButtonState extends State<AppButton> {
                                 : Colors.black,
                           ),
                     ),
-                  if (widget.suffix != null) SizedBox(width: 5),
+                  if (widget.title != null) SizedBox(width: 5),
                   if (widget.suffix != null) widget.suffix!,
                 ],
               )),

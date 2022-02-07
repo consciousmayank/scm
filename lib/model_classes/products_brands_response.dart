@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+
 class ProductBrandsResponse {
   ProductBrandsResponse({
     this.totalItems,
@@ -12,25 +14,14 @@ class ProductBrandsResponse {
     this.currentPage,
   });
 
-  factory ProductBrandsResponse.fromJson(String str) =>
-      ProductBrandsResponse.fromMap(json.decode(str));
-
-  factory ProductBrandsResponse.fromMap(Map<String, dynamic> json) =>
-      ProductBrandsResponse(
-        totalItems: json["totalItems"],
-        brands: List<String>.from(json["brands"].map((x) => x)),
-        totalPages: json["totalPages"],
-        currentPage: json["currentPage"],
-      );
-
-  List<String>? brands;
+  List<Brand>? brands;
   int? currentPage;
   int? totalItems;
   int? totalPages;
 
   ProductBrandsResponse copyWith({
     int? totalItems,
-    List<String>? brands,
+    List<Brand>? brands,
     int? totalPages,
     int? currentPage,
   }) =>

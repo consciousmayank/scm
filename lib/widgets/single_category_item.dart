@@ -29,7 +29,8 @@ class SingleCategoryItemWidget extends StatelessWidget {
             borderDerRadius: BorderRadius.circular(
               Dimens().suppliersListItemImageCircularRaduis,
             ),
-            profileImageSize: 100,
+            profileImageHeight: 100,
+            profileImageWidth: 100,
             imageDownloadString: item,
           ),
           Container(

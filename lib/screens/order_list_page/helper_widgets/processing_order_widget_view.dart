@@ -23,13 +23,6 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
     Key? key,
   }) : super(key: key);
 
-  String getAddressString({required Address? address}) {
-    if (address == null) {
-      return '';
-    }
-    return '${address.addressLine1}, ${address.addressLine2}, \n${address.locality} ${address.nearby}, \n${address.city}, ${address.state}, ${address.country}, ${address.pincode}';
-  }
-
   @override
   Widget build(BuildContext context, OrderListPageViewModel viewModel) {
     return Card(
@@ -208,10 +201,13 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                     values: [
                       AppTableSingleItem.customWidget(
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 16,
-                          ),
+                          padding:
+                              viewModel.hideWidgetForProcessingOrderStatus()
+                                  ? const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 16,
+                                    )
+                                  : const EdgeInsets.all(0),
                           child: Text(
                             '${index + 1}',
                             textAlign: TextAlign.center,
@@ -234,10 +230,13 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
                                       'NA');
                             },
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 16,
-                              ),
+                              padding:
+                                  viewModel.hideWidgetForProcessingOrderStatus()
+                                      ? const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 16,
+                                        )
+                                      : const EdgeInsets.all(0),
                               child: Text(
                                 '${viewModel.orderDetails.orderItems!.elementAt(index).itemTitle}',
                                 textAlign: TextAlign.left,
@@ -385,78 +384,88 @@ class ProcessingOrderWidget extends ViewModelWidget<OrderListPageViewModel> {
               ),
             ),
           SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProcessingItemsListTable.header(
-                        flexValues: const [1],
-                        values: [
-                          Text(
-                            labelShippingAddress.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodyText1?.copyWith(
-                                      color: AppColors().primaryHeaderTextColor,
-                                    ),
-                          )
-                        ],
-                      ),
-                      ProcessingItemsListTable.normal(
-                        values: [
-                          Text(
-                            getAddressString(
-                              address: viewModel.orderDetails.shippingAddress,
-                            ),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                        flexValues: const [1],
-                      ),
-                    ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProcessingItemsListTable.header(
+                          flexValues: const [1],
+                          values: [
+                            Text(
+                              labelShippingAddress.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(
+                                    color: AppColors().primaryHeaderTextColor,
+                                  ),
+                            )
+                          ],
+                        ),
+                        ProcessingItemsListTable.normal(
+                          values: [
+                            Text(
+                              getAddressString(
+                                address: viewModel.orderDetails.shippingAddress,
+                              ),
+                              style: Theme.of(context).textTheme.bodyText1,
+                            )
+                          ],
+                          flexValues: const [1],
+                        ),
+                      ],
+                    ),
+                    flex: 1,
                   ),
-                  flex: 1,
-                ),
-                wSizedBox(width: 8),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProcessingItemsListTable.header(
-                        flexValues: const [1],
-                        values: [
-                          Text(
-                            labelBillingAddress.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodyText1?.copyWith(
-                                      color: AppColors().primaryHeaderTextColor,
-                                    ),
-                          )
-                        ],
-                      ),
-                      ProcessingItemsListTable.normal(
-                        values: [
-                          Text(
-                            getAddressString(
-                              address: viewModel.orderDetails.billingAddress,
-                            ),
-                            style: Theme.of(context).textTheme.bodyText1,
-                          )
-                        ],
-                        flexValues: [1],
-                      ),
-                    ],
-                  ),
-                  flex: 1,
-                )
-              ],
+                  wSizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProcessingItemsListTable.header(
+                          flexValues: const [1],
+                          values: [
+                            Text(
+                              labelBillingAddress.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(
+                                    color: AppColors().primaryHeaderTextColor,
+                                  ),
+                            )
+                          ],
+                        ),
+                        ProcessingItemsListTable.normal(
+                          values: [
+                            Text(
+                              getAddressString(
+                                address: viewModel.orderDetails.billingAddress,
+                              ),
+                              style: Theme.of(context).textTheme.bodyText1,
+                            )
+                          ],
+                          flexValues: [1],
+                        ),
+                      ],
+                    ),
+                    flex: 1,
+                  )
+                ],
+              ),
             ),
-          )),
+          ),
+          SliverToBoxAdapter(
+            child: hSizedBox(
+              height: 8,
+            ),
+          ),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
-import 'package:scm/model_classes/product_categories_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
@@ -53,7 +52,7 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
   //   return savedImageNames[index!];
   // }
 
-  ProductCategoriesResponse? _categoriesResponse;
+  // ProductCategoriesResponse? _categoriesResponse;
 
   final HomePageApis _homePageApis = locator<HomePageApisImpl>();
   int? _lengthOfCategoriesListView;
@@ -95,12 +94,12 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  ProductCategoriesResponse? get categoriesResponse => _categoriesResponse;
+  // ProductCategoriesResponse? get categoriesResponse => _categoriesResponse;
 
-  set categoriesResponse(ProductCategoriesResponse? value) {
-    _categoriesResponse = value;
-    notifyListeners();
-  }
+  // set categoriesResponse(ProductCategoriesResponse? value) {
+  //   _categoriesResponse = value;
+  //   notifyListeners();
+  // }
 
   List<String>? get productCategoriesList => _productCategoriesList;
 

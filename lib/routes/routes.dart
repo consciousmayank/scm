@@ -4,6 +4,7 @@ import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
+import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
 import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
@@ -105,6 +106,15 @@ class AppRouter {
             settings.arguments as OrderReportsViewArgs;
         return FadeRoute(
           page: OrderReportsView(
+            arguments: arguments,
+          ),
+        );
+      //To goto the supplier profile page, in a stand alone page. Without AppBar. Have to handle if asked to do that.
+      case selectedSupplierScreenPageRoute:
+        SuppplierProfileViewArguments arguments =
+            settings.arguments as SuppplierProfileViewArguments;
+        return FadeRoute(
+          page: SuppplierProfileView(
             arguments: arguments,
           ),
         );

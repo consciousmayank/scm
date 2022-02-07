@@ -7,6 +7,7 @@ import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
@@ -46,21 +47,35 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                       flex: 2,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
-                        child: (getProductImage(
-                                        productImage:
-                                            widget.arguments.product?.images) ==
-                                    null ||
-                                getProductImage(
-                                        productImage:
-                                            widget.arguments.product?.images)!
-                                    .isEmpty)
-                            ? image_widget.Image.asset(productDefaultImage)
-                            : image_widget.Image.memory(
-                                getProductImage(
-                                    productImage:
-                                        widget.arguments.product?.images)!,
-                                fit: BoxFit.cover,
-                              ),
+                        child: ProfileImageWidget.productImage(
+                          isForCatalog: widget.arguments.isForCatalog,
+                          supplierId: widget.arguments.supplierId,
+                          elevation: 0,
+                          profileImageHeight: Dimens().productDtailImageHeight,
+                          profileImageWidth: Dimens().productDtailImageHeight,
+                          borderDerRadius: BorderRadius.all(
+                            Radius.circular(
+                              Dimens().suppliersListItemImageCircularRaduis,
+                            ),
+                          ),
+                          productId: widget.arguments.product?.id,
+                        ),
+
+                        // (getProductImage(
+                        //                 productImage:
+                        //                     widget.arguments.product?.images) ==
+                        //             null ||
+                        //         getProductImage(
+                        //                 productImage:
+                        //                     widget.arguments.product?.images)!
+                        //             .isEmpty)
+                        //     ? image_widget.Image.asset(productDefaultImage)
+                        //     : image_widget.Image.memory(
+                        //         getProductImage(
+                        //             productImage:
+                        //                 widget.arguments.product?.images)!,
+                        //         fit: BoxFit.cover,
+                        //       ),
                       ),
                     ),
                     Expanded(
@@ -208,6 +223,8 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
     return AppButton(
+      toolTipMessage:
+          'Add Product to ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
       buttonBg: AppColors().buttonGreenColor,
       onTap: viewModel.onAddButtonClick,
       title: 'Add',
@@ -223,9 +240,15 @@ class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
     return AppButton(
+      toolTipMessage:
+          'Update Product Quantity in ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
       buttonBg: AppColors().buttonGreenColor,
       onTap: viewModel.onUpdateButtonClick,
-      title: "Update",
+      leading: Icon(
+        Icons.edit,
+        size: 20,
+        color: AppColors().white,
+      ),
     );
   }
 }
@@ -241,9 +264,15 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
     return AppButton(
+      toolTipMessage:
+          'Remove Product from ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
       buttonBg: AppColors().buttonRedColor,
       onTap: viewModel.onRemoveButtonClick,
-      title: 'Remove',
+      leading: Icon(
+        Icons.delete,
+        size: 20,
+        color: AppColors().white,
+      ),
     );
   }
 }

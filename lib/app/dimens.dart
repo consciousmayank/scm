@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:scm/app/appcolors.dart';
 
 class Dimens {
-  static const int defaultProductListPageSize = 25;
+  static const int defaultProductListPageSize = 24;
   static const int defaultProductListPageSizeWhenInHome = 14;
 
   double get orderInfoTilesHeight => 110;
@@ -49,12 +49,14 @@ class Dimens {
   int get nameFlexValueTrending => 4;
 
   int get quantityFlexValue => 3;
+  int get quantityFlexValueCart => 2;
 
   int get countFlexValueTrending => 3;
 
   int get amountFlexValue => 3;
 
   int get grandTotaltFlexValue => 5;
+  int get grandTotaltFlexValueCart => 6;
 
   double get popularBrandsHeight => 350;
 
@@ -89,6 +91,16 @@ class Dimens {
   double get suppliersListItemImageCircularRaduis => 8;
 
   double get defaultButtonPadding => 6;
+  double get productDtailImageHeight => 283;
+  EdgeInsets productDetaildialogPadding({
+    required BuildContext context,
+  }) =>
+      EdgeInsets.only(
+        left: MediaQuery.of(context).size.width * 0.20,
+        right: MediaQuery.of(context).size.width * 0.20,
+        top: MediaQuery.of(context).size.height * 0.20,
+        bottom: MediaQuery.of(context).size.height * 0.20,
+      );
 
   getBorderRadius({double? radius}) {
     return BorderRadius.circular(

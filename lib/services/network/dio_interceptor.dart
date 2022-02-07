@@ -117,9 +117,9 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
         if (options.path == REFRESH_TOKEN) {
           options.headers.addAll({"isRefreshToken": true});
         }
-        if (EnvironmentConfig.SHOW_LOGS) {
-          log.wtf("Api Token :: ${_appPreferences.getApiToken()}");
-        }
+        // if (EnvironmentConfig.SHOW_LOGS) {
+        log.wtf("Api Token :: ${_appPreferences.getApiToken()}");
+        // }
         options.headers.addAll(
           getAuthHeader(
             token: _appPreferences.getApiToken(),

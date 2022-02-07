@@ -57,49 +57,33 @@ class LabelValueDataShowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.primaryVariant,
-          width: 0.5,
-        ),
-        borderRadius: BorderRadius.circular(
-          // Dimens().suppliersListItemImageCiircularRaduis,
-          0,
-        ),
-      ),
-      child: isRow
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                NullableTextWidget(
-                  stringValue: label,
-                  textStyle: labelStyle,
-                ),
-                NullableTextWidget(
-                  stringValue: value,
-                  textStyle: valueStyle,
-                ),
-              ],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NullableTextWidget(
-                  stringValue: label,
-                  textStyle: labelStyle,
-                ),
-                NullableTextWidget(
-                  stringValue: value,
-                  textStyle: valueStyle,
-                ),
-              ],
-            ),
-    );
+    return isRow
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NullableTextWidget(
+                stringValue: label,
+                textStyle: labelStyle,
+              ),
+              NullableTextWidget(
+                stringValue: value,
+                textStyle: valueStyle,
+              ),
+            ],
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              NullableTextWidget(
+                stringValue: label,
+                textStyle: labelStyle,
+              ),
+              NullableTextWidget(
+                stringValue: value,
+                textStyle: valueStyle,
+              ),
+            ],
+          );
   }
 }

@@ -1,3 +1,6 @@
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
@@ -18,12 +21,12 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
   late AddToCatalog addToCatalog;
   late final ProductListViewArgs arguments;
-  List<String?> brandsFilterList = [];
-  List<String?> categoryFilterList = [];
+  List<Brand?> brandsFilterList = [];
+  List<Type?> categoryFilterList = [];
   int pageIndex = 0;
   ProductListResponse? productListResponse;
   String? productTitle;
-  List<String?> subCategoryFilterList = [];
+  List<SubType?> subCategoryFilterList = [];
   late final int? supplierId;
 
   final ProductListApis _productListApis = locator<ProductListApiImpl>();
@@ -32,9 +35,10 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     setBusy(true);
 
     productListResponse = await _productListApis.getProductList(
-      brandsFilterList: brandsFilterList,
-      categoryFilterList: categoryFilterList,
-      subCategoryFilterList: subCategoryFilterList,
+      brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
+      categoryFilterList: categoryFilterList.map((e) => e?.type).toList(),
+      subCategoryFilterList:
+          subCategoryFilterList.map((e) => e?.subType).toList(),
       pageIndex: pageIndex,
       productTitle: productTitle,
       size: !arguments.showSeeAll
@@ -60,9 +64,18 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       addToCatalog = AddToCatalog();
     }
 
-    brandsFilterList = arguments.brandsFilterList ?? [];
-    categoryFilterList = arguments.categoryFilterList ?? [];
-    subCategoryFilterList = arguments.subCategoryFilterList ?? [];
+    brandsFilterList = arguments.brandsFilterList
+            ?.map((e) => Brand(brand: e, count: 0))
+            .toList() ??
+        [];
+    categoryFilterList = arguments.categoryFilterList
+            ?.map((e) => Type(type: e, count: 0))
+            .toList() ??
+        [];
+    subCategoryFilterList = arguments.subCategoryFilterList
+            ?.map((e) => SubType(subType: e, count: 0))
+            .toList() ??
+        [];
     productTitle = arguments.productTitle;
 
     getProductList();

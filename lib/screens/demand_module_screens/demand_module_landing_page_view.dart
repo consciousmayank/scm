@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -6,7 +5,6 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/api_status.dart';
-import 'package:scm/enums/app_themes_types.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_viewmodel.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
@@ -16,7 +14,6 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_navigation_rail_widget.dart';
 import 'package:scm/widgets/app_pop_up_menu_widget.dart';
-import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/version_widget/version_widget.dart';
 import 'package:stacked/stacked.dart';
 

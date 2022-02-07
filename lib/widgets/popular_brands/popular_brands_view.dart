@@ -118,7 +118,7 @@ class PopularBrandsView extends StatelessWidget {
                                     ),
                                     crossAxisSpacing: 8.0,
                                     mainAxisSpacing: 8.0,
-                                    childAspectRatio: 2.0,
+                                    mainAxisExtent: 200,
                                   ),
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -297,7 +297,8 @@ class SinglePopularBrandItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ProfileImageWidget.withNoElevation(
-            profileImageSize: 100,
+            profileImageHeight: 100,
+            profileImageWidth: 100,
             imageUrlString: item.image,
           ),
           Container(

@@ -8,20 +8,25 @@ class AppTableWidget extends StatelessWidget {
     Key? key,
     required this.values,
     this.isHeader = true,
+    this.requiresPadding = true,
   }) : super(key: key);
 
   const AppTableWidget.values({
     Key? key,
     required this.values,
     this.isHeader = false,
+    this.requiresPadding = true,
   }) : super(key: key);
 
-  final bool isHeader;
+  final bool isHeader, requiresPadding;
+
   final List<AppTableSingleItem> values;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: values
             .map(
               (singleValue) => Expanded(
@@ -38,33 +43,59 @@ class AppTableWidget extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 8,
-                    ),
-                    child: Tooltip(
-                      preferBelow: false,
-                      triggerMode: TooltipTriggerMode.tap,
-                      message: singleValue.getValue(),
-                      child: singleValue.customWidget ??
-                          Text(
-                            singleValue.getValue(),
-                            maxLines: 1,
-                            overflow: TextOverflow.fade,
-                            textAlign: singleValue.textAlignment,
-                            style: singleValue.textStyle?.copyWith(
-                              color: isHeader
-                                  ? AppColors().primaryHeaderTextColor
-                                  : AppColors().black,
-                            ),
-                          ),
-                    ),
+                    padding: requiresPadding
+                        ? const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 8,
+                          )
+                        : const EdgeInsets.all(0),
+                    child: singleValue.customWidget ??
+                        (singleValue.showToolTip
+                            ? Tooltip(
+                                preferBelow: false,
+                                triggerMode: TooltipTriggerMode.tap,
+                                message: singleValue.showToolTip
+                                    ? singleValue.getValue()
+                                    : null,
+                                child: textValueChild(
+                                  isHeader: isHeader,
+                                  singleValue: singleValue,
+                                  context: context,
+                                ),
+                              )
+                            : textValueChild(
+                                isHeader: isHeader,
+                                singleValue: singleValue,
+                                context: context,
+                              )),
                   ),
                 ),
                 flex: singleValue.flexValue,
               ),
             )
             .toList());
+  }
+
+  textValueChild({
+    required bool isHeader,
+    required AppTableSingleItem singleValue,
+    required BuildContext context,
+  }) {
+    return Text(
+      singleValue.getValue(),
+      maxLines: singleValue.maxlines,
+      overflow: TextOverflow.fade,
+      textAlign: singleValue.textAlignment,
+      style: isHeader && singleValue.textStyle == null
+          ? Theme.of(context).textTheme.headline6?.copyWith(
+                color: AppColors().primaryHeaderTextColor,
+              )
+          : singleValue.textStyle?.copyWith(
+              color: isHeader
+                  ? AppColors().primaryHeaderTextColor
+                  : AppColors().black,
+            ),
+    );
   }
 }
 
@@ -75,6 +106,8 @@ class AppTableSingleItem {
     this.textAlignment,
     this.textStyle,
     this.formatNumber = false,
+    this.maxlines = 1,
+    this.showToolTip = true,
   })  : intValue = null,
         customWidget = null,
         stringValue = null;
@@ -85,9 +118,11 @@ class AppTableSingleItem {
     this.textAlignment,
     this.textStyle,
     this.formatNumber = false,
+    this.showToolTip = true,
   })  : intValue = null,
         doubleValue = null,
-        stringValue = null;
+        stringValue = null,
+        maxlines = null;
 
   const AppTableSingleItem.int(
     this.intValue, {
@@ -95,6 +130,8 @@ class AppTableSingleItem {
     this.textAlignment,
     this.textStyle,
     this.formatNumber = false,
+    this.maxlines = 1,
+    this.showToolTip = true,
   })  : doubleValue = null,
         customWidget = null,
         stringValue = null;
@@ -104,6 +141,8 @@ class AppTableSingleItem {
     this.flexValue = 1,
     this.textAlignment,
     this.textStyle,
+    this.maxlines = 1,
+    this.showToolTip = true,
   })  : doubleValue = null,
         formatNumber = false,
         customWidget = null,
@@ -112,11 +151,13 @@ class AppTableSingleItem {
   final double? doubleValue;
   final int flexValue;
   final bool formatNumber;
+  final bool showToolTip;
   final int? intValue;
   final String? stringValue;
   final TextAlign? textAlignment;
   final TextStyle? textStyle;
   final Widget? customWidget;
+  final int? maxlines;
 
   getValue() {
     var format = NumberFormat.currency(locale: 'HI');

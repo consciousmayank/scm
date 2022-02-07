@@ -11,6 +11,7 @@ import 'package:scm/enums/address_api_type.dart';
 import 'package:scm/enums/cart_api_types.dart';
 import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
+import 'package:scm/enums/product_image_types.dart';
 import 'package:scm/enums/product_operations.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/profile_api_operations_type.dart';
@@ -656,6 +657,30 @@ class ApiService {
     try {
       response = await dioClient.getDio().get(
             GET_PRODUCT_IMAGE(imageName),
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  Future<ParentApiResponse> getProductImageViaProductId({
+    required int productId,
+    required ProductImagesType productImagesType,
+    required int? supplierId,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_IMAGE_VIA_PRODUCT_ID(
+              productId: productId,
+              productImagesType: productImagesType,
+              supplierId: null,
+            ),
             cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {

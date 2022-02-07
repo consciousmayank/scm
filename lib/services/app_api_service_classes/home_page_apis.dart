@@ -38,47 +38,47 @@ class HomePageApisImpl extends BaseApi implements HomePageApis {
       isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      if (supplierId == null && !isSupplierCatalog) {
-        // return AllBrandsResponse.fromMap(apiResponse.response?.data);
+      SuppliersBrandsListResponse suppliersBrandsListResponse =
+          SuppliersBrandsListResponse().empty();
+      suppliersBrandsListResponse =
+          SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
 
-        BrandsStringListResponse brandsStringListResponse =
-            BrandsStringListResponse.fromMap(apiResponse.response?.data);
+      return AllBrandsResponse(
+        brands: suppliersBrandsListResponse.brands!
+            .map(
+              (element) => supplierModuleBrandsResponse.Brand(
+                title: element.brand,
+                image: null,
+                id: null,
+              ),
+            )
+            .toList(),
+        currentPage: suppliersBrandsListResponse.currentPage,
+        totalItems: suppliersBrandsListResponse.totalItems,
+        totalPages: suppliersBrandsListResponse.totalPages,
+      );
 
-        return AllBrandsResponse(
-          brands: brandsStringListResponse.brands!
-              .map(
-                (element) => supplierModuleBrandsResponse.Brand(
-                  title: element,
-                  image: null,
-                  id: null,
-                ),
-              )
-              .toList(),
-          currentPage: brandsStringListResponse.currentPage,
-          totalItems: brandsStringListResponse.totalItems,
-          totalPages: brandsStringListResponse.totalPages,
-        );
-      } else {
-        SuppliersBrandsListResponse suppliersBrandsListResponse =
-            SuppliersBrandsListResponse().empty();
-        suppliersBrandsListResponse =
-            SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
+      // if (supplierId == null && !isSupplierCatalog) {
 
-        return AllBrandsResponse(
-          brands: suppliersBrandsListResponse.brands!
-              .map(
-                (element) => supplierModuleBrandsResponse.Brand(
-                  title: element.brand,
-                  image: null,
-                  id: null,
-                ),
-              )
-              .toList(),
-          currentPage: suppliersBrandsListResponse.currentPage,
-          totalItems: suppliersBrandsListResponse.totalItems,
-          totalPages: suppliersBrandsListResponse.totalPages,
-        );
-      }
+      // } else {
+      //   BrandsStringListResponse brandsStringListResponse =
+      //       BrandsStringListResponse.fromMap(apiResponse.response?.data);
+
+      //   return AllBrandsResponse(
+      //     brands: brandsStringListResponse.brands!
+      //         .map(
+      //           (element) => supplierModuleBrandsResponse.Brand(
+      //             title: element,
+      //             image: null,
+      //             id: null,
+      //           ),
+      //         )
+      //         .toList(),
+      //     currentPage: brandsStringListResponse.currentPage,
+      //     totalItems: brandsStringListResponse.totalItems,
+      //     totalPages: brandsStringListResponse.totalPages,
+      //   );
+      // }
     }
   }
 
