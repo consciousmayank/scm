@@ -1,5 +1,6 @@
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_image_types.dart';
+import 'package:scm/enums/product_size_type.dart';
 
 const LOGIN = "/driver/auth";
 
@@ -133,6 +134,39 @@ final GET_PRODUCT_IMAGE_VIA_PRODUCT_ID = ({
       break;
     case ProductImagesType.DEMAND:
       return '/api/demand/supply/$supplierId/product/$productId/images';
+      break;
+  }
+};
+final GET_PRODUCT_SIZES_LIST = ({
+  required String role,
+  required ProductSizesType sizesType,
+}) {
+  switch (sizesType) {
+    case ProductSizesType.STANDARD:
+      return '/api/product/size';
+      break;
+    case ProductSizesType.CATALOG:
+      return '/api/supply/product/size';
+      break;
+    case ProductSizesType.DEMAND:
+      return '/api/demand/product/size';
+      break;
+  }
+};
+final GET_PRODUCT_LIST_FOR_SIZES = ({
+  required String role,
+  required ProductSizesType sizesType,
+  required int? supplierId,
+}) {
+  switch (sizesType) {
+    case ProductSizesType.STANDARD:
+      return '/api/product/list/by-subtype-and-size';
+      break;
+    case ProductSizesType.CATALOG:
+      return '/api/supply/product/list/by-subtype-and-size';
+      break;
+    case ProductSizesType.DEMAND:
+      return '/api/demand/supply/$supplierId/product/list/by-subtype-and-size';
       break;
   }
 };

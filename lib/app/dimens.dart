@@ -92,6 +92,8 @@ class Dimens {
 
   double get defaultButtonPadding => 6;
   double get productDtailImageHeight => 283;
+
+  get getSubCategoryListViewHeight => 35;
   EdgeInsets productDetaildialogPadding({
     required BuildContext context,
   }) =>

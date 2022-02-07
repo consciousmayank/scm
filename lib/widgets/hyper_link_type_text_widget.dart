@@ -33,15 +33,18 @@ class _HyperLinkTextViewState extends State<HyperLinkTextView> {
       },
       borderderRadius: Dimens().getBorderRadius(),
       onTap: () => widget.onHyperLinkTap(),
-      child: Text(
-        widget.text,
-        style: hover
-            ? hyperLinkStyle.copyWith(
-                fontWeight: FontWeight.bold,
-              )
-            : hyperLinkStyle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          widget.text,
+          style: hover
+              ? hyperLinkStyle.copyWith(
+                  fontWeight: FontWeight.bold,
+                )
+              : hyperLinkStyle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

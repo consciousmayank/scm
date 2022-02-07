@@ -5,6 +5,7 @@ import 'package:scm/services/network/base_api.dart';
 abstract class ProductSubCategoriesApis {
   Future<SuppliersSubTypesListResponse> getProductSubCategoriesList({
     required int? pageIndex,
+    required int? pageSize,
     List<String?>? checkedBrandList,
     List<String?>? checkedCategoryList,
     String? subCategoryTitle,
@@ -19,6 +20,7 @@ class ProductSubCategoriesApisImpl extends BaseApi
   @override
   Future<SuppliersSubTypesListResponse> getProductSubCategoriesList({
     required int? pageIndex,
+    required int? pageSize,
     List<String?>? checkedBrandList,
     List<String?>? checkedCategoryList,
     String? subCategoryTitle,
@@ -32,6 +34,7 @@ class ProductSubCategoriesApisImpl extends BaseApi
     ParentApiResponse apiResponse =
         await apiService.getProductSubCategoriesList(
       pageIndex: pageIndex,
+      pageSize: pageSize,
       checkedBrandList: checkedBrandList,
       checkedCategoryList: checkedCategoryList,
       subCategoryTitle: subCategoryTitle,

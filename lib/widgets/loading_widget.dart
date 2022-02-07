@@ -6,10 +6,10 @@ class LoadingWidget extends StatelessWidget {
         width = 100,
         super(key: key);
 
-  const LoadingWidget.image({Key? key})
-      : height = 40,
-        width = 40,
-        super(key: key);
+  // const LoadingWidget.image({Key? key})
+  //     : height = 40,
+  //       width = 40,
+  //       super(key: key);
 
   final double height, width;
 

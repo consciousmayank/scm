@@ -229,7 +229,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                             ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: HyperLinkTextView(
                           onHyperLinkTap: () => widget
                                       .arguments.selectedSupplier !=
@@ -359,7 +359,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                           ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: HyperLinkTextView(
                         onHyperLinkTap: () => widget
                                     .arguments.selectedSupplier !=
@@ -488,7 +488,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                             ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: HyperLinkTextView(
                           linkStyle:
                               Theme.of(context).textTheme.bodyText1!.copyWith(

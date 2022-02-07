@@ -119,7 +119,7 @@ class ProfileImageWidget extends StatelessWidget {
         child: model.isBusy
             ? Center(
                 child: imageDownloadString == null && imageUrlString == null
-                    ? const LoadingWidget.image()
+                    ? const LoadingWidget()
                     : const LoadingWidget(),
               )
             : model.image == null

@@ -9,7 +9,7 @@ class ProductListResponse {
     this.totalItems,
     this.totalPages,
     this.currentPage,
-    this.filters,
+    // this.filters,
     this.products,
   });
 
@@ -21,15 +21,15 @@ class ProductListResponse {
         totalItems: json["totalItems"],
         totalPages: json["totalPages"],
         currentPage: json["currentPage"],
-        filters: json["filters"] != null
-            ? Filters.fromMap(json["filters"])
-            : Filters.empty(),
+        // filters: json["filters"] != null
+        //     ? Filters.fromMap(json["filters"])
+        //     : Filters.empty(),
         products:
             List<Product>.from(json["products"].map((x) => Product.fromMap(x))),
       );
 
   int? currentPage;
-  Filters? filters;
+  // Filters? filters;
   List<Product>? products;
   int? totalItems;
   int? totalPages;
@@ -45,7 +45,7 @@ class ProductListResponse {
         totalItems: totalItems ?? this.totalItems,
         totalPages: totalPages ?? this.totalPages,
         currentPage: currentPage ?? this.currentPage,
-        filters: filters ?? this.filters,
+        // filters: filters ?? this.filters,
         products: products ?? this.products,
       );
 
@@ -55,7 +55,7 @@ class ProductListResponse {
         "totalItems": totalItems,
         "totalPages": totalPages,
         "currentPage": currentPage,
-        "filters": filters!.toMap(),
+        // "filters": filters!.toMap(),
         "products": List<dynamic>.from(products!.map((x) => x.toMap())),
       };
 
@@ -64,7 +64,7 @@ class ProductListResponse {
       totalItems: 0,
       totalPages: 0,
       currentPage: 0,
-      filters: Filters.empty(),
+      // filters: Filters.empty(),
       products: [],
     );
   }

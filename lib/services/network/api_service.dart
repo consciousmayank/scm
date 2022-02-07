@@ -13,6 +13,7 @@ import 'package:scm/enums/order_filter_duration_type.dart';
 import 'package:scm/enums/order_summary_api_type.dart';
 import 'package:scm/enums/product_image_types.dart';
 import 'package:scm/enums/product_operations.dart';
+import 'package:scm/enums/product_size_type.dart';
 import 'package:scm/enums/product_statuses.dart';
 import 'package:scm/enums/profile_api_operations_type.dart';
 import 'package:scm/enums/update_product_api_type.dart';
@@ -151,8 +152,40 @@ class ApiService {
     return ParentApiResponse(response: response, error: error);
   }
 
+  Future<ParentApiResponse> getProductSizesList({
+    required int pageIndex,
+    required int pageSize,
+    required String subType,
+    required ProductSizesType sizesType,
+    required List<String?> sizesFilterList,
+    int? supplierId,
+  }) async {
+    Response? response;
+    DioError? error;
+    try {
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_LIST_FOR_SIZES(
+              role: getLoggedInRole(),
+              sizesType: sizesType,
+              supplierId: supplierId,
+            ),
+            queryParameters: <String, dynamic>{
+              'page': pageIndex,
+              'pageSize': pageSize,
+              'subType': subType,
+              'measurement': sizesFilterList,
+            },
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+    return ParentApiResponse(response: response, error: error);
+  }
+
   Future<ParentApiResponse> getProductSubCategoriesList({
     required int? pageIndex,
+    required int? pageSize,
     List<String?>? checkedBrandList,
     List<String?>? checkedCategoryList,
     String? subCategoryTitle,
@@ -179,6 +212,12 @@ class ApiService {
         'type': checkedCategoryList,
         'page': pageIndex,
       };
+    }
+
+    if (pageSize != null) {
+      params.addAll({
+        'size': pageSize,
+      });
     }
 
     /// CATEGORY
@@ -309,6 +348,25 @@ class ApiService {
                         supplierId: supplierId,
                       ),
             queryParameters: params,
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+    return ParentApiResponse(response: response, error: error);
+  }
+
+  Future<ParentApiResponse> getProductListForSizes({
+    required List<String?> sizesFilterList,
+    required int pageIndex,
+    required int? supplierId,
+    required int size,
+  }) async {
+    Response? response;
+    DioError? error;
+    try {
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_LIST,
             cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {
@@ -1690,6 +1748,35 @@ class ApiService {
               role: getLoggedInRole(),
             ),
             queryParameters: queryParams,
+            cancelToken: dioClient.apiCancelToken,
+          );
+    } on DioError catch (e) {
+      error = e;
+    }
+
+    return ParentApiResponse(error: error, response: response);
+  }
+
+  getProductCategorySizeList({
+    required int pageIndex,
+    required int pageSize,
+    required String subType,
+    required ProductSizesType sizesType,
+  }) async {
+    Response? response;
+    DioError? error;
+
+    try {
+      response = await dioClient.getDio().get(
+            GET_PRODUCT_SIZES_LIST(
+              role: getLoggedInRole(),
+              sizesType: sizesType,
+            ),
+            queryParameters: {
+              'page': pageIndex,
+              'size': pageSize,
+              'subType': subType,
+            },
             cancelToken: dioClient.apiCancelToken,
           );
     } on DioError catch (e) {

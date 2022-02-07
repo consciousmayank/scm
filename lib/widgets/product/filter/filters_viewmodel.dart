@@ -574,6 +574,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         pageIndexForSubCategoriesApi == 0) {
       subCategoriesResponse =
           await _subCategoriesApis.getProductSubCategoriesList(
+        pageSize: 30,
         pageIndex: pageIndexForSubCategoriesApi,
         subCategoryTitle: subCategoryTitle,
         checkedCategoryList:

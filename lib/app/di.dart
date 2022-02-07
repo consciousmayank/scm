@@ -11,6 +11,7 @@ import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/services/app_api_service_classes/product_brands_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
+import 'package:scm/services/app_api_service_classes/product_sizes_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
 import 'package:scm/services/app_api_service_classes/profile_apis.dart';
 import 'package:scm/services/app_api_service_classes/reports_apis.dart';
@@ -48,6 +49,7 @@ void declareDependencies() {
   locator.registerLazySingleton(() => ProductListApiImpl());
   locator.registerLazySingleton(() => ProductBrandsApiImpl());
   locator.registerLazySingleton(() => ProductSubCategoriesApisImpl());
+  locator.registerLazySingleton(() => ProductSizesApisImpl());
   locator.registerLazySingleton(() => CommonDashBoardApis());
   locator.registerLazySingleton(() => SuppliersListApi());
   locator.registerLazySingleton(() => DemandCartApi());

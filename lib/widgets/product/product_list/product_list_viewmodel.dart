@@ -1,3 +1,6 @@
+import 'package:scm/enums/api_status.dart';
+import 'package:scm/enums/product_size_type.dart';
+import 'package:scm/model_classes/product_sizes_response.dart';
 import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
 import 'package:scm/model_classes/selected_suppliers_types_response.dart';
@@ -9,6 +12,8 @@ import 'package:scm/app/generalised_base_view_model.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
+import 'package:scm/services/app_api_service_classes/product_sizes_apis.dart';
+import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/product/filter/filters_dialog_box_view.dart';
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
@@ -18,6 +23,7 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductListViewModel extends GeneralisedBaseViewModel {
+  late ProductSizesType sizesType;
   late AddToCart addToCartObject;
   late AddToCatalog addToCatalog;
   late final ProductListViewArgs arguments;
@@ -27,26 +33,46 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   ProductListResponse? productListResponse;
   String? productTitle;
   List<SubType?> subCategoryFilterList = [];
+  List<ProductSize?> sizeFilterList = [];
   late final int? supplierId;
+  ApiStatus productSubTypeApiStatus = ApiStatus.LOADING;
 
   final ProductListApis _productListApis = locator<ProductListApiImpl>();
+  final ProductSubCategoriesApisImpl _productSubCatgoriesApis =
+      locator<ProductSubCategoriesApisImpl>();
 
   getProductList() async {
     setBusy(true);
 
-    productListResponse = await _productListApis.getProductList(
-      brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
-      categoryFilterList: categoryFilterList.map((e) => e?.type).toList(),
-      subCategoryFilterList:
-          subCategoryFilterList.map((e) => e?.subType).toList(),
-      pageIndex: pageIndex,
-      productTitle: productTitle,
-      size: !arguments.showSeeAll
-          ? Dimens.defaultProductListPageSize
-          : Dimens.defaultProductListPageSizeWhenInHome,
-      supplierId: supplierId,
-      isSupplierCatalog: arguments.isSupplierCatalog,
-    );
+    if (sizeFilterList.isEmpty) {
+      productListResponse = await _productListApis.getProductList(
+        brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
+        categoryFilterList: categoryFilterList.map((e) => e?.type).toList(),
+        subCategoryFilterList:
+            subCategoryFilterList.map((e) => e?.subType).toList(),
+        pageIndex: pageIndex,
+        productTitle: productTitle,
+        size: !arguments.showSeeAll
+            ? Dimens.defaultProductListPageSize
+            : Dimens.defaultProductListPageSizeWhenInHome,
+        supplierId: supplierId,
+        isSupplierCatalog: arguments.isSupplierCatalog,
+      );
+    } else {
+      productListResponse = await _productListApis.getProductListForSizes(
+        pageIndex: pageIndex,
+        size: !arguments.showSeeAll
+            ? Dimens.defaultProductListPageSize
+            : Dimens.defaultProductListPageSizeWhenInHome,
+        sizesFilterList: sizeFilterList
+            .map((e) =>
+                '${e?.measurement?.toStringAsFixed(1)} ${e?.measurementUnit}')
+            .toList(),
+        supplierId: supplierId,
+        sizesType: sizesType,
+        subType: subCategoryFilterList.first!.subType!,
+      );
+    }
 
     setBusy(false);
 
@@ -78,7 +104,17 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
         [];
     productTitle = arguments.productTitle;
 
+    getSubCategories();
+
     getProductList();
+
+    if (arguments.isSupplierCatalog) {
+      sizesType = ProductSizesType.CATALOG;
+    } else if (isDemander()) {
+      sizesType = ProductSizesType.DEMAND;
+    } else {
+      sizesType = ProductSizesType.STANDARD;
+    }
   }
 
   void openFiltersDialogBox() async {
@@ -106,6 +142,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       // productTitle = productTitle;
       pageIndex = 0;
       getProductList();
+      getSubCategories();
     }
   }
 
@@ -169,6 +206,75 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   openSortDialogBox() {}
 
   reloadPage() {
+    getProductList();
+  }
+
+  SuppliersSubTypesListResponse subCategoryListResponse =
+      SuppliersSubTypesListResponse().empty();
+  void getSubCategories() async {
+    if (categoryFilterList.length == 1) {
+      subCategoryListResponse =
+          await _productSubCatgoriesApis.getProductSubCategoriesList(
+        pageIndex: 0,
+        pageSize: 3,
+        checkedBrandList: brandsFilterList.map((e) => e?.brand).toList(),
+        checkedCategoryList: categoryFilterList.map((e) => e?.type).toList(),
+        isSupplierCatalog: arguments.isSupplierCatalog,
+        productTitle: productTitle,
+        subCategoryTitle: '',
+        supplierId: supplierId,
+      );
+      productSubTypeApiStatus = ApiStatus.FETCHED;
+      notifyListeners();
+    }
+  }
+
+  showAllSubCategoriesDialogBox() async {}
+  showAllSizesDialogBox() async {}
+
+  void addToSubCategoryFilterList({SubType? subType}) {
+    subCategoryFilterList.add(
+      subType,
+    );
+    getProductList();
+    getSizeList();
+  }
+
+  void removeFromSubCategoryFilterList({SubType? subType}) {
+    subCategoryFilterList.remove(
+      subType,
+    );
+    getSizeList();
+    getProductList();
+  }
+
+  final ProductSizesApis _productSizesApis = locator<ProductSizesApisImpl>();
+  ProductSizesListResponse productSizesListResponse =
+      ProductSizesListResponse().empty();
+  void getSizeList() async {
+    if (subCategoryFilterList.length == 1) {
+      productSizesListResponse = await _productSizesApis.getProductSizesList(
+        pageIndex: 0,
+        pageSize: 5,
+        subType: subCategoryFilterList.first!.subType!,
+        sizesType: sizesType,
+      );
+
+      notifyListeners();
+    }
+  }
+
+  void addToSizesFilterList({ProductSize? subType}) {
+    sizeFilterList.add(
+      subType,
+    );
+    getProductList();
+  }
+
+  void removeFromaSizesFilterList({ProductSize? subType}) {
+    sizeFilterList.remove(
+      subType,
+    );
     getProductList();
   }
 }
