@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_image/profile_image_widget.dart';
@@ -32,14 +32,14 @@ class SingleBrandItemWidget extends StatelessWidget {
             ),
             profileImageHeight: 100,
             profileImageWidth: 100,
-            imageDownloadString: item.title,
+            imageDownloadString: item.brand,
           ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(2),
             margin: const EdgeInsets.all(4),
             child: Text(
-              item.title ?? '',
+              item.brand ?? '',
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

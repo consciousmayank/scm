@@ -3,6 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -121,13 +122,11 @@ class PopularCategoriesView extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: SingleCategoryItemWidget(
                                         item: model.categoriesResponse!.types!
-                                                .elementAt(
-                                                  index,
-                                                )
-                                                .type ??
-                                            '',
+                                            .elementAt(
+                                          index,
+                                        ),
                                         onItemClicked: (
-                                            {required String selectedItem}) {
+                                            {required Type selectedItem}) {
                                           model.takeToProductListView(
                                             selectedCategory: selectedItem,
                                           );

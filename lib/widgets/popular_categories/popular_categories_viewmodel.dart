@@ -34,7 +34,7 @@ class PopularCategoriesViewModel extends GeneralisedBaseViewModel {
   }
 
   void takeToProductListView({
-    required String selectedCategory,
+    required Type selectedCategory,
   }) {
     if (args.supplierId == null) {
       navigationService.navigateTo(

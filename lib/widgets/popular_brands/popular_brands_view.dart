@@ -3,7 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
-import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -299,14 +299,14 @@ class SinglePopularBrandItem extends StatelessWidget {
           ProfileImageWidget.withNoElevation(
             profileImageHeight: 100,
             profileImageWidth: 100,
-            imageUrlString: item.image,
+            imageUrlString: item.brand,
           ),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(2),
             margin: const EdgeInsets.all(4),
             child: Text(
-              item.title ?? '',
+              item.brand ?? '',
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

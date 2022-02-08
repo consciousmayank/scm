@@ -1,15 +1,16 @@
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/generalised_base_view_model.dart';
-import 'package:scm/model_classes/brands_response_for_dashboard.dart';
 import 'package:scm/services/app_api_service_classes/home_page_apis.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 
 class PopularBrandsViewModel extends GeneralisedBaseViewModel {
-  AllBrandsResponse? allBrandsResponse;
+  SuppliersBrandsListResponse allBrandsResponse =
+      SuppliersBrandsListResponse().empty();
   late final PopularBrandsViewArgs arguments;
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocusNode = FocusNode();
@@ -57,7 +58,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
       navigationService.navigateTo(
         productListViewPageRoute,
         arguments: ProductListViewArgs.fullScreen(
-          brandsFilterList: [selectedItem.title],
+          brandsFilterList: [selectedItem],
           categoryFilterList: [],
           subCategoryFilterList: [],
           productTitle: '',
@@ -68,7 +69,7 @@ class PopularBrandsViewModel extends GeneralisedBaseViewModel {
       navigationService.navigateTo(
         productListViewPageRoute,
         arguments: ProductListViewArgs.asSupplierProductList(
-          brandsFilterList: [selectedItem.title],
+          brandsFilterList: [selectedItem],
           categoryFilterList: [],
           subCategoryFilterList: [],
           productTitle: '',

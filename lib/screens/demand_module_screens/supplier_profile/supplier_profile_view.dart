@@ -3,6 +3,7 @@ import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/brands_response_for_dashboard.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/model_classes/suppliers_list_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
@@ -187,7 +188,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
             ),
           ),
         if (model.brandsApiStatus == ApiStatus.FETCHED &&
-            model.allBrandsResponse!.brands!.isNotEmpty)
+            model.allBrandsResponse.brands!.isNotEmpty)
           SliverToBoxAdapter(
             child: AppTableWidget.header(
               values: [
@@ -231,7 +232,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
         SliverToBoxAdapter(
           child: model.brandsApiStatus == ApiStatus.LOADING
               ? const LoadingWidgetWithText(text: labelFetchingBrands)
-              : model.allBrandsResponse!.brands!.isEmpty
+              : model.allBrandsResponse.brands!.isEmpty
                   ? Column(
                       children: const [
                         NoDataWidget.noCard(text: labelNoBrandsFound),
@@ -272,13 +273,11 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                   width: 250,
                                   child: Builder(builder: (context) {
                                     return SingleBrandItemWidget(
-                                      item: model.allBrandsResponse!.brands!
+                                      item: model.allBrandsResponse.brands!
                                           .elementAt(
                                         index,
                                       ),
-                                      onItemClicked: ({
-                                        required Brand selectedItem,
-                                      }) {
+                                      onItemClicked: ({required selectedItem}) {
                                         model.takeToProductListView(
                                           selectedBrand: selectedItem,
                                         );
@@ -287,14 +286,13 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                   }),
                                 );
                               },
-                              itemCount:
-                                  model.allBrandsResponse!.brands!.length,
+                              itemCount: model.allBrandsResponse.brands!.length,
                             ),
                           ),
                           AppInkwell(
                             onTap: () {
                               brandsItemScrollController.scrollTo(
-                                index: model.allBrandsResponse!.brands!.length,
+                                index: model.allBrandsResponse.brands!.length,
                                 duration: const Duration(seconds: 2),
                                 curve: Curves.easeInOutCubic,
                               );
@@ -398,15 +396,13 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
                                 return SizedBox(
                                   width: 180,
                                   child: SingleCategoryItemWidget(
-                                    item:
-                                        model.productCategoriesResponse!.types!
-                                                .elementAt(
-                                                  index,
-                                                )
-                                                .type ??
-                                            '',
+                                    item: model
+                                        .productCategoriesResponse!.types!
+                                        .elementAt(
+                                      index,
+                                    ),
                                     onItemClicked: ({
-                                      required String selectedItem,
+                                      required Type selectedItem,
                                     }) {
                                       model.takeToProductListView(
                                         selectedCategory: selectedItem,
@@ -491,7 +487,7 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
             ? const SliverToBoxAdapter(
                 child: LoadingWidgetWithText(text: labelFetchingProducts),
               )
-            : model.allBrandsResponse!.brands!.isEmpty
+            : model.allBrandsResponse.brands!.isEmpty
                 ? const SliverToBoxAdapter(
                     child: NoDataWidget.noCard(
                       text: labelNoProductsFound,

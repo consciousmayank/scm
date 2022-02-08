@@ -53,7 +53,9 @@ class _PimSupervisorStatisticsViewState
                     stats: model.statistics.published,
                   ),
                   StatsCard(
-                      title: 'Total', stats: model.getStatisticsGrandTotal()),
+                    title: 'Total',
+                    stats: model.getStatisticsGrandTotal(),
+                  ),
                 ],
               ),
       ),

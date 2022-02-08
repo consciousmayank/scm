@@ -3,6 +3,9 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
+import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
+import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/cart_icon/cart_icon_view.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/utils/strings.dart';
@@ -143,154 +146,150 @@ class ProductListView extends StatelessWidget {
                       right: Dimens().popularBrandsRightpadding,
                     ),
                     child: model.productListResponse!.products!.isNotEmpty
-                        ? Flexible(
-                            flex: 3,
-                            child: Column(
-                              children: [
-                                if (!arguments.showAppbar &&
-                                    arguments.isScrollVertical)
-                                  Container(
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        AppButton.appbar(
-                                          buttonBg: Theme.of(context)
-                                              .primaryColorLight,
-                                          onTap: () =>
-                                              model.openFiltersDialogBox(),
-                                          leading: const Icon(Icons.filter),
-                                          title: model.getAppliedFiltersCount() ==
-                                                  0
-                                              ? 'Filter'
-                                              : 'Filter (${model.getAppliedFiltersCount()})',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                if (arguments.showSeeAll)
-                                  Container(
-                                    color: AppColors().white,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          getTitle(
-                                            model: model,
-                                          ),
-                                          style: AppTextStyles(context: context)
-                                              .popularBrandsTitleStyle,
-                                        ),
-                                        Row(
-                                          children: getOptionsList(
-                                              model: model, context: context),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                hSizedBox(height: 8),
-                                if (model.categoryFilterList.length == 1)
-                                  const SubCategoryView(),
-                                if (model.subCategoryFilterList.length == 1 &&
-                                    model.categoryFilterList.length == 1)
-                                  const SizeListView(),
-                                hSizedBox(height: 8),
-                                Flexible(
-                                  child: GridView.builder(
-                                    scrollDirection: arguments.isScrollVertical
-                                        ? Axis.vertical
-                                        : Axis.horizontal,
-                                    itemCount: model
-                                        .productListResponse!.products!.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: getValueForScreenType(
-                                        context: context,
-                                        mobile: 1,
-                                        tablet: arguments.isScrollVertical
-                                            ? arguments.productsPerLine
-                                            : 2,
-                                        desktop: arguments.isScrollVertical
-                                            ? arguments.productsPerLine
-                                            : 2,
+                        ? Column(
+                            children: [
+                              if (!arguments.showAppbar &&
+                                  arguments.isScrollVertical)
+                                Container(
+                                  color: Colors.white,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      AppButton.appbar(
+                                        buttonBg:
+                                            Theme.of(context).primaryColorLight,
+                                        onTap: () =>
+                                            model.openFiltersDialogBox(),
+                                        leading: const Icon(Icons.filter),
+                                        title: model.getAppliedFiltersCount() ==
+                                                0
+                                            ? 'Filter'
+                                            : 'Filter (${model.getAppliedFiltersCount()})',
                                       ),
-                                      mainAxisExtent: 200,
-                                    ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return AppTableWidget.values(values: [
-                                        AppTableSingleItem.customWidget(
-                                          ProductListItem2View(
-                                            arguments: arguments
-                                                    .isSupplierCatalog
-                                                ? ProductListItem2ViewArguments
-                                                    .catalog(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
-                                                        product: model
-                                                            .productListResponse!
-                                                            .products!
-                                                            .elementAt(index),
-                                                      );
-                                                    },
-                                                  )
-                                                : ProductListItem2ViewArguments(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
-                                                        product: model
-                                                            .productListResponse!
-                                                            .products!
-                                                            .elementAt(index),
-                                                      );
-                                                    },
-                                                    supplierId:
-                                                        arguments.supplierId,
-                                                  ),
-                                          ),
-                                          flexValue: 1,
-                                        )
-                                      ]);
-                                    },
+                                    ],
                                   ),
                                 ),
-                                if (arguments.showBottomPageChanger)
-                                  ListFooter.previousNext(
-                                    pageNumber: model.pageIndex,
-                                    totalPages:
-                                        model.productListResponse!.totalPages ==
-                                                null
-                                            ? 0
-                                            : model.productListResponse!
-                                                    .totalPages! -
-                                                1,
-                                    onPreviousPageClick: () {
-                                      model.pageIndex = model.pageIndex - 1;
-                                      model.getProductList();
-                                    },
-                                    onNextPageClick: () {
-                                      model.pageIndex = model.pageIndex + 1;
-                                      model.getProductList();
-                                    },
-                                  )
-                              ],
-                            ),
+                              if (arguments.showSeeAll)
+                                Container(
+                                  color: AppColors().white,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        getTitle(
+                                          model: model,
+                                        ),
+                                        style: AppTextStyles(context: context)
+                                            .popularBrandsTitleStyle,
+                                      ),
+                                      Row(
+                                        children: getOptionsList(
+                                            model: model, context: context),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              hSizedBox(height: 8),
+                              if (model.categoryFilterList.length == 1 &&
+                                  model.subCategoryFilterList.isEmpty)
+                                const SubCategoryView(),
+                              if (model.subCategoryFilterList.length == 1 &&
+                                  model.categoryFilterList.length == 1)
+                                const SizeListView(),
+                              hSizedBox(height: 8),
+                              Flexible(
+                                child: GridView.builder(
+                                  scrollDirection: arguments.isScrollVertical
+                                      ? Axis.vertical
+                                      : Axis.horizontal,
+                                  itemCount: model
+                                      .productListResponse!.products!.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: getValueForScreenType(
+                                      context: context,
+                                      mobile: 1,
+                                      tablet: arguments.isScrollVertical
+                                          ? arguments.productsPerLine
+                                          : 2,
+                                      desktop: arguments.isScrollVertical
+                                          ? arguments.productsPerLine
+                                          : 2,
+                                    ),
+                                    mainAxisExtent: 200,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return AppTableWidget.values(values: [
+                                      AppTableSingleItem.customWidget(
+                                        ProductListItem2View(
+                                          arguments: arguments.isSupplierCatalog
+                                              ? ProductListItem2ViewArguments
+                                                  .catalog(
+                                                  product: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index),
+                                                  onProductOperationCompleted:
+                                                      () {
+                                                    model.reloadPage();
+                                                  },
+                                                  onProductClick: () {
+                                                    model.openProductDetails(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(index),
+                                                    );
+                                                  },
+                                                )
+                                              : ProductListItem2ViewArguments(
+                                                  product: model
+                                                      .productListResponse!
+                                                      .products!
+                                                      .elementAt(index),
+                                                  onProductOperationCompleted:
+                                                      () {
+                                                    model.reloadPage();
+                                                  },
+                                                  onProductClick: () {
+                                                    model.openProductDetails(
+                                                      product: model
+                                                          .productListResponse!
+                                                          .products!
+                                                          .elementAt(index),
+                                                    );
+                                                  },
+                                                  supplierId:
+                                                      arguments.supplierId,
+                                                ),
+                                        ),
+                                        flexValue: 1,
+                                      )
+                                    ]);
+                                  },
+                                ),
+                              ),
+                              if (arguments.showBottomPageChanger)
+                                ListFooter.previousNext(
+                                  pageNumber: model.pageIndex,
+                                  totalPages: model.productListResponse!
+                                              .totalPages ==
+                                          null
+                                      ? 0
+                                      : model.productListResponse!.totalPages! -
+                                          1,
+                                  onPreviousPageClick: () {
+                                    model.pageIndex = model.pageIndex - 1;
+                                    model.getProductList();
+                                  },
+                                  onNextPageClick: () {
+                                    model.pageIndex = model.pageIndex + 1;
+                                    model.getProductList();
+                                  },
+                                )
+                            ],
                           )
                         : const Center(
                             child: Text(productListNoProductsFoundError),
@@ -369,8 +368,8 @@ class ProductListViewArgs {
         supplierName = null,
         supplierId = null;
 
-  final List<String?>? brandsFilterList;
-  final List<String?>? categoryFilterList;
+  final List<Brand>? brandsFilterList;
+  final List<Type>? categoryFilterList;
   final bool isScrollVertical,
       showSeeAll,
       showBottomPageChanger,
@@ -381,7 +380,7 @@ class ProductListViewArgs {
 
   final String? productTitle;
   final int productsPerLine;
-  final List<String?>? subCategoryFilterList;
+  final List<SubType>? subCategoryFilterList;
   final int? supplierId;
   final String? supplierName;
 }

@@ -97,18 +97,9 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       addToCatalog = AddToCatalog();
     }
 
-    brandsFilterList = arguments.brandsFilterList
-            ?.map((e) => Brand(brand: e, count: 0))
-            .toList() ??
-        [];
-    categoryFilterList = arguments.categoryFilterList
-            ?.map((e) => Type(type: e, count: 0))
-            .toList() ??
-        [];
-    subCategoryFilterList = arguments.subCategoryFilterList
-            ?.map((e) => SubType(subType: e, count: 0))
-            .toList() ??
-        [];
+    brandsFilterList = arguments.brandsFilterList ?? [];
+    categoryFilterList = arguments.categoryFilterList ?? [];
+    subCategoryFilterList = arguments.subCategoryFilterList ?? [];
     productTitle = arguments.productTitle;
 
     getSubCategories();

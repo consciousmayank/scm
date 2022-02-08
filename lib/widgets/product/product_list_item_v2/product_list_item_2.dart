@@ -81,6 +81,8 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                     Expanded(
                       flex: 3,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -123,64 +125,53 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                           //   ],
                           // ),
                           const Spacer(),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: NullableTextWidget(
-                                    stringValue: getProductMeasurement(
-                                      measurement:
-                                          widget.arguments.product?.measurement,
-                                      measurementUnit: widget
-                                          .arguments.product?.measurementUnit,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    textStyle:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                ),
+                          if (widget.arguments.product?.measurement != null &&
+                              widget.arguments.product!.measurement! > 0)
+                            NullableTextWidget(
+                              stringValue: getProductMeasurement(
+                                measurement:
+                                    widget.arguments.product?.measurement,
+                                measurementUnit:
+                                    widget.arguments.product?.measurementUnit,
                               ),
-                              Expanded(
-                                child: widget.arguments.isForCatalog
-                                    ? const RemoveProductWidget()
-                                    : model.isSupplier()
-                                        //check if product is in catalog
+                              textAlign: TextAlign.left,
+                              textStyle: Theme.of(context).textTheme.subtitle2,
+                            ),
 
-                                        ? model.isProductInCatalog(
-                                            productId:
-                                                widget.arguments.product?.id,
-                                          )
-                                            ? const RemoveProductWidget()
-                                            : const AddProductWidget()
-                                        : model.isProductInCart(
-                                                productId: widget
-                                                    .arguments.product?.id)
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  const Flexible(
-                                                    child: RemoveProductWidget(
-                                                      reverseStyle: true,
-                                                    ),
-                                                    flex: 1,
-                                                  ),
-                                                  wSizedBox(width: 4),
-                                                  const Flexible(
-                                                    child:
-                                                        UpdateProductWidget(),
-                                                    flex: 1,
-                                                  ),
-                                                ],
-                                              )
-                                            : const AddProductWidget(),
-                                flex: 1,
-                              ),
-                            ],
-                          )
+                          // Container(
+                          //   child: Text('Error Causing Widget. To bo solved'),
+                          // ),
+                          widget.arguments.isForCatalog
+                              ? const RemoveProductWidget()
+                              : model.isSupplier()
+                                  //check if product is in catalog
+
+                                  ? model.isProductInCatalog(
+                                      productId: widget.arguments.product?.id,
+                                    )
+                                      ? const RemoveProductWidget()
+                                      : const AddProductWidget()
+                                  : model.isProductInCart(
+                                          productId:
+                                              widget.arguments.product?.id)
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Flexible(
+                                              child: RemoveProductWidget(
+                                                reverseStyle: true,
+                                              ),
+                                              flex: 1,
+                                            ),
+                                            wSizedBox(width: 4),
+                                            const Flexible(
+                                              child: UpdateProductWidget(),
+                                              flex: 1,
+                                            ),
+                                          ],
+                                        )
+                                      : const AddProductWidget()
                         ],
                       ),
                     ),

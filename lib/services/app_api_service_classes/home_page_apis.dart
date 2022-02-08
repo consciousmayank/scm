@@ -8,7 +8,7 @@ import 'package:scm/model_classes/supplier_demander_brands.dart';
 import 'package:scm/services/network/base_api.dart';
 
 abstract class HomePageApis {
-  Future<AllBrandsResponse?> getAllBrands({
+  Future<SuppliersBrandsListResponse> getAllBrands({
     required int size,
     required int pageIndex,
     String searchTerm,
@@ -21,14 +21,15 @@ abstract class HomePageApis {
 
 class HomePageApisImpl extends BaseApi implements HomePageApis {
   @override
-  Future<AllBrandsResponse?> getAllBrands({
+  Future<SuppliersBrandsListResponse> getAllBrands({
     required int size,
     required int pageIndex,
     String? searchTerm,
     int? supplierId,
     bool isSupplierCatalog = false,
   }) async {
-    AllBrandsResponse? allBrandsResponse;
+    SuppliersBrandsListResponse allBrandsResponse =
+        SuppliersBrandsListResponse().empty();
 
     ParentApiResponse apiResponse = await apiService.getAllBrands(
       brandToSearch: searchTerm,
@@ -38,48 +39,11 @@ class HomePageApisImpl extends BaseApi implements HomePageApis {
       isSupplierCatalog: isSupplierCatalog,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
-      SuppliersBrandsListResponse suppliersBrandsListResponse =
-          SuppliersBrandsListResponse().empty();
-      suppliersBrandsListResponse =
+      allBrandsResponse =
           SuppliersBrandsListResponse.fromMap(apiResponse.response?.data);
-
-      return AllBrandsResponse(
-        brands: suppliersBrandsListResponse.brands!
-            .map(
-              (element) => supplierModuleBrandsResponse.Brand(
-                title: element.brand,
-                image: null,
-                id: null,
-              ),
-            )
-            .toList(),
-        currentPage: suppliersBrandsListResponse.currentPage,
-        totalItems: suppliersBrandsListResponse.totalItems,
-        totalPages: suppliersBrandsListResponse.totalPages,
-      );
-
-      // if (supplierId == null && !isSupplierCatalog) {
-
-      // } else {
-      //   BrandsStringListResponse brandsStringListResponse =
-      //       BrandsStringListResponse.fromMap(apiResponse.response?.data);
-
-      //   return AllBrandsResponse(
-      //     brands: brandsStringListResponse.brands!
-      //         .map(
-      //           (element) => supplierModuleBrandsResponse.Brand(
-      //             title: element,
-      //             image: null,
-      //             id: null,
-      //           ),
-      //         )
-      //         .toList(),
-      //     currentPage: brandsStringListResponse.currentPage,
-      //     totalItems: brandsStringListResponse.totalItems,
-      //     totalPages: brandsStringListResponse.totalPages,
-      //   );
-      // }
     }
+
+    return allBrandsResponse;
   }
 
   @override
