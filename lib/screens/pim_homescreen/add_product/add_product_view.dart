@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/pim_product_list_types.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/screens/pim_homescreen/add_product/add_product_viewmodel.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
+import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_textfield.dart';
 import 'package:scm/widgets/loading_widget.dart';
@@ -343,9 +345,35 @@ class AddProductView extends StatelessWidget {
                                       Stack(
                                         alignment: Alignment.topRight,
                                         children: [
-                                          image_widget.Image.memory(
-                                            model.selectedFiles.elementAt(0),
-                                          ),
+                                          // model.selectedFiles.isEmpty
+                                          //     ? ProfileImageWidget.productImage(
+                                          //         isForCatalog: false,
+                                          //         supplierId: null,
+                                          //         elevation: 0,
+                                          //         profileImageHeight: Dimens()
+                                          //             .productDtailImageHeight,
+                                          //         profileImageWidth: Dimens()
+                                          //             .productDtailImageHeight,
+                                          //         borderDerRadius:
+                                          //             BorderRadius.all(
+                                          //           Radius.circular(
+                                          //             Dimens()
+                                          //                 .suppliersListItemImageCircularRaduis,
+                                          //           ),
+                                          //         ),
+                                          //         productId: arguments
+                                          //             .productToEdit?.id,
+                                          //       )
+                                          //     :
+                                          model.imageApiStatus ==
+                                                  ApiStatus.LOADING
+                                              ? LoadingWidgetWithText(
+                                                  text:
+                                                      'Loading Image. Please Wait')
+                                              : image_widget.Image.memory(
+                                                  model.selectedFiles
+                                                      .elementAt(0),
+                                                ),
                                           AppInkwell(
                                             onTap: () {
                                               model.selectedFiles.removeAt(0);

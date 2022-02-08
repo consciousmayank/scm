@@ -28,6 +28,7 @@ class SuppliersTypesListResponse {
   final int? currentPage;
   // final Filters? filters;
   final int? totalItems;
+
   final int? totalPages;
   final List<Type>? types;
 
@@ -134,8 +135,8 @@ class Type {
         count: json["count"],
       );
 
-  final String? type;
   final int? count;
+  final String? type;
 
   Type empty() {
     return Type(

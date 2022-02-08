@@ -1762,6 +1762,7 @@ class ApiService {
     required int pageSize,
     required String subType,
     required ProductSizesType sizesType,
+    required int? supplierId,
   }) async {
     Response? response;
     DioError? error;
@@ -1771,6 +1772,7 @@ class ApiService {
             GET_PRODUCT_SIZES_LIST(
               role: getLoggedInRole(),
               sizesType: sizesType,
+              supplierId: supplierId,
             ),
             queryParameters: {
               'page': pageIndex,

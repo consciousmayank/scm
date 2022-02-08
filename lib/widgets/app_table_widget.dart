@@ -19,8 +19,29 @@ class AppTableWidget extends StatelessWidget {
   }) : super(key: key);
 
   final bool isHeader, requiresPadding;
-
   final List<AppTableSingleItem> values;
+
+  textValueChild({
+    required bool isHeader,
+    required AppTableSingleItem singleValue,
+    required BuildContext context,
+  }) {
+    return Text(
+      singleValue.getValue(),
+      maxLines: singleValue.maxlines,
+      overflow: TextOverflow.fade,
+      textAlign: singleValue.textAlignment,
+      style: isHeader && singleValue.textStyle == null
+          ? Theme.of(context).textTheme.headline6?.copyWith(
+                color: AppColors().primaryHeaderTextColor,
+              )
+          : singleValue.textStyle?.copyWith(
+              color: isHeader
+                  ? AppColors().primaryHeaderTextColor
+                  : AppColors().black,
+            ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,43 +96,9 @@ class AppTableWidget extends StatelessWidget {
             )
             .toList());
   }
-
-  textValueChild({
-    required bool isHeader,
-    required AppTableSingleItem singleValue,
-    required BuildContext context,
-  }) {
-    return Text(
-      singleValue.getValue(),
-      maxLines: singleValue.maxlines,
-      overflow: TextOverflow.fade,
-      textAlign: singleValue.textAlignment,
-      style: isHeader && singleValue.textStyle == null
-          ? Theme.of(context).textTheme.headline6?.copyWith(
-                color: AppColors().primaryHeaderTextColor,
-              )
-          : singleValue.textStyle?.copyWith(
-              color: isHeader
-                  ? AppColors().primaryHeaderTextColor
-                  : AppColors().black,
-            ),
-    );
-  }
 }
 
 class AppTableSingleItem {
-  const AppTableSingleItem.double(
-    this.doubleValue, {
-    this.flexValue = 1,
-    this.textAlignment,
-    this.textStyle,
-    this.formatNumber = false,
-    this.maxlines = 1,
-    this.showToolTip = true,
-  })  : intValue = null,
-        customWidget = null,
-        stringValue = null;
-
   const AppTableSingleItem.customWidget(
     this.customWidget, {
     this.flexValue = 1,
@@ -123,6 +110,18 @@ class AppTableSingleItem {
         doubleValue = null,
         stringValue = null,
         maxlines = null;
+
+  const AppTableSingleItem.double(
+    this.doubleValue, {
+    this.flexValue = 1,
+    this.textAlignment,
+    this.textStyle,
+    this.formatNumber = false,
+    this.maxlines = 1,
+    this.showToolTip = true,
+  })  : intValue = null,
+        customWidget = null,
+        stringValue = null;
 
   const AppTableSingleItem.int(
     this.intValue, {
@@ -148,16 +147,16 @@ class AppTableSingleItem {
         customWidget = null,
         intValue = null;
 
+  final Widget? customWidget;
   final double? doubleValue;
   final int flexValue;
   final bool formatNumber;
-  final bool showToolTip;
   final int? intValue;
+  final int? maxlines;
+  final bool showToolTip;
   final String? stringValue;
   final TextAlign? textAlignment;
   final TextStyle? textStyle;
-  final Widget? customWidget;
-  final int? maxlines;
 
   getValue() {
     var format = NumberFormat.currency(locale: 'HI');

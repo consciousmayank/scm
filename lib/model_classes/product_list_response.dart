@@ -31,6 +31,7 @@ class ProductListResponse {
   int? currentPage;
   // Filters? filters;
   List<Product>? products;
+
   int? totalItems;
   int? totalPages;
 

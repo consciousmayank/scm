@@ -190,8 +190,7 @@ class ProductListView extends StatelessWidget {
                                     ),
                                   ),
                                 hSizedBox(height: 8),
-                                if (model.categoryFilterList.length == 1 &&
-                                    model.subCategoryFilterList.isEmpty)
+                                if (model.categoryFilterList.length == 1)
                                   const SubCategoryView(),
                                 if (model.subCategoryFilterList.length == 1 &&
                                     model.categoryFilterList.length == 1)

@@ -57,13 +57,13 @@ class NullableTextWidget extends StatelessWidget {
 
   final BoxDecoration? decoration;
   final double? doubleValue;
+  final bool formatNumber;
   final int? intValue;
   final int? maxLines;
   final bool selectable;
   final String? stringValue;
   final TextAlign textAlign;
   final TextStyle? textStyle;
-  final bool formatNumber;
 
   getValue() {
     var format = NumberFormat.currency(locale: 'HI');

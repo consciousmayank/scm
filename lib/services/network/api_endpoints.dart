@@ -140,6 +140,7 @@ final GET_PRODUCT_IMAGE_VIA_PRODUCT_ID = ({
 final GET_PRODUCT_SIZES_LIST = ({
   required String role,
   required ProductSizesType sizesType,
+  required int? supplierId,
 }) {
   switch (sizesType) {
     case ProductSizesType.STANDARD:
@@ -149,7 +150,7 @@ final GET_PRODUCT_SIZES_LIST = ({
       return '/api/supply/product/size';
       break;
     case ProductSizesType.DEMAND:
-      return '/api/demand/product/size';
+      return '/api/demand/supply/$supplierId/product/size';
       break;
   }
 };

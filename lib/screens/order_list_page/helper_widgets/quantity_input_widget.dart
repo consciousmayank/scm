@@ -18,12 +18,13 @@ class QuantityWidget extends StatefulWidget {
 
   final Function({required String value}) onChanged;
   final Function({required Key? keyValue}) onRecieveFocus;
+  final Key? currentQuantityTextFieldHavingFocus;
   // final TextEditingController controller;
   // final FocusNode focusNode;
   final String hint;
+
   final int index;
   final int quantity;
-  final Key? currentQuantityTextFieldHavingFocus;
 
   @override
   _QuantityWidgetState createState() => _QuantityWidgetState();
@@ -95,6 +96,7 @@ class PriceWidget extends StatefulWidget {
   // final TextEditingController controller;
   // final FocusNode focusNode;
   final String hint;
+
   final int index;
   final double price;
 

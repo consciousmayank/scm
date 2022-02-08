@@ -55,6 +55,7 @@ class SupplyProductsOptionsPageViewModel extends GeneralisedBaseViewModel {
   // ProductCategoriesResponse? _categoriesResponse;
 
   final HomePageApis _homePageApis = locator<HomePageApisImpl>();
+
   int? _lengthOfCategoriesListView;
   int? _lengthOfListView;
   List<Brand>? _listOfBrands;

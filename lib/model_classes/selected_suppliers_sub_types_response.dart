@@ -29,6 +29,7 @@ class SuppliersSubTypesListResponse {
   final int? currentPage;
   // final Filters? filters;
   final List<SubType>? subTypes;
+
   final int? totalItems;
   final int? totalPages;
 
@@ -135,8 +136,8 @@ class SubType {
         count: json["count"],
       );
 
-  final String? subType;
   int? count;
+  final String? subType;
 
   SubType empty() {
     return SubType(

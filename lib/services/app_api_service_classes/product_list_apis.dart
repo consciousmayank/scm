@@ -84,27 +84,6 @@ class ProductListApiImpl extends BaseApi implements ProductListApis {
   }
 
   @override
-  Future<ApiResponse> updateProductById({
-    required int? productId,
-    // required int? supplierId,
-    required UpdateProductApiSelection? apiToHit,
-  }) async {
-    ApiResponse? response;
-    ParentApiResponse parentApiResponse = await apiService.updateProductById(
-      productId: productId,
-      // supplierId: supplierId,
-      apiToHit: apiToHit,
-    );
-
-    if (filterResponse(parentApiResponse) != null) {
-      response = ApiResponse.fromMap(parentApiResponse.response?.data);
-      print('status code: ${parentApiResponse.response?.statusCode}');
-      // return response;
-    }
-    return response!;
-  }
-
-  @override
   Future<ProductListResponse> getProductListForSizes({
     required List<String?> sizesFilterList,
     required int pageIndex,
@@ -128,5 +107,26 @@ class ProductListApiImpl extends BaseApi implements ProductListApis {
     }
 
     return productList;
+  }
+
+  @override
+  Future<ApiResponse> updateProductById({
+    required int? productId,
+    // required int? supplierId,
+    required UpdateProductApiSelection? apiToHit,
+  }) async {
+    ApiResponse? response;
+    ParentApiResponse parentApiResponse = await apiService.updateProductById(
+      productId: productId,
+      // supplierId: supplierId,
+      apiToHit: apiToHit,
+    );
+
+    if (filterResponse(parentApiResponse) != null) {
+      response = ApiResponse.fromMap(parentApiResponse.response?.data);
+      print('status code: ${parentApiResponse.response?.statusCode}');
+      // return response;
+    }
+    return response!;
   }
 }

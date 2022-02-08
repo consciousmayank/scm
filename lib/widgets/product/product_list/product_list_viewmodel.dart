@@ -23,7 +23,6 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class ProductListViewModel extends GeneralisedBaseViewModel {
-  late ProductSizesType sizesType;
   late AddToCart addToCartObject;
   late AddToCatalog addToCatalog;
   late final ProductListViewArgs arguments;
@@ -31,13 +30,21 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   List<Type?> categoryFilterList = [];
   int pageIndex = 0;
   ProductListResponse? productListResponse;
-  String? productTitle;
-  List<SubType?> subCategoryFilterList = [];
-  List<ProductSize?> sizeFilterList = [];
-  late final int? supplierId;
+  ProductSizesListResponse productSizesListResponse =
+      ProductSizesListResponse().empty();
+
   ApiStatus productSubTypeApiStatus = ApiStatus.LOADING;
+  String? productTitle;
+  List<ProductSize?> sizeFilterList = [];
+  late ProductSizesType sizesType;
+  List<SubType?> subCategoryFilterList = [];
+  SuppliersSubTypesListResponse subCategoryListResponse =
+      SuppliersSubTypesListResponse().empty();
+
+  late final int? supplierId;
 
   final ProductListApis _productListApis = locator<ProductListApiImpl>();
+  final ProductSizesApis _productSizesApis = locator<ProductSizesApisImpl>();
   final ProductSubCategoriesApisImpl _productSubCatgoriesApis =
       locator<ProductSubCategoriesApisImpl>();
 
@@ -209,8 +216,6 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     getProductList();
   }
 
-  SuppliersSubTypesListResponse subCategoryListResponse =
-      SuppliersSubTypesListResponse().empty();
   void getSubCategories() async {
     if (categoryFilterList.length == 1) {
       subCategoryListResponse =
@@ -230,6 +235,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   }
 
   showAllSubCategoriesDialogBox() async {}
+
   showAllSizesDialogBox() async {}
 
   void addToSubCategoryFilterList({SubType? subType}) {
@@ -248,15 +254,13 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
     getProductList();
   }
 
-  final ProductSizesApis _productSizesApis = locator<ProductSizesApisImpl>();
-  ProductSizesListResponse productSizesListResponse =
-      ProductSizesListResponse().empty();
   void getSizeList() async {
     if (subCategoryFilterList.length == 1) {
       productSizesListResponse = await _productSizesApis.getProductSizesList(
         pageIndex: 0,
         pageSize: 5,
         subType: subCategoryFilterList.first!.subType!,
+        supplierId: supplierId,
         sizesType: sizesType,
       );
 

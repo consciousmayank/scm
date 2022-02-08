@@ -49,6 +49,7 @@ class Dimens {
   int get nameFlexValueTrending => 4;
 
   int get quantityFlexValue => 3;
+
   int get quantityFlexValueCart => 2;
 
   int get countFlexValueTrending => 3;
@@ -56,6 +57,7 @@ class Dimens {
   int get amountFlexValue => 3;
 
   int get grandTotaltFlexValue => 5;
+
   int get grandTotaltFlexValueCart => 6;
 
   double get popularBrandsHeight => 350;
@@ -91,9 +93,11 @@ class Dimens {
   double get suppliersListItemImageCircularRaduis => 8;
 
   double get defaultButtonPadding => 6;
+
   double get productDtailImageHeight => 283;
 
   get getSubCategoryListViewHeight => 35;
+
   EdgeInsets productDetaildialogPadding({
     required BuildContext context,
   }) =>

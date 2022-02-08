@@ -25,17 +25,19 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:scm/model_classes/address.dart' as demanders_address;
 
 class CartPageViewModel extends GeneralisedBaseViewModel {
-  late bool orderPlaced;
   late AddToCart addToCartObject;
   List<demanders_address.Address> addressList = [];
   Cart cart = Cart().empty();
   ApiStatus cartApiStatus = ApiStatus.LOADING;
   ApiStatus getAddressListApiStatus = ApiStatus.LOADING;
   ApiStatus getLatestOrdersListApi = ApiStatus.LOADING;
+  OrderListResponse orderList = OrderListResponse().empty();
+  late bool orderPlaced;
   ApiStatus placeOrderApiStatus = ApiStatus.FETCHED;
-  demanders_address.Address? selectedAddress;
   // String? supplierName;
   late Supplier responseSupplierDetails;
+
+  demanders_address.Address? selectedAddress;
 
   final AddressApis _addressApis = locator<AddressApis>();
   final CommonDashBoardApis _commonDashBoardApis =
@@ -280,7 +282,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
     return quantityTotal;
   }
 
-  OrderListResponse orderList = OrderListResponse().empty();
   getRecentOrderList() async {
     orderList = await _commonDashBoardApis.getOrdersList(
       pageSize: 1,

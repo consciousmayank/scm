@@ -16,14 +16,14 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class OrderProcessingConfirmationDialogBoxView extends StatefulWidget {
-  final Function(DialogResponse) completer;
-  final DialogRequest request;
-
   const OrderProcessingConfirmationDialogBoxView({
     Key? key,
     required this.completer,
     required this.request,
   }) : super(key: key);
+
+  final Function(DialogResponse) completer;
+  final DialogRequest request;
 
   @override
   _OrderProcessingConfirmationDialogBoxViewState createState() =>
@@ -223,19 +223,19 @@ class _OrderProcessingConfirmationDialogBoxViewState
 }
 
 class OrderProcessingConfirmationDialogBoxViewArguments {
-  final String title;
-  final List<OrderItem> orderList;
-
   OrderProcessingConfirmationDialogBoxViewArguments({
     required this.title,
     required this.orderList,
   });
+
+  final List<OrderItem> orderList;
+  final String title;
 }
 
 class OrderProcessingConfirmationDialogBoxViewOutArguments {
-  final List<OrderItem> orderList;
-
   OrderProcessingConfirmationDialogBoxViewOutArguments({
     required this.orderList,
   });
+
+  final List<OrderItem> orderList;
 }

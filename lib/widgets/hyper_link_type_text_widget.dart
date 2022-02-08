@@ -3,9 +3,6 @@ import 'package:scm/app/dimens.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 
 class HyperLinkTextView extends StatefulWidget {
-  final String text;
-  final TextStyle linkStyle;
-  final Function onHyperLinkTap;
   const HyperLinkTextView({
     Key? key,
     required this.linkStyle,
@@ -13,12 +10,17 @@ class HyperLinkTextView extends StatefulWidget {
     required this.onHyperLinkTap,
   }) : super(key: key);
 
+  final TextStyle linkStyle;
+  final Function onHyperLinkTap;
+  final String text;
+
   @override
   _HyperLinkTextViewState createState() => _HyperLinkTextViewState();
 }
 
 class _HyperLinkTextViewState extends State<HyperLinkTextView> {
   bool hover = false;
+
   @override
   Widget build(BuildContext context) {
     TextStyle hyperLinkStyle = widget.linkStyle.copyWith(

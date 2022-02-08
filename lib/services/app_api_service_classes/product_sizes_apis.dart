@@ -9,6 +9,7 @@ abstract class ProductSizesApis {
     required int? pageSize,
     required String subType,
     required ProductSizesType sizesType,
+    required int? supplierId,
   });
 }
 
@@ -19,6 +20,7 @@ class ProductSizesApisImpl extends BaseApi implements ProductSizesApis {
     required int? pageSize,
     required String subType,
     required ProductSizesType sizesType,
+    required int? supplierId,
   }) async {
     ProductSizesListResponse productSizesResponse =
         ProductSizesListResponse().empty();
@@ -28,6 +30,7 @@ class ProductSizesApisImpl extends BaseApi implements ProductSizesApis {
       pageSize: pageSize ?? 10,
       subType: subType,
       sizesType: sizesType,
+      supplierId: supplierId,
     );
     if (filterResponse(apiResponse, showSnackBar: true) != null) {
       productSizesResponse =

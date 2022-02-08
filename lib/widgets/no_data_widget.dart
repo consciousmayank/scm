@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/dimens.dart';
 
 class NoDataWidget extends StatelessWidget {
-  final bool encloseInCard;
-  final bool encloseInSizedBox;
   const NoDataWidget({
     Key? key,
     required this.text,
   })  : encloseInCard = true,
+        encloseInSizedBox = true,
+        super(key: key);
+
+  const NoDataWidget.noCard({
+    Key? key,
+    required this.text,
+  })  : encloseInCard = false,
         encloseInSizedBox = true,
         super(key: key);
 
@@ -18,13 +23,6 @@ class NoDataWidget extends StatelessWidget {
         encloseInSizedBox = false,
         super(key: key);
 
-  const NoDataWidget.noCard({
-    Key? key,
-    required this.text,
-  })  : encloseInCard = false,
-        encloseInSizedBox = true,
-        super(key: key);
-
   const NoDataWidget.noSizedBox({
     Key? key,
     required this.text,
@@ -32,18 +30,9 @@ class NoDataWidget extends StatelessWidget {
         encloseInSizedBox = true,
         super(key: key);
 
+  final bool encloseInCard;
+  final bool encloseInSizedBox;
   final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return encloseInSizedBox
-        ? SizedBox(
-            height: MediaQuery.of(context).size.height * 0.40,
-            width: MediaQuery.of(context).size.width,
-            child: getCard(context: context),
-          )
-        : getCard(context: context);
-  }
 
   getCard({
     required BuildContext context,
@@ -65,5 +54,16 @@ class NoDataWidget extends StatelessWidget {
         style: Theme.of(context).textTheme.headline6,
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return encloseInSizedBox
+        ? SizedBox(
+            height: MediaQuery.of(context).size.height * 0.40,
+            width: MediaQuery.of(context).size.width,
+            child: getCard(context: context),
+          )
+        : getCard(context: context);
   }
 }

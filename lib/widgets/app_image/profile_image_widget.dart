@@ -47,19 +47,6 @@ class ProfileImageWidget extends StatelessWidget {
         isForCatalog = false,
         super(key: key);
 
-  const ProfileImageWidget.withCurvedBorder({
-    Key? key,
-    this.imageUrlString,
-    this.profileImageHeight = 40,
-    this.profileImageWidth = 40,
-    required this.elevation,
-    required this.borderDerRadius,
-  })  : imageDownloadString = null,
-        productId = null,
-        supplierId = null,
-        isForCatalog = false,
-        super(key: key);
-
   const ProfileImageWidget.productImage({
     Key? key,
     required this.profileImageHeight,
@@ -71,6 +58,19 @@ class ProfileImageWidget extends StatelessWidget {
     required this.supplierId,
   })  : imageDownloadString = null,
         imageUrlString = null,
+        super(key: key);
+
+  const ProfileImageWidget.withCurvedBorder({
+    Key? key,
+    this.imageUrlString,
+    this.profileImageHeight = 40,
+    this.profileImageWidth = 40,
+    required this.elevation,
+    required this.borderDerRadius,
+  })  : imageDownloadString = null,
+        productId = null,
+        supplierId = null,
+        isForCatalog = false,
         super(key: key);
 
   const ProfileImageWidget.withNoElevation({
@@ -90,9 +90,9 @@ class ProfileImageWidget extends StatelessWidget {
   final double? elevation;
   final String? imageDownloadString;
   final String? imageUrlString;
-  final double? profileImageHeight, profileImageWidth;
-  final int? productId;
   final bool? isForCatalog;
+  final int? productId;
+  final double? profileImageHeight, profileImageWidth;
   final int? supplierId;
 
   @override

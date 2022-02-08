@@ -12,10 +12,22 @@ class ProductSizesListResponse {
     this.currentPage,
   });
 
-  final int? totalItems;
-  final List<ProductSize>? productSize;
-  final int? totalPages;
+  factory ProductSizesListResponse.fromJson(String str) =>
+      ProductSizesListResponse.fromMap(json.decode(str));
+
+  factory ProductSizesListResponse.fromMap(Map<String, dynamic> json) =>
+      ProductSizesListResponse(
+        totalItems: json["totalItems"],
+        productSize: List<ProductSize>.from(
+            json["productSize"].map((x) => ProductSize.fromMap(x))),
+        totalPages: json["totalPages"],
+        currentPage: json["currentPage"],
+      );
+
   final int? currentPage;
+  final List<ProductSize>? productSize;
+  final int? totalItems;
+  final int? totalPages;
 
   ProductSizesListResponse copyWith({
     int? totalItems,
@@ -30,19 +42,7 @@ class ProductSizesListResponse {
         currentPage: currentPage ?? this.currentPage,
       );
 
-  factory ProductSizesListResponse.fromJson(String str) =>
-      ProductSizesListResponse.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory ProductSizesListResponse.fromMap(Map<String, dynamic> json) =>
-      ProductSizesListResponse(
-        totalItems: json["totalItems"],
-        productSize: List<ProductSize>.from(
-            json["productSize"].map((x) => ProductSize.fromMap(x))),
-        totalPages: json["totalPages"],
-        currentPage: json["currentPage"],
-      );
 
   Map<String, dynamic> toMap() => {
         "totalItems": totalItems,
@@ -67,6 +67,14 @@ class ProductSize {
     this.measurementUnit,
   });
 
+  factory ProductSize.fromJson(String str) =>
+      ProductSize.fromMap(json.decode(str));
+
+  factory ProductSize.fromMap(Map<String, dynamic> json) => ProductSize(
+        measurement: json["measurement"] as double,
+        measurementUnit: json["measurementUnit"],
+      );
+
   final double? measurement;
   final String? measurementUnit;
 
@@ -79,15 +87,7 @@ class ProductSize {
         measurementUnit: measurementUnit ?? this.measurementUnit,
       );
 
-  factory ProductSize.fromJson(String str) =>
-      ProductSize.fromMap(json.decode(str));
-
   String toJson() => json.encode(toMap());
-
-  factory ProductSize.fromMap(Map<String, dynamic> json) => ProductSize(
-        measurement: json["measurement"].toDouble(),
-        measurementUnit: json["measurementUnit"],
-      );
 
   Map<String, dynamic> toMap() => {
         "measurement": measurement,

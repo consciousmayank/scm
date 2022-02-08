@@ -7,12 +7,15 @@ import 'package:scm/app/di.dart';
 // import 'package:image_picker_web/image_picker_web.dart';
 
 import 'package:scm/app/generalised_base_view_model.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
+import 'package:scm/enums/product_image_types.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/product_list_response.dart' as product_image;
 import 'package:scm/screens/pim_homescreen/add_product/add_product_view.dart';
 import 'package:scm/screens/pim_homescreen/discard_product/discard_product_dialog_box.dart';
+import 'package:scm/services/app_api_service_classes/image_api.dart';
 import 'package:scm/services/app_api_service_classes/product_api.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
@@ -23,6 +26,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   late final AddProductViewArguments arguments;
   FocusNode brandFocusNode = FocusNode();
   TextEditingController brandsController = TextEditingController();
+  ApiStatus imageApiStatus = ApiStatus.LOADING;
   TextEditingController measurementController = TextEditingController();
   FocusNode measurementFocusNode = FocusNode();
   TextEditingController measurementUnitController = TextEditingController();
@@ -43,6 +47,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
   TextEditingController typeController = TextEditingController();
   FocusNode typeFocusNode = FocusNode();
 
+  final ImageApi _imageApi = locator<ImageApi>();
   final ProductApis _productApis = locator<ProductApis>();
 
   void addFocusChangeListener() {
@@ -150,6 +155,7 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
       },
       onImageUploadSuccess: ({required List<Uint8List> imageList}) {
         selectedFiles = imageList;
+        imageApiStatus = ApiStatus.FETCHED;
         notifyListeners();
       },
     );
@@ -186,8 +192,50 @@ class AddProductViewModel extends GeneralisedBaseViewModel {
           ),
         );
         notifyListeners();
+      } else {
+        getProductImageFromApi(productId: arguments.productToEdit!.id!);
       }
     }
+  }
+
+  void getProductImageFromApi({
+    required int productId,
+    int? supplierId,
+    bool? isForCatalog,
+  }) async {
+    List<product_image.Image> productImages = [];
+
+    ProductImagesType productImagesType = ProductImagesType.STANDARD;
+
+    productImagesType = ProductImagesType.STANDARD;
+
+    productImages = await _imageApi.getProductImage(
+      productId: productId,
+      productImagesType: productImagesType,
+      supplierId: supplierId,
+    );
+    // if (productImages.isNotEmpty) {
+    //   image = checkImageUrl(
+    //     imageUrl: productImages[0].image,
+    //   );
+    // } else {
+    //   image = null;
+    // }
+
+    if (productImages.isNotEmpty) {
+      selectedProductImageImageId = productImages[0].id;
+      selectedProductImageProductId = productImages[0].productId;
+
+      selectedFiles.add(
+        base64Decode(
+          productImages.first.image!
+              .replaceAll(base64ImagePrefix, '')
+              .replaceAll(' ', ''),
+        ),
+      );
+    }
+    imageApiStatus = ApiStatus.FETCHED;
+    notifyListeners();
   }
 
   void discardProduct() async {

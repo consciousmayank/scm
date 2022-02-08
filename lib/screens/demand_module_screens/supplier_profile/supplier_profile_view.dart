@@ -170,31 +170,6 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ViewModelBuilder<SuppplierProfileViewModel>.reactive(
-      onModelReady: (model) => model.init(args: widget.arguments),
-      builder: (context, model, child) => Scaffold(
-        body: widget.arguments.cardify
-            ? Card(
-                shape: Dimens().getCardShape(),
-                elevation: Dimens().getDefaultElevation,
-                color: AppColors().white,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: getProfileChildWidget(
-                    model: model,
-                  ),
-                ),
-              )
-            : getProfileChildWidget(
-                model: model,
-              ),
-      ),
-      viewModelBuilder: () => SuppplierProfileViewModel(),
-    );
-  }
-
   Widget getProfileChildWidget({
     required SuppplierProfileViewModel model,
   }) {
@@ -580,6 +555,31 @@ class _SuppplierProfileViewState extends State<SuppplierProfileView> {
             child: AppFooterWidget(),
           ),
       ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<SuppplierProfileViewModel>.reactive(
+      onModelReady: (model) => model.init(args: widget.arguments),
+      builder: (context, model, child) => Scaffold(
+        body: widget.arguments.cardify
+            ? Card(
+                shape: Dimens().getCardShape(),
+                elevation: Dimens().getDefaultElevation,
+                color: AppColors().white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: getProfileChildWidget(
+                    model: model,
+                  ),
+                ),
+              )
+            : getProfileChildWidget(
+                model: model,
+              ),
+      ),
+      viewModelBuilder: () => SuppplierProfileViewModel(),
     );
   }
 }

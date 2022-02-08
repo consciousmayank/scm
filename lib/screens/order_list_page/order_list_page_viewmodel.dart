@@ -26,6 +26,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
   late final OrderListPageViewArguments args;
+  Key? currentQuantityTextFieldHavingFocus;
   late DateTimeRange dateTimeRange;
   int indexForList = 0;
   final log = getLogger('OrderListPageViewModel');
@@ -45,6 +46,7 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   // List<TextEditingController> quantityEditingControllers = [];
   // List<FocusNode> quantityEditingFocusnodes = [];
   Order selectedOrder = Order().empty();
+
   OrderFiltersDurationType selectedOrderDuration =
       OrderFiltersDurationType.LAST_30_DAYS;
 
@@ -52,8 +54,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
 
   final CommonDashBoardApis _commonDashBoardApis =
       locator<CommonDashBoardApis>();
-
-  Key? currentQuantityTextFieldHavingFocus;
 
   // void initializeEditexts() {
   //   orderDetails.orderItems?.forEach((element) {

@@ -8,6 +8,7 @@ import 'package:scm/utils/utils.dart';
 
 class AppImageViewModel extends GeneralisedBaseViewModel {
   late String? image;
+  List<Image> productImages = [];
 
   final ImageApi _imageApi = locator<ImageApi>();
 
@@ -50,7 +51,6 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
     notifyListeners();
   }
 
-  List<Image> productImages = [];
   void getProductImageFromApi({
     required int productId,
     int? supplierId,

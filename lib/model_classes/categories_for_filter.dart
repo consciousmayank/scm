@@ -7,6 +7,6 @@ class CategoriesForFilter {
   });
 
   final String? categoryName;
-  bool? isSelected;
   final int? count;
+  bool? isSelected;
 }

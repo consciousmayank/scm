@@ -62,16 +62,6 @@ class AppButton extends StatefulWidget {
 class _AppButtonState extends State<AppButton> {
   bool hover = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return widget.toolTipMessage != null
-        ? Tooltip(
-            message: widget.toolTipMessage,
-            child: getChild(context: context),
-          )
-        : getChild(context: context);
-  }
-
   Widget getChild({required BuildContext context}) {
     return Padding(
       padding: widget.padding,
@@ -138,5 +128,18 @@ class _AppButtonState extends State<AppButton> {
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.toolTipMessage != null
+        ? Tooltip(
+            waitDuration: const Duration(
+              seconds: 3,
+            ),
+            message: widget.toolTipMessage,
+            child: getChild(context: context),
+          )
+        : getChild(context: context);
   }
 }
