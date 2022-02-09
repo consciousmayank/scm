@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
+import 'package:scm/screens/bootstrap_test_files/ExampleGrid.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_view.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
@@ -9,7 +10,6 @@ import 'package:scm/screens/login/login_view.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/screens/pim_homescreen/pim_homescreen_view.dart';
 import 'package:scm/screens/reports/orders_report/order_report_view.dart';
-import 'package:scm/screens/splash/splash_view.dart';
 import 'package:scm/screens/supply_module_screens/supply_module_landing_page_view.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_view.dart';
 import 'package:scm/widgets/popular_brands/popular_brands_view.dart';
@@ -24,14 +24,14 @@ class AppRouter {
         if (settings.arguments != null) {
           reasons = settings.arguments as LoginReasons;
         }
-        return MaterialPageRoute(
-          builder: (_) => SplashScreen(
-            reasons: reasons,
-          ),
-          // builder: (_) => PimHomeScreenView(
-          //   arguments: PimHomeScreenViewArguments(),
-          // ),
-        );
+        return MaterialPageRoute(builder: (_) => ExampleGrid()
+            // SplashScreen(
+            //   reasons: reasons,
+            // ),
+            // builder: (_) => PimHomeScreenView(
+            //   arguments: PimHomeScreenViewArguments(),
+            // ),
+            );
 
       case logInPageRoute:
         LoginViewArgs? args;
