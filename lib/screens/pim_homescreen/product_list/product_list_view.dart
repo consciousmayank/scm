@@ -50,44 +50,6 @@ class ProductsListView extends StatelessWidget {
                     ],
                   ),
                   const ProductListHeader(),
-
-                  // Flexible(
-                  //   child: SizedBox.expand(
-                  //     child: SingleChildScrollView(
-                  //       child: PaginatedDataTable(
-                  //         source: model.productListDataSource,
-                  //         // header: PageBarWidget(
-                  //         //   title: productsListPageTitle,
-                  //         //   subTitle: '#${model.productListResponse.totalItems}',
-                  //         // ),
-                  //         // header: const ProductListHeader(),
-                  //         // headingRowHeight: 200,
-                  //         columnSpacing: 20,
-                  //         columns: const [
-                  //           DataColumn(
-                  //             label: Text('ID'),
-                  //             // onSort: (columnIndex, ascending) {
-                  //             //   model.sort<num>(
-                  //             //     (user) => user.id!,
-                  //             //     columnIndex,
-                  //             //     ascending,
-                  //             //   );
-                  //             // },
-                  //           ),
-                  //           DataColumn(label: Text('Brand')),
-                  //           DataColumn(label: Text('Type')),
-                  //           DataColumn(label: Text('SubType')),
-                  //           DataColumn(label: Text('Title')),
-                  //         ],
-                  //         // columnSpacing: 100,
-                  //         horizontalMargin: 10,
-                  //         rowsPerPage: 20,
-                  //         showCheckboxColumn: false,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-
                   Flexible(
                     child: ListView.separated(
                       itemBuilder: (context, index) => AppInkwell(
@@ -117,7 +79,6 @@ class ProductsListView extends StatelessWidget {
                     ),
                     flex: 1,
                   ),
-
                   ListFooter.firstPreviousNextLast(
                     showJumpToPage: model.isDeo() ||
                             model.isDeoSuperVisor() ||

@@ -61,7 +61,7 @@ class ColumnWithTitle extends StatelessWidget {
                   ).getColumnWithTitleTextStyle.copyWith(
                         color: noColorOnTop
                             ? AppColors().black
-                            : AppColors().black,
+                            : AppColors().white,
                       ),
                 ),
                 if (dialogClose != null)
