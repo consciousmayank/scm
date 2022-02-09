@@ -8,6 +8,7 @@ import 'package:scm/utils/utils.dart';
 
 class AppImageViewModel extends GeneralisedBaseViewModel {
   late String? image;
+  late final Function? onImageLoaded;
   List<Image> productImages = [];
 
   final ImageApi _imageApi = locator<ImageApi>();
@@ -18,7 +19,9 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
     int? productId,
     int? supplierId,
     bool? isForCatalog,
+    Function? onImageLoaded,
   }) {
+    this.onImageLoaded = onImageLoaded;
     if (imageUrlString != null) {
       image = checkImageUrl(
         imageUrl: imageUrlString,
@@ -47,6 +50,7 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
     image = checkImageUrl(
       imageUrl: imageResponse.image,
     );
+    onImageLoaded?.call();
 
     notifyListeners();
   }
@@ -81,7 +85,7 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
       image = null;
     }
     setBusy(false);
-
+    onImageLoaded?.call();
     notifyListeners();
   }
 }

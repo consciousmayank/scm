@@ -48,6 +48,7 @@ class ProductDetailView extends StatelessWidget {
                                   values: [
                                     AppTableSingleItem.customWidget(
                                       ProfileImageWidget.productImage(
+                                        onImageLoaded: () {},
                                         isForCatalog: false,
                                         supplierId: null,
                                         elevation: 0,

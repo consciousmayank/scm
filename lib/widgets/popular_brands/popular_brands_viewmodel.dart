@@ -11,6 +11,7 @@ import 'package:scm/widgets/product/product_list/product_list_view.dart';
 class PopularBrandsViewModel extends GeneralisedBaseViewModel {
   SuppliersBrandsListResponse allBrandsResponse =
       SuppliersBrandsListResponse().empty();
+
   late final PopularBrandsViewArgs arguments;
   // TextEditingController searchController = TextEditingController();
   // FocusNode searchFocusNode = FocusNode();

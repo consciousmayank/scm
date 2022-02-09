@@ -274,7 +274,7 @@ class _BarChartBasedOnProductStatusesViewState
 
 class BarChartBasedOnProductStatusesViewArguments {
   BarChartBasedOnProductStatusesViewArguments({
-    this.productStatus = ProductStatuses.PUBLISHED,
+    this.productStatus = ProductStatuses.CREATED,
   });
 
   final ProductStatuses productStatus;

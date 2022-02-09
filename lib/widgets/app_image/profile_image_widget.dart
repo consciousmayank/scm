@@ -14,6 +14,7 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageHeight = 40,
     this.profileImageWidth = 40,
     this.elevation = 10,
+    this.onImageLoaded,
   })  : borderDerRadius = null,
         imageDownloadString = null,
         isForCatalog = false,
@@ -27,6 +28,7 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageHeight = 40,
     this.profileImageWidth = 40,
     this.elevation = 0,
+    this.onImageLoaded,
   })  : borderDerRadius = null,
         productId = null,
         supplierId = null,
@@ -40,6 +42,7 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageHeight = 40,
     this.profileImageWidth = 40,
     this.elevation = 0,
+    this.onImageLoaded,
     required this.borderDerRadius,
   })  : imageUrlString = null,
         supplierId = null,
@@ -56,6 +59,7 @@ class ProfileImageWidget extends StatelessWidget {
     required this.borderDerRadius,
     required this.isForCatalog,
     required this.supplierId,
+    required this.onImageLoaded,
   })  : imageDownloadString = null,
         imageUrlString = null,
         super(key: key);
@@ -66,6 +70,7 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageHeight = 40,
     this.profileImageWidth = 40,
     required this.elevation,
+    this.onImageLoaded,
     required this.borderDerRadius,
   })  : imageDownloadString = null,
         productId = null,
@@ -79,6 +84,7 @@ class ProfileImageWidget extends StatelessWidget {
     this.profileImageHeight = 40,
     this.profileImageWidth = 40,
     this.elevation,
+    this.onImageLoaded,
   })  : borderDerRadius = null,
         productId = null,
         supplierId = null,
@@ -91,6 +97,7 @@ class ProfileImageWidget extends StatelessWidget {
   final String? imageDownloadString;
   final String? imageUrlString;
   final bool? isForCatalog;
+  final Function? onImageLoaded;
   final int? productId;
   final double? profileImageHeight, profileImageWidth;
   final int? supplierId;
@@ -99,6 +106,7 @@ class ProfileImageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AppImageViewModel>.reactive(
       onModelReady: (model) => model.init(
+        onImageLoaded: onImageLoaded,
         imageUrlString: imageUrlString,
         imageDownloadString: imageDownloadString,
         productId: productId,

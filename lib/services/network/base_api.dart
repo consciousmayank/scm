@@ -16,9 +16,9 @@ abstract class BaseApi {
     if (apiResponse.error == null) {
       if (apiResponse.isNoDataFound()) {
         if (showSnackBar) {
-          snackBarService.showSnackbar(
-              message:
-                  ParentApiResponse(error: null, response: null).emptyResult);
+          // snackBarService.showSnackbar(
+          //     message:
+          //         ParentApiResponse(error: null, response: null).emptyResult);
         }
       } else {
         returningResponse = ParentApiResponse(
@@ -45,12 +45,12 @@ abstract class BaseApi {
           duration: const Duration(seconds: 5),
         );
       } else if (apiResponse.error?.response?.statusCode == 500) {
-        snackBarService.showCustomSnackBar(
-          message: apiResponse.error?.response?.data['errors'].first,
-          title: apiResponse.error?.response?.data['status'],
-          variant: SnackbarType.ERROR,
-          duration: const Duration(seconds: 5),
-        );
+        // snackBarService.showCustomSnackBar(
+        //   message: apiResponse.error?.response?.data['errors'].first,
+        //   title: apiResponse.error?.response?.data['status'],
+        //   variant: SnackbarType.ERROR,
+        //   duration: const Duration(seconds: 5),
+        // );
       } else {
         // if (showSnackBar) {
         //   snackBarService.showSnackbar(

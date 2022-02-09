@@ -25,6 +25,7 @@ class SuppplierProfileViewModel extends GeneralisedBaseViewModel {
   late final AddToCatalog addToCatalogObject;
   SuppliersBrandsListResponse allBrandsResponse =
       SuppliersBrandsListResponse().empty();
+
   late final SuppplierProfileViewArguments arguments;
   ApiStatus brandsApiStatus = ApiStatus.LOADING;
   List<String?> brandsFilterList = [];

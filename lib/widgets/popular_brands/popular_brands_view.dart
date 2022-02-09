@@ -107,7 +107,7 @@ class PopularBrandsView extends StatelessWidget {
                                 child: GridView.builder(
                                   scrollDirection: Axis.vertical,
                                   itemCount:
-                                      model.allBrandsResponse!.brands!.length,
+                                      model.allBrandsResponse.brands!.length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: getValueForScreenType(
@@ -125,7 +125,7 @@ class PopularBrandsView extends StatelessWidget {
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: SinglePopularBrandItem(
-                                        item: model.allBrandsResponse!.brands!
+                                        item: model.allBrandsResponse.brands!
                                             .elementAt(
                                           index,
                                         ),
@@ -145,9 +145,9 @@ class PopularBrandsView extends StatelessWidget {
                           ListFooter.firstPreviousNextLast(
                             pageNumber: model.pageIndex,
                             totalPages:
-                                model.allBrandsResponse!.totalItems == null
+                                model.allBrandsResponse.totalItems == null
                                     ? 0
-                                    : model.allBrandsResponse!.totalPages! - 1,
+                                    : model.allBrandsResponse.totalPages! - 1,
                             onPreviousPageClick: () {
                               model.pageIndex--;
                               model.getAllBrands();
@@ -162,16 +162,15 @@ class PopularBrandsView extends StatelessWidget {
                             },
                             onLastPageClick: () {
                               model.pageIndex =
-                                  model.allBrandsResponse!.totalPages == null
+                                  model.allBrandsResponse.totalPages == null
                                       ? 0
-                                      : model.allBrandsResponse!.totalPages! -
-                                          1;
+                                      : model.allBrandsResponse.totalPages! - 1;
                               model.getAllBrands();
                             },
                           ),
                         if (!arguments.isFullScreen)
                           model.allBrandsResponse != null ||
-                                  model.allBrandsResponse!.brands != null
+                                  model.allBrandsResponse.brands != null
                               ? SizedBox(
                                   height: Dimens().popularBrandsHeight - 50,
                                   child: Stack(
@@ -183,7 +182,7 @@ class PopularBrandsView extends StatelessWidget {
                                           padding: const EdgeInsets.all(8.0),
                                           child: SinglePopularBrandItem(
                                             item: model
-                                                .allBrandsResponse!.brands!
+                                                .allBrandsResponse.brands!
                                                 .elementAt(
                                               index,
                                             ),
@@ -195,7 +194,7 @@ class PopularBrandsView extends StatelessWidget {
                                           ),
                                         ),
                                         itemCount: model
-                                            .allBrandsResponse!.brands!.length,
+                                            .allBrandsResponse.brands!.length,
                                         scrollDirection: Axis.horizontal,
                                       ),
                                       Positioned(
@@ -334,7 +333,7 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
 
   @override
   Widget build(BuildContext context, PopularBrandsViewModel viewModel) {
-    return viewModel.allBrandsResponse!.totalPages! - 1 == viewModel.pageIndex
+    return viewModel.allBrandsResponse.totalPages! - 1 == viewModel.pageIndex
         ? Container()
         : Container(
             height: Dimens().productListItemWebHeight,
@@ -359,14 +358,14 @@ class LoadNextProductWidget extends ViewModelWidget<PopularBrandsViewModel> {
                 : Center(
                     child: AppButton(
                       buttonBg: AppColors().buttonGreenColor,
-                      onTap: viewModel.allBrandsResponse!.totalPages! - 1 ==
+                      onTap: viewModel.allBrandsResponse.totalPages! - 1 ==
                               viewModel.pageIndex
                           ? null
                           : () {
                               viewModel.pageIndex++;
                               viewModel.getAllBrands();
                             },
-                      title: viewModel.allBrandsResponse!.totalPages! - 1 ==
+                      title: viewModel.allBrandsResponse.totalPages! - 1 ==
                               viewModel.pageIndex
                           ? 'Thats all folks'
                           : 'Load Next Set of Brands',

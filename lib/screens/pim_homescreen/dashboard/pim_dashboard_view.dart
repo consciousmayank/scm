@@ -35,6 +35,7 @@ class _PimDashboardViewState extends State<PimDashboardView> {
             Flexible(
               child: Row(
                 children: [
+                  //Left sided Created, Processed, Published, and Total Cards.
                   Expanded(
                     child: PimSupervisorStatisticsView(
                       arguments: PimSupervisorStatisticsViewArguments(),
@@ -42,39 +43,42 @@ class _PimDashboardViewState extends State<PimDashboardView> {
                     flex: 4,
                   ),
                   Expanded(
-                      child: CustomScrollView(
-                        controller: ScrollController(
-                          keepScrollOffset: true,
-                        ),
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 400,
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 8,
-                                  right: 8,
-                                ),
-                                child: UserwiseProductsCreatedView(
-                                  arguments:
-                                      UserwiseProductsCreatedViewArguments(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                            child: SizedBox(
-                              height: 500,
-                              child: BarChartBasedOnProductStatusesView(
-                                arguments:
-                                    BarChartBasedOnProductStatusesViewArguments(),
-                              ),
-                            ),
-                          ),
-                        ],
+                    child: CustomScrollView(
+                      controller: ScrollController(
+                        keepScrollOffset: true,
                       ),
-                      flex: 8),
+                      slivers: [
+                        //Top Daily work summary.
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 400,
+                            width: double.infinity,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 8,
+                                right: 8,
+                              ),
+                              child: UserwiseProductsCreatedView(
+                                arguments:
+                                    UserwiseProductsCreatedViewArguments(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        //Bar chart as per product status. Created/Published.
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 500,
+                            child: BarChartBasedOnProductStatusesView(
+                              arguments:
+                                  BarChartBasedOnProductStatusesViewArguments(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    flex: 8,
+                  ),
                 ],
               ),
             ),

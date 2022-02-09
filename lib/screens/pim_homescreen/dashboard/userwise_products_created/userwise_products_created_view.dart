@@ -167,10 +167,14 @@ class _UserwiseProductsCreatedViewState
             const ProductCreatedHeader(),
             Flexible(
               child: ListView.separated(
-                  itemBuilder: (context, index) => ProductCreatedListItem(
-                      item: model.productsCreated.elementAt(index)),
-                  separatorBuilder: (context, index) => const DottedDivider(),
-                  itemCount: model.productsCreated.length),
+                itemBuilder: (context, index) => ProductCreatedListItem(
+                  item: model.productsCreated.elementAt(
+                    index,
+                  ),
+                ),
+                separatorBuilder: (context, index) => const DottedDivider(),
+                itemCount: model.productsCreated.length,
+              ),
             ),
           ],
         ),

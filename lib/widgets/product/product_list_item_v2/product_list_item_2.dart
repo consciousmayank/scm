@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/image.dart' as image_widget;
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/image_config.dart';
-import 'package:scm/app/styles.dart';
 import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
@@ -11,6 +8,7 @@ import 'package:scm/widgets/app_image/profile_image_widget.dart';
 import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
+import 'package:scm/widgets/product/product_list_item_v2/product_item_buttons.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -48,6 +46,7 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: ProfileImageWidget.productImage(
+                          key: UniqueKey(),
                           isForCatalog: widget.arguments.isForCatalog,
                           supplierId: widget.arguments.supplierId,
                           elevation: 0,
@@ -59,6 +58,7 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                             ),
                           ),
                           productId: widget.arguments.product?.id,
+                          onImageLoaded: () {},
                         ),
 
                         // (getProductImage(
@@ -95,35 +95,6 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                             ),
                           ),
                           hSizedBox(height: 8),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.end,
-                          //   crossAxisAlignment: CrossAxisAlignment.end,
-                          //   children: [
-                          //     Container(
-                          //       margin: const EdgeInsets.all(8.0),
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.symmetric(
-                          //             horizontal: 16, vertical: 4),
-                          //         child: Row(
-                          //           children: [
-                          //             Text(
-                          //               'Type: ',
-                          //               style:
-                          //                   Theme.of(context).textTheme.caption,
-                          //             ),
-                          //             NullableTextWidget(
-                          //               stringValue:
-                          //                   widget.arguments.product?.type,
-                          //               textStyle: Theme.of(context)
-                          //                   .textTheme
-                          //                   .bodyText2,
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
                           const Spacer(),
                           if (widget.arguments.product?.measurement != null &&
                               widget.arguments.product!.measurement! > 0)
@@ -138,40 +109,47 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                               textStyle: Theme.of(context).textTheme.subtitle2,
                             ),
 
-                          // Container(
-                          //   child: Text('Error Causing Widget. To bo solved'),
-                          // ),
-                          widget.arguments.isForCatalog
-                              ? const RemoveProductWidget()
-                              : model.isSupplier()
-                                  //check if product is in catalog
+                          ProductItemButtons(
+                            isForCatalog: widget.arguments.isForCatalog,
+                            isSupplier: model.isSupplier(),
+                            isProductInCatalog: model.isProductInCatalog(
+                              productId: widget.arguments.product?.id,
+                            ),
+                            isProductInCart: model.isProductInCart(
+                              productId: widget.arguments.product?.id,
+                            ),
+                          )
+                          // widget.arguments.isForCatalog
+                          //     ? const RemoveProductWidget()
+                          //     : model.isSupplier()
+                          //         //check if product is in catalog
 
-                                  ? model.isProductInCatalog(
-                                      productId: widget.arguments.product?.id,
-                                    )
-                                      ? const RemoveProductWidget()
-                                      : const AddProductWidget()
-                                  : model.isProductInCart(
-                                          productId:
-                                              widget.arguments.product?.id)
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const Flexible(
-                                              child: RemoveProductWidget(
-                                                reverseStyle: true,
-                                              ),
-                                              flex: 1,
-                                            ),
-                                            wSizedBox(width: 4),
-                                            const Flexible(
-                                              child: UpdateProductWidget(),
-                                              flex: 1,
-                                            ),
-                                          ],
-                                        )
-                                      : const AddProductWidget()
+                          // ? model.isProductInCatalog(
+                          //     productId: widget.arguments.product?.id,
+                          //   )
+                          //             ? const RemoveProductWidget()
+                          //             : const AddProductWidget()
+                          // : model.isProductInCart(
+                          //         productId:
+                          //             widget.arguments.product?.id)
+                          //             ? Row(
+                          //                 mainAxisAlignment:
+                          //                     MainAxisAlignment.spaceEvenly,
+                          //                 children: [
+                          //                   const Flexible(
+                          //                     child: RemoveProductWidget(
+                          //                       reverseStyle: true,
+                          //                     ),
+                          //                     flex: 1,
+                          //                   ),
+                          //                   wSizedBox(width: 4),
+                          //                   const Flexible(
+                          //                     child: UpdateProductWidget(),
+                          //                     flex: 1,
+                          //                   ),
+                          //                 ],
+                          //               )
+                          //             : const AddProductWidget()
                         ],
                       ),
                     ),

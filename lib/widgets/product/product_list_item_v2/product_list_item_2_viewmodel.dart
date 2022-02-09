@@ -1,14 +1,18 @@
 import 'package:scm/app/di.dart';
+import 'package:scm/enums/product_image_types.dart';
 import 'package:scm/enums/snackbar_types.dart';
 import 'package:scm/enums/update_product_api_type.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
+import 'package:scm/model_classes/product_list_response.dart';
+import 'package:scm/services/app_api_service_classes/image_api.dart';
 import 'package:scm/services/app_api_service_classes/supplier_catalog_apis.dart';
 import 'package:scm/services/sharepreferences_service.dart';
 import 'package:scm/services/streams/cart_stream.dart';
 import 'package:scm/services/streams/catalog_stream.dart';
 import 'package:scm/utils/strings.dart';
+import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:stacked/stacked.dart';
@@ -23,12 +27,17 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
   late Cart cartData;
   late CartItem cartItem;
   late CatalogItems catalogItem;
+  bool imageLoaded = false;
   final preferences = locator<AppPreferencesService>();
+  String? productImage;
+  List<Image> productImages = [];
   SnackbarService snackBarService = locator<SnackbarService>();
 
   final SupplierCatalogApis _catalogApis = locator<SupplierCatalogApis>();
   // final AppPreferences _preferences = locator<AppPreferences>();
   final CatalogStream _catalogStream = locator<CatalogStream>();
+
+  final ImageApi _imageApi = locator<ImageApi>();
 
   @override
   void onData(String key, data) {
@@ -275,5 +284,38 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
   bool isSupplier() {
     return preferences.getSelectedUserRole() ==
         AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;
+  }
+
+  void getProductImageFromApi({
+    required int productId,
+    int? supplierId,
+    bool? isForCatalog,
+  }) async {
+    setBusy(true);
+
+    ProductImagesType productImagesType = ProductImagesType.STANDARD;
+    if (isForCatalog != null && isForCatalog) {
+      productImagesType = ProductImagesType.SUPPLIER_CATALOG;
+      supplierId = preferences.getSupplierDemandProfile()?.id;
+    } else if (supplierId != null) {
+      productImagesType = ProductImagesType.DEMAND;
+    } else {
+      productImagesType = ProductImagesType.STANDARD;
+    }
+
+    productImages = await _imageApi.getProductImage(
+      productId: productId,
+      productImagesType: productImagesType,
+      supplierId: supplierId,
+    );
+    if (productImages.isNotEmpty) {
+      productImage = checkImageUrl(
+        imageUrl: productImages[0].image,
+      );
+    } else {
+      productImage = null;
+    }
+    setBusy(false);
+    notifyListeners();
   }
 }
