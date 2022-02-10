@@ -3,6 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/styles.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
 import 'package:scm/model_classes/selected_suppliers_types_response.dart';
@@ -16,6 +17,7 @@ import 'package:scm/widgets/app_inkwell_widget.dart';
 import 'package:scm/widgets/app_table_widget.dart';
 import 'package:scm/widgets/list_footer.dart';
 import 'package:scm/widgets/loading_widget.dart';
+import 'package:scm/widgets/product/filter/filters_view.dart';
 import 'package:scm/widgets/product/product_list/product_list_viewmodel.dart';
 import 'package:scm/widgets/product/product_list_item_v2/product_list_item_2.dart';
 import 'package:scm/widgets/product/size_list/size_list_view.dart';
@@ -83,15 +85,15 @@ class ProductListView extends StatelessWidget {
             wSizedBox(
               width: 8,
             ),
-            AppButton.appbar(
-              buttonBg: Theme.of(context).primaryColorLight,
-              onTap: () => model.openFiltersDialogBox(),
-              leading: const Icon(Icons.filter),
-              title: model.getAppliedFiltersCount() == 0
-                  ? 'Filter'
-                  : 'Filter (${model.getAppliedFiltersCount()})',
-            ),
-            wSizedBox(width: 8),
+            // AppButton.appbar(
+            //   buttonBg: Theme.of(context).primaryColorLight,
+            //   onTap: () => model.openFiltersDialogBox(),
+            //   leading: const Icon(Icons.filter),
+            //   title: model.getAppliedFiltersCount() == 0
+            //       ? 'Filter'
+            //       : 'Filter (${model.getAppliedFiltersCount()})',
+            // ),
+            // wSizedBox(width: 8),
             if (arguments.supplierName != null &&
                 !arguments.isCallingScreenCart)
               CartIconView(
@@ -108,209 +110,251 @@ class ProductListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ProductListViewModel>.reactive(
       onModelReady: (model) => model.init(arguments: arguments),
-      builder: (context, model, child) => ScreenTypeLayout.builder(
-        mobile: (BuildContext context) => const NotSupportedScreensView(),
-        tablet: (BuildContext context) => const NotSupportedScreensView(),
-        desktop: (BuildContext context) => WillPopScope(
-          onWillPop: () {
-            if (model.subCategoryFilterList.isNotEmpty) {
-              model.subCategoryFilterList.clear();
-              model.sizeFilterList.clear();
-              model.getProductList();
-              return Future.value(false);
-            } else {
-              return Future.value(true);
-            }
-          },
-          child: Scaffold(
-            appBar: arguments.showAppbar
-                ? appbarWidget(
-                    automaticallyImplyLeading: true,
+      builder: (context, model, child) => WillPopScope(
+        onWillPop: () {
+          if (model.subCategoryFilterList.isNotEmpty) {
+            model.subCategoryFilterList.clear();
+            model.sizeFilterList.clear();
+            model.getProductList();
+            return Future.value(false);
+          } else {
+            return Future.value(true);
+          }
+        },
+        child: Scaffold(
+          appBar: arguments.showAppbar
+              ? appbarWidget(
+                  automaticallyImplyLeading: true,
+                  context: context,
+                  title: getTitle(model: model),
+                  options: getOptionsList(
+                    model: model,
                     context: context,
-                    title: getTitle(model: model),
-                    options: getOptionsList(
-                      model: model,
-                      context: context,
+                  ),
+                )
+              : null,
+          body: model.productListApiStatus == ApiStatus.LOADING
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Center(
+                    child: LoadingWidgetWithText(
+                      text: 'Fetching Products. Please Wait...',
                     ),
-                  )
-                : null,
-            body: model.isBusy
-                ? const Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Center(
-                      child: LoadingWidgetWithText(
-                        text: 'Fetching Products. Please Wait...',
+                  ),
+                )
+              : Row(
+                  children: [
+                    Expanded(
+                      child: ProductsFilterView(
+                        key: UniqueKey(),
+                        arguments: ProductsFilterViewArguments.productList(
+                          supplierId: arguments.supplierId,
+                          selectedBrand: model.brandsFilterList,
+                          selectedCategory: model.categoryFilterList,
+                          selectedSuCategory: model.subCategoryFilterList,
+                          searchProductTitle: model.productTitle,
+                          isSupplierCatalog: arguments.isSupplierCatalog,
+                          onApplyFilterButtonClicked: (
+                              {required ProductsFilterViewOutputArguments
+                                  outArgs}) {
+                            model.brandsFilterList =
+                                outArgs.checkedBrands ?? [];
+                            model.categoryFilterList =
+                                outArgs.checkedCategories ?? [];
+                            model.subCategoryFilterList =
+                                outArgs.checkedSubCategories ?? [];
+                            // productTitle = productTitle;
+                            model.pageIndex = 0;
+                            model.getProductList();
+                            model.getSubCategories();
+                          },
+                          onCancelButtonClicked: () {},
+                        ),
                       ),
+                      flex: 1,
                     ),
-                  )
-                : Card(
-                    shape: Dimens().getCardShape(),
-                    color: arguments.productsPerLine == 3
-                        ? AppColors().white
-                        : AppColors().popularBrandsBg,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: arguments.supplierName == null
-                            ? Dimens().popularBrandsToppadding
-                            : 0,
-                        left: Dimens().popularBrandsLeftpadding,
-                        right: Dimens().popularBrandsRightpadding,
-                      ),
-                      child: model.productListResponse!.products!.isNotEmpty
-                          ? Column(
-                              children: [
-                                if (!arguments.showAppbar &&
-                                    arguments.isScrollVertical)
-                                  Container(
-                                    color: Colors.white,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        AppButton.appbar(
-                                          buttonBg: Theme.of(context)
-                                              .primaryColorLight,
-                                          onTap: () =>
-                                              model.openFiltersDialogBox(),
-                                          leading: const Icon(Icons.filter),
-                                          title: model.getAppliedFiltersCount() ==
-                                                  0
-                                              ? 'Filter'
-                                              : 'Filter (${model.getAppliedFiltersCount()})',
+                    Expanded(
+                      flex: 4,
+                      child: Card(
+                        shape: Dimens().getCardShape(),
+                        color: arguments.productsPerLine == 3
+                            ? AppColors().white
+                            : AppColors().popularBrandsBg,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: arguments.supplierName == null
+                                ? Dimens().popularBrandsToppadding
+                                : 0,
+                            left: Dimens().popularBrandsLeftpadding,
+                            right: Dimens().popularBrandsRightpadding,
+                          ),
+                          child: model.productListResponse!.products!.isNotEmpty
+                              ? Column(
+                                  children: [
+                                    // if (!arguments.showAppbar &&
+                                    //     arguments.isScrollVertical)
+                                    //   Container(
+                                    //     color: Colors.white,
+                                    //     child: Row(
+                                    //       mainAxisAlignment:
+                                    //           MainAxisAlignment.end,
+                                    //       children: [
+                                    //         // AppButton.appbar(
+                                    //         //   buttonBg: Theme.of(context)
+                                    //         //       .primaryColorLight,
+                                    //         //   onTap: () => model
+                                    //         //       .openFiltersDialogBox(),
+                                    //         //   leading:
+                                    //         //       const Icon(Icons.filter),
+                                    //         //   title: model.getAppliedFiltersCount() ==
+                                    //         //           0
+                                    //         //       ? 'Filter'
+                                    //         //       : 'Filter (${model.getAppliedFiltersCount()})',
+                                    //         // ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    if (arguments.showSeeAll)
+                                      Container(
+                                        color: AppColors().white,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              getTitle(
+                                                model: model,
+                                              ),
+                                              style: AppTextStyles(
+                                                      context: context)
+                                                  .popularBrandsTitleStyle,
+                                            ),
+                                            Row(
+                                              children: getOptionsList(
+                                                  model: model,
+                                                  context: context),
+                                            )
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                if (arguments.showSeeAll)
-                                  Container(
-                                    color: AppColors().white,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          getTitle(
-                                            model: model,
-                                          ),
-                                          style: AppTextStyles(context: context)
-                                              .popularBrandsTitleStyle,
-                                        ),
-                                        Row(
-                                          children: getOptionsList(
-                                              model: model, context: context),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                hSizedBox(height: 8),
-                                if (model.categoryFilterList.length == 1 &&
-                                    model.subCategoryFilterList.isEmpty)
-                                  const SubCategoryView(),
-                                if (model.subCategoryFilterList.length == 1 &&
-                                    model.categoryFilterList.length == 1)
-                                  const SizeListView(),
-                                hSizedBox(height: 8),
-                                Flexible(
-                                  child: GridView.builder(
-                                    scrollDirection: arguments.isScrollVertical
-                                        ? Axis.vertical
-                                        : Axis.horizontal,
-                                    itemCount: model
-                                        .productListResponse!.products!.length,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: getValueForScreenType(
-                                        context: context,
-                                        mobile: 1,
-                                        tablet: arguments.isScrollVertical
-                                            ? arguments.productsPerLine
-                                            : 2,
-                                        desktop: arguments.isScrollVertical
-                                            ? arguments.productsPerLine
-                                            : 2,
                                       ),
-                                      mainAxisExtent: 200,
-                                    ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return AppTableWidget.values(values: [
-                                        AppTableSingleItem.customWidget(
-                                          ProductListItem2View(
-                                            key: UniqueKey(),
-                                            arguments: arguments
-                                                    .isSupplierCatalog
-                                                ? ProductListItem2ViewArguments
-                                                    .catalog(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
-                                                        product: model
-                                                            .productListResponse!
-                                                            .products!
-                                                            .elementAt(index),
-                                                      );
-                                                    },
-                                                  )
-                                                : ProductListItem2ViewArguments(
-                                                    product: model
-                                                        .productListResponse!
-                                                        .products!
-                                                        .elementAt(index),
-                                                    onProductOperationCompleted:
-                                                        () {
-                                                      model.reloadPage();
-                                                    },
-                                                    onProductClick: () {
-                                                      model.openProductDetails(
-                                                        product: model
-                                                            .productListResponse!
-                                                            .products!
-                                                            .elementAt(index),
-                                                      );
-                                                    },
-                                                    supplierId:
-                                                        arguments.supplierId,
-                                                  ),
+                                    hSizedBox(height: 8),
+                                    if (model.categoryFilterList.length == 1 &&
+                                        model.subCategoryFilterList.isEmpty)
+                                      const SubCategoryView(),
+                                    if (model.subCategoryFilterList.length ==
+                                            1 &&
+                                        model.categoryFilterList.length == 1)
+                                      const SizeListView(),
+                                    hSizedBox(height: 8),
+                                    Flexible(
+                                      child: GridView.builder(
+                                        scrollDirection:
+                                            arguments.isScrollVertical
+                                                ? Axis.vertical
+                                                : Axis.horizontal,
+                                        itemCount: model.productListResponse!
+                                            .products!.length,
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: getValueForScreenType(
+                                            context: context,
+                                            mobile: 1,
+                                            tablet: arguments.isScrollVertical
+                                                ? arguments.productsPerLine
+                                                : 2,
+                                            desktop: arguments.isScrollVertical
+                                                ? arguments.productsPerLine
+                                                : 2,
                                           ),
-                                          flexValue: 1,
-                                        )
-                                      ]);
-                                    },
-                                  ),
-                                ),
-                                if (arguments.showBottomPageChanger)
-                                  ListFooter.previousNext(
-                                    pageNumber: model.pageIndex,
-                                    totalPages:
-                                        model.productListResponse!.totalPages ==
+                                          mainAxisExtent: 200,
+                                        ),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return AppTableWidget.values(values: [
+                                            AppTableSingleItem.customWidget(
+                                              ProductListItem2View(
+                                                key: UniqueKey(),
+                                                arguments: arguments
+                                                        .isSupplierCatalog
+                                                    ? ProductListItem2ViewArguments
+                                                        .catalog(
+                                                        product: model
+                                                            .productListResponse!
+                                                            .products!
+                                                            .elementAt(index),
+                                                        onProductOperationCompleted:
+                                                            () {
+                                                          model.reloadPage();
+                                                        },
+                                                        onProductClick: () {
+                                                          model
+                                                              .openProductDetails(
+                                                            product: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index),
+                                                          );
+                                                        },
+                                                      )
+                                                    : ProductListItem2ViewArguments(
+                                                        product: model
+                                                            .productListResponse!
+                                                            .products!
+                                                            .elementAt(index),
+                                                        onProductOperationCompleted:
+                                                            () {
+                                                          model.reloadPage();
+                                                        },
+                                                        onProductClick: () {
+                                                          model
+                                                              .openProductDetails(
+                                                            product: model
+                                                                .productListResponse!
+                                                                .products!
+                                                                .elementAt(
+                                                                    index),
+                                                          );
+                                                        },
+                                                        supplierId: arguments
+                                                            .supplierId,
+                                                      ),
+                                              ),
+                                              flexValue: 1,
+                                            )
+                                          ]);
+                                        },
+                                      ),
+                                    ),
+                                    if (arguments.showBottomPageChanger)
+                                      ListFooter.previousNext(
+                                        pageNumber: model.pageIndex,
+                                        totalPages: model.productListResponse!
+                                                    .totalPages ==
                                                 null
                                             ? 0
                                             : model.productListResponse!
                                                     .totalPages! -
                                                 1,
-                                    onPreviousPageClick: () {
-                                      model.pageIndex = model.pageIndex - 1;
-                                      model.getProductList();
-                                    },
-                                    onNextPageClick: () {
-                                      model.pageIndex = model.pageIndex + 1;
-                                      model.getProductList();
-                                    },
-                                  )
-                              ],
-                            )
-                          : const Center(
-                              child: Text(productListNoProductsFoundError),
-                            ),
+                                        onPreviousPageClick: () {
+                                          model.pageIndex = model.pageIndex - 1;
+                                          model.getProductList();
+                                        },
+                                        onNextPageClick: () {
+                                          model.pageIndex = model.pageIndex + 1;
+                                          model.getProductList();
+                                        },
+                                      )
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text(productListNoProductsFoundError),
+                                ),
+                        ),
+                      ),
                     ),
-                  ),
-          ),
+                  ],
+                ),
         ),
       ),
       viewModelBuilder: () => ProductListViewModel(),
@@ -426,7 +470,7 @@ class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {
               //   ),
               // ],
             ),
-            child: viewModel.isBusy
+            child: viewModel.productListApiStatus == ApiStatus.LOADING
                 ? const LoadingWidgetWithText(
                     text: 'Loading More Products. Please wait')
                 : Center(

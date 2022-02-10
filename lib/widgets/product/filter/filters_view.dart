@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
+import 'package:scm/app/image_config.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
 import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
+import 'package:scm/widgets/common_dashboard/helper_widgets/table_graph_toggle_icon_button.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/filter/filters_viewmodel.dart';
 import 'package:scm/widgets/product/filter/simple_search_widget.dart';
@@ -26,6 +29,425 @@ class ProductsFilterView extends StatefulWidget {
 }
 
 class _ProductsFilterViewState extends State<ProductsFilterView> {
+  Widget subCategoryView({
+    required ProductsFilterViewModel viewModel,
+    required BuildContext context,
+  }) {
+    return viewModel.subCategoryApiStatus == ApiStatus.LOADING
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Loading Sub-Categories...'),
+                hSizedBox(
+                  height: 10,
+                ),
+                const CircularProgressIndicator(),
+              ],
+            ),
+          )
+        : Container(
+            child:
+                // (viewModel.tempCheckedCategoriesList.isNotEmpty)
+                // ?
+                Column(
+              children: [
+                Container(
+                  color: AppColors().white,
+                  child: SimpleSearchWidget.innerHint(
+                    searchTerm: viewModel.subCategoryTitle,
+                    onSearchTermCleared: () {
+                      viewModel.subCategoryTitle = null;
+                      viewModel.getProductsSubCategoriesList(showLoader: true);
+                    },
+                    onSearchTermEntered: ({required String searchTerm}) {
+                      if (searchTerm.length > 2) {
+                        viewModel.subCategoryTitle = searchTerm;
+                        viewModel.getProductsSubCategoriesList(
+                          showLoader: true,
+                        );
+                      }
+                    },
+                    innerHintText: labelSearchSubCategory,
+                  ),
+                ),
+                Text(
+                  'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
+                  // style: AppTextStyles
+                  //     .robotoMedium10PrimaryShade5
+                  //     .copyWith(
+                  //   fontSize: 14,
+                  // ),
+                ),
+                Expanded(
+                  child: LazyLoadScrollView(
+                    scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                    onEndOfPage: () => viewModel.getProductsSubCategoriesList(
+                      showLoader: false,
+                    ),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => buildFilterTypeValues(
+                        context: context,
+                        text: viewModel
+                            .subCategoriesForFilterList[index].subCategoryName,
+                        subText:
+                            viewModel.subCategoriesForFilterList[index].count,
+                        value: viewModel
+                            .subCategoriesForFilterList[index].isSelected,
+                        onChanged: (value) {
+                          viewModel.subCategoriesForFilterList[index]
+                              .isSelected = value;
+
+                          /// adding checked Sub - Categories to [checkedSubCategoriesList]
+                          /// later it will be sent to bring the filtered products list
+
+                          // viewModel.s
+                          if (value == true) {
+                            // viewModel.checkedSubCategoriesList.add(
+                            //     viewModel
+                            //         .subCategoriesForFilterList[index]
+                            //         .subCategoryName!);
+                            viewModel.tempCheckedSubCategoriesList.add(
+                              SubType(
+                                subType: viewModel
+                                        .subCategoriesForFilterList[index]
+                                        .subCategoryName ??
+                                    '',
+                                count: viewModel
+                                        .subCategoriesForFilterList[index]
+                                        .count ??
+                                    0,
+                              ),
+                            );
+
+                            viewModel.checkSubCategoriesAndMoveToTop();
+                          } else {
+                            // viewModel.checkedSubCategoriesList
+                            //     .removeWhere((element) =>
+                            //         element ==
+                            //         viewModel
+                            //             .subCategoriesForFilterList[
+                            //                 index]
+                            //             .subCategoryName);
+                            viewModel.tempCheckedSubCategoriesList.removeWhere(
+                                (element) =>
+                                    element?.subType ==
+                                    viewModel.subCategoriesForFilterList[index]
+                                        .subCategoryName);
+                          }
+                          widget.arguments
+                              .onApplyFilterButtonClicked(
+                                outArgs: ProductsFilterViewOutputArguments(
+                                  checkedBrands:
+                                      viewModel.tempCheckedBrandsList,
+                                  checkedCategories:
+                                      viewModel.tempCheckedCategoriesList,
+                                  checkedSubCategories:
+                                      viewModel.tempCheckedSubCategoriesList,
+                                ),
+                              )
+                              .call();
+                          viewModel.notifyListeners();
+                        },
+                      ),
+                      itemCount: viewModel.subCategoriesForFilterList.length,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget categoryView({
+    required ProductsFilterViewModel viewModel,
+    required BuildContext context,
+  }) {
+    return viewModel.categoryApiStatus == ApiStatus.LOADING
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Loading Categories...'),
+                hSizedBox(
+                  height: 10,
+                ),
+                CircularProgressIndicator(),
+              ],
+            ),
+          )
+        : Container(
+            child: Column(
+              children: [
+                Container(
+                  color: AppColors().white,
+                  child: SimpleSearchWidget.innerHint(
+                    searchTerm: viewModel.categoryTitle,
+                    onSearchTermCleared: () {
+                      viewModel.categoryTitle = null;
+                      viewModel.getProductCategoriesList(showLoader: true);
+                    },
+                    onSearchTermEntered: ({required String searchTerm}) {
+                      if (searchTerm.length > 2) {
+                        viewModel.categoryTitle = searchTerm;
+                        viewModel.getProductCategoriesList(
+                          showLoader: true,
+                        );
+                      }
+                    },
+                    innerHintText: labelSearchCategory,
+                  ),
+                ),
+                Text(
+                  'Total Categories: ${viewModel.totalItemsForCategoriesApi.toString()}',
+                  // style: AppTextStyles.robotoMedium10PrimaryShade5
+                  //     .copyWith(
+                  //   fontSize: 14,
+                  // ),
+                ),
+                Expanded(
+                  child: LazyLoadScrollView(
+                    scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                    onEndOfPage: () => viewModel.getProductCategoriesList(
+                      showLoader: false,
+                    ),
+                    child: ListView.builder(
+                      itemBuilder: (context, index) => buildFilterTypeValues(
+                        context: context,
+                        text: viewModel
+                            .categoriesForFilterList[index].categoryName,
+                        subText: viewModel.categoriesForFilterList[index].count,
+                        value:
+                            viewModel.categoriesForFilterList[index].isSelected,
+                        onChanged: (value) {
+                          viewModel.categoriesForFilterList[index].isSelected =
+                              value;
+
+                          /// adding checked Categories to [checkedCategoriesList]
+                          /// later it will be sent to bring the filtered products list
+
+                          if (value == true) {
+                            viewModel.tempCheckedCategoriesList.add(Type(
+                              type: viewModel
+                                  .categoriesForFilterList[index].categoryName!,
+                              count: viewModel
+                                      .categoriesForFilterList[index].count ??
+                                  0,
+                            ));
+                            viewModel.checkCategoriesAndMoveToTop();
+                          } else {
+                            viewModel.tempCheckedCategoriesList.removeWhere(
+                              (element) =>
+                                  element?.type ==
+                                  viewModel.categoriesForFilterList[index]
+                                      .categoryName,
+                            );
+                          }
+                          widget.arguments
+                              .onApplyFilterButtonClicked(
+                                outArgs: ProductsFilterViewOutputArguments(
+                                  checkedBrands:
+                                      viewModel.tempCheckedBrandsList,
+                                  checkedCategories:
+                                      viewModel.tempCheckedCategoriesList,
+                                  checkedSubCategories:
+                                      viewModel.tempCheckedSubCategoriesList,
+                                ),
+                              )
+                              .call();
+                          viewModel.notifyListeners();
+                        },
+                      ),
+                      itemCount: viewModel.categoriesForFilterList.length,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+  }
+
+  Widget brandsView({
+    required ProductsFilterViewModel viewModel,
+    required BuildContext context,
+  }) {
+    return viewModel.brandApiStatus == ApiStatus.LOADING
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Loading Brands...'),
+                hSizedBox(
+                  height: 10,
+                ),
+                const CircularProgressIndicator(),
+              ],
+            ),
+          )
+        : Column(
+            children: [
+              Container(
+                color: AppColors().white,
+                child: SimpleSearchWidget.innerHint(
+                  searchTerm: viewModel.brandTitle,
+                  onSearchTermCleared: () {
+                    viewModel.brandTitle = null;
+                    viewModel.getBrandsList(showLoader: true);
+                  },
+                  onSearchTermEntered: ({required String searchTerm}) {
+                    if (searchTerm.length > 2) {
+                      viewModel.brandTitle = searchTerm;
+                      viewModel.getBrandsList(
+                        showLoader: true,
+                      );
+                    }
+                  },
+                  innerHintText: labelSearchBrands,
+                ),
+              ),
+              Text(
+                'Total Brands: ${viewModel.totalItemsForBrandsApi.toString()}',
+                // style: AppTextStyles.robotoMedium10PrimaryShade5
+                //     .copyWith(
+                //   fontSize: 14,
+                // ),
+              ),
+              Expanded(
+                child: LazyLoadScrollView(
+                  scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                  onEndOfPage: () => viewModel.getBrandsList(
+                    showLoader: false,
+                  ),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => buildFilterTypeValues(
+                      subText: viewModel.brandsForFilterList[index].count,
+                      context: context,
+                      value: viewModel.brandsForFilterList[index].isSelected,
+                      onChanged: (value) {
+                        viewModel.brandsForFilterList[index].isSelected = value;
+
+                        /// adding checked Brands to [checkedBrandsList]
+                        /// later it will be sent to bring the filtered products list
+
+                        if (value == true) {
+                          /// on check of checkbox, add the list item to checkedBrandList
+
+                          viewModel.tempCheckedBrandsList.add(
+                            Brand(
+                              brand: viewModel
+                                  .brandsForFilterList[index].brandName,
+                              count: viewModel.brandsForFilterList[index].count,
+                            ),
+                          );
+                          viewModel.checkBrandsAndMoveToTop();
+                        } else {
+                          /// on uncheck of checkbox, remove the list item to checkedBrandList
+
+                          viewModel.tempCheckedBrandsList
+                              .removeWhere((element) {
+                            return element?.brand ==
+                                viewModel.brandsForFilterList[index].brandName;
+                          });
+                        }
+                        widget.arguments
+                            .onApplyFilterButtonClicked(
+                              outArgs: ProductsFilterViewOutputArguments(
+                                checkedBrands: viewModel.tempCheckedBrandsList,
+                                checkedCategories:
+                                    viewModel.tempCheckedCategoriesList,
+                                checkedSubCategories:
+                                    viewModel.tempCheckedSubCategoriesList,
+                              ),
+                            )
+                            .call();
+                        viewModel.notifyListeners();
+                      },
+                      text: viewModel.brandsForFilterList[index].brandName,
+                    ),
+                    itemCount: viewModel.brandsForFilterList.length,
+                  ),
+                ),
+              ),
+            ],
+          );
+  }
+
+  Widget buildFiltersForLeftOfProductList({
+    required ProductsFilterViewModel viewModel,
+    required BuildContext context,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Filter By',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              AppIconToggleButton(
+                icons: [
+                  Tooltip(
+                    message: 'Brands',
+                    preferBelow: true,
+                    child: Image.asset(
+                      tableToggleIcon,
+                      height: 30,
+                      width: 30,
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Category',
+                    preferBelow: true,
+                    child: Image.asset(
+                      graphToogleIcon,
+                      height: 30,
+                      width: 30,
+                    ),
+                  ),
+                  Tooltip(
+                    message: 'Sub Category',
+                    preferBelow: true,
+                    child: Image.asset(
+                      graphToogleIcon,
+                      height: 30,
+                      width: 30,
+                    ),
+                  )
+                ],
+                selected: ({required int newValue}) {
+                  viewModel.updateSelectedFilterView(value: newValue);
+                },
+              ),
+            ],
+          ),
+          Expanded(
+            child: IndexedStack(
+              index: viewModel.selectedFilterView,
+              children: [
+                brandsView(
+                  context: context,
+                  viewModel: viewModel,
+                ),
+                categoryView(
+                  context: context,
+                  viewModel: viewModel,
+                ),
+                subCategoryView(
+                  context: context,
+                  viewModel: viewModel,
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget buildFilterTypesAndValues({
     required ProductsFilterViewModel viewModel,
     required BuildContext context,
@@ -82,7 +504,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Brand')
             Expanded(
               flex: 5,
-              child: viewModel.isBusy
+              child: viewModel.brandApiStatus == ApiStatus.LOADING
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -121,58 +543,50 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                           // ),
                         ),
                         Expanded(
-                          child: LazyLoadScrollView(
-                            scrollOffset:
-                                (MediaQuery.of(context).size.height ~/ 6),
-                            onEndOfPage: () => viewModel.getBrandsList(
-                              showLoader: false,
+                          child: ListView.builder(
+                            itemBuilder: (context, index) =>
+                                buildFilterTypeValues(
+                              subText:
+                                  viewModel.brandsForFilterList[index].count,
+                              context: context,
+                              value: viewModel
+                                  .brandsForFilterList[index].isSelected,
+                              onChanged: (value) {
+                                viewModel.brandsForFilterList[index]
+                                    .isSelected = value;
+
+                                /// adding checked Brands to [checkedBrandsList]
+                                /// later it will be sent to bring the filtered products list
+
+                                if (value == true) {
+                                  /// on check of checkbox, add the list item to checkedBrandList
+
+                                  viewModel.tempCheckedBrandsList.add(
+                                    Brand(
+                                      brand: viewModel
+                                          .brandsForFilterList[index].brandName,
+                                      count: viewModel
+                                          .brandsForFilterList[index].count,
+                                    ),
+                                  );
+                                  viewModel.checkBrandsAndMoveToTop();
+                                } else {
+                                  /// on uncheck of checkbox, remove the list item to checkedBrandList
+
+                                  viewModel.tempCheckedBrandsList
+                                      .removeWhere((element) {
+                                    return element?.brand ==
+                                        viewModel.brandsForFilterList[index]
+                                            .brandName;
+                                  });
+                                }
+
+                                viewModel.notifyListeners();
+                              },
+                              text: viewModel
+                                  .brandsForFilterList[index].brandName,
                             ),
-                            child: ListView.builder(
-                              itemBuilder: (context, index) =>
-                                  buildFilterTypeValues(
-                                subText:
-                                    viewModel.brandsForFilterList[index].count,
-                                context: context,
-                                value: viewModel
-                                    .brandsForFilterList[index].isSelected,
-                                onChanged: (value) {
-                                  viewModel.brandsForFilterList[index]
-                                      .isSelected = value;
-
-                                  /// adding checked Brands to [checkedBrandsList]
-                                  /// later it will be sent to bring the filtered products list
-
-                                  if (value == true) {
-                                    /// on check of checkbox, add the list item to checkedBrandList
-
-                                    viewModel.tempCheckedBrandsList.add(
-                                      Brand(
-                                        brand: viewModel
-                                            .brandsForFilterList[index]
-                                            .brandName,
-                                        count: viewModel
-                                            .brandsForFilterList[index].count,
-                                      ),
-                                    );
-                                    viewModel.checkBrandsAndMoveToTop();
-                                  } else {
-                                    /// on uncheck of checkbox, remove the list item to checkedBrandList
-
-                                    viewModel.tempCheckedBrandsList
-                                        .removeWhere((element) {
-                                      return element?.brand ==
-                                          viewModel.brandsForFilterList[index]
-                                              .brandName;
-                                    });
-                                  }
-
-                                  viewModel.notifyListeners();
-                                },
-                                text: viewModel
-                                    .brandsForFilterList[index].brandName,
-                              ),
-                              itemCount: viewModel.brandsForFilterList.length,
-                            ),
+                            itemCount: viewModel.brandsForFilterList.length,
                           ),
                         ),
                       ],
@@ -181,7 +595,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Category')
             Expanded(
               flex: 5,
-              child: viewModel.isBusy
+              child: viewModel.categoryApiStatus == ApiStatus.LOADING
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -285,7 +699,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Sub-Category')
             Expanded(
               flex: 5,
-              child: viewModel.isBusy
+              child: viewModel.subCategoryApiStatus == ApiStatus.LOADING
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -426,45 +840,39 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     required void Function(bool?)? onChanged,
     required BuildContext context,
   }) {
-    return CheckboxListTile(
-      value: value,
-      onChanged: onChanged,
-      secondary: NullableTextWidget(
-        stringValue: text,
-        // text!.toLowerCase(),
-        textStyle: Theme.of(context).textTheme.headline6!.copyWith(
-              color: value == true
-                  ? Theme.of(context).primaryColorLight
-                  : AppColors().black,
-            ),
+    return Tooltip(
+      message: (text ?? '').length > 10 ? text : '',
+      child: CheckboxListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 2,
+          vertical: 2,
+        ),
+        value: value,
+        onChanged: onChanged,
+        tileColor: value == true
+            ? Theme.of(context).primaryColorLight
+            : AppColors().white,
+        secondary: NullableTextWidget(
+          stringValue:
+              (text ?? '').length > 10 ? '${text?.substring(0, 8)}...' : text,
+          // text!.toLowerCase(),
+          textStyle: widget.arguments.showFilltersOnLeftOfProductList
+              ? Theme.of(context).textTheme.button!.copyWith()
+              : Theme.of(context).textTheme.headline6!.copyWith(),
+        ),
+        title: subText == null //|| subText < 1
+            ? null
+            : NullableTextWidget.int(
+                intValue: subText,
+                // text!.toLowerCase(),
+                textStyle: widget.arguments.showFilltersOnLeftOfProductList
+                    ? Theme.of(context).textTheme.button!.copyWith(
+                          fontSize: 10,
+                        )
+                    : Theme.of(context).textTheme.subtitle2!.copyWith(),
+              ),
       ),
-      title: subText == null //|| subText < 1
-          ? null
-          : NullableTextWidget.int(
-              intValue: subText,
-              // text!.toLowerCase(),
-              textStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
-                    color: value == true
-                        ? Theme.of(context).primaryColorLight
-                        : AppColors().black,
-                  ),
-            ),
     );
-
-    // Row(
-    //   children: [
-    //     Checkbox(
-    //       value: value,
-    //       onChanged: onChanged,
-    //     ),
-    //     // wSizedBox(5),
-    //     NullableTextWidget(
-    //       text: text,
-    //       // text!.toLowerCase(),
-    //       textStyle: Theme.of(context).textTheme.subtitle2,
-    //     )
-    //   ],
-    // );
   }
 
   Widget buildFiltersTypeTitle({
@@ -626,19 +1034,23 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     return ViewModelBuilder<ProductsFilterViewModel>.reactive(
       onModelReady: (model) => model.init(args: widget.arguments),
       builder: (context, model, child) => Scaffold(
-        body: Column(
-          children: [
-            // buildBottomSheetHeader(),
-            buildFilterTypesAndValues(
-              viewModel: model,
-              context: context,
-            ),
-            buildClearAndApplyButtons(
-              context: context,
-              viewModel: model,
-            ),
-          ],
-        ),
+        body: widget.arguments.showFilltersOnLeftOfProductList
+            ? buildFiltersForLeftOfProductList(
+                viewModel: model,
+                context: context,
+              )
+            : Column(
+                children: [
+                  buildFilterTypesAndValues(
+                    viewModel: model,
+                    context: context,
+                  ),
+                  buildClearAndApplyButtons(
+                    context: context,
+                    viewModel: model,
+                  ),
+                ],
+              ),
       ),
       viewModelBuilder: () => ProductsFilterViewModel(),
     );
@@ -655,13 +1067,25 @@ class ProductsFilterViewArguments {
     required this.onCancelButtonClicked,
     required this.supplierId,
     this.isSupplierCatalog = false,
-  });
+  }) : showFilltersOnLeftOfProductList = false;
+
+  ProductsFilterViewArguments.productList({
+    required this.selectedBrand,
+    required this.selectedCategory,
+    required this.selectedSuCategory,
+    required this.searchProductTitle,
+    required this.onApplyFilterButtonClicked,
+    required this.onCancelButtonClicked,
+    required this.supplierId,
+    this.isSupplierCatalog = false,
+  }) : showFilltersOnLeftOfProductList = true;
 
   final Function({
     required ProductsFilterViewOutputArguments outArgs,
   }) onApplyFilterButtonClicked;
 
   final bool isSupplierCatalog;
+  final bool showFilltersOnLeftOfProductList;
   final Function onCancelButtonClicked;
   final String? searchProductTitle;
   final List<Brand?>? selectedBrand;

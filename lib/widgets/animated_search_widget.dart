@@ -52,76 +52,57 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
       ),
       curve: Curves.easeInOut,
       child: isSearchIconVisible
-          ? Row(
-              children: [
-                Expanded(
-                  child: AppTextField(
-                    autoFocus: true,
-                    controller: searchController,
-                    focusNode: searchFocusNode,
-                    buttonType: ButtonType.SMALL,
-                    buttonIcon: Icon(
-                      searchController.text.trim().isEmpty
-                          ? Icons.search
-                          : Icons.close,
-                      color: Colors.black,
-                    ),
-                    onTextChange: (value) {
-                      if (value.isEmpty) {
-                        widget.onCrossButtonClicked();
-                      }
-                      if (value.length > 2) {
-                        widget.onSearch(searchTerm: value).call();
-                      }
-                    },
-                    onButtonPressed: () {
-                      if (searchController.text.trim().isNotEmpty) {
-                        setState(() {
-                          searchController.clear();
-                          isSearchIconVisible = false;
-                          widget.onCrossButtonClicked.call();
-                        });
-                      }
+          ? AppTextField(
+              autoFocus: true,
+              controller: searchController,
+              focusNode: searchFocusNode,
+              buttonType: ButtonType.SMALL,
+              buttonIcon: Icon(
+                searchController.text.trim().isEmpty
+                    ? Icons.search
+                    : Icons.close,
+                color: Colors.black,
+                size: 15,
+              ),
+              onTextChange: (value) {
+                if (value.isEmpty) {
+                  widget.onCrossButtonClicked();
+                }
+                if (value.length > 2) {
+                  widget.onSearch(searchTerm: value).call();
+                }
+              },
+              onButtonPressed: () {
+                if (searchController.text.trim().isNotEmpty) {
+                  setState(() {
+                    searchController.clear();
+                    isSearchIconVisible = false;
+                    widget.onCrossButtonClicked.call();
+                  });
+                }
 
-                      widget
-                          .onSearch(searchTerm: searchController.text.trim())
-                          .call();
-                    },
-                    onEditingComplete: () => widget
-                        .onSearch(searchTerm: searchController.text.trim())
-                        .call(),
-                    onFieldSubmitted: (value) =>
-                        widget.onSearch(searchTerm: value).call(),
-                    innerHintText: widget.hintText,
+                widget
+                    .onSearch(searchTerm: searchController.text.trim())
+                    .call();
+              },
+              onEditingComplete: () => widget
+                  .onSearch(searchTerm: searchController.text.trim())
+                  .call(),
+              onFieldSubmitted: (value) =>
+                  widget.onSearch(searchTerm: value).call(),
+              inputDecoration: const InputDecoration()
+                  .applyDefaults(Theme.of(context).inputDecorationTheme)
+                  .copyWith(
+                    contentPadding: const EdgeInsets.all(9),
+                    labelStyle: Theme.of(context).textTheme.subtitle2,
+                    hintText: widget.hintText,
+                    hintStyle: Theme.of(context)
+                        .textTheme
+                        .button
+                        ?.copyWith(color: Colors.grey.shade400),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
                   ),
-                ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.search,
-                //     color: Colors.black,
-                //   ),
-                //   onPressed: () {
-                //     widget
-                //         .onSearch(
-                //           searchTerm: searchController.text.trim(),
-                //         )
-                //         .call();
-                //   },
-                // ),
-                // IconButton(
-                //   icon: const Icon(
-                //     Icons.close,
-                //     color: Colors.black,
-                //   ),
-                //   onPressed: () {
-                //     setState(() {
-                //       searchController.clear();
-                //       isSearchIconVisible = false;
-                //       widget.onCrossButtonClicked.call();
-                //     });
-                //   },
-                // ),
-              ],
+              innerHintText: widget.hintText,
             )
           : IconButton(
               onPressed: () {

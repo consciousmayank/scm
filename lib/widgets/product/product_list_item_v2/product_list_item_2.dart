@@ -109,16 +109,16 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                               textStyle: Theme.of(context).textTheme.subtitle2,
                             ),
 
-                          ProductItemButtons(
-                            isForCatalog: widget.arguments.isForCatalog,
-                            isSupplier: model.isSupplier(),
-                            isProductInCatalog: model.isProductInCatalog(
-                              productId: widget.arguments.product?.id,
-                            ),
-                            isProductInCart: model.isProductInCart(
-                              productId: widget.arguments.product?.id,
-                            ),
-                          )
+                          // ProductItemButtons(
+                          //   isForCatalog: widget.arguments.isForCatalog,
+                          //   isSupplier: model.isSupplier(),
+                          //   isProductInCatalog: model.isProductInCatalog(
+                          //     productId: widget.arguments.product?.id,
+                          //   ),
+                          //   isProductInCart: model.isProductInCart(
+                          //     productId: widget.arguments.product?.id,
+                          //   ),
+                          // )
                           // widget.arguments.isForCatalog
                           //     ? const RemoveProductWidget()
                           //     : model.isSupplier()

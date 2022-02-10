@@ -47,10 +47,8 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   final ProductSizesApis _productSizesApis = locator<ProductSizesApisImpl>();
   final ProductSubCategoriesApisImpl _productSubCatgoriesApis =
       locator<ProductSubCategoriesApisImpl>();
-
+  ApiStatus productListApiStatus = ApiStatus.LOADING;
   getProductList() async {
-    setBusy(true);
-
     if (sizeFilterList.isEmpty) {
       productListResponse = await _productListApis.getProductList(
         brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
@@ -81,7 +79,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
       );
     }
 
-    setBusy(false);
+    productListApiStatus = ApiStatus.FETCHED;
 
     notifyListeners();
   }

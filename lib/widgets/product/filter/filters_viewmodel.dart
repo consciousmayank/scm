@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/di.dart';
 
 import 'package:scm/app/generalised_base_view_model.dart';
+import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/brands_for_filter.dart';
 import 'package:scm/model_classes/categories_for_filter.dart';
 import 'package:scm/model_classes/products_brands_response.dart';
@@ -16,9 +17,14 @@ import 'package:scm/widgets/product/filter/filters_view.dart';
 
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
+  ApiStatus brandApiStatus = ApiStatus.LOADING;
+  ApiStatus categoryApiStatus = ApiStatus.LOADING;
+  ApiStatus subCategoryApiStatus = ApiStatus.LOADING;
+
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
   String? clickedFilter = 'Brand';
+  int selectedFilterView = 0;
 
   int? pageIndexForBrandsApi = 0;
   int? pageIndexForCategoriesApi = 0;
@@ -171,7 +177,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      setBusy(true);
+      brandApiStatus = ApiStatus.LOADING;
+      notifyListeners();
       pageIndexForBrandsApi = 0;
       brandsList = [];
       brandsForFilterList = [];
@@ -207,7 +214,9 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForBrandsApi = pageIndexForBrandsApi! + 1;
     }
-    if (showLoader) setBusy(false);
+    if (showLoader) {
+      brandApiStatus = ApiStatus.FETCHED;
+    }
 
     notifyListeners();
   }
@@ -428,7 +437,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      setBusy(true);
+      categoryApiStatus = ApiStatus.LOADING;
+      notifyListeners();
       pageIndexForCategoriesApi = 0;
       productCategoriesList = [];
       categoriesForFilterList = [];
@@ -462,7 +472,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForCategoriesApi = pageIndexForCategoriesApi! + 1;
     }
-    if (showLoader) setBusy(false);
+    if (showLoader) categoryApiStatus = ApiStatus.FETCHED;
 
     notifyListeners();
   }
@@ -563,7 +573,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      setBusy(true);
+      subCategoryApiStatus = ApiStatus.LOADING;
+      notifyListeners();
       pageIndexForSubCategoriesApi = 0;
       subCategoriesList = [];
       subCategoriesForFilterList = [];
@@ -595,7 +606,7 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForSubCategoriesApi = pageIndexForSubCategoriesApi! + 1;
     }
-    if (showLoader) setBusy(false);
+    if (showLoader) subCategoryApiStatus = ApiStatus.FETCHED;
 
     // setBusy(false);
     notifyListeners();
@@ -692,6 +703,27 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     }
 
     return subCategoriesForFilterList?.toSet().toList();
+  }
+
+  void updateSelectedFilterView({required int value}) {
+    selectedFilterView = value;
+    switch (value) {
+      case 0:
+        clickedFilter = 'Brand';
+        getBrandsList(showLoader: true);
+        break;
+
+      case 1:
+        clickedFilter = 'Category';
+        getProductCategoriesList(showLoader: true);
+
+        break;
+      case 2:
+        clickedFilter = 'Sub-Category';
+        getProductsSubCategoriesList(showLoader: true);
+        break;
+    }
+    notifyListeners();
   }
 }
 
