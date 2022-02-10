@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
@@ -20,37 +21,51 @@ class NotSupportedScreensView extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double maxWidthOfOuterContainer = screenWidth * 0.45;
-    double maxWidthOfItems = getValueForScreenType(
-      context: context,
-      mobile: screenWidth,
-      tablet: screenWidth * 0.40,
-      desktop: screenWidth * 0.40,
-    );
+    double maxWidthOfItems = ResponsiveValue<double>(context,
+        defaultValue: screenWidth * 0.40,
+        valueWhen: [
+          Condition.smallerThan(
+            name: MOBILE,
+            value: screenWidth,
+          ),
+        ]).value!;
     return ViewModelBuilder<LoginHelperViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         backgroundColor: const Color(0xFF287AA2),
         body: Padding(
           padding: EdgeInsets.all(
-            getValueForScreenType(
-              context: context,
-              mobile: 4,
-              desktop: 64.0,
-              tablet: 64.0,
-            ),
+            ResponsiveValue<double>(
+              context,
+              defaultValue: 64,
+              valueWhen: [
+                const Condition.smallerThan(
+                  name: MOBILE,
+                  value: 4,
+                ),
+              ],
+            ).value!,
           ),
           child: Material(
-            borderRadius: getValueForScreenType(
-              context: context,
-              mobile: BorderRadius.circular(
-                4.0,
-              ),
-              tablet: BorderRadius.circular(
+            borderRadius: ResponsiveValue<BorderRadius>(
+              context,
+              valueWhen: [
+                Condition.smallerThan(
+                  name: MOBILE,
+                  value: BorderRadius.circular(
+                    4.0,
+                  ),
+                ),
+                Condition.smallerThan(
+                  name: TABLET,
+                  value: BorderRadius.circular(
+                    4.0,
+                  ),
+                )
+              ],
+              defaultValue: BorderRadius.circular(
                 16.0,
               ),
-              desktop: BorderRadius.circular(
-                16.0,
-              ),
-            ),
+            ).value,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -78,12 +93,20 @@ class NotSupportedScreensView extends StatelessWidget {
                                   text: 'You seem to be on a',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: getValueForScreenType(
-                                      context: context,
-                                      mobile: 14,
-                                      tablet: 18,
-                                      desktop: 40,
-                                    ),
+                                    fontSize: ResponsiveValue<double>(
+                                      context,
+                                      defaultValue: 40,
+                                      valueWhen: [
+                                        const Condition.smallerThan(
+                                          name: MOBILE,
+                                          value: 14,
+                                        ),
+                                        const Condition.smallerThan(
+                                          name: TABLET,
+                                          value: 18,
+                                        ),
+                                      ],
+                                    ).value,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
@@ -91,12 +114,20 @@ class NotSupportedScreensView extends StatelessWidget {
                                       style: TextStyle(
                                         color: AppColors()
                                             .loginPageQrCodeTextColor,
-                                        fontSize: getValueForScreenType(
-                                          context: context,
-                                          mobile: 14,
-                                          tablet: 18,
-                                          desktop: 40,
-                                        ),
+                                        fontSize: ResponsiveValue<double>(
+                                          context,
+                                          defaultValue: 40,
+                                          valueWhen: [
+                                            const Condition.smallerThan(
+                                              name: MOBILE,
+                                              value: 14,
+                                            ),
+                                            const Condition.smallerThan(
+                                              name: TABLET,
+                                              value: 18,
+                                            ),
+                                          ],
+                                        ).value,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     )
@@ -108,12 +139,20 @@ class NotSupportedScreensView extends StatelessWidget {
                                   text: 'Kindly',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: getValueForScreenType(
-                                      context: context,
-                                      mobile: 14,
-                                      tablet: 18,
-                                      desktop: 40,
-                                    ),
+                                    fontSize: ResponsiveValue<double>(
+                                      context,
+                                      defaultValue: 40,
+                                      valueWhen: [
+                                        const Condition.smallerThan(
+                                          name: MOBILE,
+                                          value: 14,
+                                        ),
+                                        const Condition.smallerThan(
+                                          name: TABLET,
+                                          value: 18,
+                                        ),
+                                      ],
+                                    ).value,
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
@@ -121,24 +160,40 @@ class NotSupportedScreensView extends StatelessWidget {
                                       style: TextStyle(
                                           color: AppColors()
                                               .loginPageQrCodeTextColor,
-                                          fontSize: getValueForScreenType(
-                                            context: context,
-                                            mobile: 14,
-                                            tablet: 18,
-                                            desktop: 40,
-                                          ),
+                                          fontSize: ResponsiveValue<double>(
+                                            context,
+                                            defaultValue: 40,
+                                            valueWhen: [
+                                              const Condition.smallerThan(
+                                                name: MOBILE,
+                                                value: 14,
+                                              ),
+                                              const Condition.smallerThan(
+                                                name: TABLET,
+                                                value: 18,
+                                              ),
+                                            ],
+                                          ).value,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     TextSpan(
                                       text: ' for better viewing experience.',
                                       style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: getValueForScreenType(
-                                          context: context,
-                                          mobile: 14,
-                                          tablet: 18,
-                                          desktop: 40,
-                                        ),
+                                        fontSize: ResponsiveValue<double>(
+                                          context,
+                                          defaultValue: 40,
+                                          valueWhen: [
+                                            const Condition.smallerThan(
+                                              name: MOBILE,
+                                              value: 14,
+                                            ),
+                                            const Condition.smallerThan(
+                                              name: TABLET,
+                                              value: 18,
+                                            ),
+                                          ],
+                                        ).value,
                                       ),
                                     )
                                   ],

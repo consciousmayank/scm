@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/model_classes/login_reasons.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/demand_module_screens/demand_module_landing_page_view.dart';
@@ -139,11 +138,7 @@ class BaseView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenTypeLayout.builder(
-      mobile: (BuildContext context) => const NotSupportedScreensView(),
-      tablet: (BuildContext context) => const NotSupportedScreensView(),
-      desktop: (BuildContext context) => child,
-    );
+    return child;
   }
 }
 

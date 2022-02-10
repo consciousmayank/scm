@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
@@ -30,149 +30,142 @@ class CartPageView extends StatefulWidget {
 class _CartPageViewState extends State<CartPageView> {
   @override
   Widget build(BuildContext context) {
-    return ScreenTypeLayout.builder(
-      mobile: (BuildContext context) => const NotSupportedScreensView(),
-      tablet: (BuildContext context) => const NotSupportedScreensView(),
-      desktop: (BuildContext context) =>
-          ViewModelBuilder<CartPageViewModel>.reactive(
-        onModelReady: (model) => model.init(),
-        builder: (context, model, child) => Scaffold(
-          appBar: appbarWidget(
-              context: context,
-              title: labelCart,
-              automaticallyImplyLeading: true,
-              options: model.orderPlaced
-                  ? null
-                  : [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 8,
-                          ),
-                          child: Text(
-                            'Total Items: ${model.cart.cartItems?.length}',
-                            style:
-                                Theme.of(context).textTheme.headline6?.copyWith(
-                                      color: AppColors().white,
-                                    ),
-                          ),
+    return ViewModelBuilder<CartPageViewModel>.reactive(
+      onModelReady: (model) => model.init(),
+      builder: (context, model, child) => Scaffold(
+        appBar: appbarWidget(
+            context: context,
+            title: labelCart,
+            automaticallyImplyLeading: true,
+            options: model.orderPlaced
+                ? null
+                : [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 8,
                         ),
-                      ),
-                    ]),
-          body: model.orderPlaced
-              ? const PlacedOrderView()
-              : model.cartApiStatus == ApiStatus.LOADING ||
-                      model.placeOrderApiStatus == ApiStatus.LOADING
-                  ? const Center(
-                      child: LoadingWidgetWithText(
-                        text: 'Fetching Cart. Please Wait...',
-                      ),
-                    )
-                  : Row(
-                      children: [
-                        const Expanded(
-                          child: CartListViewWidget(),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(
-                              4.0,
-                            ),
-                            child: model.cartApiStatus == ApiStatus.LOADING
-                                ? Container()
-                                : Card(
-                                    shape: Dimens().getCardShape(),
+                        child: Text(
+                          'Total Items: ${model.cart.cartItems?.length}',
+                          style:
+                              Theme.of(context).textTheme.headline6?.copyWith(
                                     color: AppColors().white,
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              const AppTableWidget.header(
-                                                values: [
-                                                  AppTableSingleItem.string(
-                                                    'SUPPLIER DETAILS',
-                                                    flexValue: 1,
-                                                  )
-                                                ],
-                                              ),
-                                              AppTableWidget.values(
-                                                values: [
-                                                  AppTableSingleItem.string(
-                                                    'Name : ${model.responseSupplierDetails.businessName}',
-                                                    flexValue: 1,
-                                                  )
-                                                ],
-                                              ),
-                                              AppTableWidget.values(
-                                                values: [
-                                                  AppTableSingleItem.string(
-                                                    'Contact Person : ${model.responseSupplierDetails.contactPerson}',
-                                                    flexValue: 1,
-                                                  )
-                                                ],
-                                              ),
-
-                                              AppTableWidget.values(
-                                                values: [
-                                                  AppTableSingleItem.string(
-                                                    'Contact Number : ${model.responseSupplierDetails.contactNumber()}',
-                                                    flexValue: 1,
-                                                  )
-                                                ],
-                                              ),
-
-                                              AppTableWidget.values(
-                                                values: [
-                                                  AppTableSingleItem
-                                                      .customWidget(
-                                                    AppButton(
-                                                      buttonBg: Theme.of(
-                                                              context)
-                                                          .primaryColorLight,
-                                                      title:
-                                                          'Add More products of same Supplier',
-                                                      onTap: model.cart
-                                                                  .supplyId ==
-                                                              null
-                                                          ? null
-                                                          : () => model
-                                                              .takeToProductsPageOfSelectedSupplier(),
-                                                    ),
-                                                    flexValue: 1,
-                                                  )
-                                                ],
-                                              ),
-
-                                              // OrderSummaryItemViewWidget(
-                                              //   label: 'NAME',
-                                              //   value: model.responseSupplierDetails
-                                              //           .businessName ??
-                                              //       '--',
-                                              // ),
-                                            ],
-                                          ),
-                                        ),
-                                        hSizedBox(
-                                          height: 16,
-                                        ),
-                                        const Flexible(
-                                          child: CartDeliveryAddressListView(),
-                                          flex: 1,
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                          ),
-                          flex: 1,
                         ),
-                      ],
+                      ),
                     ),
-        ),
-        viewModelBuilder: () => CartPageViewModel(),
+                  ]),
+        body: model.orderPlaced
+            ? const PlacedOrderView()
+            : model.cartApiStatus == ApiStatus.LOADING ||
+                    model.placeOrderApiStatus == ApiStatus.LOADING
+                ? const Center(
+                    child: LoadingWidgetWithText(
+                      text: 'Fetching Cart. Please Wait...',
+                    ),
+                  )
+                : Row(
+                    children: [
+                      const Expanded(
+                        child: CartListViewWidget(),
+                        flex: 2,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            4.0,
+                          ),
+                          child: model.cartApiStatus == ApiStatus.LOADING
+                              ? Container()
+                              : Card(
+                                  shape: Dimens().getCardShape(),
+                                  color: AppColors().white,
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            const AppTableWidget.header(
+                                              values: [
+                                                AppTableSingleItem.string(
+                                                  'SUPPLIER DETAILS',
+                                                  flexValue: 1,
+                                                )
+                                              ],
+                                            ),
+                                            AppTableWidget.values(
+                                              values: [
+                                                AppTableSingleItem.string(
+                                                  'Name : ${model.responseSupplierDetails.businessName}',
+                                                  flexValue: 1,
+                                                )
+                                              ],
+                                            ),
+                                            AppTableWidget.values(
+                                              values: [
+                                                AppTableSingleItem.string(
+                                                  'Contact Person : ${model.responseSupplierDetails.contactPerson}',
+                                                  flexValue: 1,
+                                                )
+                                              ],
+                                            ),
+
+                                            AppTableWidget.values(
+                                              values: [
+                                                AppTableSingleItem.string(
+                                                  'Contact Number : ${model.responseSupplierDetails.contactNumber()}',
+                                                  flexValue: 1,
+                                                )
+                                              ],
+                                            ),
+
+                                            AppTableWidget.values(
+                                              values: [
+                                                AppTableSingleItem.customWidget(
+                                                  AppButton(
+                                                    buttonBg: Theme.of(context)
+                                                        .primaryColorLight,
+                                                    title:
+                                                        'Add More products of same Supplier',
+                                                    onTap: model.cart
+                                                                .supplyId ==
+                                                            null
+                                                        ? null
+                                                        : () => model
+                                                            .takeToProductsPageOfSelectedSupplier(),
+                                                  ),
+                                                  flexValue: 1,
+                                                )
+                                              ],
+                                            ),
+
+                                            // OrderSummaryItemViewWidget(
+                                            //   label: 'NAME',
+                                            //   value: model.responseSupplierDetails
+                                            //           .businessName ??
+                                            //       '--',
+                                            // ),
+                                          ],
+                                        ),
+                                      ),
+                                      hSizedBox(
+                                        height: 16,
+                                      ),
+                                      const Flexible(
+                                        child: CartDeliveryAddressListView(),
+                                        flex: 1,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                        ),
+                        flex: 1,
+                      ),
+                    ],
+                  ),
       ),
+      viewModelBuilder: () => CartPageViewModel(),
     );
   }
 }

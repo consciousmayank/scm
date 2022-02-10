@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/di.dart';
 import 'package:scm/app/generalised_base_view_model.dart';

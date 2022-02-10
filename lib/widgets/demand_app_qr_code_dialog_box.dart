@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/user_roles.dart';
 import 'package:scm/model_classes/address.dart';
@@ -35,92 +35,87 @@ class OrderListPageView extends StatelessWidget {
     return ViewModelBuilder<OrderListPageViewModel>.reactive(
       onModelReady: (model) => model.init(arguments),
       builder: (context, model, child) => Scaffold(
-        body: getValueForScreenType(
-          context: context,
-          mobile: Container(),
-          tablet: Container(),
-          desktop: model.isBusy
-              ? const LoadingWidget()
-              : Row(
-                  children: [
-                    if (!arguments.hideOrdersList)
-                      Expanded(
-                        child: model.orderListApi == ApiStatus.LOADING
-                            ? const LoadingWidgetWithText(
-                                text: 'Fetching Orders. Please Wait...')
-                            : IndexedStack(
-                                index: model.indexForList,
-                                children: [
-                                  OrderListWidget.orderPage(
-                                    numberOfOrders: model.orderList.totalItems,
-                                    selectedOrdersDurationType:
-                                        model.selectedOrderDuration,
-                                    key: UniqueKey(),
-                                    selectedOrderId:
-                                        arguments.selectedOrder != null
-                                            ? arguments.selectedOrder!.id ?? -1
-                                            : model.selectedOrder.id ?? -1,
-                                    onOrderClick: ({
-                                      required Order selectedOrder,
-                                    }) {
-                                      model.selectedOrder = selectedOrder;
-                                      model.getOrdersDetails();
-                                    },
-                                    label: labelOrders,
-                                    isScrollable: true,
-                                    isSupplyRole: model.preferences
-                                            .getSelectedUserRole() ==
-                                        AuthenticatedUserRoles
-                                            .ROLE_SUPPLY.getStatusString,
-                                    orders: model.orderList.orders!,
-                                    onNextPageClick: () {
-                                      model.pageNumber++;
-                                      model.getOrderList();
-                                    },
-                                    onPreviousPageClick: () {
-                                      model.pageNumber--;
-                                      model.getOrderList();
-                                    },
-                                    pageNumber: model.pageNumber,
-                                    totalPages: model.orderList.totalPages! - 1,
-                                    selectedOrderStatus:
-                                        model.selectedOrderStatus,
-                                    onOrderStatusClick: ({
-                                      required String selectedOrderStatus,
-                                    }) {
-                                      model.openOrderListFilters();
-                                    },
-                                    // orderStatuses: model.getInAppOrderStatusList(),
-                                    orderStatuses: model.orderStatusList,
-                                    fromDateString:
-                                        DateTimeToStringConverter.ddMMMyy(
-                                      date: model.dateTimeRange.start,
-                                    ).convert(),
-                                    toDateString:
-                                        DateTimeToStringConverter.ddMMMyy(
-                                      date: model.dateTimeRange.end,
-                                    ).convert(),
-                                  ),
-                                  const OrderFiltersView()
-                                ],
-                              ),
-                        flex: 1,
-                      ),
+        body: model.isBusy
+            ? const LoadingWidget()
+            : Row(
+                children: [
+                  if (!arguments.hideOrdersList)
                     Expanded(
-                      key: UniqueKey(),
-                      child: model.orderDetailsApi == ApiStatus.LOADING
+                      child: model.orderListApi == ApiStatus.LOADING
                           ? const LoadingWidgetWithText(
                               text: 'Fetching Orders. Please Wait...')
-                          : model.orderDetails.status!.isEmpty
-                              ? const Center(
-                                  child: Text('No orders found'),
-                                )
-                              : const ProcessingOrderWidget(),
-                      flex: 2,
+                          : IndexedStack(
+                              index: model.indexForList,
+                              children: [
+                                OrderListWidget.orderPage(
+                                  numberOfOrders: model.orderList.totalItems,
+                                  selectedOrdersDurationType:
+                                      model.selectedOrderDuration,
+                                  key: UniqueKey(),
+                                  selectedOrderId:
+                                      arguments.selectedOrder != null
+                                          ? arguments.selectedOrder!.id ?? -1
+                                          : model.selectedOrder.id ?? -1,
+                                  onOrderClick: ({
+                                    required Order selectedOrder,
+                                  }) {
+                                    model.selectedOrder = selectedOrder;
+                                    model.getOrdersDetails();
+                                  },
+                                  label: labelOrders,
+                                  isScrollable: true,
+                                  isSupplyRole:
+                                      model.preferences.getSelectedUserRole() ==
+                                          AuthenticatedUserRoles
+                                              .ROLE_SUPPLY.getStatusString,
+                                  orders: model.orderList.orders!,
+                                  onNextPageClick: () {
+                                    model.pageNumber++;
+                                    model.getOrderList();
+                                  },
+                                  onPreviousPageClick: () {
+                                    model.pageNumber--;
+                                    model.getOrderList();
+                                  },
+                                  pageNumber: model.pageNumber,
+                                  totalPages: model.orderList.totalPages! - 1,
+                                  selectedOrderStatus:
+                                      model.selectedOrderStatus,
+                                  onOrderStatusClick: ({
+                                    required String selectedOrderStatus,
+                                  }) {
+                                    model.openOrderListFilters();
+                                  },
+                                  // orderStatuses: model.getInAppOrderStatusList(),
+                                  orderStatuses: model.orderStatusList,
+                                  fromDateString:
+                                      DateTimeToStringConverter.ddMMMyy(
+                                    date: model.dateTimeRange.start,
+                                  ).convert(),
+                                  toDateString:
+                                      DateTimeToStringConverter.ddMMMyy(
+                                    date: model.dateTimeRange.end,
+                                  ).convert(),
+                                ),
+                                const OrderFiltersView()
+                              ],
+                            ),
+                      flex: 1,
                     ),
-                  ],
-                ),
-        ),
+                  Expanded(
+                    key: UniqueKey(),
+                    child: model.orderDetailsApi == ApiStatus.LOADING
+                        ? const LoadingWidgetWithText(
+                            text: 'Fetching Orders. Please Wait...')
+                        : model.orderDetails.status!.isEmpty
+                            ? const Center(
+                                child: Text('No orders found'),
+                              )
+                            : const ProcessingOrderWidget(),
+                    flex: 2,
+                  ),
+                ],
+              ),
       ),
       viewModelBuilder: () => OrderListPageViewModel(),
     );

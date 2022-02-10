@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/model_classes/app_notifications_helper.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';
 import 'package:scm/services/notification/notifications_list_view/notifications_list_viewmodel.dart';

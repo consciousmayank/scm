@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_value.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/screens/demand_module_screens/supplier_profile/supplier_profile_view.dart';
@@ -33,39 +34,34 @@ class _SuppliersListViewState extends State<SuppliersListView> {
     return ViewModelBuilder<SuppliersListViewModel>.reactive(
       onModelReady: (model) => model.init(args: widget.arguments),
       builder: (context, model, child) => Scaffold(
-        body: getValueForScreenType(
-          context: context,
-          mobile: Container(),
-          tablet: Container(),
-          desktop: Row(
-            children: [
-              Expanded(
-                child: Card(
-                  shape: Dimens().getCardShape(),
-                  elevation: Dimens().getDefaultElevation,
-                  color: AppColors().white,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SupplierListWidget(),
-                  ),
+        body: Row(
+          children: [
+            Expanded(
+              child: Card(
+                shape: Dimens().getCardShape(),
+                elevation: Dimens().getDefaultElevation,
+                color: AppColors().white,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: SupplierListWidget(),
                 ),
-                flex: 1,
               ),
-              Expanded(
-                child: model.selectedSupplier == null
-                    ? const Center(
-                        child: Text(suppliersListNoSupplierFoundError),
-                      )
-                    : SuppplierProfileView(
-                        key: UniqueKey(),
-                        arguments: SuppplierProfileViewArguments(
-                          selectedSupplier: model.selectedSupplier,
-                        ),
+              flex: 1,
+            ),
+            Expanded(
+              child: model.selectedSupplier == null
+                  ? const Center(
+                      child: Text(suppliersListNoSupplierFoundError),
+                    )
+                  : SuppplierProfileView(
+                      key: UniqueKey(),
+                      arguments: SuppplierProfileViewArguments(
+                        selectedSupplier: model.selectedSupplier,
                       ),
-                flex: 3,
-              ),
-            ],
-          ),
+                    ),
+              flex: 3,
+            ),
+          ],
         ),
       ),
       viewModelBuilder: () => SuppliersListViewModel(),

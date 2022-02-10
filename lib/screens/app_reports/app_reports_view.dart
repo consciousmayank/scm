@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/api_status.dart';
@@ -29,12 +30,20 @@ class AppReportsView extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: model.orderStatuses.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: getValueForScreenType(
-                    context: context,
-                    mobile: 1,
-                    tablet: 2,
-                    desktop: 3,
-                  ),
+                  crossAxisCount: ResponsiveValue<int>(
+                    context,
+                    defaultValue: 3,
+                    valueWhen: const [
+                      Condition.smallerThan(
+                        name: MOBILE,
+                        value: 1,
+                      ),
+                      Condition.largerThan(
+                        name: TABLET,
+                        value: 2,
+                      )
+                    ],
+                  ).value!,
                   crossAxisSpacing: 8.0,
                   mainAxisSpacing: 8.0,
                   mainAxisExtent: screenHeight * 0.40,

@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/enums/order_filter_duration_type.dart';

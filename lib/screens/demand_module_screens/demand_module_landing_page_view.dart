@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
@@ -40,14 +40,7 @@ class _DemandModuleLandingPageViewState
   Widget build(BuildContext context) {
     return ViewModelBuilder<DemandModuleLandingPageViewModel>.reactive(
       onModelReady: (model) => model.initScreen(),
-      builder: (context, model, child) => ScreenTypeLayout.builder(
-        mobile: (
-          mobileViewContext,
-        ) =>
-            const NotSupportedScreensView(),
-        desktop: (webViewContext) => const SupplyModuleLandingPageWebView(),
-        tablet: (tabletViewContext) => const NotSupportedScreensView(),
-      ),
+      builder: (context, model, child) => const NotSupportedScreensView(),
       viewModelBuilder: () => DemandModuleLandingPageViewModel(),
     );
   }

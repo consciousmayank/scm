@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/screens/reports/orders_report/order_reports_viewmodel.dart';
@@ -148,27 +148,7 @@ class OrdersConsilidatedReportWidget
         padding: const EdgeInsets.all(
           8,
         ),
-        child: getValueForScreenType(
-            context: context,
-            mobile: Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 2.5,
-                  child: mainUi(context, viewModel),
-                ),
-              ),
-            ),
-            desktop: mainUi(context, viewModel),
-            tablet: Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 1.5,
-                  child: mainUi(context, viewModel),
-                ),
-              ),
-            )),
+        child: mainUi(context, viewModel),
       ),
     );
   }

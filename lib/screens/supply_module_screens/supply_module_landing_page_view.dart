@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/image_config.dart';
 import 'package:scm/screens/not_supported_screens/not_supportd_screens.dart';

@@ -5,7 +5,8 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:scm/app/image_config.dart';
 import 'package:scm/app/styles.dart';
 import 'package:scm/enums/order_status_types.dart';
@@ -342,12 +343,7 @@ Future<DateTimeRange?> selectDateRange({
             padding: const EdgeInsets.only(top: 50.0),
             child: SizedBox(
               height: MediaQuery.of(context).size.height *
-                  getValueForScreenType(
-                    context: context,
-                    mobile: 0.95,
-                    tablet: 0.85,
-                    desktop: 0.65,
-                  ),
+                  ResponsiveValue(context, defaultValue: 0.65, valueWhen: []),
               width: MediaQuery.of(context).size.width *
                   getValueForScreenType(
                     context: context,
