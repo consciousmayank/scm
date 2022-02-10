@@ -58,6 +58,156 @@ class OrderReportsPdfGenerator {
   void writeOnPdf() async {
     pdf.addPage(
       pw.MultiPage(
+        header: (context) => pw.Container(
+          alignment: pw.Alignment.centerLeft,
+          width: double.infinity,
+          margin: const pw.EdgeInsets.only(
+            top: 2,
+            bottom: 16,
+          ),
+          padding: const pw.EdgeInsets.symmetric(
+            vertical: 8,
+          ),
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            mainAxisAlignment: pw.MainAxisAlignment.start,
+            children: [
+              pw.Text(
+                'Business Name : ${preferences.getSupplierDemandProfile()?.businessName!}',
+                // '${context.pageNumber}/${context.pagesCount}',
+                style: const pw.TextStyle(
+                  fontSize: 10,
+                  color: PdfColors.black,
+                ),
+              ),
+              if (preferences.getSupplierDemandProfile()!.address!.isNotEmpty)
+                pw.RichText(
+                  textAlign: pw.TextAlign.center,
+                  text: pw.TextSpan(
+                    text: 'Address : ',
+                    style: const pw.TextStyle(
+                      color: PdfColors.black,
+                      fontSize: 10,
+                    ),
+                    children: <pw.TextSpan>[
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .addressLine1 !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.addressLine1}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .addressLine2 !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.addressLine2}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .locality !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.locality}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .nearby !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.nearby}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .city !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.city}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .pincode !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.pincode}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .state !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.state}, ',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                      if (preferences
+                              .getSupplierDemandProfile()!
+                              .address!
+                              .first
+                              .country !=
+                          null)
+                        pw.TextSpan(
+                          text:
+                              '${preferences.getSupplierDemandProfile()!.address!.first.country},',
+                          style: const pw.TextStyle(
+                            color: PdfColors.black,
+                            fontSize: 10,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
         footer: (context) => pw.Container(
           alignment: pw.Alignment.center,
           width: double.infinity,
@@ -69,118 +219,165 @@ class OrderReportsPdfGenerator {
             vertical: 8,
           ),
           decoration: const pw.BoxDecoration(
-            color: PdfColors.grey400,
             border: pw.Border(
-              bottom: pw.BorderSide(width: 0.1),
-              top: pw.BorderSide(width: 0.1),
-            ),
-          ),
-          child: pw.Padding(
-              padding: const pw.EdgeInsets.all(8.0),
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text(
-                    'Product Of Geek Technotonic @2021',
-                    style: const pw.TextStyle(
-                        fontSize: 10, color: PdfColors.white),
-                  ),
-                  pw.Text(
-                    'Page ${context.pageNumber}/${context.pagesCount}',
-                    style:
-                        const pw.TextStyle(fontSize: 8, color: PdfColors.white),
-                  )
-                ],
-              )),
-        ),
-        pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(32),
-        build: (context) {
-          return <pw.Widget>[
-            pw.Header(
-              level: 0,
-              child: pw.Row(
-                children: <pw.Widget>[
-                  pw.Text(
-                    appName,
-                    style: const pw.TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
+              top: pw.BorderSide(
+                width: 0.1,
+                color: PdfColors.blue,
               ),
             ),
+          ),
+          child: pw.Column(children: [
+            pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                children: [
+                  pw.Text(
+                    'Page ${context.pageNumber}/${context.pagesCount}',
+                    // '${context.pageNumber}/${context.pagesCount}',
+                    style: const pw.TextStyle(
+                      fontSize: 15,
+                      color: PdfColors.black,
+                    ),
+                  )
+                ]),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              children: [
+                pw.RichText(
+                  textAlign: pw.TextAlign.center,
+                  text: const pw.TextSpan(
+                    text: 'MYSUPPLYMARKET',
+                    style: pw.TextStyle(
+                      color: PdfColors.black,
+                      fontSize: 12,
+                    ),
+                    children: <pw.TextSpan>[
+                      pw.TextSpan(
+                        text: ' BY GEEKTECHNOTONIC PVT LTD',
+                        style: pw.TextStyle(
+                          color: PdfColors.black,
+                          fontSize: 10,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ]),
+        ),
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(
+          16,
+        ),
+        build: (context) {
+          return <pw.Widget>[
             pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              mainAxisSize: pw.MainAxisSize.max,
               children: <pw.Widget>[
                 pw.Text(
-                  'Order Report of ${preferences.getSupplierDemandProfile()?.businessName!}',
+                  '$selectedOrderStatus Report'.toUpperCase(),
                   style: pw.TextStyle(
-                    fontSize: 16,
+                    fontSize: 20,
                     fontWeight: pw.FontWeight.normal,
-                    decoration: pw.TextDecoration.underline,
                   ),
+                  textAlign: pw.TextAlign.center,
                 ),
                 pw.SizedBox(
                   height: 8,
                 ),
-                pw.Row(children: [
-                  pw.Expanded(
-                      child: pw.Text(
-                          'From: ${DateTimeToStringConverter.ddmmyy(date: dateTimeRange.start).convert()}'),
-                      flex: 1),
-                  pw.SizedBox(
-                    width: 8,
+                pw.Text(
+                  '${DateTimeToStringConverter.ddMMMMyyyy(date: dateTimeRange.start).convert()} to ${DateTimeToStringConverter.ddMMMMyyyy(date: dateTimeRange.end).convert()}',
+                  style: pw.TextStyle(
+                    fontSize: 18,
+                    fontWeight: pw.FontWeight.normal,
                   ),
-                  pw.Expanded(
-                      child: pw.Text(
-                          'To: ${DateTimeToStringConverter.ddmmyy(date: dateTimeRange.end).convert()}'),
-                      flex: 1),
-                ]),
+                  textAlign: pw.TextAlign.center,
+                ),
                 pw.SizedBox(
                   height: 8,
                 ),
-                pw.Row(children: [
-                  pw.Expanded(child: pw.Text('Selected Order Status'), flex: 1),
-                  pw.SizedBox(
-                    width: 8,
-                  ),
-                  pw.Expanded(child: pw.Text(selectedOrderStatus), flex: 1),
-                ]),
+                pw.Container(
+                  width: double.infinity,
+                  child:
+                      pw.Text('Total Quantity : $totalOfConsolidatedOrdersQty'),
+                ),
                 pw.SizedBox(
                   height: 8,
                 ),
-                pw.Row(children: [
-                  pw.Expanded(child: pw.Text('Selected Brand'), flex: 1),
-                  pw.SizedBox(
-                    width: 8,
-                  ),
-                  pw.Expanded(child: pw.Text('$selectedBrand'), flex: 1),
-                ]),
+                pw.Container(
+                  width: double.infinity,
+                  child: pw.Text(
+                      'Total Amount : $totalOfConsolidatedOrdersAmount'),
+                ),
                 pw.SizedBox(
                   height: 8,
                 ),
-                pw.Row(children: [
-                  pw.Expanded(child: pw.Text('Selected Category'), flex: 1),
-                  pw.SizedBox(
-                    width: 8,
-                  ),
-                  pw.Expanded(child: pw.Text(selectedType), flex: 1),
-                ]),
+                pw.Container(
+                  width: double.infinity,
+                  child: pw.Text('Brand : $selectedBrand'),
+                ),
+                pw.SizedBox(
+                  height: 8,
+                ),
+                pw.Container(
+                  width: double.infinity,
+                  child: pw.Text('Category : $selectedType'),
+                ),
               ],
             ),
             pw.SizedBox(
               height: 16,
             ),
-            pw.Header(level: 1, text: 'Order Items'),
+            pw.Container(
+              width: double.infinity,
+              child: pw.Text(
+                'Items'.toUpperCase(),
+                style: const pw.TextStyle(
+                  fontSize: 18,
+                ),
+                textAlign: pw.TextAlign.center,
+              ),
+            ),
             getConsolidatedOrdersTable(),
             pw.SizedBox(height: 32),
-            pw.Header(level: 1, text: 'Order Brands'),
+            pw.Container(
+              width: double.infinity,
+              child: pw.Text(
+                'Brands'.toUpperCase(),
+                style: const pw.TextStyle(
+                  fontSize: 18,
+                ),
+                textAlign: pw.TextAlign.center,
+              ),
+            ),
             getOrdersByBrandsTable(),
             pw.SizedBox(height: 32),
-            pw.Header(level: 1, text: 'Order Category'),
+            pw.Container(
+              width: double.infinity,
+              child: pw.Text(
+                'Category'.toUpperCase(),
+                style: const pw.TextStyle(
+                  fontSize: 18,
+                ),
+                textAlign: pw.TextAlign.center,
+              ),
+            ),
             getOrdersByCategoryTable(),
             pw.SizedBox(height: 32),
-            pw.Header(level: 1, text: 'Order SubCategory'),
+            pw.Container(
+              width: double.infinity,
+              child: pw.Text(
+                'SubCategory'.toUpperCase(),
+                style: const pw.TextStyle(
+                  fontSize: 18,
+                ),
+                textAlign: pw.TextAlign.center,
+              ),
+            ),
             getOrdersBySubCategoryTable(),
           ];
         },
@@ -291,7 +488,6 @@ class OrderReportsPdfGenerator {
     tableRows.add(
       pw.TableRow(
         decoration: pw.BoxDecoration(
-          color: PdfColors.lightBlue,
           border: pw.Border.all(
             color: PdfColors.black,
             width: 0.5,
