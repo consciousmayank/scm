@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'package:scm/app/appconfigs.dart';
@@ -17,7 +18,6 @@ class DioConfig {
 
   List<RequestOptions> apisQueue = [];
   final appPreferences = locator<AppPreferencesService>();
-  late String baseUrl;
 
   final _dio = Dio();
 
@@ -42,6 +42,11 @@ class DioConfig {
       );
     }
     apiServiceAppDioInterceptor.setDioOptions(options: _dio.options);
+    _dio.interceptors.add(DioCacheManager(
+      CacheConfig(
+        baseUrl: EnvironmentConfig.BASE_URL,
+      ),
+    ).interceptor);
     _dio.interceptors.add(apiServiceAppDioInterceptor);
     // _dio.interceptors.add(
     //   InterceptorsWrapper(onRequest: (options, handler) async {

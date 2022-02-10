@@ -11,6 +11,7 @@ class AppButton extends StatefulWidget {
     this.leading,
     this.toolTipMessage,
     this.suffix,
+    this.titleTextStyle,
     this.buttonTextColor = Colors.black,
     this.buttonBg = Colors.white,
   })  : outline = false,
@@ -25,6 +26,7 @@ class AppButton extends StatefulWidget {
     this.leading,
     this.suffix,
     this.buttonTextColor = Colors.black,
+    this.titleTextStyle,
     this.buttonBg = Colors.white,
     this.toolTipMessage,
   })  : outline = false,
@@ -42,6 +44,7 @@ class AppButton extends StatefulWidget {
       this.buttonBg = Colors.white,
       this.toolTipMessage,
       this.buttonTextColor = Colors.black,
+      this.titleTextStyle,
       this.disabled = false})
       : padding = const EdgeInsets.all(0),
         outline = true;
@@ -54,6 +57,7 @@ class AppButton extends StatefulWidget {
   final EdgeInsets padding;
   final Widget? suffix;
   final String? title, toolTipMessage;
+  final TextStyle? titleTextStyle;
 
   @override
   State<AppButton> createState() => _AppButtonState();
@@ -113,13 +117,20 @@ class _AppButtonState extends State<AppButton> {
                   if (widget.title != null)
                     Text(
                       widget.title!,
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                      style: widget.titleTextStyle?.copyWith(
                             fontWeight:
                                 hover ? FontWeight.w800 : FontWeight.normal,
                             color: !widget.outline
                                 ? widget.buttonTextColor
                                 : Colors.black,
-                          ),
+                          ) ??
+                          Theme.of(context).textTheme.bodyText1?.copyWith(
+                                fontWeight:
+                                    hover ? FontWeight.w800 : FontWeight.normal,
+                                color: !widget.outline
+                                    ? widget.buttonTextColor
+                                    : Colors.black,
+                              ),
                     ),
                   if (widget.title != null) SizedBox(width: 5),
                   if (widget.suffix != null) widget.suffix!,

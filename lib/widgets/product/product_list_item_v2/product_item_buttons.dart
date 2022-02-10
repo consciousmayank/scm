@@ -26,22 +26,27 @@ class ProductItemButtons extends ViewModelWidget<ProductListItem2ViewModel> {
                 ? const RemoveProductWidget()
                 : const AddProductWidget()
             : isProductInCart
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Flexible(
-                        child: RemoveProductWidget(
-                          reverseStyle: true,
-                        ),
-                        flex: 1,
-                      ),
-                      wSizedBox(width: 4),
-                      const Flexible(
-                        child: UpdateProductWidget(),
-                        flex: 1,
-                      ),
-                    ],
+                ? const Flexible(
+                    child: UpdateProductWidget(),
+                    flex: 1,
                   )
+                // Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     children: [
+                //       const Flexible(
+                //         child: RemoveProductWidget(
+                //           reverseStyle: true,
+                //         ),
+                //         flex: 1,
+                //       ),
+                //       wSizedBox(width: 4),
+                //       const Flexible(
+                //         child: UpdateProductWidget(),
+                //         flex: 1,
+                //       ),
+                //     ],
+                //   )
+
                 : const AddProductWidget();
   }
 }

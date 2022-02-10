@@ -86,16 +86,20 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: NullableTextWidget(
-                              stringValue:
+                            child: Tooltip(
+                              message:
                                   '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
-                              maxLines: 5,
-                              textStyle: Theme.of(context).textTheme.bodyText1,
-                              textAlign: TextAlign.left,
+                              child: NullableTextWidget(
+                                stringValue:
+                                    '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
+                                maxLines: 3,
+                                textStyle: Theme.of(context).textTheme.button,
+                                textAlign: TextAlign.left,
+                              ),
                             ),
                           ),
                           hSizedBox(height: 8),
-                          const Spacer(),
+                          // const Spacer(),
                           if (widget.arguments.product?.measurement != null &&
                               widget.arguments.product!.measurement! > 0)
                             NullableTextWidget(
@@ -109,16 +113,16 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                               textStyle: Theme.of(context).textTheme.subtitle2,
                             ),
 
-                          // ProductItemButtons(
-                          //   isForCatalog: widget.arguments.isForCatalog,
-                          //   isSupplier: model.isSupplier(),
-                          //   isProductInCatalog: model.isProductInCatalog(
-                          //     productId: widget.arguments.product?.id,
-                          //   ),
-                          //   isProductInCart: model.isProductInCart(
-                          //     productId: widget.arguments.product?.id,
-                          //   ),
-                          // )
+                          ProductItemButtons(
+                            isForCatalog: widget.arguments.isForCatalog,
+                            isSupplier: model.isSupplier(),
+                            isProductInCatalog: model.isProductInCatalog(
+                              productId: widget.arguments.product?.id,
+                            ),
+                            isProductInCart: model.isProductInCart(
+                              productId: widget.arguments.product?.id,
+                            ),
+                          )
                           // widget.arguments.isForCatalog
                           //     ? const RemoveProductWidget()
                           //     : model.isSupplier()
@@ -191,12 +195,17 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return AppButton(
-      toolTipMessage:
-          'Add Product to ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-      buttonBg: AppColors().buttonGreenColor,
-      onTap: viewModel.onAddButtonClick,
-      title: 'Add',
+    return SizedBox(
+      height: 30,
+      width: 100,
+      child: AppButton(
+        titleTextStyle: Theme.of(context).textTheme.button,
+        toolTipMessage:
+            'Add Product to ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+        buttonBg: AppColors().buttonGreenColor,
+        onTap: viewModel.onAddButtonClick,
+        title: 'Add',
+      ),
     );
   }
 }
@@ -208,15 +217,16 @@ class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return AppButton(
-      toolTipMessage:
-          'Update Product Quantity in ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-      buttonBg: AppColors().buttonGreenColor,
-      onTap: viewModel.onUpdateButtonClick,
-      leading: Icon(
-        Icons.edit,
-        size: 20,
-        color: AppColors().white,
+    return SizedBox(
+      height: 30,
+      width: 100,
+      child: AppButton(
+        title: 'Edit',
+        titleTextStyle: Theme.of(context).textTheme.button,
+        toolTipMessage:
+            'Update Product Quantity in ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+        buttonBg: Theme.of(context).primaryColorLight,
+        onTap: viewModel.onUpdateButtonClick,
       ),
     );
   }
@@ -232,15 +242,16 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return AppButton(
-      toolTipMessage:
-          'Remove Product from ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-      buttonBg: AppColors().buttonRedColor,
-      onTap: viewModel.onRemoveButtonClick,
-      leading: Icon(
-        Icons.delete,
-        size: 20,
-        color: AppColors().white,
+    return SizedBox(
+      height: 30,
+      width: 100,
+      child: AppButton(
+        toolTipMessage:
+            'Remove Product from ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+        buttonBg: AppColors().buttonRedColor,
+        onTap: viewModel.onRemoveButtonClick,
+        title: 'Remove',
+        titleTextStyle: Theme.of(context).textTheme.button,
       ),
     );
   }
