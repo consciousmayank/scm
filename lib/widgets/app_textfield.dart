@@ -262,8 +262,7 @@ class AppTextField<T> extends StatelessWidget {
                 child: TextFormField(
                   maxLength: maxCharacters,
                   obscureText: obscureText ?? false,
-                  style: textStyle ??
-                      AppTextStyles(context: context).appTextFieldTextStyle,
+                  style: textStyle,
 
                   enableInteractiveSelection: true,
                   initialValue: initialValue,

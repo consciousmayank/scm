@@ -9,6 +9,8 @@ class AnimatedSearchWidget extends StatefulWidget {
     // required this.searchFocusNode,
     required this.onSearch,
     required this.onCrossButtonClicked,
+    this.inputDecoration,
+    this.searchIconSize,
   }) : super(key: key);
 
   final Function({
@@ -17,6 +19,8 @@ class AnimatedSearchWidget extends StatefulWidget {
 
   final String hintText;
   final Function onCrossButtonClicked;
+  final double? searchIconSize;
+  final InputDecoration? inputDecoration;
 
   @override
   _AnimatedSearchWidgetState createState() => _AnimatedSearchWidgetState();
@@ -53,6 +57,7 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
       curve: Curves.easeInOut,
       child: isSearchIconVisible
           ? AppTextField(
+              textStyle: Theme.of(context).textTheme.caption,
               autoFocus: true,
               controller: searchController,
               focusNode: searchFocusNode,
@@ -90,18 +95,20 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
                   .call(),
               onFieldSubmitted: (value) =>
                   widget.onSearch(searchTerm: value).call(),
-              inputDecoration: const InputDecoration()
-                  .applyDefaults(Theme.of(context).inputDecorationTheme)
-                  .copyWith(
-                    contentPadding: const EdgeInsets.all(9),
-                    labelStyle: Theme.of(context).textTheme.subtitle2,
-                    hintText: widget.hintText,
-                    hintStyle: Theme.of(context)
-                        .textTheme
-                        .button
-                        ?.copyWith(color: Colors.grey.shade400),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                  ),
+              inputDecoration: widget.inputDecoration ??
+                  const InputDecoration()
+                      .applyDefaults(Theme.of(context).inputDecorationTheme)
+                      .copyWith(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 4),
+                        labelStyle: Theme.of(context).textTheme.subtitle2,
+                        hintText: widget.hintText,
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .button
+                            ?.copyWith(color: Colors.grey.shade400),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                      ),
               innerHintText: widget.hintText,
             )
           : IconButton(
@@ -110,8 +117,9 @@ class _AnimatedSearchWidgetState extends State<AnimatedSearchWidget> {
                   isSearchIconVisible = !isSearchIconVisible;
                 });
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.search,
+                size: widget.searchIconSize,
               ),
             ),
     );

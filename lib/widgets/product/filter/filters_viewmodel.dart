@@ -70,6 +70,8 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     this.args = args;
     populatingCheckedList();
     getBrandsList(showLoader: true);
+    getProductCategoriesList(showLoader: true);
+    getProductsSubCategoriesList(showLoader: true);
   }
 
   List<SubType?> get checkedSubCategoriesList => _checkedSubCategoriesList!;

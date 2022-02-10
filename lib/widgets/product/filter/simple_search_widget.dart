@@ -35,6 +35,18 @@ class SimpleSearchWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: AppTextField(
+        inputDecoration: const InputDecoration()
+            .applyDefaults(Theme.of(context).inputDecorationTheme)
+            .copyWith(
+              contentPadding: const EdgeInsets.all(4),
+              labelStyle: Theme.of(context).textTheme.button,
+              hintText: innerHintText,
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .button
+                  ?.copyWith(color: Colors.grey.shade400),
+              floatingLabelBehavior: FloatingLabelBehavior.never,
+            ),
         autoFocus: true,
         controller: searchController,
         // focusNode: viewModel.foc,

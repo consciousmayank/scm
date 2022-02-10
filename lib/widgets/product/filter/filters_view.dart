@@ -46,45 +46,39 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
               ],
             ),
           )
-        : Container(
-            child:
-                // (viewModel.tempCheckedCategoriesList.isNotEmpty)
-                // ?
-                Column(
-              children: [
-                Container(
-                  color: AppColors().white,
-                  child: SimpleSearchWidget.innerHint(
-                    searchTerm: viewModel.subCategoryTitle,
-                    onSearchTermCleared: () {
-                      viewModel.subCategoryTitle = null;
-                      viewModel.getProductsSubCategoriesList(showLoader: true);
-                    },
-                    onSearchTermEntered: ({required String searchTerm}) {
-                      if (searchTerm.length > 2) {
-                        viewModel.subCategoryTitle = searchTerm;
-                        viewModel.getProductsSubCategoriesList(
-                          showLoader: true,
-                        );
-                      }
-                    },
-                    innerHintText: labelSearchSubCategory,
+        : Column(
+            children: [
+              Container(
+                color: AppColors().white,
+                child: SimpleSearchWidget.innerHint(
+                  searchTerm: viewModel.subCategoryTitle,
+                  onSearchTermCleared: () {
+                    viewModel.subCategoryTitle = null;
+                    viewModel.getProductsSubCategoriesList(showLoader: true);
+                  },
+                  onSearchTermEntered: ({required String searchTerm}) {
+                    if (searchTerm.length > 2) {
+                      viewModel.subCategoryTitle = searchTerm;
+                      viewModel.getProductsSubCategoriesList(
+                        showLoader: true,
+                      );
+                    }
+                  },
+                  innerHintText: labelSearchSubCategory,
+                ),
+              ),
+              Text(
+                'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              Expanded(
+                child: LazyLoadScrollView(
+                  scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                  onEndOfPage: () => viewModel.getProductsSubCategoriesList(
+                    showLoader: false,
                   ),
-                ),
-                Text(
-                  'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
-                  // style: AppTextStyles
-                  //     .robotoMedium10PrimaryShade5
-                  //     .copyWith(
-                  //   fontSize: 14,
-                  // ),
-                ),
-                Expanded(
-                  child: LazyLoadScrollView(
-                    scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
-                    onEndOfPage: () => viewModel.getProductsSubCategoriesList(
-                      showLoader: false,
-                    ),
+                  child: Scrollbar(
+                    hoverThickness: 40,
                     child: ListView.builder(
                       itemBuilder: (context, index) => buildFilterTypeValues(
                         context: context,
@@ -154,8 +148,8 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
   }
 
@@ -176,94 +170,88 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
               ],
             ),
           )
-        : Container(
-            child: Column(
-              children: [
-                Container(
-                  color: AppColors().white,
-                  child: SimpleSearchWidget.innerHint(
-                    searchTerm: viewModel.categoryTitle,
-                    onSearchTermCleared: () {
-                      viewModel.categoryTitle = null;
-                      viewModel.getProductCategoriesList(showLoader: true);
-                    },
-                    onSearchTermEntered: ({required String searchTerm}) {
-                      if (searchTerm.length > 2) {
-                        viewModel.categoryTitle = searchTerm;
-                        viewModel.getProductCategoriesList(
-                          showLoader: true,
-                        );
-                      }
-                    },
-                    innerHintText: labelSearchCategory,
+        : Column(
+            children: [
+              Container(
+                color: AppColors().white,
+                child: SimpleSearchWidget.innerHint(
+                  searchTerm: viewModel.categoryTitle,
+                  onSearchTermCleared: () {
+                    viewModel.categoryTitle = null;
+                    viewModel.getProductCategoriesList(showLoader: true);
+                  },
+                  onSearchTermEntered: ({required String searchTerm}) {
+                    if (searchTerm.length > 2) {
+                      viewModel.categoryTitle = searchTerm;
+                      viewModel.getProductCategoriesList(
+                        showLoader: true,
+                      );
+                    }
+                  },
+                  innerHintText: labelSearchCategory,
+                ),
+              ),
+              Text(
+                'Total Categories: ${viewModel.totalItemsForCategoriesApi.toString()}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              Expanded(
+                child: LazyLoadScrollView(
+                  scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
+                  onEndOfPage: () => viewModel.getProductCategoriesList(
+                    showLoader: false,
+                  ),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => buildFilterTypeValues(
+                      context: context,
+                      text:
+                          viewModel.categoriesForFilterList[index].categoryName,
+                      subText: viewModel.categoriesForFilterList[index].count,
+                      value:
+                          viewModel.categoriesForFilterList[index].isSelected,
+                      onChanged: (value) {
+                        viewModel.categoriesForFilterList[index].isSelected =
+                            value;
+
+                        /// adding checked Categories to [checkedCategoriesList]
+                        /// later it will be sent to bring the filtered products list
+
+                        if (value == true) {
+                          viewModel.tempCheckedCategoriesList.add(Type(
+                            type: viewModel
+                                .categoriesForFilterList[index].categoryName!,
+                            count: viewModel
+                                    .categoriesForFilterList[index].count ??
+                                0,
+                          ));
+                          viewModel.checkCategoriesAndMoveToTop();
+                        } else {
+                          viewModel.tempCheckedCategoriesList.removeWhere(
+                            (element) =>
+                                element?.type ==
+                                viewModel.categoriesForFilterList[index]
+                                    .categoryName,
+                          );
+                        }
+                        widget.arguments
+                            .onApplyFilterButtonClicked(
+                              outArgs: ProductsFilterViewOutputArguments(
+                                checkedBrands: viewModel.tempCheckedBrandsList,
+                                checkedCategories:
+                                    viewModel.tempCheckedCategoriesList,
+                                checkedSubCategories:
+                                    viewModel.tempCheckedSubCategoriesList,
+                              ),
+                            )
+                            .call();
+                        viewModel.notifyListeners();
+                      },
+                    ),
+                    itemCount: viewModel.categoriesForFilterList.length,
                   ),
                 ),
-                Text(
-                  'Total Categories: ${viewModel.totalItemsForCategoriesApi.toString()}',
-                  // style: AppTextStyles.robotoMedium10PrimaryShade5
-                  //     .copyWith(
-                  //   fontSize: 14,
-                  // ),
-                ),
-                Expanded(
-                  child: LazyLoadScrollView(
-                    scrollOffset: (MediaQuery.of(context).size.height ~/ 6),
-                    onEndOfPage: () => viewModel.getProductCategoriesList(
-                      showLoader: false,
-                    ),
-                    child: ListView.builder(
-                      itemBuilder: (context, index) => buildFilterTypeValues(
-                        context: context,
-                        text: viewModel
-                            .categoriesForFilterList[index].categoryName,
-                        subText: viewModel.categoriesForFilterList[index].count,
-                        value:
-                            viewModel.categoriesForFilterList[index].isSelected,
-                        onChanged: (value) {
-                          viewModel.categoriesForFilterList[index].isSelected =
-                              value;
-
-                          /// adding checked Categories to [checkedCategoriesList]
-                          /// later it will be sent to bring the filtered products list
-
-                          if (value == true) {
-                            viewModel.tempCheckedCategoriesList.add(Type(
-                              type: viewModel
-                                  .categoriesForFilterList[index].categoryName!,
-                              count: viewModel
-                                      .categoriesForFilterList[index].count ??
-                                  0,
-                            ));
-                            viewModel.checkCategoriesAndMoveToTop();
-                          } else {
-                            viewModel.tempCheckedCategoriesList.removeWhere(
-                              (element) =>
-                                  element?.type ==
-                                  viewModel.categoriesForFilterList[index]
-                                      .categoryName,
-                            );
-                          }
-                          widget.arguments
-                              .onApplyFilterButtonClicked(
-                                outArgs: ProductsFilterViewOutputArguments(
-                                  checkedBrands:
-                                      viewModel.tempCheckedBrandsList,
-                                  checkedCategories:
-                                      viewModel.tempCheckedCategoriesList,
-                                  checkedSubCategories:
-                                      viewModel.tempCheckedSubCategoriesList,
-                                ),
-                              )
-                              .call();
-                          viewModel.notifyListeners();
-                        },
-                      ),
-                      itemCount: viewModel.categoriesForFilterList.length,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           );
   }
 
@@ -307,10 +295,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
               ),
               Text(
                 'Total Brands: ${viewModel.totalItemsForBrandsApi.toString()}',
-                // style: AppTextStyles.robotoMedium10PrimaryShade5
-                //     .copyWith(
-                //   fontSize: 14,
-                // ),
+                style: Theme.of(context).textTheme.caption,
               ),
               Expanded(
                 child: LazyLoadScrollView(
@@ -380,69 +365,58 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Filter By',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-              AppIconToggleButton(
-                icons: [
-                  Tooltip(
-                    message: 'Brands',
-                    preferBelow: true,
-                    child: Image.asset(
-                      tableToggleIcon,
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Category',
-                    preferBelow: true,
-                    child: Image.asset(
-                      graphToogleIcon,
-                      height: 30,
-                      width: 30,
-                    ),
-                  ),
-                  Tooltip(
-                    message: 'Sub Category',
-                    preferBelow: true,
-                    child: Image.asset(
-                      graphToogleIcon,
-                      height: 30,
-                      width: 30,
-                    ),
-                  )
-                ],
-                selected: ({required int newValue}) {
-                  viewModel.updateSelectedFilterView(value: newValue);
-                },
-              ),
-            ],
+          Text(
+            'Filter By',
+            style: Theme.of(context).textTheme.bodyText1,
           ),
           Expanded(
-            child: IndexedStack(
-              index: viewModel.selectedFilterView,
-              children: [
-                brandsView(
-                  context: context,
-                  viewModel: viewModel,
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                  width: 0.5,
                 ),
-                categoryView(
-                  context: context,
-                  viewModel: viewModel,
-                ),
-                subCategoryView(
-                  context: context,
-                  viewModel: viewModel,
-                )
-              ],
+              ),
+              child: brandsView(
+                context: context,
+                viewModel: viewModel,
+              ),
             ),
-          )
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                  width: 0.5,
+                ),
+              ),
+              child: categoryView(
+                context: context,
+                viewModel: viewModel,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                  width: 0.5,
+                ),
+              ),
+              child: subCategoryView(
+                context: context,
+                viewModel: viewModel,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -537,10 +511,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                         ),
                         Text(
                           'Total Brands: ${viewModel.totalItemsForBrandsApi.toString()}',
-                          // style: AppTextStyles.robotoMedium10PrimaryShade5
-                          //     .copyWith(
-                          //   fontSize: 14,
-                          // ),
+                          style: Theme.of(context).textTheme.caption,
                         ),
                         Expanded(
                           child: ListView.builder(
@@ -631,10 +602,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                           ),
                           Text(
                             'Total Categories: ${viewModel.totalItemsForCategoriesApi.toString()}',
-                            // style: AppTextStyles.robotoMedium10PrimaryShade5
-                            //     .copyWith(
-                            //   fontSize: 14,
-                            // ),
+                            style: Theme.of(context).textTheme.caption,
                           ),
                           Expanded(
                             child: LazyLoadScrollView(
@@ -737,11 +705,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                         ),
                         Text(
                           'Total Sub-Categories: ${viewModel.totalItemsForSubCategoriesApi.toString()}',
-                          // style: AppTextStyles
-                          //     .robotoMedium10PrimaryShade5
-                          //     .copyWith(
-                          //   fontSize: 14,
-                          // ),
+                          style: Theme.of(context).textTheme.caption,
                         ),
                         Expanded(
                           child: LazyLoadScrollView(
@@ -843,21 +807,24 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     return Tooltip(
       message: (text ?? '').length > 10 ? text : '',
       child: CheckboxListTile(
+        dense: true,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 2,
-          vertical: 2,
+          horizontal: 0,
+          vertical: 0,
         ),
+        visualDensity: VisualDensity.compact,
         value: value,
+        checkColor: Theme.of(context).primaryColor,
         onChanged: onChanged,
         tileColor: value == true
             ? Theme.of(context).primaryColorLight
             : AppColors().white,
         secondary: NullableTextWidget(
-          stringValue:
-              (text ?? '').length > 10 ? '${text?.substring(0, 8)}...' : text,
+          stringValue: text,
+          // (text ?? '').length > 10 ? '${text?.substring(0, 8)}...' : text,
           // text!.toLowerCase(),
           textStyle: widget.arguments.showFilltersOnLeftOfProductList
-              ? Theme.of(context).textTheme.button!.copyWith()
+              ? Theme.of(context).textTheme.caption!.copyWith()
               : Theme.of(context).textTheme.headline6!.copyWith(),
         ),
         title: subText == null //|| subText < 1
@@ -866,7 +833,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
                 intValue: subText,
                 // text!.toLowerCase(),
                 textStyle: widget.arguments.showFilltersOnLeftOfProductList
-                    ? Theme.of(context).textTheme.button!.copyWith(
+                    ? Theme.of(context).textTheme.caption!.copyWith(
                           fontSize: 10,
                         )
                     : Theme.of(context).textTheme.subtitle2!.copyWith(),
@@ -978,28 +945,29 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
             ),
           ),
           wSizedBox(width: 4),
-          Expanded(
-            child: SizedBox(
-              height: Dimens().buttonHeight,
-              child: AppButton(
-                buttonBg: AppColors().buttonGreenColor,
-                onTap: () {
-                  widget.arguments
-                      .onApplyFilterButtonClicked(
-                        outArgs: ProductsFilterViewOutputArguments(
-                          checkedBrands: viewModel?.tempCheckedBrandsList,
-                          checkedCategories:
-                              viewModel?.tempCheckedCategoriesList,
-                          checkedSubCategories:
-                              viewModel?.tempCheckedSubCategoriesList,
-                        ),
-                      )
-                      .call();
-                },
-                title: 'Apply',
+          if (!widget.arguments.showFilltersOnLeftOfProductList)
+            Expanded(
+              child: SizedBox(
+                height: Dimens().buttonHeight,
+                child: AppButton(
+                  buttonBg: AppColors().buttonGreenColor,
+                  onTap: () {
+                    widget.arguments
+                        .onApplyFilterButtonClicked(
+                          outArgs: ProductsFilterViewOutputArguments(
+                            checkedBrands: viewModel?.tempCheckedBrandsList,
+                            checkedCategories:
+                                viewModel?.tempCheckedCategoriesList,
+                            checkedSubCategories:
+                                viewModel?.tempCheckedSubCategoriesList,
+                          ),
+                        )
+                        .call();
+                  },
+                  title: 'Apply',
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -1034,23 +1002,28 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     return ViewModelBuilder<ProductsFilterViewModel>.reactive(
       onModelReady: (model) => model.init(args: widget.arguments),
       builder: (context, model, child) => Scaffold(
-        body: widget.arguments.showFilltersOnLeftOfProductList
-            ? buildFiltersForLeftOfProductList(
-                viewModel: model,
+        body: Container(
+          color: AppColors().white,
+          child: Column(
+            children: [
+              widget.arguments.showFilltersOnLeftOfProductList
+                  ? Expanded(
+                      child: buildFiltersForLeftOfProductList(
+                        viewModel: model,
+                        context: context,
+                      ),
+                    )
+                  : buildFilterTypesAndValues(
+                      viewModel: model,
+                      context: context,
+                    ),
+              buildClearAndApplyButtons(
                 context: context,
-              )
-            : Column(
-                children: [
-                  buildFilterTypesAndValues(
-                    viewModel: model,
-                    context: context,
-                  ),
-                  buildClearAndApplyButtons(
-                    context: context,
-                    viewModel: model,
-                  ),
-                ],
+                viewModel: model,
               ),
+            ],
+          ),
+        ),
       ),
       viewModelBuilder: () => ProductsFilterViewModel(),
     );
