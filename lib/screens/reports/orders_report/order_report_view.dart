@@ -53,7 +53,9 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                           model.getOrderReportsGroupByBrandApiStatus ==
                               ApiStatus.FETCHED &&
                           model.getOrderReportsGroupBySubTypeApiStatus ==
-                              ApiStatus.FETCHED
+                              ApiStatus.FETCHED &&
+                          model.getGrandTotalOfConsolidatedOrdersAmount() > 0 &&
+                          model.getGrandTotalOfConsolidatedOrdersQty() > 0
                       ? () {
                           model.writeOnPdf();
                         }
