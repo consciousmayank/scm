@@ -1,16 +1,14 @@
-import 'package:scm/enums/api_status.dart';
+import 'package:scm/app/di.dart';
+import 'package:scm/app/dimens.dart';
+import 'package:scm/app/generalised_base_view_model.dart';
+import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/enums/product_size_type.dart';
+import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/model_classes/product_sizes_response.dart';
 import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
 import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/routes/routes_constants.dart';
-import 'package:scm/app/app.router.dart';
-import 'package:scm/app/di.dart';
-import 'package:scm/app/dimens.dart';
-import 'package:scm/app/generalised_base_view_model.dart';
-import 'package:scm/enums/dialog_type.dart';
-import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/product_list_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sizes_apis.dart';
 import 'package:scm/services/app_api_service_classes/product_sub_categories_apis.dart';
@@ -21,6 +19,11 @@ import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
 import 'package:scm/widgets/product/product_list/add_to_catalog_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
+
+const String productListBusyObjectKey = 'my-busy-key-product-list';
+const String productSizesBusyObjectKey = 'my-busy-key-product-sizes';
+const String productSubCategoiesBusyObjectKey =
+    'my-busy-key-product-subCategories';
 
 class ProductListViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
@@ -33,7 +36,7 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   ProductSizesListResponse productSizesListResponse =
       ProductSizesListResponse().empty();
 
-  ApiStatus productSubTypeApiStatus = ApiStatus.LOADING;
+  // ApiStatus productSubTypeApiStatus = ApiStatus.LOADING;
   String? productTitle;
   List<ProductSize?> sizeFilterList = [];
   late ProductSizesType sizesType;
@@ -47,41 +50,48 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
   final ProductSizesApis _productSizesApis = locator<ProductSizesApisImpl>();
   final ProductSubCategoriesApisImpl _productSubCatgoriesApis =
       locator<ProductSubCategoriesApisImpl>();
-  ApiStatus productListApiStatus = ApiStatus.LOADING;
+  // ApiStatus productListApiStatus = ApiStatus.LOADING;
+
   getProductList() async {
     if (sizeFilterList.isEmpty) {
-      productListResponse = await _productListApis.getProductList(
-        brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
-        categoryFilterList: categoryFilterList.map((e) => e?.type).toList(),
-        subCategoryFilterList:
-            subCategoryFilterList.map((e) => e?.subType).toList(),
-        pageIndex: pageIndex,
-        productTitle: productTitle,
-        size: !arguments.showSeeAll
-            ? Dimens.defaultProductListPageSize
-            : Dimens.defaultProductListPageSizeWhenInHome,
-        supplierId: supplierId,
-        isSupplierCatalog: arguments.isSupplierCatalog,
+      productListResponse = await runBusyFuture(
+        _productListApis.getProductList(
+          brandsFilterList: brandsFilterList.map((e) => e?.brand).toList(),
+          categoryFilterList: categoryFilterList.map((e) => e?.type).toList(),
+          subCategoryFilterList:
+              subCategoryFilterList.map((e) => e?.subType).toList(),
+          pageIndex: pageIndex,
+          productTitle: productTitle,
+          size: !arguments.showSeeAll
+              ? Dimens.defaultProductListPageSize
+              : Dimens.defaultProductListPageSizeWhenInHome,
+          supplierId: supplierId,
+          isSupplierCatalog: arguments.isSupplierCatalog,
+        ),
+        busyObject: productListBusyObjectKey,
       );
     } else {
-      productListResponse = await _productListApis.getProductListForSizes(
-        pageIndex: pageIndex,
-        size: !arguments.showSeeAll
-            ? Dimens.defaultProductListPageSize
-            : Dimens.defaultProductListPageSizeWhenInHome,
-        sizesFilterList: sizeFilterList
-            .map((e) =>
-                '${e?.measurement?.toStringAsFixed(1)} ${e?.measurementUnit}')
-            .toList(),
-        supplierId: supplierId,
-        sizesType: sizesType,
-        subType: subCategoryFilterList.first!.subType!,
+      productListResponse = await runBusyFuture(
+        _productListApis.getProductListForSizes(
+          pageIndex: pageIndex,
+          size: !arguments.showSeeAll
+              ? Dimens.defaultProductListPageSize
+              : Dimens.defaultProductListPageSizeWhenInHome,
+          sizesFilterList: sizeFilterList
+              .map((e) =>
+                  '${e?.measurement?.toStringAsFixed(1)} ${e?.measurementUnit}')
+              .toList(),
+          supplierId: supplierId,
+          sizesType: sizesType,
+          subType: subCategoryFilterList.first!.subType!,
+        ),
+        busyObject: productListBusyObjectKey,
       );
     }
 
-    productListApiStatus = ApiStatus.FETCHED;
+    // productListApiStatus = ApiStatus.FETCHED;
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   init({required ProductListViewArgs arguments}) {
@@ -207,19 +217,21 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
 
   void getSubCategories() async {
     if (categoryFilterList.length == 1) {
-      subCategoryListResponse =
-          await _productSubCatgoriesApis.getProductSubCategoriesList(
-        pageIndex: 0,
-        pageSize: 3,
-        checkedBrandList: brandsFilterList.map((e) => e?.brand).toList(),
-        checkedCategoryList: categoryFilterList.map((e) => e?.type).toList(),
-        isSupplierCatalog: arguments.isSupplierCatalog,
-        productTitle: productTitle,
-        subCategoryTitle: '',
-        supplierId: supplierId,
+      subCategoryListResponse = await runBusyFuture(
+        _productSubCatgoriesApis.getProductSubCategoriesList(
+          pageIndex: 0,
+          pageSize: 3,
+          checkedBrandList: brandsFilterList.map((e) => e?.brand).toList(),
+          checkedCategoryList: categoryFilterList.map((e) => e?.type).toList(),
+          isSupplierCatalog: arguments.isSupplierCatalog,
+          productTitle: productTitle,
+          subCategoryTitle: '',
+          supplierId: supplierId,
+        ),
+        busyObject: productSubCategoiesBusyObjectKey,
       );
-      productSubTypeApiStatus = ApiStatus.FETCHED;
-      notifyListeners();
+      // productSubTypeApiStatus = ApiStatus.FETCHED;
+      // notifyListeners();
     }
   }
 
@@ -245,15 +257,18 @@ class ProductListViewModel extends GeneralisedBaseViewModel {
 
   void getSizeList() async {
     if (subCategoryFilterList.length == 1) {
-      productSizesListResponse = await _productSizesApis.getProductSizesList(
-        pageIndex: 0,
-        pageSize: 5,
-        subType: subCategoryFilterList.first!.subType!,
-        supplierId: supplierId,
-        sizesType: sizesType,
+      productSizesListResponse = await runBusyFuture(
+        _productSizesApis.getProductSizesList(
+          pageIndex: 0,
+          pageSize: 5,
+          subType: subCategoryFilterList.first!.subType!,
+          supplierId: supplierId,
+          sizesType: sizesType,
+        ),
+        busyObject: productSizesBusyObjectKey,
       );
 
-      notifyListeners();
+      // notifyListeners();
     }
   }
 

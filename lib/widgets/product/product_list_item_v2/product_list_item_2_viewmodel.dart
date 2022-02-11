@@ -20,6 +20,7 @@ import 'package:stacked_services/stacked_services.dart';
 
 const String _CatalogStreamKey = 'catalog-stream';
 const String _CartStreamKey = 'cart-stream';
+const String operationOnCatalogBusyKey = 'operation-on-catalog';
 
 class ProductListItem2ViewModel extends MultipleStreamViewModel {
   late AddToCart? addToCarthelper;
@@ -137,13 +138,13 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
     required int productId,
     required String productTitle,
   }) async {
-    setBusy(true);
-    ApiResponse response = await _catalogApis.updateProductById(
-      productId: productId,
-      apiToHit: UpdateProductApiSelection.ADD_PRODUCT,
+    ApiResponse response = await runBusyFuture(
+      _catalogApis.updateProductById(
+        productId: productId,
+        apiToHit: UpdateProductApiSelection.ADD_PRODUCT,
+      ),
+      busyObject: operationOnCatalogBusyKey,
     );
-
-    setBusy(false);
 
     if (response.isSuccessful()) {
       _catalogStream.addToStream(
@@ -170,20 +171,19 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
         ),
       );
     }
-    notifyListeners();
   }
 
   Future removeProductFromCatalog({
     required int productId,
     required String productTitle,
   }) async {
-    setBusy(true);
-    ApiResponse response = await _catalogApis.updateProductById(
-      productId: productId,
-      apiToHit: UpdateProductApiSelection.DELETE_PRODUCT,
+    ApiResponse response = await runBusyFuture(
+      _catalogApis.updateProductById(
+        productId: productId,
+        apiToHit: UpdateProductApiSelection.DELETE_PRODUCT,
+      ),
+      busyObject: operationOnCatalogBusyKey,
     );
-
-    setBusy(false);
 
     if (response.isSuccessful()) {
       _catalogStream.removeFromStream(
@@ -286,36 +286,36 @@ class ProductListItem2ViewModel extends MultipleStreamViewModel {
         AuthenticatedUserRoles.ROLE_SUPPLY.getStatusString;
   }
 
-  void getProductImageFromApi({
-    required int productId,
-    int? supplierId,
-    bool? isForCatalog,
-  }) async {
-    setBusy(true);
+  // void getProductImageFromApi({
+  //   required int productId,
+  //   int? supplierId,
+  //   bool? isForCatalog,
+  // }) async {
+  //   setBusy(true);
 
-    ProductImagesType productImagesType = ProductImagesType.STANDARD;
-    if (isForCatalog != null && isForCatalog) {
-      productImagesType = ProductImagesType.SUPPLIER_CATALOG;
-      supplierId = preferences.getSupplierDemandProfile()?.id;
-    } else if (supplierId != null) {
-      productImagesType = ProductImagesType.DEMAND;
-    } else {
-      productImagesType = ProductImagesType.STANDARD;
-    }
+  //   ProductImagesType productImagesType = ProductImagesType.STANDARD;
+  //   if (isForCatalog != null && isForCatalog) {
+  //     productImagesType = ProductImagesType.SUPPLIER_CATALOG;
+  //     supplierId = preferences.getSupplierDemandProfile()?.id;
+  //   } else if (supplierId != null) {
+  //     productImagesType = ProductImagesType.DEMAND;
+  //   } else {
+  //     productImagesType = ProductImagesType.STANDARD;
+  //   }
 
-    productImages = await _imageApi.getProductImage(
-      productId: productId,
-      productImagesType: productImagesType,
-      supplierId: supplierId,
-    );
-    if (productImages.isNotEmpty) {
-      productImage = checkImageUrl(
-        imageUrl: productImages[0].image,
-      );
-    } else {
-      productImage = null;
-    }
-    setBusy(false);
-    notifyListeners();
-  }
+  //   productImages = await _imageApi.getProductImage(
+  //     productId: productId,
+  //     productImagesType: productImagesType,
+  //     supplierId: supplierId,
+  //   );
+  //   if (productImages.isNotEmpty) {
+  //     productImage = checkImageUrl(
+  //       imageUrl: productImages[0].image,
+  //     );
+  //   } else {
+  //     productImage = null;
+  //   }
+  //   setBusy(false);
+  //   notifyListeners();
+  // }
 }

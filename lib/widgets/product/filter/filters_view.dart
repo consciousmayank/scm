@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
-import 'package:scm/app/image_config.dart';
-import 'package:scm/enums/api_status.dart';
 import 'package:scm/model_classes/selected_suppliers_brands_response.dart';
 import 'package:scm/model_classes/selected_suppliers_sub_types_response.dart';
 import 'package:scm/model_classes/selected_suppliers_types_response.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
-import 'package:scm/widgets/common_dashboard/helper_widgets/table_graph_toggle_icon_button.dart';
 import 'package:scm/widgets/nullable_text_widget.dart';
 import 'package:scm/widgets/product/filter/filters_viewmodel.dart';
 import 'package:scm/widgets/product/filter/simple_search_widget.dart';
@@ -33,7 +30,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     required ProductsFilterViewModel viewModel,
     required BuildContext context,
   }) {
-    return viewModel.subCategoryApiStatus == ApiStatus.LOADING
+    return viewModel.busy(subCategoryBusyObjectKey)
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +154,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     required ProductsFilterViewModel viewModel,
     required BuildContext context,
   }) {
-    return viewModel.categoryApiStatus == ApiStatus.LOADING
+    return viewModel.busy(categorySizesBusyObjectKey)
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -259,7 +256,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
     required ProductsFilterViewModel viewModel,
     required BuildContext context,
   }) {
-    return viewModel.brandApiStatus == ApiStatus.LOADING
+    return viewModel.busy(brandsBusyObjectKey)
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -478,7 +475,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Brand')
             Expanded(
               flex: 5,
-              child: viewModel.brandApiStatus == ApiStatus.LOADING
+              child: viewModel.busy(brandsBusyObjectKey)
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -566,7 +563,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Category')
             Expanded(
               flex: 5,
-              child: viewModel.categoryApiStatus == ApiStatus.LOADING
+              child: viewModel.busy(categorySizesBusyObjectKey)
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -667,7 +664,7 @@ class _ProductsFilterViewState extends State<ProductsFilterView> {
           if (viewModel.clickedFilter == 'Sub-Category')
             Expanded(
               flex: 5,
-              child: viewModel.subCategoryApiStatus == ApiStatus.LOADING
+              child: viewModel.busy(subCategoryBusyObjectKey)
                   ? Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

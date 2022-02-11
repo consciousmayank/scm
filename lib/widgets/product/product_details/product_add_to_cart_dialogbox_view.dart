@@ -42,6 +42,7 @@ class _ProductAddToCartDialogBoxViewState
       DialogResponse(
         confirmed: true,
         data: ProductAddToCartDialogBoxViewOutArguments(
+            // deleteItemFromCart: true,
             productId: productId,
             quantity: int.parse(quantityController.text),
             cartItem: productCount > 0
@@ -130,7 +131,7 @@ class _ProductAddToCartDialogBoxViewState
                           }
                         },
                       ),
-                      flex: 2,
+                      flex: 1,
                     ),
                     wSizedBox(width: 8),
                     Expanded(
@@ -146,6 +147,16 @@ class _ProductAddToCartDialogBoxViewState
                                 productCount: productCount,
                                 isConfirmed: true,
                               );
+                            } else if (quantityController.text
+                                    .trim()
+                                    .isNotEmpty &&
+                                int.parse(quantityController.text.trim()) ==
+                                    0) {
+                              locator<SnackbarService>().showCustomSnackBar(
+                                message:
+                                    'Please click on \'Remove From Cart\' button to remove the product',
+                                variant: SnackbarType.ERROR,
+                              );
                             } else {
                               locator<SnackbarService>().showCustomSnackBar(
                                 message: 'Please enter a valid quantity',
@@ -160,6 +171,27 @@ class _ProductAddToCartDialogBoxViewState
                       ),
                       flex: 1,
                     ),
+                    if (productCount > 0) wSizedBox(width: 8),
+                    if (productCount > 0)
+                      Expanded(
+                        child: SizedBox(
+                          height: Dimens().buttonHeight,
+                          child: AppButton(
+                            buttonBg: AppColors().buttonRedColor,
+                            onTap: () {
+                              quantityController.clear();
+
+                              sendFeedBack(
+                                productId: arguments.productId!,
+                                productCount: 0,
+                                isConfirmed: true,
+                              );
+                            },
+                            title: 'Remove From Cart',
+                          ),
+                        ),
+                        flex: 1,
+                      ),
                   ],
                 ),
               ),
@@ -195,8 +227,10 @@ class ProductAddToCartDialogBoxViewOutArguments {
     required this.productId,
     required this.quantity,
     required this.cartItem,
+    // required this.deleteItemFromCart,
   });
 
   final CartItem? cartItem;
   final int productId, quantity;
+  // final bool deleteItemFromCart;
 }

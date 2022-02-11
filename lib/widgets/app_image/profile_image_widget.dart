@@ -124,7 +124,7 @@ class ProfileImageWidget extends StatelessWidget {
                 profileImageHeight ?? 40,
               ),
         ),
-        child: model.isBusy
+        child: model.busy(getImageBusyKey) || model.busy(getProductImageBusyKey)
             ? Center(
                 child: imageDownloadString == null && imageUrlString == null
                     ? const LoadingWidget()

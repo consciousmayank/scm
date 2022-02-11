@@ -133,7 +133,7 @@ class ProductListView extends StatelessWidget {
                   ),
                 )
               : null,
-          body: model.productListApiStatus == ApiStatus.LOADING
+          body: model.busy(productListBusyObjectKey)
               ? const Padding(
                   padding: EdgeInsets.only(top: 50),
                   child: Center(
@@ -470,7 +470,7 @@ class LoadNextProductWidget extends ViewModelWidget<ProductListViewModel> {
               //   ),
               // ],
             ),
-            child: viewModel.productListApiStatus == ApiStatus.LOADING
+            child: viewModel.busy(productListBusyObjectKey)
                 ? const LoadingWidgetWithText(
                     text: 'Loading More Products. Please wait')
                 : Center(

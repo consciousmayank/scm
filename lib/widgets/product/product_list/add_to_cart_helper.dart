@@ -79,9 +79,10 @@ class AddToCart extends GeneralisedBaseViewModel {
 
           if (args.cartItem == null) {
             addProductToCart(
-                productId: args.productId,
-                productQuantity: args.quantity,
-                productTitle: product.title!);
+              productId: args.productId,
+              productQuantity: args.quantity,
+              productTitle: product.title!,
+            );
           } else {
             updateProductInCart(cartItem: args.cartItem!);
           }

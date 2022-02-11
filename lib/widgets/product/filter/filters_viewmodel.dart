@@ -15,11 +15,12 @@ import 'package:scm/services/app_api_service_classes/product_sub_categories_apis
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/product/filter/filters_view.dart';
 
+const String brandsBusyObjectKey = 'my-busy-key-brands';
+const String categorySizesBusyObjectKey = 'my-busy-key-category';
+const String subCategoryBusyObjectKey = 'my-busy-key-subCategory';
+
 class ProductsFilterViewModel extends GeneralisedBaseViewModel {
   late final ProductsFilterViewArguments args;
-  ApiStatus brandApiStatus = ApiStatus.LOADING;
-  ApiStatus categoryApiStatus = ApiStatus.LOADING;
-  ApiStatus subCategoryApiStatus = ApiStatus.LOADING;
 
   /// it is used to store which [filter] item [Brand, Category, Sub-Category] is clicked
   /// in the left pane of the filter bottom sheet
@@ -179,8 +180,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      brandApiStatus = ApiStatus.LOADING;
-      notifyListeners();
       pageIndexForBrandsApi = 0;
       brandsList = [];
       brandsForFilterList = [];
@@ -191,16 +190,19 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       /// if [checkedTypesList] is not empty then hit the brand by types api
       /// otherwise hit all brands api
 
-      brandsResponse = await _brandsApis.getBrandsList(
-        pageIndex: pageIndexForBrandsApi,
-        brandTitle: brandTitle,
-        checkedCategoryFilterList:
-            tempCheckedCategoriesList.map((e) => e!.type).toList(),
-        checkedSubCategoryFilterList:
-            tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
-        productTitle: args.searchProductTitle,
-        supplierId: args.supplierId,
-        isSupplierCatalog: args.isSupplierCatalog,
+      brandsResponse = await runBusyFuture(
+        _brandsApis.getBrandsList(
+          pageIndex: pageIndexForBrandsApi,
+          brandTitle: brandTitle,
+          checkedCategoryFilterList:
+              tempCheckedCategoriesList.map((e) => e!.type).toList(),
+          checkedSubCategoryFilterList:
+              tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
+          productTitle: args.searchProductTitle,
+          supplierId: args.supplierId,
+          isSupplierCatalog: args.isSupplierCatalog,
+        ),
+        busyObject: showLoader ? brandsBusyObjectKey : null,
       );
 
       totalItemsForBrandsApi = brandsResponse?.totalItems;
@@ -216,11 +218,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForBrandsApi = pageIndexForBrandsApi! + 1;
     }
-    if (showLoader) {
-      brandApiStatus = ApiStatus.FETCHED;
-    }
-
-    notifyListeners();
   }
 
   /// the coming brand list is of type [String] so below
@@ -439,8 +436,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      categoryApiStatus = ApiStatus.LOADING;
-      notifyListeners();
       pageIndexForCategoriesApi = 0;
       productCategoriesList = [];
       categoriesForFilterList = [];
@@ -450,16 +445,18 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
         pageIndexForCategoriesApi == 0) {
       /// if [checkedBrandList] is not empty then hit the types by brand api otherwise hit all types api
 
-      categoriesResponse =
-          await _productCategoriesApis.getProductCategoriesList(
-        pageIndex: pageIndexForCategoriesApi,
-        checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
-        checkedSubCategoriesList:
-            tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
-        categoryTitle: categoryTitle,
-        productTitle: args.searchProductTitle,
-        supplierId: args.supplierId,
-        isSupplierCatalog: args.isSupplierCatalog,
+      categoriesResponse = await runBusyFuture(
+        _productCategoriesApis.getProductCategoriesList(
+          pageIndex: pageIndexForCategoriesApi,
+          checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
+          checkedSubCategoriesList:
+              tempCheckedSubCategoriesList.map((e) => e?.subType).toList(),
+          categoryTitle: categoryTitle,
+          productTitle: args.searchProductTitle,
+          supplierId: args.supplierId,
+          isSupplierCatalog: args.isSupplierCatalog,
+        ),
+        busyObject: showLoader ? categorySizesBusyObjectKey : null,
       );
 
       totalItemsForCategoriesApi = categoriesResponse?.totalItems;
@@ -474,9 +471,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForCategoriesApi = pageIndexForCategoriesApi! + 1;
     }
-    if (showLoader) categoryApiStatus = ApiStatus.FETCHED;
-
-    notifyListeners();
   }
 
   /// the coming category list is of type [String] so below it is
@@ -575,8 +569,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
     bool showLoader = false,
   }) async {
     if (showLoader) {
-      subCategoryApiStatus = ApiStatus.LOADING;
-      notifyListeners();
       pageIndexForSubCategoriesApi = 0;
       subCategoriesList = [];
       subCategoriesForFilterList = [];
@@ -584,17 +576,19 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
 
     if (totalItemsForSubCategoriesApi! > subCategoriesList.length ||
         pageIndexForSubCategoriesApi == 0) {
-      subCategoriesResponse =
-          await _subCategoriesApis.getProductSubCategoriesList(
-        pageSize: 30,
-        pageIndex: pageIndexForSubCategoriesApi,
-        subCategoryTitle: subCategoryTitle,
-        checkedCategoryList:
-            tempCheckedCategoriesList.map((e) => e?.type).toList(),
-        checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
-        productTitle: args.searchProductTitle,
-        supplierId: args.supplierId,
-        isSupplierCatalog: args.isSupplierCatalog,
+      subCategoriesResponse = await runBusyFuture(
+        _subCategoriesApis.getProductSubCategoriesList(
+          pageSize: 30,
+          pageIndex: pageIndexForSubCategoriesApi,
+          subCategoryTitle: subCategoryTitle,
+          checkedCategoryList:
+              tempCheckedCategoriesList.map((e) => e?.type).toList(),
+          checkedBrandList: tempCheckedBrandsList.map((e) => e!.brand).toList(),
+          productTitle: args.searchProductTitle,
+          supplierId: args.supplierId,
+          isSupplierCatalog: args.isSupplierCatalog,
+        ),
+        busyObject: showLoader ? subCategoryBusyObjectKey : null,
       );
 
       totalItemsForSubCategoriesApi = subCategoriesResponse.totalItems;
@@ -608,10 +602,6 @@ class ProductsFilterViewModel extends GeneralisedBaseViewModel {
       );
       pageIndexForSubCategoriesApi = pageIndexForSubCategoriesApi! + 1;
     }
-    if (showLoader) subCategoryApiStatus = ApiStatus.FETCHED;
-
-    // setBusy(false);
-    notifyListeners();
   }
 
   /// the coming (from api) subCategories list is of type [String] so below

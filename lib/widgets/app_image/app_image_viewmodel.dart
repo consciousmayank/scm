@@ -6,6 +6,9 @@ import 'package:scm/model_classes/product_list_response.dart';
 import 'package:scm/services/app_api_service_classes/image_api.dart';
 import 'package:scm/utils/utils.dart';
 
+const String getImageBusyKey = 'get-image-busy-key';
+const String getProductImageBusyKey = 'get-product-image-busy-key';
+
 class AppImageViewModel extends GeneralisedBaseViewModel {
   late String? image;
   late final Function? onImageLoaded;
@@ -42,17 +45,18 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
   }
 
   void getImageFromApi({required String imageString}) async {
-    setBusy(true);
-    ImageResponse imageResponse = await _imageApi.getImage(
-      imageTitle: imageString,
+    ImageResponse imageResponse = await runBusyFuture(
+      _imageApi.getImage(
+        imageTitle: imageString,
+      ),
+      busyObject: getImageBusyKey,
     );
-    setBusy(false);
     image = checkImageUrl(
       imageUrl: imageResponse.image,
     );
     onImageLoaded?.call();
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   void getProductImageFromApi({
@@ -60,8 +64,6 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
     int? supplierId,
     bool? isForCatalog,
   }) async {
-    setBusy(true);
-
     ProductImagesType productImagesType = ProductImagesType.STANDARD;
     if (isForCatalog != null && isForCatalog) {
       productImagesType = ProductImagesType.SUPPLIER_CATALOG;
@@ -72,10 +74,13 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
       productImagesType = ProductImagesType.STANDARD;
     }
 
-    productImages = await _imageApi.getProductImage(
-      productId: productId,
-      productImagesType: productImagesType,
-      supplierId: supplierId,
+    productImages = await runBusyFuture(
+      _imageApi.getProductImage(
+        productId: productId,
+        productImagesType: productImagesType,
+        supplierId: supplierId,
+      ),
+      busyObject: getProductImageBusyKey,
     );
     if (productImages.isNotEmpty) {
       image = checkImageUrl(
@@ -84,8 +89,7 @@ class AppImageViewModel extends GeneralisedBaseViewModel {
     } else {
       image = null;
     }
-    setBusy(false);
     onImageLoaded?.call();
-    notifyListeners();
+    // notifyListeners();
   }
 }

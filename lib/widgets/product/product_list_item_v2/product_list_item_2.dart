@@ -32,7 +32,7 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
       onModelReady: (model) => model.init(args: widget.arguments),
       builder: (context, model, child) => Scaffold(
         backgroundColor: Colors.white,
-        body: model.isBusy
+        body: model.busy(operationOnCatalogBusyKey)
             ? const Center(child: LoadingWidget())
             : AppInkwell.withBorder(
                 onTap: () => widget.arguments.onProductClick(),
@@ -43,39 +43,29 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ProfileImageWidget.productImage(
-                          key: UniqueKey(),
-                          isForCatalog: widget.arguments.isForCatalog,
-                          supplierId: widget.arguments.supplierId,
-                          elevation: 0,
-                          profileImageHeight: Dimens().productDtailImageHeight,
-                          profileImageWidth: Dimens().productDtailImageHeight,
-                          borderDerRadius: BorderRadius.all(
-                            Radius.circular(
-                              Dimens().suppliersListItemImageCircularRaduis,
+                      child: Tooltip(
+                        message:
+                            '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
+                        preferBelow: true,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: ProfileImageWidget.productImage(
+                            key: UniqueKey(),
+                            isForCatalog: widget.arguments.isForCatalog,
+                            supplierId: widget.arguments.supplierId,
+                            elevation: 0,
+                            profileImageHeight:
+                                Dimens().productDtailImageHeight,
+                            profileImageWidth: Dimens().productDtailImageHeight,
+                            borderDerRadius: BorderRadius.all(
+                              Radius.circular(
+                                Dimens().suppliersListItemImageCircularRaduis,
+                              ),
                             ),
+                            productId: widget.arguments.product?.id,
+                            onImageLoaded: () {},
                           ),
-                          productId: widget.arguments.product?.id,
-                          onImageLoaded: () {},
                         ),
-
-                        // (getProductImage(
-                        //                 productImage:
-                        //                     widget.arguments.product?.images) ==
-                        //             null ||
-                        //         getProductImage(
-                        //                 productImage:
-                        //                     widget.arguments.product?.images)!
-                        //             .isEmpty)
-                        //     ? image_widget.Image.asset(productDefaultImage)
-                        //     : image_widget.Image.memory(
-                        //         getProductImage(
-                        //             productImage:
-                        //                 widget.arguments.product?.images)!,
-                        //         fit: BoxFit.cover,
-                        //       ),
                       ),
                     ),
                     Expanded(
@@ -85,75 +75,54 @@ class _ProductListItem2ViewState extends State<ProductListItem2View> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Tooltip(
-                              message:
+                            padding: const EdgeInsets.all(4.0),
+                            child: NullableTextWidget(
+                              stringValue:
                                   '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
-                              child: NullableTextWidget(
-                                stringValue:
-                                    '${widget.arguments.product?.title}, (${widget.arguments.product?.type})',
-                                maxLines: 3,
-                                textStyle: Theme.of(context).textTheme.button,
-                                textAlign: TextAlign.left,
-                              ),
+                              maxLines: 3,
+                              textStyle: Theme.of(context).textTheme.subtitle2,
+                              textAlign: TextAlign.left,
                             ),
                           ),
                           hSizedBox(height: 8),
                           // const Spacer(),
                           if (widget.arguments.product?.measurement != null &&
                               widget.arguments.product!.measurement! > 0)
-                            NullableTextWidget(
-                              stringValue: getProductMeasurement(
-                                measurement:
-                                    widget.arguments.product?.measurement,
-                                measurementUnit:
-                                    widget.arguments.product?.measurementUnit,
+                            Expanded(
+                              child: NullableTextWidget(
+                                stringValue: getProductMeasurement(
+                                  measurement:
+                                      widget.arguments.product?.measurement,
+                                  measurementUnit:
+                                      widget.arguments.product?.measurementUnit,
+                                ),
+                                textAlign: TextAlign.left,
+                                textStyle:
+                                    Theme.of(context).textTheme.subtitle2,
                               ),
-                              textAlign: TextAlign.left,
-                              textStyle: Theme.of(context).textTheme.subtitle2,
                             ),
 
-                          ProductItemButtons(
-                            isForCatalog: widget.arguments.isForCatalog,
-                            isSupplier: model.isSupplier(),
-                            isProductInCatalog: model.isProductInCatalog(
-                              productId: widget.arguments.product?.id,
-                            ),
-                            isProductInCart: model.isProductInCart(
-                              productId: widget.arguments.product?.id,
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(),
+                                flex: 1,
+                              ),
+                              Expanded(
+                                child: ProductItemButtons(
+                                  isForCatalog: widget.arguments.isForCatalog,
+                                  isSupplier: model.isSupplier(),
+                                  isProductInCatalog: model.isProductInCatalog(
+                                    productId: widget.arguments.product?.id,
+                                  ),
+                                  isProductInCart: model.isProductInCart(
+                                    productId: widget.arguments.product?.id,
+                                  ),
+                                ),
+                                flex: 1,
+                              ),
+                            ],
                           )
-                          // widget.arguments.isForCatalog
-                          //     ? const RemoveProductWidget()
-                          //     : model.isSupplier()
-                          //         //check if product is in catalog
-
-                          // ? model.isProductInCatalog(
-                          //     productId: widget.arguments.product?.id,
-                          //   )
-                          //             ? const RemoveProductWidget()
-                          //             : const AddProductWidget()
-                          // : model.isProductInCart(
-                          //         productId:
-                          //             widget.arguments.product?.id)
-                          //             ? Row(
-                          //                 mainAxisAlignment:
-                          //                     MainAxisAlignment.spaceEvenly,
-                          //                 children: [
-                          //                   const Flexible(
-                          //                     child: RemoveProductWidget(
-                          //                       reverseStyle: true,
-                          //                     ),
-                          //                     flex: 1,
-                          //                   ),
-                          //                   wSizedBox(width: 4),
-                          //                   const Flexible(
-                          //                     child: UpdateProductWidget(),
-                          //                     flex: 1,
-                          //                   ),
-                          //                 ],
-                          //               )
-                          //             : const AddProductWidget()
                         ],
                       ),
                     ),
@@ -191,21 +160,20 @@ class ProductListItem2ViewArguments {
 class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   const AddProductWidget({
     Key? key,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+          reactive: false,
+        );
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return SizedBox(
-      height: 30,
-      width: 100,
-      child: AppButton(
-        titleTextStyle: Theme.of(context).textTheme.button,
-        toolTipMessage:
-            'Add Product to ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-        buttonBg: AppColors().buttonGreenColor,
-        onTap: viewModel.onAddButtonClick,
-        title: 'Add',
-      ),
+    return AppButton(
+      titleTextStyle: Theme.of(context).textTheme.button,
+      toolTipMessage:
+          'Add Product to ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+      buttonBg: AppColors().buttonGreenColor,
+      onTap: viewModel.onAddButtonClick,
+      title: 'Add',
     );
   }
 }
@@ -213,21 +181,20 @@ class AddProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
 class UpdateProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   const UpdateProductWidget({
     Key? key,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+          reactive: false,
+        );
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return SizedBox(
-      height: 30,
-      width: 100,
-      child: AppButton(
-        title: 'Edit',
-        titleTextStyle: Theme.of(context).textTheme.button,
-        toolTipMessage:
-            'Update Product Quantity in ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-        buttonBg: Theme.of(context).primaryColorLight,
-        onTap: viewModel.onUpdateButtonClick,
-      ),
+    return AppButton(
+      title: 'Edit',
+      titleTextStyle: Theme.of(context).textTheme.button,
+      toolTipMessage:
+          'Update Product Quantity in ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+      buttonBg: Theme.of(context).primaryColorLight,
+      onTap: viewModel.onUpdateButtonClick,
     );
   }
 }
@@ -236,23 +203,22 @@ class RemoveProductWidget extends ViewModelWidget<ProductListItem2ViewModel> {
   const RemoveProductWidget({
     Key? key,
     this.reverseStyle = false,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+          reactive: false,
+        );
 
   final bool reverseStyle;
 
   @override
   Widget build(BuildContext context, ProductListItem2ViewModel viewModel) {
-    return SizedBox(
-      height: 30,
-      width: 100,
-      child: AppButton(
-        toolTipMessage:
-            'Remove Product from ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
-        buttonBg: AppColors().buttonRedColor,
-        onTap: viewModel.onRemoveButtonClick,
-        title: 'Remove',
-        titleTextStyle: Theme.of(context).textTheme.button,
-      ),
+    return AppButton(
+      toolTipMessage:
+          'Remove Product from ${viewModel.isSupplier() ? 'Catalog' : 'Cart'}',
+      buttonBg: AppColors().buttonRedColor,
+      onTap: viewModel.onRemoveButtonClick,
+      title: 'Remove',
+      titleTextStyle: Theme.of(context).textTheme.button,
     );
   }
 }
