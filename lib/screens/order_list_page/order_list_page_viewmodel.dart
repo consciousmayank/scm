@@ -24,6 +24,10 @@ import 'package:scm/widgets/order_processing_confirmation/order_processing_confi
 import 'package:scm/widgets/product/product_details/product_detail_dialog_box_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+const String orderDetailsApiBusyObject = 'orderDetailsApiBusyObject';
+const String orderListApiBusyObject = 'orderListApiBusyObject';
+const String ordersStatusListApiBusyObject = 'ordersStatusListApiObject';
+
 class OrderListPageViewModel extends GeneralisedBaseViewModel {
   late final OrderListPageViewArguments args;
   Key? currentQuantityTextFieldHavingFocus;
@@ -34,11 +38,8 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   // late final TextEditingController fromDateController;
   OrderSummaryResponse orderDetails = OrderSummaryResponse().empty();
 
-  ApiStatus orderDetailsApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
-  ApiStatus orderListApi = ApiStatus.LOADING;
   List<String> orderStatusList = ['ALL'];
-  ApiStatus ordersStatusListApi = ApiStatus.LOADING;
   int pageNumber = 0;
   int pageSize = 15;
   // List<TextEditingController> priceEditingControllers = [];
@@ -105,20 +106,20 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   }
 
   getOrderList() async {
-    orderListApi = ApiStatus.LOADING;
-
-    orderList = await _commonDashBoardApis.getOrdersList(
-      pageSize: pageSize,
-      pageNumber: pageNumber,
-      status: selectedOrderStatus,
-      selectedDuration: selectedOrderDuration,
-      selectedDurationFromDate: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      selectedDurationToDate: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-    );
+    orderList = await runBusyFuture(
+        _commonDashBoardApis.getOrdersList(
+          pageSize: pageSize,
+          pageNumber: pageNumber,
+          status: selectedOrderStatus,
+          selectedDuration: selectedOrderDuration,
+          selectedDurationFromDate: DateTimeToStringConverter.yyyymmdd(
+            date: dateTimeRange.start,
+          ).convert(),
+          selectedDurationToDate: DateTimeToStringConverter.yyyymmdd(
+            date: dateTimeRange.end,
+          ).convert(),
+        ),
+        busyObject: orderListApiBusyObject);
 
     if (args.selectedOrder == null) {
       //if selected order is null then we need to set the selected order to the first order
@@ -133,37 +134,32 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
       getOrdersDetails();
     } else {
       orderDetails = OrderSummaryResponse().empty();
-      orderDetailsApi = ApiStatus.FETCHED;
     }
-    orderListApi = ApiStatus.FETCHED;
-
-    notifyListeners();
   }
 
   getOrdersDetails({
     String? orderId,
   }) async {
-    orderDetailsApi = ApiStatus.LOADING;
     notifyListeners();
-    orderDetails = await _commonDashBoardApis.getOrderDetails(
-      orderId: orderId ?? selectedOrder.id.toString(),
+    orderDetails = await runBusyFuture(
+      _commonDashBoardApis.getOrderDetails(
+        orderId: orderId ?? selectedOrder.id.toString(),
+      ),
+      busyObject: orderDetailsApiBusyObject,
     );
 
     if (orderDetails.status == OrderStatusTypes.PROCESSING.apiToAppTitles) {
       turnSelectedOrderItemsEditable();
       // initializeEditexts();
     }
-
-    orderDetailsApi = ApiStatus.FETCHED;
-
-    notifyListeners();
   }
 
   void acceptOrder({required int? orderId}) async {
-    orderDetailsApi = ApiStatus.LOADING;
-    notifyListeners();
-    orderDetails = await _commonDashBoardApis.acceptOrder(
-      orderId: orderId.toString(),
+    orderDetails = await runBusyFuture(
+      _commonDashBoardApis.acceptOrder(
+        orderId: orderId.toString(),
+      ),
+      busyObject: orderDetailsApiBusyObject,
     );
     if (orderDetails.id! > 0) {
       showInfoSnackBar(message: orderDetails.status ?? 'Success');
@@ -175,19 +171,17 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   }
 
   void rejectOrder({required int? orderId}) async {
-    orderDetailsApi = ApiStatus.LOADING;
-    notifyListeners();
-    orderDetails = await _commonDashBoardApis.rejectOrder(
-      orderId: orderId,
+    orderDetails = await runBusyFuture(
+      _commonDashBoardApis.rejectOrder(
+        orderId: orderId,
+      ),
+      busyObject: orderDetailsApiBusyObject,
     );
     if (orderDetails.id! > 0) {
       showInfoSnackBar(message: orderDetails.status ?? 'Success');
       turnSelectedOrderItemsEditable(value: false);
     }
-    orderDetailsApi = ApiStatus.FETCHED;
-    orderListApi = ApiStatus.LOADING;
     getOrderList();
-    notifyListeners();
   }
 
   Future<void> openDeliveryDetailsDialogBox(
@@ -218,11 +212,12 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
     required int? orderId,
     required String deliveredBy,
   }) async {
-    orderDetailsApi = ApiStatus.LOADING;
-    notifyListeners();
-    orderDetails = await _commonDashBoardApis.deliverOrder(
-      orderId: orderId,
-      deliveryBy: deliveredBy,
+    orderDetails = await runBusyFuture(
+      _commonDashBoardApis.deliverOrder(
+        orderId: orderId,
+        deliveryBy: deliveredBy,
+      ),
+      busyObject: orderDetailsApiBusyObject,
     );
     if (orderDetails.id! > 0) {
       showInfoSnackBar(message: orderDetails.status ?? 'Success');
@@ -230,8 +225,6 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
         value: false,
       );
     }
-    orderDetailsApi = ApiStatus.FETCHED;
-    orderListApi = ApiStatus.LOADING;
     getOrderList();
     notifyListeners();
   }
@@ -354,17 +347,15 @@ class OrderListPageViewModel extends GeneralisedBaseViewModel {
   // void updateOrderItem({OrderItem orderItem}) {}
 
   updateOrder() async {
-    orderDetailsApi = ApiStatus.LOADING;
-    notifyListeners();
-    orderDetails = await _commonDashBoardApis.updateOrder(
-      orderDetials: orderDetails,
+    orderDetails = await runBusyFuture(
+      _commonDashBoardApis.updateOrder(
+        orderDetials: orderDetails,
+      ),
+      busyObject: orderDetailsApiBusyObject,
     );
 
     setBusy(false);
-    orderDetailsApi = ApiStatus.FETCHED;
-    orderListApi = ApiStatus.LOADING;
     getOrderList();
-    notifyListeners();
   }
 
   Order getSelectedOrder({OrderListResponse? ordersListResponse}) {

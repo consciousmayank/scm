@@ -23,8 +23,8 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
 
   @override
   Widget build(BuildContext context, CommonDashboardViewModel viewModel) {
-    return viewModel.orderedBrandsApi == ApiStatus.LOADING ||
-            viewModel.getOrderReportsGroupByBrandApiStatus == ApiStatus.LOADING
+    return viewModel.busy(orderedBrandsApi) ||
+            viewModel.busy(getOrderReportsGroupByBrandApiStatus)
         ? const SliverToBoxAdapter(
             child: SizedBox(
               height: 200,
@@ -92,39 +92,44 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                             ),
                           ),
                           Expanded(
-                            child: IndexedStack(
-                              index: viewModel.reportsByBrandsIndex,
-                              children: [
-                                ReportWidget.dashBoardGroupByBrands(
-                                  amountGrandTotal:
-                                      getAmountGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupByBrandResponse,
-                                  ),
-                                  quantityGrandTotal:
-                                      getQuantityGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupByBrandResponse,
-                                  ),
-                                  reportResponse: viewModel
-                                      .ordersReportGroupByBrandResponse,
-                                ),
-                                AppBarChartWidget.grouped(
-                                  seriesBarData:
-                                      viewModel.ordersReportGroupByBrandBarData,
-                                  xAxisTitle: 'Brands',
-                                  yAxisTitle: '',
-                                  onClickOfOrderReportsOption: () {
-                                    viewModel.navigationService.navigateTo(
-                                      orderReportsScreenPageRoute,
-                                      arguments: OrderReportsViewArgs(
-                                        orderStatus: OrderStatusTypes.DELIVERED,
+                            child: viewModel
+                                    .busy(getOrderReportsGroupByBrandApiStatus)
+                                ? const LoadingWidget()
+                                : IndexedStack(
+                                    index: viewModel.reportsByBrandsIndex,
+                                    children: [
+                                      ReportWidget.dashBoardGroupByBrands(
+                                        amountGrandTotal:
+                                            getAmountGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupByBrandResponse,
+                                        ),
+                                        quantityGrandTotal:
+                                            getQuantityGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupByBrandResponse,
+                                        ),
+                                        reportResponse: viewModel
+                                            .ordersReportGroupByBrandResponse,
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                      AppBarChartWidget.grouped(
+                                        seriesBarData: viewModel
+                                            .ordersReportGroupByBrandBarData,
+                                        xAxisTitle: 'Brands',
+                                        yAxisTitle: '',
+                                        onClickOfOrderReportsOption: () {
+                                          viewModel.navigationService
+                                              .navigateTo(
+                                            orderReportsScreenPageRoute,
+                                            arguments: OrderReportsViewArgs(
+                                              orderStatus:
+                                                  OrderStatusTypes.DELIVERED,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),
@@ -270,7 +275,7 @@ class OrderedBrands extends ViewModelWidget<CommonDashboardViewModel> {
                                       Expanded(
                                         child: ListView.builder(
                                           physics:
-                                              NeverScrollableScrollPhysics(),
+                                              const NeverScrollableScrollPhysics(),
                                           itemBuilder: (context, index) =>
                                               AppTableWidget.values(
                                             values: [

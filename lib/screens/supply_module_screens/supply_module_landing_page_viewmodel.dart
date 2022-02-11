@@ -17,12 +17,13 @@ import 'package:scm/utils/strings.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+const String profileApiStatus = 'profileApiStatus';
+
 class SupplyModuleLandingPageViewModel
     extends GeneralisedIndexTrackingViewModel {
   String authenticatedUserName = '';
   String clickedOrderStatus = orderStatusAll;
   var log = getLogger('SupplyModuleLandingPageViewModel');
-  ApiStatus profileApiStatus = ApiStatus.LOADING;
   String searchTerm = '';
   Order? selectedOrder;
   bool showProductList = false;
@@ -37,13 +38,14 @@ class SupplyModuleLandingPageViewModel
   }
 
   void getProfile() async {
-    supplyProfileResponse = await _profileApis.getSupplierProfile();
+    supplyProfileResponse = await runBusyFuture(
+      _profileApis.getSupplierProfile(),
+      busyObject: profileApiStatus,
+    );
     if (supplyProfileResponse != null &&
         supplyProfileResponse!.businessName != null &&
         supplyProfileResponse!.businessName!.isNotEmpty) {
       authenticatedUserName = supplyProfileResponse!.businessName!;
-      profileApiStatus = ApiStatus.FETCHED;
-      notifyListeners();
     }
 
     getCatalogProducts();

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
 import 'package:scm/app/appcolors.dart';
@@ -51,45 +52,56 @@ class _CartIconViewState extends State<CartIconView> {
         },
         child: Center(
           child: SizedBox(
-            height: 50,
-            width: 50,
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(
-                    8,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Image.asset(
-                      cartIcon,
-                      height: 40,
-                      width: 40,
-                      color: AppColors().white,
-                    ),
-                  ),
+              height: 50,
+              width: 50,
+              child: Badge(
+                toAnimate: true,
+                badgeColor: Theme.of(context).colorScheme.background,
+                animationType: BadgeAnimationType.slide,
+                badgeContent: NullableTextWidget.int(
+                  intValue: model.cart.totalItems,
+                  textStyle: Theme.of(context).textTheme.button!.copyWith(
+                        color: AppColors().white,
+                      ),
                 ),
-                Container(
-                  // padding: const EdgeInsets.symmetric(
-                  //   horizontal: 2,
-                  // ),
-                  child: NullableTextWidget.int(
-                    intValue: model.getCartApiStatus == ApiStatus.LOADING
-                        ? null
-                        : model.cart.totalItems,
-                    textStyle: Theme.of(context).textTheme.button!.copyWith(
-                          color: AppColors().white,
-                        ),
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.background,
-                  ),
-                )
-              ],
-            ),
-          ),
+                child: Image.asset(
+                  cartIcon,
+                  height: 40,
+                  width: 40,
+                  color: AppColors().white,
+                ),
+              )
+
+              // Stack(
+              //   alignment: Alignment.topRight,
+              //   children: [
+              //     Padding(
+              //       padding: const EdgeInsets.all(
+              //         8,
+              //       ),
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(right: 8.0),
+              //         child: Image.asset(
+              //           cartIcon,
+              //           height: 40,
+              //           width: 40,
+              //           color: AppColors().white,
+              //         ),
+              //       ),
+              //     ),
+              //     Container(
+              //       // padding: const EdgeInsets.symmetric(
+              //       //   horizontal: 2,
+              //       // ),
+              // ,
+              //       decoration: BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         color: Theme.of(context).colorScheme.background,
+              //       ),
+              //     )
+              //   ],
+              // ),
+              ),
         ),
       ),
       viewModelBuilder: () => CartIconViewModel(),

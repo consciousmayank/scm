@@ -22,7 +22,7 @@ class DashboardOrderListWidget
 
   @override
   Widget build(BuildContext context, CommonDashboardViewModel viewModel) {
-    return viewModel.orderListApi == ApiStatus.LOADING
+    return viewModel.busy(orderListApi)
         ? const SliverToBoxAdapter(
             child: SizedBox(
               height: 200,

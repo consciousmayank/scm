@@ -45,7 +45,7 @@ class OrderListPageView extends StatelessWidget {
                   children: [
                     if (!arguments.hideOrdersList)
                       Expanded(
-                        child: model.orderListApi == ApiStatus.LOADING
+                        child: model.busy(orderListApiBusyObject)
                             ? const LoadingWidgetWithText(
                                 text: 'Fetching Orders. Please Wait...')
                             : IndexedStack(
@@ -108,7 +108,7 @@ class OrderListPageView extends StatelessWidget {
                       ),
                     Expanded(
                       key: UniqueKey(),
-                      child: model.orderDetailsApi == ApiStatus.LOADING
+                      child: model.busy(orderDetailsApiBusyObject)
                           ? const LoadingWidgetWithText(
                               text: 'Fetching Orders. Please Wait...')
                           : model.orderDetails.status!.isEmpty

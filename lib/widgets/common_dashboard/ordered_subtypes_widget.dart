@@ -23,9 +23,10 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
 
   @override
   Widget build(BuildContext context, CommonDashboardViewModel viewModel) {
-    return viewModel.orderedSubTypeApi == ApiStatus.LOADING ||
-            viewModel.getOrderReportsGroupBySubTypeApiStatus ==
-                ApiStatus.LOADING
+    return viewModel.busy(
+              orderedSubTypeApi,
+            ) ||
+            viewModel.busy(getOrderReportsGroupBySubTypeApiStatus)
         ? const SliverToBoxAdapter(
             child: SizedBox(
               height: 200,

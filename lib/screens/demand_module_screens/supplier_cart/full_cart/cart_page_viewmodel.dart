@@ -4,6 +4,7 @@ import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/dialog_type.dart';
 import 'package:scm/model_classes/add_address_model.dart';
 import 'package:scm/model_classes/add_address_request.dart';
+import 'package:scm/model_classes/address.dart' as demanders_address;
 import 'package:scm/model_classes/api_response.dart';
 import 'package:scm/model_classes/cart.dart';
 import 'package:scm/model_classes/order_list_response.dart';
@@ -22,19 +23,20 @@ import 'package:scm/widgets/product/product_details/product_detail_dialog_box_vi
 import 'package:scm/widgets/product/product_list/add_to_cart_helper.dart';
 import 'package:scm/widgets/product/product_list/product_list_view.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:scm/model_classes/address.dart' as demanders_address;
+
+const String cartApiBusyObject = 'cartApiBusyObject';
+const String getAddressListBusyObject = 'getAddressListBusyObject';
+const String getLatestOrdersListApiBusyObject =
+    'getLatestOrdersListApiBusyObject';
+const String placeOrderApiStatusApiBusyObject =
+    'placeOrderApiStatusListApiBusyObject';
 
 class CartPageViewModel extends GeneralisedBaseViewModel {
   late AddToCart addToCartObject;
   List<demanders_address.Address> addressList = [];
   Cart cart = Cart().empty();
-  ApiStatus cartApiStatus = ApiStatus.LOADING;
-  ApiStatus getAddressListApiStatus = ApiStatus.LOADING;
-  ApiStatus getLatestOrdersListApi = ApiStatus.LOADING;
   OrderListResponse orderList = OrderListResponse().empty();
   late bool orderPlaced;
-  ApiStatus placeOrderApiStatus = ApiStatus.FETCHED;
-  // String? supplierName;
   late Supplier responseSupplierDetails;
 
   demanders_address.Address? selectedAddress;
@@ -62,7 +64,10 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   }
 
   void getCartItems() async {
-    cart = await _demandCartApi.getCart();
+    cart = await runBusyFuture(
+      _demandCartApi.getCart(),
+      busyObject: cartApiBusyObject,
+    );
     cart.supplyId;
     addToCartObject = AddToCart(
       supplierId: cart.supplyId!,
@@ -71,8 +76,7 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
     if (cart.supplyId != null) {
       getSupplierDetails();
     }
-    cartApiStatus = ApiStatus.FETCHED;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void editCartItemAt({required int index, required CartItem cartItem}) async {
@@ -151,12 +155,14 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   }
 
   void getDemadersAddressList() async {
-    addressList = await _addressApis.getAddressList();
+    addressList = await runBusyFuture(
+      _addressApis.getAddressList(),
+      busyObject: getAddressListBusyObject,
+    );
     // if (addressList.isNotEmpty) {
     //   selectedAddress = addressList.first;
     // }
-    getAddressListApiStatus = ApiStatus.FETCHED;
-    notifyListeners();
+    // notifyListeners();
   }
 
   void setSelectedAddress(
@@ -248,24 +254,23 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
 
   void placeOrder() async {
     orderPlaced = false;
-    placeOrderApiStatus = ApiStatus.LOADING;
-    notifyListeners();
 
-    ApiResponse apiResponse = await _commonDashBoardApis.placeOrder(
-      postOrderRequest: PostOrderRequest(
-        billingAddress: selectedAddress!.copyWith(id: null),
-        shippingAddress: selectedAddress!.copyWith(id: null),
+    ApiResponse apiResponse = await runBusyFuture(
+      _commonDashBoardApis.placeOrder(
+        postOrderRequest: PostOrderRequest(
+          billingAddress: selectedAddress!.copyWith(id: null),
+          shippingAddress: selectedAddress!.copyWith(id: null),
+        ),
       ),
+      busyObject: placeOrderApiStatusApiBusyObject,
     );
-    placeOrderApiStatus = ApiStatus.FETCHED;
     if (apiResponse.statusCode != 200) {
       showErrorSnackBar(message: apiResponse.message);
     }
 
-    placeOrderApiStatus = ApiStatus.FETCHED;
     orderPlaced = true;
     getRecentOrderList();
-    notifyListeners();
+    // notifyListeners();
   }
 
   int getCartItemsQuantityTotal() {
@@ -283,13 +288,15 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
   }
 
   getRecentOrderList() async {
-    orderList = await _commonDashBoardApis.getOrdersList(
-      pageSize: 1,
-      pageNumber: 0,
-      status: 'CREATED',
+    orderList = await runBusyFuture(
+      _commonDashBoardApis.getOrdersList(
+        pageSize: 1,
+        pageNumber: 0,
+        status: 'CREATED',
+      ),
+      busyObject: getLatestOrdersListApiBusyObject,
     );
-    getLatestOrdersListApi = ApiStatus.FETCHED;
-    notifyListeners();
+    // notifyListeners();
   }
 
   takeToProductsPageOfSelectedSupplier() {
@@ -308,8 +315,6 @@ class CartPageViewModel extends GeneralisedBaseViewModel {
       ),
     )
         ?.then((value) {
-      cartApiStatus = ApiStatus.LOADING;
-      notifyListeners();
       getCartItems();
     });
 

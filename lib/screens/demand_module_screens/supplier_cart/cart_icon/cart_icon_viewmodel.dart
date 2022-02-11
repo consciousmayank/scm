@@ -12,7 +12,6 @@ import 'package:stacked_services/stacked_services.dart';
 class CartIconViewModel extends StreamViewModel<Cart> {
   late final CartIconViewArguments arguments;
   Cart cart = Cart().empty();
-  ApiStatus getCartApiStatus = ApiStatus.LOADING;
 
   final NavigationService _navigationService = locator<NavigationService>();
 
@@ -26,20 +25,15 @@ class CartIconViewModel extends StreamViewModel<Cart> {
   void onData(Cart? data) {
     if (data != null) {
       cart = data;
-      getCartApiStatus = ApiStatus.FETCHED;
     }
     super.onData(data);
   }
 
   @override
-  void onError(error) {
-    log('streams: inside onError $error');
-  }
+  void onError(error) {}
 
   @override
-  void onSubscribed() {
-    log('streams: inside onSubscribed');
-  }
+  void onSubscribed() {}
 
   @override
   Stream<Cart> get stream => locator<CartStream>().onNewData;
@@ -52,7 +46,6 @@ class CartIconViewModel extends StreamViewModel<Cart> {
   void getCart() async {
     // cart = await _demandCartApi.getCart();
     cart = locator<CartStream>().appCart;
-    getCartApiStatus = ApiStatus.FETCHED;
     notifyListeners();
   }
 

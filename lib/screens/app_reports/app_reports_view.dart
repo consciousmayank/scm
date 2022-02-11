@@ -24,7 +24,7 @@ class AppReportsView extends StatelessWidget {
     return ViewModelBuilder<AppReportsViewModel>.reactive(
       onModelReady: (model) => model.init(args: arguments),
       builder: (context, model, child) => Scaffold(
-        body: model.orderInfoApi == ApiStatus.FETCHED
+        body: model.busy(orderInfoApiBusyObject)
             ? GridView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: model.orderStatuses.length,

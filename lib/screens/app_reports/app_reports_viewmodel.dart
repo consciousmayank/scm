@@ -12,6 +12,8 @@ import 'package:scm/screens/reports/orders_report/order_report_view.dart';
 import 'package:scm/services/app_api_service_classes/common_dashboard_apis.dart';
 import 'package:scm/utils/strings.dart';
 
+const String orderInfoApiBusyObject = 'orderInfoApiBusyObject';
+
 class AppReportsViewModel extends GeneralisedBaseViewModel {
   final List<String> orderIcons = [
     newOrdersIcon,
@@ -22,7 +24,7 @@ class AppReportsViewModel extends GeneralisedBaseViewModel {
   ];
 
   CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
-  ApiStatus orderInfoApi = ApiStatus.LOADING;
+  // ApiStatus orderInfoApi = ApiStatus.LOADING;
   List<ReportTiles> orderStatuses = [];
 
   final CommonDashBoardApis _commonDashBoardApis =
@@ -44,8 +46,11 @@ class AppReportsViewModel extends GeneralisedBaseViewModel {
   }
 
   getOrderInfo() async {
-    orderInfo = await _commonDashBoardApis.getOrderInfo();
-    orderInfoApi = ApiStatus.FETCHED;
+    orderInfo = await runBusyFuture(
+      _commonDashBoardApis.getOrderInfo(),
+      busyObject: orderInfoApiBusyObject,
+    );
+    // orderInfoApi = ApiStatus.FETCHED;
 
     orderStatuses.add(
       ReportTiles(
@@ -88,7 +93,7 @@ class AppReportsViewModel extends GeneralisedBaseViewModel {
       ),
     );
 
-    notifyListeners();
+    // notifyListeners();
   }
 }
 

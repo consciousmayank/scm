@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
-import 'package:scm/app/styles.dart';
-import 'package:scm/enums/api_status.dart';
+import 'package:scm/model_classes/address.dart' as demanders_address;
 import 'package:scm/screens/demand_module_screens/supplier_cart/full_cart/cart_page_viewmodel.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/oder_item_containing_container_widget.dart';
-import 'package:scm/screens/order_list_page/helper_widgets/orderitem_row_widget.dart';
 import 'package:scm/utils/strings.dart';
 import 'package:scm/utils/utils.dart';
 import 'package:scm/widgets/app_button.dart';
@@ -12,7 +9,6 @@ import 'package:scm/widgets/app_table_widget.dart';
 import 'package:scm/widgets/dotted_divider.dart';
 import 'package:scm/widgets/loading_widget.dart';
 import 'package:stacked/stacked.dart';
-import 'package:scm/model_classes/address.dart' as demanders_address;
 
 class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
   const CartDeliveryAddressListView({
@@ -21,7 +17,7 @@ class CartDeliveryAddressListView extends ViewModelWidget<CartPageViewModel> {
 
   @override
   Widget build(BuildContext context, CartPageViewModel viewModel) {
-    return viewModel.getAddressListApiStatus == ApiStatus.LOADING
+    return viewModel.busy(getAddressListBusyObject)
         ? const Center(
             child:
                 LoadingWidgetWithText(text: 'Fetching Addresses. Please Wait'),

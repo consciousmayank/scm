@@ -61,8 +61,8 @@ class _CartPageViewState extends State<CartPageView> {
                     ]),
           body: model.orderPlaced
               ? const PlacedOrderView()
-              : model.cartApiStatus == ApiStatus.LOADING ||
-                      model.placeOrderApiStatus == ApiStatus.LOADING
+              : model.busy(cartApiBusyObject) ||
+                      model.busy(placeOrderApiStatusApiBusyObject)
                   ? const Center(
                       child: LoadingWidgetWithText(
                         text: 'Fetching Cart. Please Wait...',
@@ -79,7 +79,7 @@ class _CartPageViewState extends State<CartPageView> {
                             padding: const EdgeInsets.all(
                               4.0,
                             ),
-                            child: model.cartApiStatus == ApiStatus.LOADING
+                            child: model.busy(cartApiBusyObject)
                                 ? Container()
                                 : Card(
                                     shape: Dimens().getCardShape(),

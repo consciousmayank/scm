@@ -46,14 +46,10 @@ class _OrderReportsViewState extends State<OrderReportsView> {
               automaticallyImplyLeading: true,
               options: [
                 IconButton(
-                  onPressed: model.getOrderReportsGroupByTypeApiStatus ==
-                              ApiStatus.FETCHED &&
-                          model.getConsolidatedOrderReportsApiStatus ==
-                              ApiStatus.FETCHED &&
-                          model.getOrderReportsGroupByBrandApiStatus ==
-                              ApiStatus.FETCHED &&
-                          model.getOrderReportsGroupBySubTypeApiStatus ==
-                              ApiStatus.FETCHED &&
+                  onPressed: model.busy(getOrderReportsGroupByTypeApiStatus) &&
+                          model.busy(getConsolidatedOrderReportsApiStatus) &&
+                          model.busy(getOrderReportsGroupByBrandApiStatus) &&
+                          model.busy(getOrderReportsGroupBySubTypeApiStatus) &&
                           model.getGrandTotalOfConsolidatedOrdersAmount() > 0 &&
                           model.getGrandTotalOfConsolidatedOrdersQty() > 0
                       ? () {
@@ -166,8 +162,7 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: model.getOrderReportsGroupByBrandApiStatus ==
-                                ApiStatus.LOADING
+                        child: model.busy(getOrderReportsGroupByBrandApiStatus)
                             ? const LoadingReportsWidget(
                                 loadingText:
                                     'Fetching Order Report group by Brands.',
@@ -190,8 +185,7 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                         flex: 1,
                       ),
                       Expanded(
-                        child: model.getOrderReportsGroupByTypeApiStatus ==
-                                ApiStatus.LOADING
+                        child: model.busy(getOrderReportsGroupByTypeApiStatus)
                             ? const LoadingReportsWidget(
                                 loadingText:
                                     'Fetching Order Report group by Category.',
@@ -213,27 +207,27 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                         flex: 1,
                       ),
                       Expanded(
-                        child: model.getOrderReportsGroupBySubTypeApiStatus ==
-                                ApiStatus.LOADING
-                            ? const LoadingReportsWidget(
-                                loadingText:
-                                    'Fetching Order Report group by Sub Category.',
-                              )
-                            : model.ordersReportGroupBySubTypeResponse
-                                    .reportResultSet!.isEmpty
-                                ? const NoDataWidget(
-                                    text: labelNoData,
+                        child:
+                            model.busy(getOrderReportsGroupBySubTypeApiStatus)
+                                ? const LoadingReportsWidget(
+                                    loadingText:
+                                        'Fetching Order Report group by Sub Category.',
                                   )
-                                : ReportWidget.groupBySubCategory(
-                                    title:
-                                        ordersReportsGroupBySubTypeWidgetTitle,
-                                    amountGrandTotal: model
-                                        .getGrandTotalOfOrdersAmountGroupBySubType(),
-                                    quantityGrandTotal: model
-                                        .getGrandTotalOfOrdersQtyGroupBySubType(),
-                                    reportResponse: model
-                                        .ordersReportGroupBySubTypeResponse,
-                                  ),
+                                : model.ordersReportGroupBySubTypeResponse
+                                        .reportResultSet!.isEmpty
+                                    ? const NoDataWidget(
+                                        text: labelNoData,
+                                      )
+                                    : ReportWidget.groupBySubCategory(
+                                        title:
+                                            ordersReportsGroupBySubTypeWidgetTitle,
+                                        amountGrandTotal: model
+                                            .getGrandTotalOfOrdersAmountGroupBySubType(),
+                                        quantityGrandTotal: model
+                                            .getGrandTotalOfOrdersQtyGroupBySubType(),
+                                        reportResponse: model
+                                            .ordersReportGroupBySubTypeResponse,
+                                      ),
                         flex: 1,
                       ),
                     ],
@@ -246,8 +240,7 @@ class _OrderReportsViewState extends State<OrderReportsView> {
                 ),
                 SliverToBoxAdapter(
                   // child: OrdersConsilidatedReportWidget(),
-                  child: model.getConsolidatedOrderReportsApiStatus ==
-                          ApiStatus.LOADING
+                  child: model.busy(getConsolidatedOrderReportsApiStatus)
                       ? const LoadingReportsWidget(
                           loadingText: 'Fetching Consolidated Order Report.',
                         )

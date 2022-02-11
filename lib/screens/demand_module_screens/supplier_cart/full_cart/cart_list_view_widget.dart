@@ -18,7 +18,7 @@ class CartListViewWidget extends ViewModelWidget<CartPageViewModel> {
 
   @override
   Widget build(BuildContext context, CartPageViewModel viewModel) {
-    return viewModel.cartApiStatus == ApiStatus.LOADING
+    return viewModel.busy(cartApiBusyObject)
         ? Container()
         : Padding(
             padding: const EdgeInsets.all(4.0),

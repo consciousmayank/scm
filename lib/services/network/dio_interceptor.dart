@@ -17,7 +17,7 @@ import 'package:stacked_services/stacked_services.dart' as stacked_service;
 class ApiServiceAppDioInterceptor extends QueuedInterceptor {
   List<RequestOptions> apisQueue = [];
   final log = getLogger('ApiServiceAppDioInterceptor');
-  ApiStatus refreshTokenApiStatus = ApiStatus.LOADING;
+  bool refreshTokenApiLoading = false;
   Dio refreshTokenDioClient = Dio();
   // void setRefreshTokenListner(
   //     Function({required RequestOptions requestOptions}) onFetchRefreshToken) {
@@ -39,11 +39,11 @@ class ApiServiceAppDioInterceptor extends QueuedInterceptor {
       if (headersMap.isNotEmpty) {
         String tokenStatus = headersMap[TOKEN_STATUS] ?? '';
         if (tokenStatus == EXPIRED) {
-          if (refreshTokenApiStatus == ApiStatus.LOADING) {
+          if (refreshTokenApiLoading) {
             apisQueue.add(err.requestOptions);
           } else {
             apisQueue.add(err.requestOptions);
-            refreshTokenApiStatus = ApiStatus.LOADING;
+            refreshTokenApiLoading = true;
             refreshTokenDioClient.get(REFRESH_TOKEN).then(
               (value) {
                 //Refresh token success

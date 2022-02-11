@@ -20,6 +20,18 @@ import 'package:scm/services/app_api_service_classes/reports_apis.dart';
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/widgets/common_dashboard/dashboard_view.dart';
 
+const String getOrderReportsGroupByBrandApiStatus =
+    'getOrderReportsGroupByBrandApiStatus';
+const String getOrderReportsGroupBySubTypeApiStatus =
+    'getOrderReportsGroupBySubTypeApiStatus';
+const String getOrderReportsGroupByTypeApiStatus =
+    'getOrderReportsGroupByTypeApiStatus';
+const String orderInfoApi = 'orderInfoApi';
+const String orderedBrandsApi = 'orderedBrandsApi';
+const String orderedSubTypeApi = 'orderedSubTypeApi';
+const String orderedTypesApi = 'orderedTypesApi';
+const String orderListApi = 'orderListApi';
+
 class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   late final CommonDashboardViewArguments arguments;
   late final Color barChartsBarColor;
@@ -27,17 +39,8 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   late DateTimeRange dateTimeRange;
 
   // ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
-
-  ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
   final log = getLogger('CommonDashboardViewModel');
   CommonDashboardOrderInfo orderInfo = CommonDashboardOrderInfo().empty();
-  ApiStatus orderInfoApi = ApiStatus.LOADING,
-      orderedBrandsApi = ApiStatus.LOADING,
-      orderedSubTypeApi = ApiStatus.LOADING,
-      orderedTypesApi = ApiStatus.LOADING,
-      orderListApi = ApiStatus.LOADING;
 
   OrderListResponse orderList = OrderListResponse().empty();
   List<CommonDashboardOrderedBrands> orderedBrands = [];
@@ -118,14 +121,18 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   }
 
   getOrderInfo() async {
-    orderInfo = await _commonDashBoardApis.getOrderInfo();
-    orderInfoApi = ApiStatus.FETCHED;
-    notifyListeners();
+    orderInfo = await runBusyFuture(
+      _commonDashBoardApis.getOrderInfo(),
+      busyObject: orderInfo,
+    );
   }
 
   getOrderedBrands() async {
-    orderedBrands = await _commonDashBoardApis.getOrderedBrands(
-      pageSize: pageSize,
+    orderedBrands = await runBusyFuture(
+      _commonDashBoardApis.getOrderedBrands(
+        pageSize: pageSize,
+      ),
+      busyObject: orderedBrandsApi,
     );
 
     orderedBrandsBarData = [
@@ -144,13 +151,15 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    orderedBrandsApi = ApiStatus.FETCHED;
     notifyListeners();
   }
 
   getOrderedSubType() async {
-    orderedSubTypes = await _commonDashBoardApis.getOrderedSubTypes(
-      pageSize: pageSize,
+    orderedSubTypes = await runBusyFuture(
+      _commonDashBoardApis.getOrderedSubTypes(
+        pageSize: pageSize,
+      ),
+      busyObject: orderedSubTypeApi,
     );
 
     orderedSubTypesBarData = [
@@ -171,13 +180,15 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    orderedSubTypeApi = ApiStatus.FETCHED;
     notifyListeners();
   }
 
   getOrderedTypes() async {
-    orderedTypes = await _commonDashBoardApis.getOrderedTypes(
-      pageSize: pageSize,
+    orderedTypes = await runBusyFuture(
+      _commonDashBoardApis.getOrderedTypes(
+        pageSize: pageSize,
+      ),
+      busyObject: orderedTypesApi,
     );
     orderedTypesBarData = [
       charts.Series(
@@ -195,39 +206,37 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    orderedTypesApi = ApiStatus.FETCHED;
     notifyListeners();
   }
 
   getOrdereList() async {
-    orderList = await _commonDashBoardApis.getOrdersList(
-      pageSize: pageSize + 5,
-      pageNumber: 0,
-      status: 'DELIVERED',
+    orderList = await runBusyFuture(
+      _commonDashBoardApis.getOrdersList(
+        pageSize: pageSize + 5,
+        pageNumber: 0,
+        status: 'DELIVERED',
+      ),
+      busyObject: orderListApi,
     );
-    orderListApi = ApiStatus.FETCHED;
     notifyListeners();
   }
 
   void getOrderReports() async {
-    getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
-    getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
-    getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
-    notifyListeners();
-
-    ordersReportGroupByBrandResponse =
-        await _reportsApi.getOrdersReportGroupByBrands(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: null,
-      selectedType: null,
+    ordersReportGroupByBrandResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupByBrands(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: null,
+        selectedType: null,
+      ),
+      busyObject: getOrderReportsGroupByBrandApiStatus,
     );
 
     ordersReportGroupByBrandBarData = [
@@ -261,19 +270,21 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       ),
     ];
 
-    ordersReportGroupByTypeResponse =
-        await _reportsApi.getOrdersReportGroupByTypes(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: null,
-      selectedType: null,
+    ordersReportGroupByTypeResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupByTypes(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: null,
+        selectedType: null,
+      ),
+      busyObject: getOrderReportsGroupByTypeApiStatus,
     );
 
     ordersReportGroupByTypeBarData = [
@@ -307,19 +318,21 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       ),
     ];
 
-    ordersReportGroupBySubTypeResponse =
-        await _reportsApi.getOrdersReportGroupBySubTypes(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: null,
-      selectedType: null,
+    ordersReportGroupBySubTypeResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupBySubTypes(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: null,
+        selectedType: null,
+      ),
+      busyObject: getOrderReportsGroupBySubTypeApiStatus,
     );
 
     ordersReportGroupBySubTypeBarData = [
@@ -352,10 +365,6 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.itemAmount.toString(),
       ),
     ];
-
-    getOrderReportsGroupByBrandApiStatus = ApiStatus.FETCHED;
-    getOrderReportsGroupByTypeApiStatus = ApiStatus.FETCHED;
-    getOrderReportsGroupBySubTypeApiStatus = ApiStatus.FETCHED;
 
     notifyListeners();
   }

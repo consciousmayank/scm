@@ -66,7 +66,7 @@ class PlacedOrderView extends ViewModelWidget<CartPageViewModel> {
           flex: 1,
         ),
         Expanded(
-          child: viewModel.getLatestOrdersListApi == ApiStatus.LOADING
+          child: viewModel.busy(getLatestOrdersListApiBusyObject)
               ? const LoadingWidget()
               : Column(
                   children: [

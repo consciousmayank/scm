@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:scm/app/app.logger.dart';
 import 'package:scm/app/di.dart';
@@ -17,8 +19,15 @@ import 'package:scm/services/app_api_service_classes/reports_apis.dart';
 import 'package:scm/utils/date_time_converter.dart';
 import 'package:scm/utils/order_reports_pdf_generator.dart';
 import 'package:scm/utils/strings.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+
+const String getConsolidatedOrderReportsApiStatus =
+    'getConsolidatedOrderReportsApiStatus';
+const String getOrderReportsGroupByBrandApiStatus =
+    'getOrderReportsGroupByBrandApiStatus';
+const String getOrderReportsGroupBySubTypeApiStatus =
+    'getOrderReportsGroupBySubTypeApiStatus';
+const String getOrderReportsGroupByTypeApiStatus =
+    'getOrderReportsGroupByTypeApiStatus';
 
 class OrderReportsViewModel extends GeneralisedBaseViewModel {
   List<String> brandsList = [];
@@ -26,10 +35,7 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
       OrdersReportResponse().empty();
 
   late DateTimeRange dateTimeRange;
-  ApiStatus getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
-  ApiStatus getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
+
   final log = getLogger('OrderReportsViewModel');
   OrdersReportResponse ordersReportGroupByBrandResponse =
       OrdersReportResponse().empty();
@@ -72,81 +78,78 @@ class OrderReportsViewModel extends GeneralisedBaseViewModel {
   }
 
   void getOrderReports() async {
-    getConsolidatedOrderReportsApiStatus = ApiStatus.LOADING;
-    getOrderReportsGroupByBrandApiStatus = ApiStatus.LOADING;
-    getOrderReportsGroupByTypeApiStatus = ApiStatus.LOADING;
-    getOrderReportsGroupBySubTypeApiStatus = ApiStatus.LOADING;
-    notifyListeners();
-
-    consolidatedOrdersReportResponse =
-        await _reportsApi.getConsolidatedOrdersReport(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
-      selectedType: selectedType == labelALL ? null : selectedType,
+    consolidatedOrdersReportResponse = await runBusyFuture(
+      _reportsApi.getConsolidatedOrdersReport(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+        selectedType: selectedType == labelALL ? null : selectedType,
+      ),
+      busyObject: getConsolidatedOrderReportsApiStatus,
     );
 
-    getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
-
-    ordersReportGroupByBrandResponse =
-        await _reportsApi.getOrdersReportGroupByBrands(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
-      selectedType: selectedType == labelALL ? null : selectedType,
-    );
-    ordersReportGroupByTypeResponse =
-        await _reportsApi.getOrdersReportGroupByTypes(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
-      selectedType: selectedType == labelALL ? null : selectedType,
-    );
-    ordersReportGroupBySubTypeResponse =
-        await _reportsApi.getOrdersReportGroupBySubTypes(
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      dateFrom: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.start,
-      ).convert(),
-      dateTo: DateTimeToStringConverter.yyyymmdd(
-        date: dateTimeRange.end,
-      ).convert(),
-      selectedOrderStatus: selectedOrderStatus,
-      selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
-      selectedType: selectedType == labelALL ? null : selectedType,
+    ordersReportGroupByBrandResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupByBrands(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+        selectedType: selectedType == labelALL ? null : selectedType,
+      ),
+      busyObject: getOrderReportsGroupByBrandApiStatus,
     );
 
-    getConsolidatedOrderReportsApiStatus = ApiStatus.FETCHED;
-    getOrderReportsGroupByBrandApiStatus = ApiStatus.FETCHED;
-    getOrderReportsGroupByTypeApiStatus = ApiStatus.FETCHED;
-    getOrderReportsGroupBySubTypeApiStatus = ApiStatus.FETCHED;
+    ordersReportGroupByTypeResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupByTypes(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+        selectedType: selectedType == labelALL ? null : selectedType,
+      ),
+      busyObject: getOrderReportsGroupByTypeApiStatus,
+    );
+
+    ordersReportGroupBySubTypeResponse = await runBusyFuture(
+      _reportsApi.getOrdersReportGroupBySubTypes(
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        dateFrom: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.start,
+        ).convert(),
+        dateTo: DateTimeToStringConverter.yyyymmdd(
+          date: dateTimeRange.end,
+        ).convert(),
+        selectedOrderStatus: selectedOrderStatus,
+        selectedBrand: selectedBrand == labelALL ? null : selectedBrand,
+        selectedType: selectedType == labelALL ? null : selectedType,
+      ),
+      busyObject: getOrderReportsGroupBySubTypeApiStatus,
+    );
 
     brandsList = populateBrandList();
     typesList = populateTypeList();
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateDateRange(DateTimeRange? newDateTimeRange) {
