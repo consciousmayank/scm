@@ -59,6 +59,7 @@ dependencies:
   pdf: 3.6.4
   dio_http_cache: ^0.3.0
   badges: ^2.0.2
+  responsive_framework: ^0.1.7
   
 
 dev_dependencies:

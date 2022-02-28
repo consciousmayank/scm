@@ -41,22 +41,15 @@ class AppReportsView extends StatelessWidget {
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return AppInkwell.withBorder(
-                    onTap: model.orderStatuses
-                                .elementAt(
-                                  index,
-                                )
-                                .count <
-                            1
-                        ? null
-                        : () {
-                            model.takeToOrderReports(
-                              orderStatus: model.orderStatuses
-                                  .elementAt(
-                                    index,
-                                  )
-                                  .orderStatus,
-                            );
-                          },
+                    onTap: () {
+                      model.takeToOrderReports(
+                        orderStatus: model.orderStatuses
+                            .elementAt(
+                              index,
+                            )
+                            .orderStatus,
+                      );
+                    },
                     borderderRadius: Dimens().getBorderRadius(),
                     child: Card(
                       shape: Dimens().getCardShape(),

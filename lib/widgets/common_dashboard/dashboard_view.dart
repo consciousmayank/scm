@@ -116,9 +116,19 @@ class _CommonDashboardViewState extends State<CommonDashboardView> {
                 ),
               ),
             ),
-            const OrderedBrands(),
-            const OrderedTypesWidget(),
-            const OrderedSubTypeWidget(),
+            //
+            model.busy(getOrderReportsGroupByBrandApiStatus)
+                ? SliverToBoxAdapter(child: Container())
+                : const OrderedBrands(),
+            //
+            model.busy(getOrderReportsGroupByTypeApiStatus)
+                ? SliverToBoxAdapter(child: Container())
+                : const OrderedTypesWidget(),
+            //
+            model.busy(getOrderReportsGroupBySubTypeApiStatus)
+                ? SliverToBoxAdapter(child: Container())
+                : const OrderedSubTypeWidget(),
+            //
             DashboardOrderListWidget(
               onClickOfOrder: ({required Order clickedOrder}) {
                 widget.arguments.onClickOfOrder!(

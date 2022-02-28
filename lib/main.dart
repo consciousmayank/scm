@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:scm/app/app.router.dart';
 import 'package:scm/app/apptheme.dart';
 import 'package:scm/app/setup_dialogs_ui.dart';
@@ -132,8 +133,31 @@ class _MyAppState extends State<MyApp> {
               navigatorKey: StackedService.navigatorKey,
               onGenerateRoute: _router.generateRoute,
               initialRoute: mainViewRoute,
-
-              // initialRoute: dashBoardPageRoute,
+              builder: (context, child) => ResponsiveWrapper.builder(
+                child,
+                maxWidth: 1300,
+                minWidth: 1280,
+                defaultScale: true,
+                breakpoints: [
+                  const ResponsiveBreakpoint.resize(
+                    480,
+                    name: MOBILE,
+                  ),
+                  const ResponsiveBreakpoint.autoScale(
+                    800,
+                    name: TABLET,
+                  ),
+                  const ResponsiveBreakpoint.resize(
+                    1000,
+                    name: DESKTOP,
+                  ),
+                ],
+                background: Container(
+                  color: const Color(
+                    0xFFF5F5F5,
+                  ),
+                ),
+              ),
             );
           } else {
             return const CircularProgressIndicator();

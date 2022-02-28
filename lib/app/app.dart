@@ -4,10 +4,10 @@ import 'package:stacked/stacked_annotations.dart';
   routes: [],
   logger: StackedLogger(),
   // dependencies: [
-  //   Presolve(
-  //     classType: SharedPreferencesService,
-  //     presolveUsing: SharedPreferencesService.getInstance,
-  //   ),
+  // Presolve(
+  //   classType: SharedPreferencesService,
+  //   presolveUsing: SharedPreferencesService.getInstance,
+  // ),
   //   // LazySingleton(
   //   //     classType: ThemeService, resolveUsing: ThemeService.getInstance),
   //   // abstracted class type support

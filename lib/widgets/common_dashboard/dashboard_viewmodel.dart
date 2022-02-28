@@ -58,15 +58,18 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
   List<charts.Series<ReportResultSet, String>> ordersReportGroupByBrandBarData =
       [];
 
-  OrdersReportResponse? ordersReportGroupByBrandResponse;
+  OrdersReportResponse? ordersReportGroupByBrandResponse =
+      OrdersReportResponse().empty();
   List<charts.Series<ReportResultSet, String>>
       ordersReportGroupBySubTypeBarData = [];
 
-  OrdersReportResponse? ordersReportGroupBySubTypeResponse;
+  OrdersReportResponse? ordersReportGroupBySubTypeResponse =
+      OrdersReportResponse().empty();
   List<charts.Series<ReportResultSet, String>> ordersReportGroupByTypeBarData =
       [];
 
-  OrdersReportResponse? ordersReportGroupByTypeResponse;
+  OrdersReportResponse? ordersReportGroupByTypeResponse =
+      OrdersReportResponse().empty();
   // List<charts.Series<ReportResultSet, String>> consolidatedBarData = [];
   int pageNumber = 0;
 
@@ -151,7 +154,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    notifyListeners();
+    // notifyListeners();
   }
 
   getOrderedSubType() async {
@@ -180,7 +183,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    notifyListeners();
+    // notifyListeners();
   }
 
   getOrderedTypes() async {
@@ -206,7 +209,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.count.toString(),
       ),
     ];
-    notifyListeners();
+    // notifyListeners();
   }
 
   getOrdereList() async {
@@ -218,7 +221,7 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
       ),
       busyObject: orderListApi,
     );
-    notifyListeners();
+    // notifyListeners();
   }
 
   void getOrderReports() async {
@@ -365,8 +368,6 @@ class CommonDashboardViewModel extends GeneralisedBaseViewModel {
             series.itemAmount.toString(),
       ),
     ];
-
-    notifyListeners();
   }
 
   String getDateTimeText() {

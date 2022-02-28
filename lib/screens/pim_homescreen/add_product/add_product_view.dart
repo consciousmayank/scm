@@ -110,397 +110,411 @@ class AddProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddProductViewModel>.reactive(
       onModelReady: (model) => model.init(arguments: arguments),
-      builder: (context, model, child) => Scaffold(
-        body: model.isBusy
-            ? const LoadingWidget()
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    PageBarWidget(
-                      title: arguments.productToEdit == null
-                          ? addProductPageTitle
-                          : updateProductPageTitle,
-                      subTitle: addProductPageSubTitle,
-                    ),
-                    Row(
-                      children: [
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            enabled: false,
-                            buttonType: ButtonType.FULL,
-                            onButtonPressed: () {
-                              model.showBrandsListDialogBox();
-                            },
-                            keyboardType: TextInputType.text,
-                            buttonIcon: const Icon(Icons.arrow_drop_down),
-                            hintText: labelBrands,
-                            controller: model.brandsController,
-                            focusNode: model.brandFocusNode,
-                            onTextChange: (value) => model.productToAdd =
-                                model.productToAdd.copyWith(
-                              brand: value.toUpperCase().trim(),
-                            ),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            formatter: <TextInputFormatter>[
-                              Dimens()
-                                  .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
-                            ],
-                            hintText: labelType,
-                            controller: model.typeController,
-                            focusNode: model.typeFocusNode,
-                            onFieldSubmitted: (value) {
-                              model.subTypeFocusNode.requestFocus();
-                              // model.appendInTitle(); as per jayki
-                            },
-                            onTextChange: (value) => model.productToAdd =
-                                model.productToAdd.copyWith(
-                              type: value.toUpperCase().trim(),
-                            ),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            formatter: <TextInputFormatter>[
-                              Dimens()
-                                  .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
-                            ],
-                            hintText: labelSubType,
-                            controller: model.subTypeController,
-                            focusNode: model.subTypeFocusNode,
-                            onFieldSubmitted: (value) {
-                              model.priceFocusNode.requestFocus();
-                              model.appendInTitle();
-                            },
-                            onTextChange: (value) => model.productToAdd =
-                                model.productToAdd.copyWith(
-                              subType: value.toUpperCase().trim(),
-                            ),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            formatter: <TextInputFormatter>[
-                              Dimens().numericWithDecimalFormatter,
-                            ],
-                            hintText: labelPrice,
-                            controller: model.priceController,
-                            focusNode: model.priceFocusNode,
-                            onFieldSubmitted: (value) {
-                              model.measurementFocusNode.requestFocus();
-                            },
-                            onTextChange: (value) => model.productToAdd =
-                                model.productToAdd.copyWith(
-                              price: double.parse(
-                                value,
-                              ),
-                            ),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            formatter: <TextInputFormatter>[
-                              Dimens().numericWithDecimalFormatter,
-                            ],
-                            hintText: labelMeasurement,
-                            controller: model.measurementController,
-                            focusNode: model.measurementFocusNode,
-                            onTextChange: (value) {
-                              model.productToAdd = model.productToAdd.copyWith(
-                                measurement: double.parse(
-                                  value,
-                                ),
-                              );
-                            },
-                            onFieldSubmitted: (value) {
-                              model.measurementUnitFocusNode.requestFocus();
-                              model.appendInTitle();
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            formatter: <TextInputFormatter>[
-                              Dimens()
-                                  .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
-                            ],
-                            hintText: labelMeasurementUnit,
-                            controller: model.measurementUnitController,
-                            focusNode: model.measurementUnitFocusNode,
-                            onTextChange: (value) {
-                              model.productToAdd = model.productToAdd.copyWith(
-                                measurementUnit: value.toUpperCase().trim(),
-                              );
-                            },
-                            onFieldSubmitted: (value) {
-                              model.titleFocusNode.requestFocus();
-                              model.appendInTitle();
-                            },
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField(
-                            hintText: labelTitle,
-                            controller: model.titleController,
-                            focusNode: model.titleFocusNode,
-                            onTextChange: (value) {
-                              model.productToAdd = model.productToAdd.copyWith(
-                                title: value.toUpperCase().trim(),
-                              );
-                            },
-                            onFieldSubmitted: (value) =>
-                                model.tagsFocusNode.requestFocus(),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        wSizedBox(width: 10),
-                        Expanded(
-                          child: AppTextField.withCounter(
-                            maxCharacters: Dimens().maxTagsLength,
-                            maxCounterValue: 15,
-                            enteredCount: model.productToAdd.tags == null
-                                ? 0
-                                : model.productToAdd.tags!.length,
-                            hintText: labelTags,
-                            controller: model.tagsController,
-                            focusNode: model.tagsFocusNode,
-                            onTextChange: (value) {
-                              model.productToAdd = model.productToAdd.copyWith(
-                                tags: value.toUpperCase().trim(),
-                              );
-                              model.notifyListeners();
-                            },
-                            onFieldSubmitted: (value) =>
-                                model.summaryFocusNode.requestFocus(),
-                          ),
-                          flex: 1,
-                        ),
-                        wSizedBox(width: 10),
-                      ],
-                    ),
-                    // model.isDeoSuperVisor() || model.isDeoGd()
-                    // ?
-                    SizedBox(
-                      height: 420,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      builder: (context, model, child) => RawKeyboardListener(
+        autofocus: true,
+        focusNode: FocusNode(),
+        onKey: (key) {
+          model.log.wtf(key);
+        },
+        child: Scaffold(
+          body: model.isBusy
+              ? const LoadingWidget()
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      PageBarWidget(
+                        title: arguments.productToEdit == null
+                            ? addProductPageTitle
+                            : updateProductPageTitle,
+                        subTitle: addProductPageSubTitle,
+                      ),
+                      Row(
                         children: [
                           wSizedBox(width: 10),
                           Expanded(
-                            flex: 3,
-                            child: AppTextField.withCounter(
-                              maxCharacters: Dimens().maxSummaryLength,
-                              maxCounterValue: Dimens().maxTagsLength,
-                              enteredCount: model.productToAdd.summary == null
-                                  ? 0
-                                  : model.productToAdd.summary!.length,
-                              helperText: labelSummaryHelperText,
-                              hintText: labelSummary,
-                              keyboardType: TextInputType.multiline,
-                              controller: model.summaryController,
-                              focusNode: model.summaryFocusNode,
-                              maxLines: 11,
-                              onTextChange: (value) {
-                                model.productToAdd =
-                                    model.productToAdd.copyWith(
-                                  summary: value.toUpperCase().trim(),
-                                );
-                                model.notifyListeners();
+                            child: AppTextField(
+                              enabled: false,
+                              buttonType: ButtonType.FULL,
+                              onButtonPressed: () {
+                                model.showBrandsListDialogBox();
                               },
+                              keyboardType: TextInputType.text,
+                              buttonIcon: const Icon(Icons.arrow_drop_down),
+                              hintText: labelBrands,
+                              controller: model.brandsController,
+                              focusNode: model.brandFocusNode,
+                              onTextChange: (value) => model.productToAdd =
+                                  model.productToAdd.copyWith(
+                                brand: value.toUpperCase().trim(),
+                              ),
                             ),
+                            flex: 1,
                           ),
                           wSizedBox(width: 10),
                           Expanded(
-                            child: model.selectedFiles.isNotEmpty
-                                ? Column(
-                                    children: [
-                                      const Text('Image'),
-                                      hSizedBox(height: 8),
-                                      Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          // model.selectedFiles.isEmpty
-                                          //     ? ProfileImageWidget.productImage(
-                                          //         isForCatalog: false,
-                                          //         supplierId: null,
-                                          //         elevation: 0,
-                                          //         profileImageHeight: Dimens()
-                                          //             .productDtailImageHeight,
-                                          //         profileImageWidth: Dimens()
-                                          //             .productDtailImageHeight,
-                                          //         borderDerRadius:
-                                          //             BorderRadius.all(
-                                          //           Radius.circular(
-                                          //             Dimens()
-                                          //                 .suppliersListItemImageCircularRaduis,
-                                          //           ),
-                                          //         ),
-                                          //         productId: arguments
-                                          //             .productToEdit?.id,
-                                          //       )
-                                          //     :
-                                          model.imageApiStatus ==
-                                                  ApiStatus.LOADING
-                                              ? LoadingWidgetWithText(
-                                                  text:
-                                                      'Loading Image. Please Wait')
-                                              : image_widget.Image.memory(
-                                                  model.selectedFiles
-                                                      .elementAt(0),
-                                                ),
-                                          AppInkwell(
-                                            onTap: () {
-                                              model.selectedFiles.removeAt(0);
-                                              model.notifyListeners();
-                                            },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(
-                                                10,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black
-                                                    .withOpacity(0.5),
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                  bottomLeft:
-                                                      Radius.circular(20),
-                                                ),
-                                              ),
-                                              child: const Icon(
-                                                Icons.delete,
-                                                color: Colors.white,
-                                                size: 25,
-                                              ),
-                                            ),
-                                          ),
-                                          if (model.isDeoGd())
-                                            Positioned(
-                                              right: 1,
-                                              bottom: 1,
-                                              child: AppInkwell(
-                                                onTap: () {
-                                                  model.downloadImage(
-                                                      image: model
-                                                          .selectedFiles.first);
-                                                },
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(
-                                                    10,
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black
-                                                        .withOpacity(0.5),
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                    ),
-                                                  ),
-                                                  child: const Icon(
-                                                    Icons.download,
-                                                    color: Colors.white,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                : Center(
-                                    child: AppButton(
-                                      buttonBg: AppColors().buttonGreenColor,
-                                      onTap: () {
-                                        model.pickImages();
-                                      },
-                                      leading: const Icon(Icons.add_a_photo),
-                                      title: labelAddImage,
-                                    ),
+                            child: AppTextField(
+                              formatter: <TextInputFormatter>[
+                                Dimens()
+                                    .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
+                              ],
+                              hintText: labelType,
+                              controller: model.typeController,
+                              focusNode: model.typeFocusNode,
+                              onFieldSubmitted: (value) {
+                                model.subTypeFocusNode.requestFocus();
+                                // model.appendInTitle(); as per jayki
+                              },
+                              onTextChange: (value) => model.productToAdd =
+                                  model.productToAdd.copyWith(
+                                type: value.toUpperCase().trim(),
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField(
+                              formatter: <TextInputFormatter>[
+                                Dimens()
+                                    .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
+                              ],
+                              hintText: labelSubType,
+                              controller: model.subTypeController,
+                              focusNode: model.subTypeFocusNode,
+                              onFieldSubmitted: (value) {
+                                model.priceFocusNode.requestFocus();
+                                model.appendInTitle();
+                              },
+                              onTextChange: (value) => model.productToAdd =
+                                  model.productToAdd.copyWith(
+                                subType: value.toUpperCase().trim(),
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField(
+                              formatter: <TextInputFormatter>[
+                                Dimens().numericWithDecimalFormatter,
+                              ],
+                              hintText: labelPrice,
+                              controller: model.priceController,
+                              focusNode: model.priceFocusNode,
+                              onFieldSubmitted: (value) {
+                                model.measurementFocusNode.requestFocus();
+                              },
+                              onTextChange: (value) => model.productToAdd =
+                                  model.productToAdd.copyWith(
+                                price: double.parse(
+                                  value,
+                                ),
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField(
+                              formatter: <TextInputFormatter>[
+                                Dimens().numericWithDecimalFormatter,
+                              ],
+                              hintText: labelMeasurement,
+                              controller: model.measurementController,
+                              focusNode: model.measurementFocusNode,
+                              onTextChange: (value) {
+                                model.productToAdd =
+                                    model.productToAdd.copyWith(
+                                  measurement: double.parse(
+                                    value,
                                   ),
+                                );
+                              },
+                              onFieldSubmitted: (value) {
+                                model.measurementUnitFocusNode.requestFocus();
+                                model.appendInTitle();
+                              },
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField(
+                              formatter: <TextInputFormatter>[
+                                Dimens()
+                                    .alphaNumericWithSpaceSlashHyphenUnderScoreFormatter,
+                              ],
+                              hintText: labelMeasurementUnit,
+                              controller: model.measurementUnitController,
+                              focusNode: model.measurementUnitFocusNode,
+                              onTextChange: (value) {
+                                model.productToAdd =
+                                    model.productToAdd.copyWith(
+                                  measurementUnit: value.toUpperCase().trim(),
+                                );
+                              },
+                              onFieldSubmitted: (value) {
+                                model.titleFocusNode.requestFocus();
+                                model.appendInTitle();
+                              },
+                            ),
                             flex: 1,
                           ),
                           wSizedBox(width: 10),
                         ],
                       ),
-                    ),
-                    arguments.productListType == PimProductListType.DISCARDED
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: Dimens().buttonHeight,
-                                    child: AppButton(
-                                      buttonBg: AppColors().buttonGreenColor,
-                                      onTap: () {
-                                        if (model.isDeoGd()) {
-                                          performCheckOnImage(model: model);
-                                        } else {
-                                          performChecksOnData(model: model);
-                                        }
-                                      },
-                                      title: arguments.productToEdit == null
-                                          ? buttonLabelAddProduct
-                                          : buttonLabelUpdateProduct,
+                      Row(
+                        children: [
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField(
+                              hintText: labelTitle,
+                              controller: model.titleController,
+                              focusNode: model.titleFocusNode,
+                              onTextChange: (value) {
+                                model.productToAdd =
+                                    model.productToAdd.copyWith(
+                                  title: value.toUpperCase().trim(),
+                                );
+                              },
+                              onFieldSubmitted: (value) =>
+                                  model.tagsFocusNode.requestFocus(),
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          wSizedBox(width: 10),
+                          Expanded(
+                            child: AppTextField.withCounter(
+                              maxCharacters: Dimens().maxTagsLength,
+                              maxCounterValue: 15,
+                              enteredCount: model.productToAdd.tags == null
+                                  ? 0
+                                  : model.productToAdd.tags!.length,
+                              hintText: labelTags,
+                              controller: model.tagsController,
+                              focusNode: model.tagsFocusNode,
+                              onTextChange: (value) {
+                                model.productToAdd =
+                                    model.productToAdd.copyWith(
+                                  tags: value.toUpperCase().trim(),
+                                );
+                                model.notifyListeners();
+                              },
+                              onFieldSubmitted: (value) =>
+                                  model.summaryFocusNode.requestFocus(),
+                            ),
+                            flex: 1,
+                          ),
+                          wSizedBox(width: 10),
+                        ],
+                      ),
+                      // model.isDeoSuperVisor() || model.isDeoGd()
+                      // ?
+                      SizedBox(
+                        height: 420,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            wSizedBox(width: 10),
+                            Expanded(
+                              flex: 3,
+                              child: AppTextField.withCounter(
+                                maxCharacters: Dimens().maxSummaryLength,
+                                maxCounterValue: Dimens().maxTagsLength,
+                                enteredCount: model.productToAdd.summary == null
+                                    ? 0
+                                    : model.productToAdd.summary!.length,
+                                helperText: labelSummaryHelperText,
+                                hintText: labelSummary,
+                                keyboardType: TextInputType.multiline,
+                                controller: model.summaryController,
+                                focusNode: model.summaryFocusNode,
+                                maxLines: 11,
+                                onTextChange: (value) {
+                                  model.productToAdd =
+                                      model.productToAdd.copyWith(
+                                    summary: value.toUpperCase().trim(),
+                                  );
+                                  model.notifyListeners();
+                                },
+                              ),
+                            ),
+                            wSizedBox(width: 10),
+                            Expanded(
+                              child: model.selectedFiles.isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        const Text('Image'),
+                                        hSizedBox(height: 8),
+                                        Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            // model.selectedFiles.isEmpty
+                                            //     ? ProfileImageWidget.productImage(
+                                            //         isForCatalog: false,
+                                            //         supplierId: null,
+                                            //         elevation: 0,
+                                            //         profileImageHeight: Dimens()
+                                            //             .productDtailImageHeight,
+                                            //         profileImageWidth: Dimens()
+                                            //             .productDtailImageHeight,
+                                            //         borderDerRadius:
+                                            //             BorderRadius.all(
+                                            //           Radius.circular(
+                                            //             Dimens()
+                                            //                 .suppliersListItemImageCircularRaduis,
+                                            //           ),
+                                            //         ),
+                                            //         productId: arguments
+                                            //             .productToEdit?.id,
+                                            //       )
+                                            //     :
+                                            model.imageApiStatus ==
+                                                    ApiStatus.LOADING
+                                                ? LoadingWidgetWithText(
+                                                    text:
+                                                        'Loading Image. Please Wait')
+                                                : image_widget.Image.memory(
+                                                    model.selectedFiles
+                                                        .elementAt(0),
+                                                  ),
+                                            AppInkwell(
+                                              onTap: () {
+                                                model.selectedFiles.removeAt(0);
+                                                model.notifyListeners();
+                                              },
+                                              child: Container(
+                                                padding: const EdgeInsets.all(
+                                                  10,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black
+                                                      .withOpacity(0.5),
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                child: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.white,
+                                                  size: 25,
+                                                ),
+                                              ),
+                                            ),
+                                            if (model.isDeoGd())
+                                              Positioned(
+                                                right: 1,
+                                                bottom: 1,
+                                                child: AppInkwell(
+                                                  onTap: () {
+                                                    model.downloadImage(
+                                                        image: model
+                                                            .selectedFiles
+                                                            .first);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                      10,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black
+                                                          .withOpacity(0.5),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .only(
+                                                        bottomLeft:
+                                                            Radius.circular(20),
+                                                      ),
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.download,
+                                                      color: Colors.white,
+                                                      size: 25,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  : Center(
+                                      child: AppButton(
+                                        buttonBg: AppColors().buttonGreenColor,
+                                        onTap: () {
+                                          model.pickImages();
+                                        },
+                                        leading: const Icon(Icons.add_a_photo),
+                                        title: labelAddImage,
+                                      ),
                                     ),
-                                  ),
-                                  flex: 2,
-                                ),
-                                if (model.isDeoSuperVisor())
-                                  wSizedBox(width: 8),
-                                if (model.isDeoSuperVisor() &&
-                                    arguments.productListType ==
-                                        PimProductListType.TODO)
+                              flex: 1,
+                            ),
+                            wSizedBox(width: 10),
+                          ],
+                        ),
+                      ),
+                      arguments.productListType == PimProductListType.DISCARDED
+                          ? Container()
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
                                   Expanded(
                                     child: SizedBox(
                                       width: double.infinity,
                                       height: Dimens().buttonHeight,
                                       child: AppButton(
-                                        buttonBg: AppColors().buttonRedColor,
+                                        buttonBg: AppColors().buttonGreenColor,
                                         onTap: () {
-                                          model.discardProduct();
+                                          if (model.isDeoGd()) {
+                                            performCheckOnImage(model: model);
+                                          } else {
+                                            performChecksOnData(model: model);
+                                          }
                                         },
-                                        title: buttonLabelDiscardProduct,
+                                        title: arguments.productToEdit == null
+                                            ? buttonLabelAddProduct
+                                            : buttonLabelUpdateProduct,
                                       ),
                                     ),
-                                    flex: 1,
+                                    flex: 2,
                                   ),
-                              ],
+                                  if (model.isDeoSuperVisor())
+                                    wSizedBox(width: 8),
+                                  if (model.isDeoSuperVisor() &&
+                                      arguments.productListType ==
+                                          PimProductListType.TODO)
+                                    Expanded(
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: Dimens().buttonHeight,
+                                        child: AppButton(
+                                          buttonBg: AppColors().buttonRedColor,
+                                          onTap: () {
+                                            model.discardProduct();
+                                          },
+                                          title: buttonLabelDiscardProduct,
+                                        ),
+                                      ),
+                                      flex: 1,
+                                    ),
+                                ],
+                              ),
                             ),
-                          ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+        ),
       ),
       viewModelBuilder: () => AddProductViewModel(),
     );

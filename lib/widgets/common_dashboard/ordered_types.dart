@@ -92,39 +92,44 @@ class OrderedTypesWidget extends ViewModelWidget<CommonDashboardViewModel> {
                             ),
                           ),
                           Expanded(
-                            child: IndexedStack(
-                              index: viewModel.reportsByCategoryIndex,
-                              children: [
-                                ReportWidget.dashBoardGroupByCategory(
-                                  amountGrandTotal:
-                                      getAmountGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupByTypeResponse,
-                                  ),
-                                  quantityGrandTotal:
-                                      getQuantityGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupByTypeResponse,
-                                  ),
-                                  reportResponse:
-                                      viewModel.ordersReportGroupByTypeResponse,
-                                ),
-                                AppBarChartWidget.grouped(
-                                  seriesBarData:
-                                      viewModel.ordersReportGroupByTypeBarData,
-                                  xAxisTitle: 'Brands',
-                                  yAxisTitle: '',
-                                  onClickOfOrderReportsOption: () {
-                                    viewModel.navigationService.navigateTo(
-                                      orderReportsScreenPageRoute,
-                                      arguments: OrderReportsViewArgs(
-                                        orderStatus: OrderStatusTypes.DELIVERED,
+                            child: viewModel
+                                    .busy(getOrderReportsGroupByTypeApiStatus)
+                                ? const LoadingWidget()
+                                : IndexedStack(
+                                    index: viewModel.reportsByCategoryIndex,
+                                    children: [
+                                      ReportWidget.dashBoardGroupByCategory(
+                                        amountGrandTotal:
+                                            getAmountGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupByTypeResponse,
+                                        ),
+                                        quantityGrandTotal:
+                                            getQuantityGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupByTypeResponse,
+                                        ),
+                                        reportResponse: viewModel
+                                            .ordersReportGroupByTypeResponse,
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                      AppBarChartWidget.grouped(
+                                        seriesBarData: viewModel
+                                            .ordersReportGroupByTypeBarData,
+                                        xAxisTitle: 'Brands',
+                                        yAxisTitle: '',
+                                        onClickOfOrderReportsOption: () {
+                                          viewModel.navigationService
+                                              .navigateTo(
+                                            orderReportsScreenPageRoute,
+                                            arguments: OrderReportsViewArgs(
+                                              orderStatus:
+                                                  OrderStatusTypes.DELIVERED,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),

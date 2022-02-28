@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:scm/app/appcolors.dart';
 import 'package:scm/app/dimens.dart';
 import 'package:scm/app/image_config.dart';
-import 'package:scm/enums/api_status.dart';
 import 'package:scm/enums/order_status_types.dart';
 import 'package:scm/routes/routes_constants.dart';
 import 'package:scm/screens/reports/orders_report/helper_widgets/order_report_widget.dart';
@@ -95,39 +94,44 @@ class OrderedSubTypeWidget extends ViewModelWidget<CommonDashboardViewModel> {
                             ),
                           ),
                           Expanded(
-                            child: IndexedStack(
-                              index: viewModel.reportsBySubCategoryIndex,
-                              children: [
-                                ReportWidget.dashBoardGroupBySubCategory(
-                                  amountGrandTotal:
-                                      getAmountGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupBySubTypeResponse,
-                                  ),
-                                  quantityGrandTotal:
-                                      getQuantityGrandTotalOfOrderReport(
-                                    reportResponse: viewModel
-                                        .ordersReportGroupBySubTypeResponse,
-                                  ),
-                                  reportResponse: viewModel
-                                      .ordersReportGroupBySubTypeResponse,
-                                ),
-                                AppBarChartWidget.grouped(
-                                  seriesBarData: viewModel
-                                      .ordersReportGroupBySubTypeBarData,
-                                  xAxisTitle: 'Sub Category',
-                                  yAxisTitle: '',
-                                  onClickOfOrderReportsOption: () {
-                                    viewModel.navigationService.navigateTo(
-                                      orderReportsScreenPageRoute,
-                                      arguments: OrderReportsViewArgs(
-                                        orderStatus: OrderStatusTypes.DELIVERED,
+                            child: viewModel.busy(
+                                    getOrderReportsGroupBySubTypeApiStatus)
+                                ? const LoadingWidget()
+                                : IndexedStack(
+                                    index: viewModel.reportsBySubCategoryIndex,
+                                    children: [
+                                      ReportWidget.dashBoardGroupBySubCategory(
+                                        amountGrandTotal:
+                                            getAmountGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupBySubTypeResponse,
+                                        ),
+                                        quantityGrandTotal:
+                                            getQuantityGrandTotalOfOrderReport(
+                                          reportResponse: viewModel
+                                              .ordersReportGroupBySubTypeResponse,
+                                        ),
+                                        reportResponse: viewModel
+                                            .ordersReportGroupBySubTypeResponse,
                                       ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                      AppBarChartWidget.grouped(
+                                        seriesBarData: viewModel
+                                            .ordersReportGroupBySubTypeBarData,
+                                        xAxisTitle: 'Sub Category',
+                                        yAxisTitle: '',
+                                        onClickOfOrderReportsOption: () {
+                                          viewModel.navigationService
+                                              .navigateTo(
+                                            orderReportsScreenPageRoute,
+                                            arguments: OrderReportsViewArgs(
+                                              orderStatus:
+                                                  OrderStatusTypes.DELIVERED,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),
